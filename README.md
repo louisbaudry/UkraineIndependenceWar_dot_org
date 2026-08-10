@@ -31,9 +31,11 @@ Per the Phase I record, none may be frozen before Phase II standards research.
 
 ```
 docs/
-  discovery/    Phase I requirements-discovery record (immutable source material)
-                + acquisition provenance
-  phase-2/      Phase II working area (candidate outputs; nothing canonical yet)
+  discovery/          Phase I requirements-discovery record (immutable source
+                      material) + acquisition provenance
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0009
+                      approved and in force
+  phase-2/            Phase II working area
     working-papers/   Versioned Phase II working papers + provenance
 ```
 

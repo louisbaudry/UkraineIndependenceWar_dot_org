@@ -16,10 +16,10 @@ technical stack is frozen.
 | # | Output | Status |
 |---|---|---|
 | 1 | Domain map | drafting — provisional conceptual layers A–J in WP 0.1 |
-| 2 | Standards/model matrix (adopt / adapt / map to / reject / defer) | drafting — initial dispositions in WP 0.1 |
+| 2 | Standards/model matrix (adopt / adapt / map to / reject / defer) | drafting — initial dispositions in WP 0.1; eight additions from WP 0.2 §6 (OCFL, RO-Crate, WACZ, Memento, METS, ISO 16363, PAIS, ODRL) accepted with proposed dispositions 2026-08-10 |
 | 3 | Conceptual conflict register | drafting — first candidate entries in WP 0.2 §5 |
 | 4 | Candidate foundational vocabulary | not started |
-| 5 | Candidate Decision Records (consolidated from Phase I, submitted for human approval) | not started |
+| 5 | Candidate Decision Records (consolidated from Phase I, submitted for human approval) | in progress — nine Workstream 1 CDRs approved 2026-08-10 and enacted as [DR-0001…0009](../decision-records/README.md); further CDRs expected from remaining workstreams |
 | 6 | Candidate Requirements (stable IDs, categories, traceability, verification criteria) | not started |
 | 7 | Unresolved research questions | drafting — Workstream 1 questions in WP 0.2 §8 |
 | 8 | Phase II methodology version | not started |
@@ -37,8 +37,8 @@ Acquisition and integrity metadata: [working-papers/PROVENANCE.md](working-paper
 
 | # | Workstream | Status |
 |---|---|---|
-| 1 | Preservation & provenance (OAIS, PREMIS, PROV, WARC, BagIt) | **Drafted** — WP 0.2, awaiting founder review |
-| 2 | Historical/event knowledge (CIDOC CRM, extensions, LRMoo) | not started |
+| 1 | Preservation & provenance (OAIS, PREMIS, PROV, WARC, BagIt) | **Complete (v0.2)** — WP 0.2 reviewed; nine DRs approved and enacted 2026-08-10; open questions carried in WP 0.2 §8 |
+| 2 | Historical/event knowledge (CIDOC CRM, extensions, LRMoo) | **In progress** — WP 0.3 drafting |
 | 3 | Document identity & textual evidence (IFLA LRM, LRMoo, TEI, Web Annotation) | not started |
 | 4 | Epistemology & evidence | not started |
 | 5 | Argumentation | not started |
