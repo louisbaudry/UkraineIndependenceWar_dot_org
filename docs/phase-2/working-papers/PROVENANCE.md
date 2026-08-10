@@ -17,3 +17,15 @@ successor is deposited alongside it under its own version number (record §77, �
 | Acquisition method | Provided by the founder/principal editor to a Claude Code session as an uploaded file; committed verbatim, byte-identical, with no transformation |
 | Original filename as uploaded | `57502e64-phase2theoreticalsynthesisstandardsmapping0.1.md` |
 | Status per its own front matter | Phase II initiated |
+
+## wp-0.2-ws1-preservation-provenance-concept-map.md
+
+| Field | Value |
+|---|---|
+| Title | Phase II / Workstream 1 — Preservation & Provenance Concept Map (Working Paper 0.2) |
+| Version | 0.2 |
+| SHA-256 at deposit | `8710372a3c7395daeefb7d48713ba08807acc6d6d9d0d0931ac39f5a2b7b8a13` |
+| Deposited | 2026-08-10 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's explicit request, per WP 0.1's "Next deliverable" mandate; not an upload |
+| Inputs | Phase I record; WP 0.1; web verification of current standard versions (sources cited in the paper) |
+| Status | Candidate — awaiting founder review and approval (record §78–80); its proposed Decision Records are proposals only |
