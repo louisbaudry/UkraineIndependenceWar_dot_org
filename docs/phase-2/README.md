@@ -1,6 +1,6 @@
 # Phase II — Theoretical Synthesis & Standards Mapping
 
-**Status:** Not started
+**Status:** In progress — initiated with [Working Paper 0.1](working-papers/wp-0.1-foundational-layer-map.md)
 **Authoritative mandate:** the Phase II section at the end of
 [`../discovery/phase-1-requirements-discovery-record.md`](../discovery/phase-1-requirements-discovery-record.md)
 (that text governs; this page is a working index, not a restatement of authority).
@@ -15,14 +15,30 @@ technical stack is frozen.
 
 | # | Output | Status |
 |---|---|---|
-| 1 | Domain map | not started |
-| 2 | Standards/model matrix (adopt / adapt / map to / reject / defer) | not started |
+| 1 | Domain map | drafting — provisional conceptual layers A–J in WP 0.1 |
+| 2 | Standards/model matrix (adopt / adapt / map to / reject / defer) | drafting — initial dispositions in WP 0.1 |
 | 3 | Conceptual conflict register | not started |
 | 4 | Candidate foundational vocabulary | not started |
 | 5 | Candidate Decision Records (consolidated from Phase I, submitted for human approval) | not started |
 | 6 | Candidate Requirements (stable IDs, categories, traceability, verification criteria) | not started |
 | 7 | Unresolved research questions | not started |
 | 8 | Phase II methodology version | not started |
+
+## Working papers
+
+| Paper | Version | Scope |
+|---|---|---|
+| [WP 0.1 — Foundational Layer Map](working-papers/wp-0.1-foundational-layer-map.md) | 0.1 | Provisional conceptual layers (A–J), initial standards matrix, research sequence, working hypothesis 0.1, no-go decisions |
+
+Acquisition and integrity metadata: [working-papers/PROVENANCE.md](working-papers/PROVENANCE.md).
+
+## Next deliverable (per WP 0.1)
+
+**Workstream 1 — Preservation & Provenance Concept Map:** compare OAIS, PREMIS,
+PROV, WARC and BagIt against Phase I requirements for acquisition, immutable
+originals, fixity, custody, source lifecycle, transformation lineage, rights/access,
+failed acquisition, evidence packages, backup versus archive, succession and
+reproducibility.
 
 ## Governing constraint
 

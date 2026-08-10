@@ -21,7 +21,7 @@ The time horizon is measured in years and potentially decades.
 | Phase | Status |
 |---|---|
 | Phase I — Requirements Discovery | **Complete** — see the [discovery record](docs/discovery/phase-1-requirements-discovery-record.md) |
-| Phase II — Theoretical Synthesis & Standards Mapping | Not started — see [docs/phase-2/](docs/phase-2/README.md) |
+| Phase II — Theoretical Synthesis & Standards Mapping | **In progress** — see [docs/phase-2/](docs/phase-2/README.md) |
 | Phase III — Conceptual Architecture | Not started |
 
 No permanent data model, ontology, API contract, or technical stack has been frozen.
@@ -34,6 +34,7 @@ docs/
   discovery/    Phase I requirements-discovery record (immutable source material)
                 + acquisition provenance
   phase-2/      Phase II working area (candidate outputs; nothing canonical yet)
+    working-papers/   Versioned Phase II working papers + provenance
 ```
 
 This README is an entry point, not the project's institutional memory (record §100).
