@@ -28,4 +28,16 @@ successor is deposited alongside it under its own version number (record §77, �
 | Deposited | 2026-08-10 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's explicit request, per WP 0.1's "Next deliverable" mandate; not an upload |
 | Inputs | Phase I record; WP 0.1; web verification of current standard versions (sources cited in the paper) |
-| Status | Candidate — awaiting founder review and approval (record §78–80); its proposed Decision Records are proposals only |
+| Status | Reviewed — its nine candidate DRs were individually approved by the founder on 2026-08-10 and enacted as DR-0001…0009 |
+
+## wp-0.3-ws2-historical-event-knowledge-concept-map.md
+
+| Field | Value |
+|---|---|
+| Title | Phase II / Workstream 2 — Historical & Event Knowledge Concept Map (Working Paper 0.3) |
+| Version | 0.3 |
+| SHA-256 at deposit | `1b8c25ca2a5185d95382abba5ac687f181cb80e43c6a18789d5cd35169452de2` |
+| Deposited | 2026-08-10 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction ("Formalize DRs + start WS2"); not an upload |
+| Inputs | Phase I record; WP 0.1; WP 0.2; DR-0001…0009; web verification of CIDOC CRM 7.1.3 / ISO 21127:2023 and LRMoo 1.0 status |
+| Status | Candidate — awaiting founder review and approval (record §78–80); its seven candidate DRs are proposals only |
