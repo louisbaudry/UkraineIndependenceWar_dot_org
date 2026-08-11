@@ -30,7 +30,8 @@ technical stack is frozen.
 |---|---|---|
 | [WP 0.1 — Foundational Layer Map](working-papers/wp-0.1-foundational-layer-map.md) | 0.1 | Provisional conceptual layers (A–J), initial standards matrix, research sequence, working hypothesis 0.1, no-go decisions |
 | [WP 0.2 — Workstream 1: Preservation & Provenance Concept Map](working-papers/wp-0.2-ws1-preservation-provenance-concept-map.md) | 0.2 | AI-drafted; reviewed — its nine candidate DRs approved and enacted as DR-0001…0009 (2026-08-10); its eight additional standards accepted into the matrix |
-| [WP 0.3 — Workstream 2: Historical & Event Knowledge Concept Map](working-papers/wp-0.3-ws2-historical-event-knowledge-concept-map.md) | 0.3 | **CANDIDATE, AI-drafted, awaiting founder approval.** CIDOC CRM 7.1.3 / ISO 21127:2023, CRM-family extensions, LRMoo 1.0 mapped against world-layer and documentary-identity requirements; 7 candidate DRs (CDR-W2-1…7); key negative finding: ownership/control networks out of CRM scope → Workstream 6 |
+| [WP 0.3 — Workstream 2: Historical & Event Knowledge Concept Map](working-papers/wp-0.3-ws2-historical-event-knowledge-concept-map.md) | 0.3 | AI-drafted; reviewed — its seven candidate DRs approved and enacted as DR-0010…0016 (2026-08-11) |
+| [WP 0.4 — Workstream 3: Document Identity & Textual Evidence Concept Map](working-papers/wp-0.4-ws3-document-identity-textual-evidence-concept-map.md) | 0.4 | **CANDIDATE, AI-drafted, awaiting founder approval.** Web Annotation, TEI P5, IIIF, CSL, Memento mapped against quotation/anchoring/context/holdings/citation requirements; 7 candidate DRs (CDR-W3-1…7), incl. the anchoring rule (evidential annotations target preserved captures, never live URLs) |
 
 Acquisition and integrity metadata: [working-papers/PROVENANCE.md](working-papers/PROVENANCE.md).
 
