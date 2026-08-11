@@ -40,4 +40,4 @@ successor is deposited alongside it under its own version number (record §77, �
 | Deposited | 2026-08-10 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction ("Formalize DRs + start WS2"); not an upload |
 | Inputs | Phase I record; WP 0.1; WP 0.2; DR-0001…0009; web verification of CIDOC CRM 7.1.3 / ISO 21127:2023 and LRMoo 1.0 status |
-| Status | Candidate — awaiting founder review and approval (record §78–80); its seven candidate DRs are proposals only |
+| Status | Reviewed — its seven candidate DRs approved by the founder 2026-08-11 and enacted as DR-0010…0016 |

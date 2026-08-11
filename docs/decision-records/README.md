@@ -26,6 +26,13 @@ security, legal, editorial.
 | [DR-0007](DR-0007-bagit-envelopes-ro-crate-study.md) | BagIt envelopes; RO-Crate study before evidence-package design | preservation | Approved | 2026-08-10 |
 | [DR-0008](DR-0008-custody-claims-discipline.md) | Custody claims discipline; Berkeley Protocol guides practice | legal / methodology | Approved | 2026-08-10 |
 | [DR-0009](DR-0009-backup-archive-release-separation.md) | Backup, archival preservation, and releases separated | preservation | Approved | 2026-08-10 |
+| [DR-0010](DR-0010-cidoc-crm-world-layer.md) | Adopt CIDOC CRM conceptually for the historical world layer | architecture | Approved | 2026-08-11 |
+| [DR-0011](DR-0011-lrmoo-documentary-identity.md) | Adopt LRMoo 1.0 conceptually for documentary identity | architecture | Approved | 2026-08-11 |
+| [DR-0012](DR-0012-identification-as-events.md) | Names and identifiers attach via assignment events | architecture / epistemology | Approved | 2026-08-11 |
+| [DR-0013](DR-0013-roles-as-temporal-events.md) | Roles and memberships are temporal events | architecture | Approved | 2026-08-11 |
+| [DR-0014](DR-0014-product-type-vs-item.md) | Product-type vs individual-item distinction | architecture | Approved | 2026-08-11 |
+| [DR-0015](DR-0015-ownership-sovereignty-layer-assignment.md) | Ownership/control and sovereignty relations assigned outside the CRM layer | architecture | Approved | 2026-08-11 |
+| [DR-0016](DR-0016-crminf-epistemic-study-candidate.md) | CRMinf as starting candidate for the epistemic/argumentation layers | epistemology | Approved | 2026-08-11 |
 
 ## Provenance of decisions
 
@@ -34,3 +41,9 @@ DR-0001 through DR-0009 originate from candidate Decision Records CDR-W1-1…9 i
 (AI-drafted candidate paper). Each was individually reviewed and approved by the
 founder/principal editor on 2026-08-10 in an interactive review session, per record
 §78–79: AI proposed; the human decided.
+
+DR-0010 through DR-0016 originate from CDR-W2-1…7 in
+[WP 0.3](../phase-2/working-papers/wp-0.3-ws2-historical-event-knowledge-concept-map.md)
+(AI-drafted candidate paper). The seven were presented to the founder with
+per-item disposition options and approved as a set on 2026-08-11 ("Go ahead"
+on the recommended approve-all disposition).
