@@ -88,4 +88,4 @@ successor is deposited alongside it under its own version number (record §77, �
 | Deposited | 2026-08-11 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) continuing the founder-directed workstream sequence; not an upload |
 | Inputs | Phase I record (§3, §62–§73); WP 0.1–0.6; DR-0001…0037 |
-| Status | Candidate — awaiting founder review and approval (record §78–80); its eight candidate DRs (CDR-W6-1…8) are proposals only |
+| Status | Reviewed — its eight candidate DRs approved by the founder 2026-08-11 ("Approve all eight and continue") and enacted as DR-0038…0045 |

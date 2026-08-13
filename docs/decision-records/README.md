@@ -54,6 +54,14 @@ security, legal, editorial.
 | [DR-0035](DR-0035-hypothesis-competition.md) | Hypothesis competition is first-class | epistemology / methodology | Approved | 2026-08-11 |
 | [DR-0036](DR-0036-no-automatic-adjudication.md) | No automatic adjudication of arguments | epistemology / editorial | Approved | 2026-08-11 |
 | [DR-0037](DR-0037-toulmin-editorial-scaffold.md) | Toulmin as editorial scaffold only | editorial / methodology | Approved | 2026-08-11 |
+| [DR-0038](DR-0038-sanctions-legal-lifecycle.md) | Sanctions as instruments/regimes/designations/effects with full lifecycle | legal / architecture | Approved | 2026-08-11 |
+| [DR-0039](DR-0039-designation-records-distinct.md) | Designation records distinct from canonical entities | legal / architecture | Approved | 2026-08-11 |
+| [DR-0040](DR-0040-bods-ownership-statements.md) | Ownership/control follow the BODS statement pattern | legal / architecture | Approved | 2026-08-11 |
+| [DR-0041](DR-0041-rule-derived-applicability.md) | Rule-derived applicability computed, versioned, never stored as designation | legal / architecture | Approved | 2026-08-11 |
+| [DR-0042](DR-0042-export-control-decomposition.md) | Export-control state is decomposed | legal / architecture | Approved | 2026-08-11 |
+| [DR-0043](DR-0043-transaction-shipment-payment-triad.md) | Transaction / shipment / payment triad | architecture | Approved | 2026-08-11 |
+| [DR-0044](DR-0044-territorial-status-vocabulary.md) | Territorial-status vocabulary | architecture / legal | Approved | 2026-08-11 |
+| [DR-0045](DR-0045-ftm-interchange-mapping.md) | FollowTheMoney/OpenSanctions as interchange mapping and identifier spine | architecture | Approved | 2026-08-11 |
 
 ## Provenance of decisions
 
@@ -83,3 +91,8 @@ DR-0032 through DR-0037 originate from CDR-W5-1…6 in
 [WP 0.6](../phase-2/working-papers/wp-0.6-ws5-argumentation-concept-map.md)
 (AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
 ("Approve all six and continue").
+
+DR-0038 through DR-0045 originate from CDR-W6-1…8 in
+[WP 0.7](../phase-2/working-papers/wp-0.7-ws6-sanctions-export-controls-concept-map.md)
+(AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
+("Approve all eight and continue").
