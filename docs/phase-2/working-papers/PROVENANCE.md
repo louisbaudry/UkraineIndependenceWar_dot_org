@@ -89,3 +89,15 @@ successor is deposited alongside it under its own version number (record §77, �
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) continuing the founder-directed workstream sequence; not an upload |
 | Inputs | Phase I record (§3, §62–§73); WP 0.1–0.6; DR-0001…0037 |
 | Status | Reviewed — its eight candidate DRs approved by the founder 2026-08-11 ("Approve all eight and continue") and enacted as DR-0038…0045 |
+
+## wp-0.8-ws7-governance-versioning-concept-map.md
+
+| Field | Value |
+|---|---|
+| Title | Phase II / Workstream 7 — Governance & Versioning Concept Map (Working Paper 0.8) |
+| Version | 0.8 |
+| SHA-256 at deposit | `f2424f82ddaa8d7e7b28a9ec94746ebc06869a6b6eb9bc327a0ce245b524e79e` |
+| Deposited | 2026-08-11 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) continuing the founder-directed workstream sequence; not an upload |
+| Inputs | Phase I record (§60–§61, §87–§102); WP 0.1–0.7; DR-0001…0045 |
+| Status | Candidate — awaiting founder review and approval (record §78–80); its seven candidate DRs (CDR-W7-1…7) are proposals only |
