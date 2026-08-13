@@ -77,3 +77,15 @@ successor is deposited alongside it under its own version number (record §77, �
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) continuing the founder-directed workstream sequence; not an upload |
 | Inputs | Phase I record (§34–§36, §40, §52–§53, §76); WP 0.1–0.5; DR-0001…0031 |
 | Status | Reviewed — its six candidate DRs approved by the founder 2026-08-11 ("Approve all six and continue") and enacted as DR-0032…0037 |
+
+## wp-0.7-ws6-sanctions-export-controls-concept-map.md
+
+| Field | Value |
+|---|---|
+| Title | Phase II / Workstream 6 — Sanctions & Export-Control Concept Map (Working Paper 0.7) |
+| Version | 0.7 |
+| SHA-256 at deposit | `62687895a94914d9ca02a931d6f2599590f7cc525dda72ca2932abfd0801c369` |
+| Deposited | 2026-08-11 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) continuing the founder-directed workstream sequence; not an upload |
+| Inputs | Phase I record (§3, §62–§73); WP 0.1–0.6; DR-0001…0037 |
+| Status | Candidate — awaiting founder review and approval (record §78–80); its eight candidate DRs (CDR-W6-1…8) are proposals only |
