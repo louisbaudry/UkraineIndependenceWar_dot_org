@@ -62,6 +62,13 @@ security, legal, editorial.
 | [DR-0043](DR-0043-transaction-shipment-payment-triad.md) | Transaction / shipment / payment triad | architecture | Approved | 2026-08-11 |
 | [DR-0044](DR-0044-territorial-status-vocabulary.md) | Territorial-status vocabulary | architecture / legal | Approved | 2026-08-11 |
 | [DR-0045](DR-0045-ftm-interchange-mapping.md) | FollowTheMoney/OpenSanctions as interchange mapping and identifier spine | architecture | Approved | 2026-08-11 |
+| [DR-0046](DR-0046-unified-document-control.md) | Unified document control for the six governance document classes | architecture / methodology | Approved | 2026-08-11 |
+| [DR-0047](DR-0047-versioning-regime-per-dimension.md) | One versioning regime per dimension | architecture | Approved | 2026-08-11 |
+| [DR-0048](DR-0048-releases-are-baselines.md) | Releases are configuration-management baselines | architecture / preservation | Approved | 2026-08-11 |
+| [DR-0049](DR-0049-dcat-datacite-releases.md) | DCAT for release description; DataCite DOIs when mature | architecture | Approved | 2026-08-11 |
+| [DR-0050](DR-0050-11179-skos-registry.md) | Semantic registry: ISO/IEC 11179 pattern, SKOS-expressed | architecture | Approved | 2026-08-11 |
+| [DR-0051](DR-0051-requirements-management.md) | Requirements management per record §99 | architecture / methodology | Approved | 2026-08-11 |
+| [DR-0052](DR-0052-site-history-from-first-page.md) | Public site revision history from the first page | preservation / architecture | Approved | 2026-08-11 |
 
 ## Provenance of decisions
 
@@ -96,3 +103,8 @@ DR-0038 through DR-0045 originate from CDR-W6-1…8 in
 [WP 0.7](../phase-2/working-papers/wp-0.7-ws6-sanctions-export-controls-concept-map.md)
 (AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
 ("Approve all eight and continue").
+
+DR-0046 through DR-0052 originate from CDR-W7-1…7 in
+[WP 0.8](../phase-2/working-papers/wp-0.8-ws7-governance-versioning-concept-map.md)
+(AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
+("Approve all seven and continue with the consolidation").
