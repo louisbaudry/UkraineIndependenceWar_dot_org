@@ -33,6 +33,13 @@ security, legal, editorial.
 | [DR-0014](DR-0014-product-type-vs-item.md) | Product-type vs individual-item distinction | architecture | Approved | 2026-08-11 |
 | [DR-0015](DR-0015-ownership-sovereignty-layer-assignment.md) | Ownership/control and sovereignty relations assigned outside the CRM layer | architecture | Approved | 2026-08-11 |
 | [DR-0016](DR-0016-crminf-epistemic-study-candidate.md) | CRMinf as starting candidate for the epistemic/argumentation layers | epistemology | Approved | 2026-08-11 |
+| [DR-0017](DR-0017-web-annotation-targeting.md) | Adopt W3C Web Annotation as targeting vocabulary | architecture | Approved | 2026-08-11 |
+| [DR-0018](DR-0018-anchoring-rule.md) | Evidential annotations target preserved captures, never live URLs alone | architecture / preservation | Approved | 2026-08-11 |
+| [DR-0019](DR-0019-quotation-discipline.md) | Quotation discipline | editorial / methodology | Approved | 2026-08-11 |
+| [DR-0020](DR-0020-tei-selective-adoption.md) | TEI P5 selective adoption | architecture / editorial | Approved | 2026-08-11 |
+| [DR-0021](DR-0021-iiif-study.md) | IIIF study before media-platform design | architecture | Approved | 2026-08-11 |
+| [DR-0022](DR-0022-csl-citation-rendering.md) | Adopt CSL for citation rendering | architecture / editorial | Approved | 2026-08-11 |
+| [DR-0023](DR-0023-social-media-structural-mapping.md) | Social-media structural mapping | architecture | Approved | 2026-08-11 |
 
 ## Provenance of decisions
 
@@ -47,3 +54,8 @@ DR-0010 through DR-0016 originate from CDR-W2-1…7 in
 (AI-drafted candidate paper). The seven were presented to the founder with
 per-item disposition options and approved as a set on 2026-08-11 ("Go ahead"
 on the recommended approve-all disposition).
+
+DR-0017 through DR-0023 originate from CDR-W3-1…7 in
+[WP 0.4](../phase-2/working-papers/wp-0.4-ws3-document-identity-textual-evidence-concept-map.md)
+(AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
+("Approve all seven").

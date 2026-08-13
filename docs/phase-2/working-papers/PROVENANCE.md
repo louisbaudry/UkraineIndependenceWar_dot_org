@@ -52,4 +52,4 @@ successor is deposited alongside it under its own version number (record §77, �
 | Deposited | 2026-08-11 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction to continue the workstream sequence; not an upload |
 | Inputs | Phase I record; WP 0.1–0.3; DR-0001…0016; web verification of TEI release status |
-| Status | Candidate — awaiting founder review and approval (record §78–80); its seven candidate DRs (CDR-W3-1…7) are proposals only |
+| Status | Reviewed — its seven candidate DRs approved by the founder 2026-08-11 ("Approve all seven") and enacted as DR-0017…0023 |
