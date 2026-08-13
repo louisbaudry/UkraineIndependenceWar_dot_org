@@ -21,8 +21,8 @@ The time horizon is measured in years and potentially decades.
 | Phase | Status |
 |---|---|
 | Phase I — Requirements Discovery | **Complete** — see the [discovery record](docs/discovery/phase-1-requirements-discovery-record.md) |
-| Phase II — Theoretical Synthesis & Standards Mapping | **In progress** — see [docs/phase-2/](docs/phase-2/README.md) |
-| Phase III — Conceptual Architecture | Not started |
+| Phase II — Theoretical Synthesis & Standards Mapping | **Consolidation in review** — all 7 workstreams complete; 52 Decision Records enacted; the eight consolidation outputs are candidates awaiting founder approval ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
+| Phase III — Conceptual Architecture | Not started — opens on Phase II closure; entry question: canonical representation (record §95) |
 
 No permanent data model, ontology, API contract, or technical stack has been frozen.
 Per the Phase I record, none may be frozen before Phase II standards research.
@@ -33,10 +33,11 @@ Per the Phase I record, none may be frozen before Phase II standards research.
 docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
-  decision-records/   Unified Decision Record system (record §98); DR-0001…0009
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0052
                       approved and in force
   phase-2/            Phase II working area
-    working-papers/   Versioned Phase II working papers + provenance
+    working-papers/   Versioned Phase II working papers (WP 0.1–0.8) + provenance
+    outputs/          Phase II consolidation outputs (candidate)
 ```
 
 This README is an entry point, not the project's institutional memory (record §100).

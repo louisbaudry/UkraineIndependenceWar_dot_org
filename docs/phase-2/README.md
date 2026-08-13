@@ -15,14 +15,19 @@ technical stack is frozen.
 
 | # | Output | Status |
 |---|---|---|
-| 1 | Domain map | drafting — provisional conceptual layers A–J in WP 0.1 |
-| 2 | Standards/model matrix (adopt / adapt / map to / reject / defer) | drafting — initial dispositions in WP 0.1; eight additions from WP 0.2 §6 (OCFL, RO-Crate, WACZ, Memento, METS, ISO 16363, PAIS, ODRL) accepted with proposed dispositions 2026-08-10 |
-| 3 | Conceptual conflict register | drafting — first candidate entries in WP 0.2 §5 |
-| 4 | Candidate foundational vocabulary | not started |
-| 5 | Candidate Decision Records (consolidated from Phase I, submitted for human approval) | in progress — forty-five CDRs approved and enacted as [DR-0001…0045](../decision-records/README.md) (WS1: 2026-08-10; WS2–6: 2026-08-11); further CDRs expected from Workstream 7 |
-| 6 | Candidate Requirements (stable IDs, categories, traceability, verification criteria) | not started |
-| 7 | Unresolved research questions | drafting — Workstream 1 questions in WP 0.2 §8 |
-| 8 | Phase II methodology version | not started |
+| 1 | Domain map | **Candidate delivered** — [outputs/01-domain-map.md](outputs/01-domain-map.md) |
+| 2 | Standards/model matrix (adopt / adapt / map to / reject / defer) | **Candidate delivered** — [outputs/02-standards-matrix.md](outputs/02-standards-matrix.md) |
+| 3 | Conceptual conflict register | **Candidate delivered** — 39 entries, [outputs/03-conflict-register.md](outputs/03-conflict-register.md) |
+| 4 | Candidate foundational vocabulary | **Candidate delivered** — [outputs/04-foundational-vocabulary.md](outputs/04-foundational-vocabulary.md) |
+| 5 | Candidate Decision Records (consolidated from Phase I, submitted for human approval) | **Delivered** — fifty-two CDRs approved and enacted as [DR-0001…0052](../decision-records/README.md) (WS1: 2026-08-10; WS2–7: 2026-08-11) |
+| 6 | Candidate Requirements (stable IDs, categories, traceability, verification criteria) | **Candidate delivered** — 63 requirements across 10 categories, [outputs/06-candidate-requirements.md](outputs/06-candidate-requirements.md) |
+| 7 | Unresolved research questions | **Candidate delivered** — 35 open + 8 resolved, [outputs/07-open-questions.md](outputs/07-open-questions.md) |
+| 8 | Phase II methodology version | **Candidate delivered** — v1.0, [outputs/08-phase-2-methodology.md](outputs/08-phase-2-methodology.md) |
+
+**Phase II consolidation is complete as a candidate set** — see
+[outputs/](outputs/README.md). Founder approval of these outputs closes
+Phase II and authorizes **Phase III — Conceptual Architecture**, whose entry
+question is Q-01 (canonical representation, record §95).
 
 ## Working papers
 
@@ -49,7 +54,7 @@ Acquisition and integrity metadata: [working-papers/PROVENANCE.md](working-paper
 | 4 | Epistemology & evidence | **Complete (v0.5)** — WP 0.5 reviewed; eight DRs approved and enacted 2026-08-11 as DR-0024…0031; open questions carried in WP 0.5 §11 |
 | 5 | Argumentation | **Complete (v0.6)** — WP 0.6 reviewed; six DRs approved and enacted 2026-08-11 as DR-0032…0037; open questions carried in WP 0.6 §7 |
 | 6 | Sanctions/export controls | **Complete (v0.7)** — WP 0.7 reviewed; eight DRs approved and enacted 2026-08-11 as DR-0038…0045; open questions carried in WP 0.7 §7 |
-| 7 | Governance & versioning | **In progress** — WP 0.8 drafting |
+| 7 | Governance & versioning | **Complete (v0.8)** — WP 0.8 reviewed; seven DRs approved and enacted 2026-08-11 as DR-0046…0052; open questions carried in WP 0.8 §6 |
 
 ## Governing constraint
 
