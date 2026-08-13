@@ -53,3 +53,15 @@ successor is deposited alongside it under its own version number (record §77, �
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction to continue the workstream sequence; not an upload |
 | Inputs | Phase I record; WP 0.1–0.3; DR-0001…0016; web verification of TEI release status |
 | Status | Reviewed — its seven candidate DRs approved by the founder 2026-08-11 ("Approve all seven") and enacted as DR-0017…0023 |
+
+## wp-0.5-ws4-epistemology-evidence-concept-map.md
+
+| Field | Value |
+|---|---|
+| Title | Phase II / Workstream 4 — Epistemology & Evidence Concept Map (Working Paper 0.5) |
+| Version | 0.5 |
+| SHA-256 at deposit | `0649ab0c9e5485908f2ee59c6ae99bc2a75a0cf9fc5e3984fa7743e6daeeb95d` |
+| Deposited | 2026-08-11 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) continuing the founder-directed workstream sequence; not an upload |
+| Inputs | Phase I record (§29–§44); WP 0.1–0.4; DR-0001…0023 |
+| Status | Candidate — awaiting founder review and approval (record §78–80); its eight candidate DRs (CDR-W4-1…8) are proposals only |
