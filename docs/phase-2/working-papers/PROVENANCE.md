@@ -65,3 +65,15 @@ successor is deposited alongside it under its own version number (record §77, �
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) continuing the founder-directed workstream sequence; not an upload |
 | Inputs | Phase I record (§29–§44); WP 0.1–0.4; DR-0001…0023 |
 | Status | Reviewed — its eight candidate DRs approved by the founder 2026-08-11 and enacted as DR-0024…0031 |
+
+## wp-0.6-ws5-argumentation-concept-map.md
+
+| Field | Value |
+|---|---|
+| Title | Phase II / Workstream 5 — Argumentation Concept Map (Working Paper 0.6) |
+| Version | 0.6 |
+| SHA-256 at deposit | `91b7afee105a6349aa7a406d40913c3cc0d6ee4efbcda31ca187983c1f5391e6` |
+| Deposited | 2026-08-11 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) continuing the founder-directed workstream sequence; not an upload |
+| Inputs | Phase I record (§34–§36, §40, §52–§53, §76); WP 0.1–0.5; DR-0001…0031 |
+| Status | Candidate — awaiting founder review and approval (record §78–80); its six candidate DRs (CDR-W5-1…6) are proposals only |
