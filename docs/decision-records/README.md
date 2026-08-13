@@ -48,6 +48,12 @@ security, legal, editorial.
 | [DR-0029](DR-0029-absence-state-vocabulary.md) | Adopt the absence-state vocabulary | epistemology / architecture | Approved | 2026-08-11 |
 | [DR-0030](DR-0030-quantitative-assertion-semantics.md) | Quantitative assertions preserve original semantics | epistemology / architecture | Approved | 2026-08-11 |
 | [DR-0031](DR-0031-crminf-adoption-with-extensions.md) | CRMinf adopted as epistemic grounding, with extensions | epistemology / architecture | Approved | 2026-08-11 |
+| [DR-0032](DR-0032-argument-representation.md) | Argument representation: CRMinf grounding with AIF-patterned structure | epistemology / architecture | Approved | 2026-08-11 |
+| [DR-0033](DR-0033-defeater-typing.md) | Defeater typing: rebut, undercut, undermine | epistemology | Approved | 2026-08-11 |
+| [DR-0034](DR-0034-argument-scheme-library.md) | Seed argument-scheme library with critical questions | epistemology / methodology | Approved | 2026-08-11 |
+| [DR-0035](DR-0035-hypothesis-competition.md) | Hypothesis competition is first-class | epistemology / methodology | Approved | 2026-08-11 |
+| [DR-0036](DR-0036-no-automatic-adjudication.md) | No automatic adjudication of arguments | epistemology / editorial | Approved | 2026-08-11 |
+| [DR-0037](DR-0037-toulmin-editorial-scaffold.md) | Toulmin as editorial scaffold only | editorial / methodology | Approved | 2026-08-11 |
 
 ## Provenance of decisions
 
@@ -72,3 +78,8 @@ DR-0024 through DR-0031 originate from CDR-W4-1…8 in
 [WP 0.5](../phase-2/working-papers/wp-0.5-ws4-epistemology-evidence-concept-map.md)
 (AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
 ("OK. Let us continue" on the recommended approve-all disposition).
+
+DR-0032 through DR-0037 originate from CDR-W5-1…6 in
+[WP 0.6](../phase-2/working-papers/wp-0.6-ws5-argumentation-concept-map.md)
+(AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
+("Approve all six and continue").
