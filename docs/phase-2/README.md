@@ -19,7 +19,7 @@ technical stack is frozen.
 | 2 | Standards/model matrix (adopt / adapt / map to / reject / defer) | drafting — initial dispositions in WP 0.1; eight additions from WP 0.2 §6 (OCFL, RO-Crate, WACZ, Memento, METS, ISO 16363, PAIS, ODRL) accepted with proposed dispositions 2026-08-10 |
 | 3 | Conceptual conflict register | drafting — first candidate entries in WP 0.2 §5 |
 | 4 | Candidate foundational vocabulary | not started |
-| 5 | Candidate Decision Records (consolidated from Phase I, submitted for human approval) | in progress — twenty-three CDRs approved and enacted as [DR-0001…0023](../decision-records/README.md) (WS1: 2026-08-10; WS2–3: 2026-08-11); further CDRs expected from remaining workstreams |
+| 5 | Candidate Decision Records (consolidated from Phase I, submitted for human approval) | in progress — thirty-one CDRs approved and enacted as [DR-0001…0031](../decision-records/README.md) (WS1: 2026-08-10; WS2–4: 2026-08-11); further CDRs expected from remaining workstreams |
 | 6 | Candidate Requirements (stable IDs, categories, traceability, verification criteria) | not started |
 | 7 | Unresolved research questions | drafting — Workstream 1 questions in WP 0.2 §8 |
 | 8 | Phase II methodology version | not started |
@@ -43,8 +43,8 @@ Acquisition and integrity metadata: [working-papers/PROVENANCE.md](working-paper
 | 1 | Preservation & provenance (OAIS, PREMIS, PROV, WARC, BagIt) | **Complete (v0.2)** — WP 0.2 reviewed; nine DRs approved and enacted 2026-08-10; open questions carried in WP 0.2 §8 |
 | 2 | Historical/event knowledge (CIDOC CRM, extensions, LRMoo) | **Complete (v0.3)** — WP 0.3 reviewed; seven DRs approved and enacted 2026-08-11 as DR-0010…0016; open questions carried in WP 0.3 §8 |
 | 3 | Document identity & textual evidence (IFLA LRM, LRMoo, TEI, Web Annotation) | **Complete (v0.4)** — WP 0.4 reviewed; seven DRs approved and enacted 2026-08-11 as DR-0017…0023; open questions carried in WP 0.4 §6 |
-| 4 | Epistemology & evidence | **In progress** — WP 0.5 drafting |
-| 5 | Argumentation | not started |
+| 4 | Epistemology & evidence | **Complete (v0.5)** — WP 0.5 reviewed; eight DRs approved and enacted 2026-08-11 as DR-0024…0031; open questions carried in WP 0.5 §11 |
+| 5 | Argumentation | **In progress** — WP 0.6 drafting |
 | 6 | Sanctions/export controls | not started |
 | 7 | Governance & versioning | not started |
 

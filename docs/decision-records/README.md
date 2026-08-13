@@ -40,6 +40,14 @@ security, legal, editorial.
 | [DR-0021](DR-0021-iiif-study.md) | IIIF study before media-platform design | architecture | Approved | 2026-08-11 |
 | [DR-0022](DR-0022-csl-citation-rendering.md) | Adopt CSL for citation rendering | architecture / editorial | Approved | 2026-08-11 |
 | [DR-0023](DR-0023-social-media-structural-mapping.md) | Social-media structural mapping | architecture | Approved | 2026-08-11 |
+| [DR-0024](DR-0024-six-layer-epistemic-architecture.md) | Adopt the six-layer epistemic architecture | epistemology / architecture | Approved | 2026-08-11 |
+| [DR-0025](DR-0025-epistemic-vocabulary-v1.md) | Adopt epistemic vocabulary v1 | epistemology | Approved | 2026-08-11 |
+| [DR-0026](DR-0026-two-dimensional-uncertainty.md) | Two-dimensional uncertainty model | epistemology / methodology | Approved | 2026-08-11 |
+| [DR-0027](DR-0027-source-grading-triage-only.md) | Source grading is triage-only | epistemology / methodology | Approved | 2026-08-11 |
+| [DR-0028](DR-0028-explicit-source-dependence.md) | Source dependence explicit; corroboration counts independent lines | epistemology / methodology | Approved | 2026-08-11 |
+| [DR-0029](DR-0029-absence-state-vocabulary.md) | Adopt the absence-state vocabulary | epistemology / architecture | Approved | 2026-08-11 |
+| [DR-0030](DR-0030-quantitative-assertion-semantics.md) | Quantitative assertions preserve original semantics | epistemology / architecture | Approved | 2026-08-11 |
+| [DR-0031](DR-0031-crminf-adoption-with-extensions.md) | CRMinf adopted as epistemic grounding, with extensions | epistemology / architecture | Approved | 2026-08-11 |
 
 ## Provenance of decisions
 
@@ -59,3 +67,8 @@ DR-0017 through DR-0023 originate from CDR-W3-1…7 in
 [WP 0.4](../phase-2/working-papers/wp-0.4-ws3-document-identity-textual-evidence-concept-map.md)
 (AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
 ("Approve all seven").
+
+DR-0024 through DR-0031 originate from CDR-W4-1…8 in
+[WP 0.5](../phase-2/working-papers/wp-0.5-ws4-epistemology-evidence-concept-map.md)
+(AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
+("OK. Let us continue" on the recommended approve-all disposition).
