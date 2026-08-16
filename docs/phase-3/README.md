@@ -20,7 +20,7 @@ sophisticated."
 
 | # | Item | Gates |
 |---|---|---|
-| 1 | Canonical-representation study ([WP 3.1](working-papers/wp-3.1-canonical-representation-study.md)) | Everything below |
+| 1 | ✅ Canonical-representation study ([WP 3.1](working-papers/wp-3.1-canonical-representation-study.md)) — DR-0054…0058 enacted 2026-08-16 | Everything below |
 | 2 | Conceptual data model specification (SPEC): the six layers as concrete object types with the registry seed vocabulary | Q-02, Q-07, Q-09 |
 | 3 | Identity & entity-resolution workflow specification | Q-10 |
 | 4 | Semantic-registry implementation (DR-0050) | Q-30 |

@@ -14,4 +14,4 @@ supersession never in-place (§77).
 | Deposited | 2026-08-16 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction following Phase II closure (DR-0053); not an upload |
 | Inputs | Phase II outputs 1–8; DR-0001…0053; candidate requirements |
-| Status | Candidate — awaiting founder review; its five candidate DRs (CDR-P3-1…5) are proposals only |
+| Status | Reviewed — its five candidate DRs approved by the founder 2026-08-16 ("approved all") and enacted as DR-0054…0058 |

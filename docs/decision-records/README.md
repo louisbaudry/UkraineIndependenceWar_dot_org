@@ -70,6 +70,11 @@ security, legal, editorial.
 | [DR-0051](DR-0051-requirements-management.md) | Requirements management per record §99 | architecture / methodology | Approved | 2026-08-11 |
 | [DR-0052](DR-0052-site-history-from-first-page.md) | Public site revision history from the first page | preservation / architecture | Approved | 2026-08-11 |
 | [DR-0053](DR-0053-phase-2-closure.md) | Phase II closure: consolidation outputs approved | methodology / architecture | Approved | 2026-08-16 |
+| [DR-0054](DR-0054-layered-canonical-representation.md) | Layered canonical representation (answers record §95) | architecture | Approved | 2026-08-16 |
+| [DR-0055](DR-0055-append-only-canonical-store.md) | Append-only canonical store with governed redaction | architecture / preservation | Approved | 2026-08-16 |
+| [DR-0056](DR-0056-projection-mappings-controlled.md) | Projection mappings are controlled artifacts | architecture | Approved | 2026-08-16 |
+| [DR-0057](DR-0057-postgresql-default-candidate.md) | PostgreSQL as default implementation candidate | architecture | Approved | 2026-08-16 |
+| [DR-0058](DR-0058-durable-export-obligation.md) | Durable export is a standing obligation | preservation / architecture | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 
@@ -109,3 +114,11 @@ DR-0046 through DR-0052 originate from CDR-W7-1…7 in
 [WP 0.8](../phase-2/working-papers/wp-0.8-ws7-governance-versioning-concept-map.md)
 (AI-drafted candidate paper), approved as a set by the founder on 2026-08-11
 ("Approve all seven and continue with the consolidation").
+
+DR-0053 records the founder's approval of the Phase II consolidation outputs
+and the closure of Phase II (2026-08-16, "OK. Let us continue").
+
+DR-0054 through DR-0058 originate from CDR-P3-1…5 in
+[WP 3.1](../phase-3/working-papers/wp-3.1-canonical-representation-study.md)
+(AI-drafted candidate paper), approved as a set by the founder on 2026-08-16
+("approved all") after a restated summary of the five proposals.
