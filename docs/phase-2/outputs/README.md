@@ -1,9 +1,7 @@
 # Phase II — Consolidation Outputs
 
-**Status:** CANDIDATE — AI-drafted consolidation of the seven reviewed
-workstream papers and the 52 enacted Decision Records, awaiting founder
-approval. Approval of these outputs closes Phase II and authorizes
-**Phase III — Conceptual Architecture**.
+**Status:** APPROVED by the founder on 2026-08-16 ([DR-0053](../../decision-records/DR-0053-phase-2-closure.md)).
+Phase II is closed; Phase III — Conceptual Architecture is authorized.
 
 | # | Output (per the Phase I record's Phase II mandate) | Document |
 |---|---|---|

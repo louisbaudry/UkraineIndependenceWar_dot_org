@@ -1,6 +1,6 @@
 # Phase II — Theoretical Synthesis & Standards Mapping
 
-**Status:** In progress — initiated with [Working Paper 0.1](working-papers/wp-0.1-foundational-layer-map.md)
+**Status:** CLOSED 2026-08-16 ([DR-0053](../decision-records/DR-0053-phase-2-closure.md)) — all seven workstreams complete, 52+1 DRs enacted, all eight consolidation outputs approved. Initiated with [Working Paper 0.1](working-papers/wp-0.1-foundational-layer-map.md).
 **Authoritative mandate:** the Phase II section at the end of
 [`../discovery/phase-1-requirements-discovery-record.md`](../discovery/phase-1-requirements-discovery-record.md)
 (that text governs; this page is a working index, not a restatement of authority).
@@ -24,10 +24,10 @@ technical stack is frozen.
 | 7 | Unresolved research questions | **Candidate delivered** — 35 open + 8 resolved, [outputs/07-open-questions.md](outputs/07-open-questions.md) |
 | 8 | Phase II methodology version | **Candidate delivered** — v1.0, [outputs/08-phase-2-methodology.md](outputs/08-phase-2-methodology.md) |
 
-**Phase II consolidation is complete as a candidate set** — see
-[outputs/](outputs/README.md). Founder approval of these outputs closes
-Phase II and authorizes **Phase III — Conceptual Architecture**, whose entry
-question is Q-01 (canonical representation, record §95).
+**Phase II is closed** — outputs approved 2026-08-16 (DR-0053), see
+[outputs/](outputs/README.md). **Phase III — Conceptual Architecture** is
+open at [../phase-3/](../phase-3/README.md), starting with Q-01 (canonical
+representation, record §95).
 
 ## Working papers
 

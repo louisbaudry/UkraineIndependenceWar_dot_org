@@ -69,6 +69,7 @@ security, legal, editorial.
 | [DR-0050](DR-0050-11179-skos-registry.md) | Semantic registry: ISO/IEC 11179 pattern, SKOS-expressed | architecture | Approved | 2026-08-11 |
 | [DR-0051](DR-0051-requirements-management.md) | Requirements management per record §99 | architecture / methodology | Approved | 2026-08-11 |
 | [DR-0052](DR-0052-site-history-from-first-page.md) | Public site revision history from the first page | preservation / architecture | Approved | 2026-08-11 |
+| [DR-0053](DR-0053-phase-2-closure.md) | Phase II closure: consolidation outputs approved | methodology / architecture | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 
