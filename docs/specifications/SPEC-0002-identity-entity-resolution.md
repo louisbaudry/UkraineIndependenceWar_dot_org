@@ -1,8 +1,9 @@
 # SPEC-0002 — Identity & Entity-Resolution Workflow
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — proposed
-**Approval:** pending founder review | **Effective:** upon approval
+**Class:** SPEC (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-16 (per-item interactive review) | **Effective:** 2026-08-16
 **Supersedes:** — | **Superseded by:** —
+**Change history:** 0.1 draft deposited 2026-08-16; approved as 1.0 the same day — status block and §7 enactment note are the only changes
 **Governed by:** DR-0012 (identification as events), DR-0024/0026 (epistemic layers, assessments), DR-0028 (dependence), DR-0039 (designation mapping), DR-0059 (two registries), SPEC-0001 (assertion pattern); record §16–17, §72; requirements DATA-001/002/010.
 
 ### AI provenance (record §80)
@@ -99,18 +100,14 @@ doubt, entities stay separate and the match stays `proposed`.
 3. Disambiguation-record content for split redirects — small; with the
    §15 identifier design (Q-12).
 
-## 7. Candidate Decision Records (proposals — require founder approval)
+## 7. Decision Records arising (enacted)
 
-- **CDR-P3-9:** Adopt the **entity-status vocabulary** (§2): canonical /
-  candidate / fabricated / disproved, registry-governed; fabricated and
-  disproved identities are preserved referents, never deletions.
-- **CDR-P3-10:** Adopt the **match lifecycle and tiered confirmation**
-  (§3–4): automated proposers create candidates only; human confirmation on
-  discriminating evidence at the subject's tier; name similarity alone never
-  confirms at any tier; rejections are permanent, consultable records.
-- **CDR-P3-11:** Adopt **merge/split as lineage events with reviewed
-  re-homing** (§5): no silent bulk moves; permanent redirects; lineage
-  queryable; mappings shipped in release change sets.
+The three proposals were individually approved by the founder on 2026-08-16
+and enacted:
+
+- **DR-0062** — entity-status vocabulary (§2)
+- **DR-0063** — match lifecycle and tiered confirmation (§3–4)
+- **DR-0064** — merge/split as lineage events with reviewed re-homing (§5)
 
 ## 8. Sources
 
