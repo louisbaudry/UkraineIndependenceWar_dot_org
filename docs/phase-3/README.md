@@ -21,7 +21,7 @@ sophisticated."
 | # | Item | Gates |
 |---|---|---|
 | 1 | ✅ Canonical-representation study ([WP 3.1](working-papers/wp-3.1-canonical-representation-study.md)) — DR-0054…0058 enacted 2026-08-16 | Everything below |
-| 2 | Conceptual data model specification — [SPEC-0001 v0.1 drafted](../specifications/SPEC-0001-conceptual-data-model.md), proposing resolutions of Q-02/Q-07/Q-09 (CDR-P3-6…8); awaiting founder review | Q-02, Q-07, Q-09 |
+| 2 | ✅ Conceptual data model — [SPEC-0001 v1.0 effective 2026-08-16](../specifications/SPEC-0001-conceptual-data-model.md); DR-0059…0061 enacted (Q-02, Q-07, Q-09 resolved) | Q-02, Q-07, Q-09 |
 | 3 | Identity & entity-resolution workflow specification | Q-10 |
 | 4 | Semantic-registry implementation (DR-0050) | Q-30 |
 | 5 | Collection-pipeline architecture (record §8 stages; collectors incl. legal instruments) | Q-25; LEGAL-009/Q-35 before scale-up |

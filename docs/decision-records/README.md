@@ -75,6 +75,9 @@ security, legal, editorial.
 | [DR-0056](DR-0056-projection-mappings-controlled.md) | Projection mappings are controlled artifacts | architecture | Approved | 2026-08-16 |
 | [DR-0057](DR-0057-postgresql-default-candidate.md) | PostgreSQL as default implementation candidate | architecture | Approved | 2026-08-16 |
 | [DR-0058](DR-0058-durable-export-obligation.md) | Durable export is a standing obligation | preservation / architecture | Approved | 2026-08-16 |
+| [DR-0059](DR-0059-two-agent-registries.md) | Two agent registries, linked | architecture | Approved | 2026-08-16 |
+| [DR-0060](DR-0060-premis-initial-subset.md) | Initial PREMIS subset | preservation / architecture | Approved | 2026-08-16 |
+| [DR-0061](DR-0061-holding-object.md) | The holding object | architecture / preservation | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 
@@ -122,3 +125,9 @@ DR-0054 through DR-0058 originate from CDR-P3-1…5 in
 [WP 3.1](../phase-3/working-papers/wp-3.1-canonical-representation-study.md)
 (AI-drafted candidate paper), approved as a set by the founder on 2026-08-16
 ("approved all") after a restated summary of the five proposals.
+
+DR-0059 through DR-0061 originate from CDR-P3-6…8 in
+[SPEC-0001](../specifications/SPEC-0001-conceptual-data-model.md), each
+individually approved by the founder on 2026-08-16 in an interactive
+one-by-one review; SPEC-0001 v1.0 was approved as effective in the same
+review.

@@ -1,8 +1,9 @@
 # SPEC-0001 — Conceptual Data Model
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — proposed
-**Approval:** pending founder review | **Effective:** upon approval
+**Class:** SPEC (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-16 | **Effective:** 2026-08-16
 **Supersedes:** — | **Superseded by:** —
+**Change history:** 0.1 draft deposited 2026-08-16; approved as 1.0 the same day with no content changes beyond this status block and §5's enactment note
 **Governed by:** DR-0001…0058; most directly DR-0024 (six layers), DR-0054/0055 (layered, append-only canonical), DR-0050 (registry)
 
 ### AI provenance (record §80)
@@ -153,16 +154,14 @@ Every family's elements get registry entries (DR-0050) at implementation;
 enumerations (absence states, interest types, defeater types, completeness
 states…) are registry-governed vocabularies, never free text.
 
-## 5. Candidate Decision Records (proposals — require founder approval)
+## 5. Decision Records arising (enacted)
 
-- **CDR-P3-6:** **Two agent registries, linked** (§3.1) — resolves Q-07.
-- **CDR-P3-7:** **PREMIS initial subset** (§3.2): representation/file
-  objects, the seven event types, pipeline-agents-as-PREMIS-agents, rights
-  as an assertion family; bitstream and environments deferred with recorded
-  revisit triggers — resolves Q-02.
-- **CDR-P3-8:** **The holding object** (§3.3) bridges one LRMoo Item to its
-  PREMIS representations and carries the §26 completeness statement —
-  resolves Q-09.
+The three question resolutions proposed by this SPEC were individually
+approved by the founder on 2026-08-16 and enacted:
+
+- **DR-0059** — two agent registries, linked (§3.1; resolves Q-07)
+- **DR-0060** — initial PREMIS subset (§3.2; resolves Q-02)
+- **DR-0061** — the holding object (§3.3; resolves Q-09)
 
 (The bitemporal-pattern and granularity choices in §2.1 are specification
 content under this SPEC's own approval, not separate DRs — they bind only
