@@ -1,8 +1,9 @@
 # SPEC-0003 — Collection Pipeline Architecture
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — proposed
-**Approval:** pending founder review | **Effective:** upon approval
+**Class:** SPEC (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-16 (per-item interactive review) | **Effective:** 2026-08-16
 **Supersedes:** — | **Superseded by:** —
+**Change history:** 0.1 draft deposited 2026-08-16; approved as 1.0 the same day — status block and §10 enactment note are the only changes
 **Governed by:** record §8–§13, §26–§28, §57; DR-0003 (PROV), DR-0005 (fixity), DR-0006 (WARC), DR-0055 (append-only), DR-0060 (PREMIS subset), DR-0061 (holding), DR-0063 (matchers propose only), DR-0027 (grades triage-only), SPEC-0001, SPEC-0002; requirements OPS-001/006, PRES-005/007/011, SEC-002, LEGAL-009.
 
 ### AI provenance (record §80)
@@ -164,28 +165,18 @@ collection**. Until that POL document is effective, this SPEC permits only:
 These constraints lift when the personal-data policy takes effect, on that
 policy's terms.
 
-## 10. Candidate Decision Records (proposals — require founder approval)
+## 10. Decision Records arising (enacted)
 
-- **CDR-P3-13:** Adopt the **three-gate pipeline model** (§2): preservation,
-  editorial acceptance, and publication as distinct gates, each with its own
-  criteria and record; stage transitions are PROV activities; re-runs
-  produce new derivatives, never mutations.
-- **CDR-P3-14:** Adopt the **source registry schema** (§3), including
-  per-source preservation, access, sensitivity, and rights defaults, and
-  **registry-level declared dependence** (DR-0028).
-- **CDR-P3-15:** Adopt the **four retention tiers** (§4) with
-  escalate-freely / downgrade-only-by-governed-decision semantics.
-- **CDR-P3-16:** Adopt **quarantine as a pre-archival zone** (§5): archive
-  guarantees are never claimed for unvetted material; submitter identity is
-  architecturally separable; submitter claims stay distinct from project
-  conclusions.
-- **CDR-P3-17:** Adopt the **collector-run coverage record** (§8) as the
-  unit of coverage accounting, with failures, skips, and outages first-class
-  and coverage statements shipped with releases.
-- **CDR-P3-18:** Adopt the **interim personal-data constraints** (§9) as
-  binding until a personal-data POL document is effective: registered
-  sources only, no automatic promotion of personal data into structured
-  fields, no at-scale submission intake.
+The six proposals were approved by the founder on 2026-08-16 (CDR-P3-13,
+-16, and -18 individually; -14, -15, and -17 as a reviewed group) and
+enacted:
+
+- **DR-0066** — three-gate pipeline model (§2)
+- **DR-0067** — source registry schema (§3)
+- **DR-0068** — retention tiers (§4)
+- **DR-0069** — quarantine as a pre-archival zone (§5)
+- **DR-0070** — collector-run coverage record (§8)
+- **DR-0071** — interim personal-data constraints (§9)
 
 ## 11. Open questions raised
 

@@ -24,7 +24,7 @@ sophisticated."
 | 2 | ✅ Conceptual data model — [SPEC-0001 v1.0 effective 2026-08-16](../specifications/SPEC-0001-conceptual-data-model.md); DR-0059…0061 enacted (Q-02, Q-07, Q-09 resolved) | Q-02, Q-07, Q-09 |
 | 3 | ✅ Identity & entity-resolution workflow — [SPEC-0002 v1.0 effective 2026-08-16](../specifications/SPEC-0002-identity-entity-resolution.md); DR-0062…0064 enacted (Q-10 resolved) | Q-10 |
 | 4 | Semantic-registry implementation (DR-0050) | Q-30 |
-| 5 | Collection-pipeline architecture — [SPEC-0003 v0.1 drafted](../specifications/SPEC-0003-collection-pipeline.md): three-gate model, source registry, retention tiers, quarantine, coverage accounting, interim personal-data constraints (CDR-P3-13…18); awaiting founder review | Q-25; LEGAL-009/Q-35 before scale-up |
+| 5 | ✅ Collection-pipeline architecture — [SPEC-0003 v1.0 effective 2026-08-16](../specifications/SPEC-0003-collection-pipeline.md); DR-0066…0071 enacted. Collection at scale remains gated on the personal-data policy (DR-0071, Q-35) | Q-25; LEGAL-009/Q-35 before scale-up |
 | 6 | Storage & preservation layout (OCFL evaluation) | Q-03 |
 | 7 | ✅ Likelihood-band scale — [WP 3.2](working-papers/wp-3.2-likelihood-band-scale.md); DR-0065 enacted 2026-08-16, ICD 203 canonical with PHIA mappings (Q-16 resolved, DR-0026 complete) | Q-16 |
 | 8 | Requirements enactment as REQ-class documents (DR-0051) | — |

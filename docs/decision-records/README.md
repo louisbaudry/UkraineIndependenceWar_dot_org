@@ -82,6 +82,12 @@ security, legal, editorial.
 | [DR-0063](DR-0063-match-lifecycle-tiered-confirmation.md) | Match lifecycle and tiered confirmation | architecture / methodology | Approved | 2026-08-16 |
 | [DR-0064](DR-0064-merge-split-lineage.md) | Merge/split as lineage events with reviewed re-homing | architecture / preservation | Approved | 2026-08-16 |
 | [DR-0065](DR-0065-likelihood-band-scale.md) | Likelihood band scale: ICD 203 canonical, PHIA mapped | epistemology / methodology | Approved | 2026-08-16 |
+| [DR-0066](DR-0066-three-gate-pipeline.md) | Three-gate pipeline model | architecture | Approved | 2026-08-16 |
+| [DR-0067](DR-0067-source-registry-schema.md) | Source registry schema | architecture / operations | Approved | 2026-08-16 |
+| [DR-0068](DR-0068-retention-tiers.md) | Retention tiers | preservation | Approved | 2026-08-16 |
+| [DR-0069](DR-0069-quarantine-zone.md) | Quarantine as a pre-archival zone | security / architecture | Approved | 2026-08-16 |
+| [DR-0070](DR-0070-collector-run-coverage.md) | Collector-run coverage record | operations / preservation | Approved | 2026-08-16 |
+| [DR-0071](DR-0071-interim-personal-data-constraints.md) | Interim personal-data constraints (self-lifting) | legal / operations | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 
@@ -146,3 +152,10 @@ DR-0065 originates from CDR-P3-12 in
 [WP 3.2](../phase-3/working-papers/wp-3.2-likelihood-band-scale.md), approved
 by the founder on 2026-08-16 after a side-by-side comparison of the ICD 203
 and PHIA scales.
+
+DR-0066 through DR-0071 originate from CDR-P3-13…18 in
+[SPEC-0003](../specifications/SPEC-0003-collection-pipeline.md), approved by
+the founder on 2026-08-16 — DR-0066, DR-0069, and DR-0071 in individual
+review; DR-0067, DR-0068, and DR-0070 as a reviewed group of mechanical
+implementations. SPEC-0003 v1.0 was approved as effective in the same
+review.
