@@ -81,6 +81,7 @@ security, legal, editorial.
 | [DR-0062](DR-0062-entity-status-vocabulary.md) | Entity-status vocabulary | architecture / epistemology | Approved | 2026-08-16 |
 | [DR-0063](DR-0063-match-lifecycle-tiered-confirmation.md) | Match lifecycle and tiered confirmation | architecture / methodology | Approved | 2026-08-16 |
 | [DR-0064](DR-0064-merge-split-lineage.md) | Merge/split as lineage events with reviewed re-homing | architecture / preservation | Approved | 2026-08-16 |
+| [DR-0065](DR-0065-likelihood-band-scale.md) | Likelihood band scale: ICD 203 canonical, PHIA mapped | epistemology / methodology | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 
@@ -140,3 +141,8 @@ DR-0062 through DR-0064 originate from CDR-P3-9…11 in
 individually approved by the founder on 2026-08-16 in an interactive
 one-by-one review; SPEC-0002 v1.0 was approved as effective in the same
 review.
+
+DR-0065 originates from CDR-P3-12 in
+[WP 3.2](../phase-3/working-papers/wp-3.2-likelihood-band-scale.md), approved
+by the founder on 2026-08-16 after a side-by-side comparison of the ICD 203
+and PHIA scales.

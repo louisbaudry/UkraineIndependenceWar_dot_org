@@ -26,4 +26,4 @@ supersession never in-place (§77).
 | Deposited | 2026-08-16 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction; not an upload |
 | Inputs | DR-0026, DR-0050; record §42–43, §60; ICD 203 and PHIA primary texts (verified via web retrieval, cited in the paper) |
-| Status | Candidate — awaiting founder review; its candidate DR (CDR-P3-12) is a proposal only |
+| Status | Reviewed — CDR-P3-12 approved by the founder 2026-08-16 (ICD 203 canonical option selected) and enacted as DR-0065 |
