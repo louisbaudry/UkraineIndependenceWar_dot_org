@@ -26,7 +26,7 @@ sophisticated."
 | 4 | Semantic-registry implementation (DR-0050) | Q-30 |
 | 5 | Collection-pipeline architecture (record §8 stages; collectors incl. legal instruments) | Q-25; LEGAL-009/Q-35 before scale-up |
 | 6 | Storage & preservation layout (OCFL evaluation) | Q-03 |
-| 7 | Likelihood-band enactment DR (DR-0026) | Q-16 |
+| 7 | Likelihood-band scale — [WP 3.2 drafted](working-papers/wp-3.2-likelihood-band-scale.md), recommending the ICD 203 contiguous scale with PHIA mappings (CDR-P3-12); awaiting founder review | Q-16 |
 | 8 | Requirements enactment as REQ-class documents (DR-0051) | — |
 
 ## Working conventions
