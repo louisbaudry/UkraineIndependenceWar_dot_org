@@ -8,6 +8,7 @@ Status is document metadata, never inferred from Git.
 |---|---|---|---|
 | [SPEC-0001](SPEC-0001-conceptual-data-model.md) | Conceptual Data Model | 1.0 | **Approved — Effective 2026-08-16** |
 | [SPEC-0002](SPEC-0002-identity-entity-resolution.md) | Identity & Entity-Resolution Workflow | 1.0 | **Approved — Effective 2026-08-16** |
+| [SPEC-0003](SPEC-0003-collection-pipeline.md) | Collection Pipeline Architecture | 0.1 | Draft — proposed, awaiting founder review |
 
 ## Provenance
 
@@ -17,3 +18,4 @@ Status is document metadata, never inferred from Git.
 | SPEC-0001 v1.0 (approved) | `2f402979779820f35f75c1772c3b1653ee019da1780d95d527164a25358ae092` | 2026-08-16 | v0.1 approved by the founder in per-item interactive review (DR-0059…0061 enacted alongside); status block and §5 enactment note are the only changes |
 | SPEC-0002 v0.1 (draft) | `84e5db317c695939df83ca1e5ad6d2ca5c3cf12fcfc363b4d2ea07422fa3ee8a` | 2026-08-16 | AI-drafted (Anthropic Claude Code agent session) at the founder's direction |
 | SPEC-0002 v1.0 (approved) | `73cc17bb9fc12bd3801c580a273023bb01f6d04cc830c136a0817ed782f166f7` | 2026-08-16 | v0.1 approved by the founder in per-item interactive review (DR-0062…0064 enacted alongside); status block and §7 enactment note are the only changes |
+| SPEC-0003 v0.1 (draft) | `310abbfa0a51533d977c3f114d6bcf9e0c844a6418ae38bebcc93bf3c28dd547` | 2026-08-16 | AI-drafted (Anthropic Claude Code agent session) at the founder's direction; candidate until approved |
