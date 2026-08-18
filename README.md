@@ -40,6 +40,7 @@ docs/
   phase-3/            Phase III working area
     working-papers/   Phase III working papers (WP 3.x) + provenance
   specifications/     SPEC-class controlled documents (DR-0046)
+  policies/           POL-class controlled documents (DR-0046)
 ```
 
 This README is an entry point, not the project's institutional memory (record §100).
