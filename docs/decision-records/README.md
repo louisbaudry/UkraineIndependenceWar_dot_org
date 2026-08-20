@@ -89,6 +89,11 @@ security, legal, editorial.
 | [DR-0070](DR-0070-collector-run-coverage.md) | Collector-run coverage record | operations / preservation | Approved | 2026-08-16 |
 | [DR-0071](DR-0071-interim-personal-data-constraints.md) | Interim personal-data constraints (self-lifting) | legal / operations | Approved | 2026-08-16 |
 | [DR-0072](DR-0072-personal-data-policy-adoption.md) | Adoption of the Personal Data Policy (POL-0001) | legal / editorial | Approved | 2026-08-16 |
+| [DR-0073](DR-0073-ocfl-storage-layout.md) | Adopt OCFL as the at-rest archival storage layout | preservation / architecture | Approved | 2026-08-16 |
+| [DR-0074](DR-0074-ocfl-object-is-the-holding.md) | The OCFL object is the holding | preservation / architecture | Approved | 2026-08-16 |
+| [DR-0075](DR-0075-digest-strategy.md) | Digest strategy: SHA-512 addressing, SHA-256 fixity block | preservation | Approved | 2026-08-16 |
+| [DR-0076](DR-0076-tier-separated-storage-roots.md) | Retention-tier-separated storage roots | preservation / operations | Approved | 2026-08-16 |
+| [DR-0077](DR-0077-redaction-sole-immutability-exception.md) | Governed redaction is the sole immutability exception | preservation / legal | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 
@@ -153,6 +158,12 @@ DR-0065 originates from CDR-P3-12 in
 [WP 3.2](../phase-3/working-papers/wp-3.2-likelihood-band-scale.md), approved
 by the founder on 2026-08-16 after a side-by-side comparison of the ICD 203
 and PHIA scales.
+
+DR-0073 through DR-0077 originate from CDR-P3-20…24 in
+[WP 3.3](../phase-3/working-papers/wp-3.3-storage-preservation-layout.md),
+approved by the founder on 2026-08-16 — DR-0073 and DR-0074 in individual
+review, DR-0075 through DR-0077 as a reviewed group of implementation
+choices following from OCFL adoption.
 
 DR-0072 adopts [POL-0001](../policies/POL-0001-personal-data.md), approved by
 the founder on 2026-08-16 with its three §8 rulings taken individually; the

@@ -38,4 +38,4 @@ supersession never in-place (§77).
 | Deposited | 2026-08-16 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction; not an upload |
 | Inputs | DR-0001/0005/0007/0009/0055/0058/0061/0068/0069; PRES requirements; OCFL specification status verified by web retrieval |
-| Status | Candidate — awaiting founder review; its five candidate DRs (CDR-P3-20…24) are proposals only |
+| Status | Reviewed — its five candidate DRs approved by the founder 2026-08-16 and enacted as DR-0073…0077 |
