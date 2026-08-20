@@ -94,6 +94,10 @@ security, legal, editorial.
 | [DR-0075](DR-0075-digest-strategy.md) | Digest strategy: SHA-512 addressing, SHA-256 fixity block | preservation | Approved | 2026-08-16 |
 | [DR-0076](DR-0076-tier-separated-storage-roots.md) | Retention-tier-separated storage roots | preservation / operations | Approved | 2026-08-16 |
 | [DR-0077](DR-0077-redaction-sole-immutability-exception.md) | Governed redaction is the sole immutability exception | preservation / legal | Approved | 2026-08-16 |
+| [DR-0078](DR-0078-registry-source-of-truth.md) | Registry source of truth: files in Git, runtime as projection | architecture | Approved | 2026-08-16 |
+| [DR-0079](DR-0079-registry-entry-typology.md) | Registry entry typology and structure | architecture | Approved | 2026-08-16 |
+| [DR-0080](DR-0080-registry-lifecycle-and-change-classes.md) | Registry lifecycle and change classes | architecture / methodology | Approved | 2026-08-16 |
+| [DR-0081](DR-0081-governed-translation.md) | Governed translation of registry terminology | architecture / editorial | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 
@@ -158,6 +162,12 @@ DR-0065 originates from CDR-P3-12 in
 [WP 3.2](../phase-3/working-papers/wp-3.2-likelihood-band-scale.md), approved
 by the founder on 2026-08-16 after a side-by-side comparison of the ICD 203
 and PHIA scales.
+
+DR-0078 through DR-0081 originate from CDR-P3-25…28 in
+[SPEC-0004](../specifications/SPEC-0004-semantic-registry.md), approved by
+the founder on 2026-08-16 — DR-0078 in individual review, DR-0079 through
+DR-0081 as a reviewed group. SPEC-0004 v1.0 was approved as effective in
+the same review.
 
 DR-0073 through DR-0077 originate from CDR-P3-20…24 in
 [WP 3.3](../phase-3/working-papers/wp-3.3-storage-preservation-layout.md),

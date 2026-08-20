@@ -1,8 +1,9 @@
 # SPEC-0004 — Semantic Registry Implementation
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — proposed
-**Approval:** pending founder review | **Effective:** upon approval
+**Class:** SPEC (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-16 | **Effective:** 2026-08-16
 **Supersedes:** — | **Superseded by:** —
+**Change history:** 0.1 drafted 2026-08-16; approved as 1.0 the same day — status block and §10 enactment note are the only changes
 **Governed by:** DR-0050 (11179 pattern, SKOS), DR-0025 (vocabulary changes by DR), DR-0046 (document control), DR-0047 (versioning regimes), DR-0048 (baselines), DR-0054 (layered: canonical + projections), DR-0056 (projection mappings controlled); record §60–61, §96, §101–102; requirements DATA-008, I18N-002/003.
 **Resolves:** Q-30.
 
@@ -173,22 +174,16 @@ classification systems (DR-0042)
 **Cross-cutting:** the 39 **conflict-register resolutions** (Phase II output
 3) as scope notes on the terms they disambiguate.
 
-## 10. Candidate Decision Records (proposals — require founder approval)
+## 10. Decision Records arising (enacted)
 
-- **CDR-P3-25:** **Registry source of truth is YAML files in Git; runtime
-  and interchange forms are derived projections** (SKOS/RDF, JSON), with the
-  compiled registry enforcing enumerations in the canonical store and its
-  version pinned in every release baseline. Resolves Q-30.
-- **CDR-P3-26:** Adopt the **entry typology and entry structure** (§3–4),
-  including mandatory links to authorizing DRs/SPECs/REQs (DATA-008) and
-  explicit forbidden-translation notes.
-- **CDR-P3-27:** Adopt the **registration status lifecycle** (§5) with
-  nothing ever deleted, and the **change-class rule** (§6) fixing where a
-  Decision Record is required; DR-set vocabularies are closed by
-  construction.
-- **CDR-P3-28:** Adopt **English as authoring language with governed
-  translation** (§8): translated labels carry translator, date, and review
-  status; machine translation proposes but never authorises.
+Approved by the founder on 2026-08-16 (CDR-P3-25 individually; -26, -27,
+-28 as a reviewed group) and enacted:
+
+- **DR-0078** — registry source of truth: files in Git, runtime as
+  projection (§2; resolves Q-30)
+- **DR-0079** — entry typology and structure (§3–4)
+- **DR-0080** — lifecycle and change classes (§5–6)
+- **DR-0081** — governed translation (§8)
 
 ## 11. Open questions raised
 

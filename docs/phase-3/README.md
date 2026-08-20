@@ -23,7 +23,7 @@ sophisticated."
 | 1 | ✅ Canonical-representation study ([WP 3.1](working-papers/wp-3.1-canonical-representation-study.md)) — DR-0054…0058 enacted 2026-08-16 | Everything below |
 | 2 | ✅ Conceptual data model — [SPEC-0001 v1.0 effective 2026-08-16](../specifications/SPEC-0001-conceptual-data-model.md); DR-0059…0061 enacted (Q-02, Q-07, Q-09 resolved) | Q-02, Q-07, Q-09 |
 | 3 | ✅ Identity & entity-resolution workflow — [SPEC-0002 v1.0 effective 2026-08-16](../specifications/SPEC-0002-identity-entity-resolution.md); DR-0062…0064 enacted (Q-10 resolved) | Q-10 |
-| 4 | Semantic-registry implementation — [SPEC-0004 v0.1 drafted](../specifications/SPEC-0004-semantic-registry.md): YAML-in-Git source with derived projections, entry typology, change-class rule, seed contents (CDR-P3-25…28); awaiting founder review | Q-30 |
+| 4 | ✅ Semantic-registry implementation — [SPEC-0004 v1.0 effective 2026-08-16](../specifications/SPEC-0004-semantic-registry.md); DR-0078…0081 enacted (Q-30 resolved) | Q-30 |
 | 5 | ✅ Collection-pipeline architecture — [SPEC-0003 v1.0 effective 2026-08-16](../specifications/SPEC-0003-collection-pipeline.md); DR-0066…0071 enacted. Collection at scale remains gated on the personal-data policy (DR-0071, Q-35) | Q-25; LEGAL-009/Q-35 before scale-up |
 | 6 | ✅ Storage & preservation layout — [WP 3.3](working-papers/wp-3.3-storage-preservation-layout.md); DR-0073…0077 enacted 2026-08-16 (Q-03 resolved; OCFL adopted, holding-as-object, dual digests, tier-separated roots, redaction as sole exception) | Q-03 |
 | 7 | ✅ Likelihood-band scale — [WP 3.2](working-papers/wp-3.2-likelihood-band-scale.md); DR-0065 enacted 2026-08-16, ICD 203 canonical with PHIA mappings (Q-16 resolved, DR-0026 complete) | Q-16 |
