@@ -1,0 +1,72 @@
+# Semantic registry — registry-level metadata
+# Governed by SPEC-0004; DR-0050, DR-0078, DR-0079, DR-0080, DR-0081.
+
+registry:
+  id: uiw-semantic-registry
+  title: Ukraine's Second War of Independence — Semantic Registry
+  version: "0.1.0"
+  version_regime: >
+    Ontology/vocabulary regime per DR-0047: explicit versions with changelog,
+    deprecations and replacement mappings. Not SemVer arithmetic.
+  status: effective
+  effective: 2026-08-16
+  authoring_language: en
+  steward: founder
+  authorised_by: [DR-0050, DR-0078, DR-0079, DR-0080, DR-0081]
+
+changelog:
+  - version: "0.1.0"
+    date: 2026-08-16
+    summary: >
+      Initial seed. Twenty-two closed vocabularies transcribed from the
+      Decision Records that set them, plus exemplar argument schemes and
+      concept entries carrying conflict-register scope notes.
+    notes: >
+      No translations seeded (DR-0081 requires a translator and review).
+      Argument-scheme library is exemplar-only pending methodology work
+      (DR-0034).
+
+# Layers, per SPEC-0001's object families. Every entry names one.
+layers:
+  - id: pipeline
+    definition: Preservation and collection machinery; PREMIS/PROV territory (DR-0004).
+  - id: world
+    definition: Historical entities, events, places, objects; CIDOC CRM territory (DR-0010).
+  - id: documentary
+    definition: Work/Expression/Manifestation/Item, holdings, annotations (DR-0011, DR-0061).
+  - id: epistemic
+    definition: Propositions, assertions, evidence relations, assessments (DR-0024).
+  - id: argument
+    definition: Argument structures, defeaters, schemes, hypothesis sets (DR-0032).
+  - id: legal
+    definition: Instruments, designations, effects, ownership, trade (DR-0038).
+  - id: governance
+    definition: Controlled documents, requirements, baselines, registry itself (DR-0046).
+
+# Entry types, per DR-0079.
+entry_types:
+  - id: concept
+    definition: A defined project concept (SKOS concept).
+  - id: vocabulary
+    definition: A controlled enumeration and its members.
+  - id: data-element
+    definition: An ISO/IEC 11179-style element with permissible values and stewardship.
+  - id: relationship-type
+    definition: A typed relation and its semantics.
+  - id: argument-scheme
+    definition: A reasoning pattern with its critical questions (DR-0034).
+  - id: identifier-type
+    definition: An external identifier system (§16, DR-0012).
+
+# Registration statuses, per SPEC-0004 §5 / DR-0080.
+registration_statuses:
+  - id: draft
+    definition: Proposed; may not appear in data.
+  - id: effective
+    definition: Usable in canonical data.
+  - id: deprecated
+    definition: >
+      Readable in existing data; not permitted for new data. Carries
+      replaced_by and a migration note (§96).
+  - id: retired
+    definition: No longer applicable; retained for historical interpretation only.

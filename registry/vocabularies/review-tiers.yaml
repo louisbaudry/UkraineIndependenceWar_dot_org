@@ -1,0 +1,51 @@
+id: review-tiers
+type: vocabulary
+layer: governance
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0063]
+depends_on_specs: [SPEC-0002]
+satisfies_requirements: [EDIT-001, LEGAL-003]
+
+definition: >
+  The risk tiers governing how much review an identity confirmation — and, by
+  extension, other consequential decisions — requires. Record §78's
+  risk-based review model, made concrete.
+
+usage_note: >
+  False merges remain costlier than missed matches at every tier (§16): when
+  in doubt, entities stay separate and the match stays `proposed`.
+
+labels:
+  en:
+    prefLabel: review tier
+
+members:
+  - id: T1
+    labels: {en: {prefLabel: T1 — highest}}
+    definition: >
+      Designation-record↔entity mappings and any identity used in a
+      legal-layer conclusion (DR-0041 ownership paths, LEGAL-003).
+    requires: >
+      Human confirmation on discriminating evidence; a recorded review; the
+      independence of evidence lines considered (DR-0028).
+  - id: T2
+    labels: {en: {prefLabel: T2 — elevated}}
+    definition: >
+      World actors appearing in consequential project assertions;
+      cross-registry same-person links; individual physical items in tracing
+      chains.
+    requires: Human confirmation on discriminating evidence.
+  - id: T3
+    labels: {en: {prefLabel: T3 — routine}}
+    definition: >
+      Bibliographic identity (work/expression clustering), places with
+      authoritative gazetteer identifiers, low-stakes dataset alignment.
+    requires: >
+      Human confirmation, which may be batch-wise; a single strong shared
+      identifier suffices.
+    open_question: >
+      Whether batch confirmations need sampling-based audit (SPEC-0002 §6);
+      POL/PROC territory.

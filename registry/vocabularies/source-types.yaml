@@ -1,0 +1,195 @@
+id: source-types
+type: vocabulary
+layer: pipeline
+status: effective
+effective: 2026-08-16
+closed: false
+steward: founder
+authorised_by: [DR-0067]
+depends_on_specs: [SPEC-0003]
+satisfies_requirements: [OPS-001]
+
+definition: >
+  The kind of source a registry entry describes, from record §8's source
+  list.
+
+usage_note: >
+  **Open vocabulary** — new source types may be added by registry process
+  with rationale (DR-0080), since §8's list is explicitly non-exhaustive and
+  the collection programme will encounter kinds not anticipated here.
+
+scope_note: >
+  Source type is descriptive and drives no automatic trust judgment. Triage
+  grading is a separate, explicitly triage-only vocabulary (see
+  source-grades, DR-0027).
+
+labels:
+  en:
+    prefLabel: source type
+
+members:
+  - id: government
+    labels: {en: {prefLabel: government website or publication}}
+    definition: >
+      An official organ of a state other than Russia or Ukraine, publishing in
+      its governmental capacity.
+
+  - id: official-russian
+    labels: {en: {prefLabel: official Russian source}}
+    definition: >
+      A Russian state body, state-controlled outlet, or official of the
+      Russian Federation or its occupation administrations, publishing in an
+      official capacity.
+    scope_note: >
+      Typed separately from `government` because such material is
+      simultaneously primary evidence of official position and a principal
+      propaganda corpus (§54). The type drives collection and review defaults;
+      it drives no truth judgment (DR-0027).
+
+  - id: official-ukrainian
+    labels: {en: {prefLabel: official Ukrainian source}}
+    definition: >
+      A Ukrainian state body or official publishing in an official capacity.
+    scope_note: >
+      Typed separately for the same structural reason as `official-russian`:
+      wartime official communication is a party's account, evidence of what
+      that party stated (§32). The project is supportive of Ukrainian
+      sovereignty and applies the same evidentiary discipline regardless
+      (record §1).
+
+  - id: military-security-institution
+    labels: {en: {prefLabel: military or security institution}}
+    definition: >
+      Armed forces, intelligence services, or security agencies of any state,
+      publishing institutionally.
+
+  - id: international-organisation
+    labels: {en: {prefLabel: international organisation}}
+    definition: >
+      An intergovernmental body — UN organs and agencies, OSCE, ICC, Council
+      of Europe, EU institutions in their institutional capacity.
+
+  - id: news-media
+    labels: {en: {prefLabel: news media}}
+    definition: >
+      An outlet publishing news reporting as its principal activity.
+
+  - id: investigative-media
+    labels: {en: {prefLabel: investigative media}}
+    definition: >
+      An outlet or collective whose principal output is original
+      investigation rather than daily reporting.
+    scope_note: >
+      Distinguished from `news-media` because such outlets typically publish
+      underlying documents and methodology, which affects both what is worth
+      capturing and what dependence relations to expect (DR-0028).
+
+  - id: think-tank
+    labels: {en: {prefLabel: think tank}}
+    definition: >
+      A research institution publishing analysis, typically with a policy
+      orientation.
+
+  - id: ngo
+    labels: {en: {prefLabel: NGO}}
+    definition: >
+      A non-governmental organisation publishing documentation, reporting, or
+      advocacy — including human-rights monitors and humanitarian bodies.
+
+  - id: feed
+    labels: {en: {prefLabel: RSS/Atom feed}}
+    definition: >
+      A syndication feed used as an acquisition channel.
+    scope_note: >
+      A collection *method* rather than a kind of publisher; used where the
+      feed is the registered entry point and the underlying publisher is
+      recorded separately.
+
+  - id: social-media
+    labels: {en: {prefLabel: public social media}}
+    definition: >
+      A publicly accessible account or page on a social platform other than
+      Telegram.
+
+  - id: telegram-channel
+    labels: {en: {prefLabel: Telegram channel}}
+    definition: >
+      A broadcast Telegram channel, where posting is restricted to operators.
+
+  - id: telegram-group
+    labels: {en: {prefLabel: public Telegram group or chat}}
+    definition: >
+      A public Telegram group or chat in which participants post.
+    scope_note: >
+      Typed separately from `telegram-channel` because participant content
+      raises materially different personal-data exposure: group members are
+      typically private individuals, so the more protective structuring
+      defaults apply (POL-0001 §5.8, DR-0071).
+
+  - id: video-platform
+    labels: {en: {prefLabel: video platform}}
+    definition: >
+      A channel or account on a video hosting platform.
+
+  - id: podcast
+    labels: {en: {prefLabel: podcast or transcript source}}
+    definition: >
+      An audio programme or its published transcripts.
+
+  - id: web-archive
+    labels: {en: {prefLabel: web archive}}
+    definition: >
+      A third-party web archive from which material is retrieved.
+    scope_note: >
+      Material retrieved here carries a dependence relation to the original
+      publisher and is not an independent line (DR-0028); the archive is a
+      custodian, not the origin (§23).
+
+  - id: public-dataset
+    labels: {en: {prefLabel: public dataset}}
+    definition: >
+      A structured dataset published for reuse.
+
+  - id: sanctions-authority
+    labels: {en: {prefLabel: sanctions authority or list}}
+    definition: >
+      A designating authority and the lists it publishes (UN committees, EU,
+      OFAC, OFSI, and national equivalents).
+    scope_note: >
+      Its published rationales are authority-attributed assertions, not
+      project conclusions (DR-0038, DR-0039).
+
+  - id: court-prosecutor
+    labels: {en: {prefLabel: court or prosecutor publication}}
+    definition: >
+      A court, tribunal, or prosecuting authority publishing indictments,
+      judgments, or case records.
+    scope_note: >
+      Allegations and findings are distinguished by procedural posture, never
+      conflated (§62–63, LEGAL-006).
+
+  - id: corporate-registry
+    labels: {en: {prefLabel: corporate or beneficial-ownership registry}}
+    definition: >
+      An official register of companies, directors, or beneficial ownership.
+    scope_note: >
+      Registry entries are documentary assertions about the corporate record,
+      not established facts about control (§32, DR-0040).
+
+  - id: trade-transport-data
+    labels: {en: {prefLabel: customs, trade, or transport data}}
+    definition: >
+      Customs records, trade statistics, vessel or aircraft tracking, and
+      comparable movement data.
+    scope_note: >
+      Declarations are documentary assertions (§67); machine-generated
+      tracking carries the §49 metadata including spoofing risk.
+
+  - id: third-party-submission
+    labels: {en: {prefLabel: third-party submission}}
+    definition: >
+      Material submitted to the project by an external party.
+    scope_note: >
+      Enters through quarantine with submitter claims held separately from
+      project conclusions, and confidential identity in the separable store
+      (DR-0069, SEC-001). At-scale intake remains constrained (DR-0071).

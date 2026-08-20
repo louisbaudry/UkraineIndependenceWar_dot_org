@@ -1,0 +1,48 @@
+id: document-statuses
+type: vocabulary
+layer: governance
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0046]
+satisfies_requirements: [EDIT-001, EDIT-002]
+
+definition: >
+  The lifecycle status of a controlled governance document (REQ, POL, PROC,
+  DR, SPEC, METH) under record §100's document classes.
+
+usage_note: >
+  **Status is explicit document metadata, never inferred from Git state** — a
+  commit is not an approval (DR-0046). Superseded documents remain in place,
+  marked, with supersession links in both directions (§77).
+
+not: >
+  Not epistemic status (see epistemic-categories, likelihood-bands) and not
+  legal status. Always class-qualified. Conflict register C-39.
+
+labels:
+  en:
+    prefLabel: document status
+
+members:
+  - id: draft
+    labels: {en: {prefLabel: draft}}
+    definition: Being written; carries no authority.
+  - id: proposed
+    labels: {en: {prefLabel: proposed}}
+    definition: Submitted for the founder's decision; carries no authority.
+  - id: approved
+    labels: {en: {prefLabel: approved}}
+    definition: Decided by the founder/principal editor.
+  - id: effective
+    labels: {en: {prefLabel: effective}}
+    definition: >
+      In force from its effective date. Where approval and effect differ, both
+      dates are recorded.
+  - id: superseded
+    labels: {en: {prefLabel: superseded}}
+    definition: Replaced by a later document; both are retained (§77).
+  - id: withdrawn
+    labels: {en: {prefLabel: withdrawn}}
+    definition: Removed from force without a successor; retained for the record.

@@ -1,0 +1,54 @@
+id: dependence-relation-types
+type: vocabulary
+layer: epistemic
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0028]
+depends_on_specs: [SPEC-0003]
+satisfies_requirements: [EVID-009]
+
+definition: >
+  Typed relations recording how one source depends on another, so that
+  corroboration counts independent lines only (record §36).
+
+usage_note: >
+  Independence is a **researched conclusion** — the established absence of
+  dependence — never a default assumption. Known relationships may be
+  declared at source-registry level (DR-0067) and inherited as a dependence
+  hypothesis by every item, rather than rediscovered per article.
+
+scope_note: >
+  Five publications repeating one original report are not five independent
+  confirmations (§36). A dependence relation *undercuts* a corroboration
+  argument (DR-0033).
+
+labels:
+  en:
+    prefLabel: dependence relation
+
+members:
+  - id: cites
+    labels: {en: {prefLabel: cites}}
+    definition: The source explicitly references the other as its basis.
+  - id: reposts
+    labels: {en: {prefLabel: reposts}}
+    definition: The source reproduces the other's content, with or without attribution.
+  - id: syndicates
+    labels: {en: {prefLabel: syndicates}}
+    definition: The source republishes under a distribution arrangement.
+  - id: derives-from
+    labels: {en: {prefLabel: derives from}}
+    definition: The source's content is materially derived from the other without being a reproduction.
+  - id: shares-underlying-document
+    labels: {en: {prefLabel: shares underlying document}}
+    definition: Both rest on the same document; their agreement is not independent.
+  - id: shares-underlying-witness
+    labels: {en: {prefLabel: shares underlying witness}}
+    definition: Both rest on the same testimony; their agreement is not independent.
+  - id: common-evidentiary-origin
+    labels: {en: {prefLabel: common evidentiary origin}}
+    definition: >
+      Both trace to a common origin not captured by the more specific types —
+      e.g. a shared briefing, dataset, or intermediary.

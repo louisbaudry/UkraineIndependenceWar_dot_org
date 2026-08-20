@@ -1,0 +1,62 @@
+id: access-tiers
+type: vocabulary
+layer: governance
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0067, DR-0072]
+depends_on_specs: [SPEC-0003]
+satisfies_requirements: [SEC-003, SEC-004, ARCH-006, PRES-012]
+
+definition: >
+  The publication/access tier at which an object or assertion is available
+  (record §12).
+
+usage_note: >
+  **One of four independent dimensions**, never collapsed: access tier,
+  sensitivity, rights (see rights-permissions), and evidentiary disclosure.
+  There is no universal `is_public` flag (§12, SEC-003).
+
+scope_note: >
+  Access tiers never create competing versions of historical truth: all tiers
+  read the same canonical assertions, and tier affects visibility only, never
+  values (§4, ARCH-006). Restricted material must be inaccessible below its
+  tier in the canonical store, every projection, the search index, and
+  published surfaces (SEC-004).
+
+not: >
+  Not source accessibility (§27) — whether a *source in the world* is public,
+  paywalled, deleted, or archived is a different vocabulary and never shares
+  a field. Conflict register C-16.
+
+labels:
+  en:
+    prefLabel: access tier
+
+members:
+  - id: public
+    labels: {en: {prefLabel: public}}
+    definition: Openly available. The public historical archive remains meaningfully open (§4).
+  - id: subscriber
+    labels: {en: {prefLabel: subscriber}}
+    definition: Available to subscribers of professional datasets and tools (§4).
+  - id: internal
+    labels: {en: {prefLabel: internal}}
+    definition: Available to the project team only.
+  - id: confidential
+    labels: {en: {prefLabel: confidential}}
+    definition: >
+      Restricted beyond internal — including confidential source identity,
+      which additionally lives in a separable store (SEC-001, DR-0059).
+  - id: researcher-restricted
+    labels: {en: {prefLabel: researcher restricted}}
+    definition: Available to named external researchers under agreed terms.
+  - id: investigator-restricted
+    labels: {en: {prefLabel: investigator restricted}}
+    definition: Available to named investigative or prosecutorial bodies under agreed terms.
+  - id: private-preservation
+    labels: {en: {prefLabel: private preservation}}
+    definition: >
+      Preserved but not disclosed at any tier — material the archive may hold
+      but not expose (Principle 11, §14).

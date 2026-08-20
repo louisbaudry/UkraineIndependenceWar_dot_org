@@ -1,0 +1,73 @@
+id: scheme-geolocation
+type: argument-scheme
+layer: argument
+status: effective
+effective: 2026-08-16
+steward: founder
+authorised_by: [DR-0034]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-012, DATA-007]
+
+labels:
+  en:
+    prefLabel: argument from geolocation
+
+definition: >
+  From matched features between imagery and reference geodata to the claim
+  that the imagery depicts a particular place.
+
+premises:
+  - id: features
+    text: >
+      Image I contains features F1…Fn (terrain, structures, signage, shadows,
+      vegetation, infrastructure).
+  - id: match
+    text: >
+      Reference source R shows the same features in the same spatial
+      relationship at location L.
+
+conclusion: >
+  I depicts location L, at the precision the assessment records.
+
+critical_questions:
+  - id: cq-distinctiveness
+    text: >
+      Are the matched features distinctive enough to exclude other
+      locations, or generic (a treeline, a standard apartment block) and
+      therefore weakly discriminating?
+    defeater_type_if_unanswered: undercutting
+  - id: cq-reference-currency
+    text: >
+      Is reference source R contemporaneous with the claimed date, or could
+      construction, destruction, or seasonal change explain a mismatch — or a
+      false match?
+    defeater_type_if_unanswered: undercutting
+  - id: cq-image-provenance
+    text: >
+      Is I authentic and unmanipulated, and is this its earliest known
+      appearance? An authentic image may be attached to a false context
+      (§38); the earliest copy held is not necessarily the original.
+    defeater_type_if_unanswered: undermining
+  - id: cq-date-independence
+    text: >
+      Is the claimed **date** established independently of the location, or
+      inherited from the post that carried the image? Location and date are
+      separate contextual assertions (§39).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-shadow-consistency
+    text: >
+      Where solar geometry is used, are shadow direction and length
+      consistent with the claimed date, time, and latitude?
+    defeater_type_if_unanswered: undermining
+  - id: cq-precision
+    text: >
+      Is the stated precision warranted — exact coordinates, or an area with
+      an uncertainty radius? Representational precision is not accuracy
+      (§43).
+    defeater_type_if_unanswered: undercutting
+
+usage_note: >
+  A geolocation conclusion is an analyst-derived location, distinguished in
+  the data from a source-supplied one (§46, CRMgeo's phenomenal/declarative
+  distinction). Coordinates carry their derivation method and uncertainty as
+  quantity objects (DR-0030).

@@ -1,0 +1,52 @@
+id: quantity-semantic-types
+type: vocabulary
+layer: epistemic
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0030]
+satisfies_requirements: [EVID-011, DATA-005]
+
+definition: >
+  The semantic type of a quantitative assertion, preserving what the source
+  actually expressed (record §44).
+
+usage_note: >
+  Quantity objects carry the original expression (in the original language
+  where relevant), the semantic type, value(s) and units, significant
+  precision, stated uncertainty, and derivation method for computed values.
+  Normalized or comparable values are derived data linked by provenance
+  (DR-0003) and never overwrite the original expression.
+
+scope_note: >
+  Aggregations must respect semantic type: a sum of at-leasts is an
+  at-least, never an exact. "At least 17" must never become "exactly 17"
+  (§44).
+
+labels:
+  en:
+    prefLabel: quantity semantic type
+
+members:
+  - id: exact
+    labels: {en: {prefLabel: exact}}
+    definition: The source asserts a precise value.
+  - id: approximate
+    labels: {en: {prefLabel: approximate}}
+    definition: The source asserts a value as an approximation ("about", "some").
+  - id: at-least
+    labels: {en: {prefLabel: at least}}
+    definition: A lower bound; the true value may be higher.
+  - id: at-most
+    labels: {en: {prefLabel: at most}}
+    definition: An upper bound; the true value may be lower.
+  - id: range
+    labels: {en: {prefLabel: range}}
+    definition: A bounded interval with a stated minimum and maximum.
+  - id: greater-than
+    labels: {en: {prefLabel: greater than}}
+    definition: A strict lower bound.
+  - id: fewer-than
+    labels: {en: {prefLabel: fewer than}, altLabel: [less than]}
+    definition: A strict upper bound.

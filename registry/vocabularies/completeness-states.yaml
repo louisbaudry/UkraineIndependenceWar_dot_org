@@ -1,0 +1,57 @@
+id: completeness-states
+type: vocabulary
+layer: documentary
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0061]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [PRES-004]
+
+definition: >
+  What the archive actually possesses of a documentary item, carried on the
+  holding (record §26).
+
+usage_note: >
+  Never imply possession of a full document when only a partial
+  representation survives (§26). A fragment carries its locus within the
+  whole. External custodians' copies are holdings with a non-project
+  custodian and no representation link.
+
+not: >
+  A holdings fragment (partial possession) is not a fragment selector
+  (annotation locus syntax). Conflict register C-14.
+
+labels:
+  en:
+    prefLabel: completeness state
+
+members:
+  - id: original
+    labels: {en: {prefLabel: original}}
+    definition: >
+      The original object as acquired.
+    scope_note: >
+      The earliest copy held by the project is not necessarily *the* original
+      (§38); this records what the archive holds, not a provenance claim.
+  - id: archival-copy
+    labels: {en: {prefLabel: archival copy}}
+    definition: A complete copy acquired from an archive or intermediary custodian.
+  - id: derivative
+    labels: {en: {prefLabel: derivative}}
+    definition: A processed form — normalized, transcoded, or otherwise derived.
+  - id: screenshot
+    labels: {en: {prefLabel: screenshot}}
+    definition: A rendered capture of appearance, not the underlying object.
+  - id: transcript
+    labels: {en: {prefLabel: transcript}}
+    definition: A textual rendering of spoken or handwritten content.
+  - id: fragment
+    labels: {en: {prefLabel: fragment}}
+    definition: A partial representation, carrying its locus within the whole.
+  - id: metadata-only
+    labels: {en: {prefLabel: metadata only}}
+    definition: >
+      A descriptive record with no content held — by rights, sensitivity, or
+      volume decision (DR-0068).

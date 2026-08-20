@@ -1,0 +1,68 @@
+id: scheme-witness-testimony
+type: argument-scheme
+layer: argument
+status: effective
+effective: 2026-08-16
+steward: founder
+authorised_by: [DR-0034]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-012]
+
+labels:
+  en:
+    prefLabel: argument from witness testimony
+
+definition: >
+  From a witness's account of an event to the occurrence of that event.
+
+premises:
+  - id: position
+    text: Witness W was in a position to observe event E.
+  - id: assertion
+    text: W asserts that E occurred (as recorded in a preserved source).
+
+conclusion: >
+  E occurred, at the likelihood band and confidence the assessment records.
+
+critical_questions:
+  - id: cq-position
+    text: >
+      Was W actually positioned — in place, in time, with line of sight or
+      other access — to observe E?
+    defeater_type_if_unanswered: undermining
+  - id: cq-capacity
+    text: >
+      Was W in a condition to observe and recall accurately (visibility,
+      duration, stress, elapsed time before recording)?
+    defeater_type_if_unanswered: undermining
+  - id: cq-bias
+    text: >
+      Does W have an interest, affiliation, or pressure that bears on the
+      account? Note: bias does not make an account false; it raises the
+      scrutiny required.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-coercion
+    text: >
+      Was the account given under coercion, captivity, or state supervision?
+      Accounts from prisoners require particular care (Geneva III Art. 13;
+      POL-0001 §5.4).
+    defeater_type_if_unanswered: undermining
+  - id: cq-internal-consistency
+    text: Is the account internally consistent, and consistent across retellings?
+    defeater_type_if_unanswered: undermining
+  - id: cq-independent-corroboration
+    text: >
+      Is the account corroborated by an **independent** line? Corroboration
+      by sources sharing this witness is not independent (DR-0028).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-transmission
+    text: >
+      Is the account preserved as W gave it, or transmitted through
+      translation, paraphrase, or edited republication? Each step is a
+      derivation with its own provenance (DR-0003, DR-0019).
+    defeater_type_if_unanswered: undercutting
+
+usage_note: >
+  Witness identity is held in the separable confidential store by default and
+  is not structured into the research graph (POL-0001 §5.6, SEC-001). A
+  scheme instance references a pseudonymous witness ID.

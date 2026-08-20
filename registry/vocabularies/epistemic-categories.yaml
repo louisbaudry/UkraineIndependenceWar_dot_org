@@ -1,0 +1,79 @@
+id: epistemic-categories
+type: vocabulary
+layer: epistemic
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0025]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-001, EVID-002]
+
+definition: >
+  The formal epistemic vocabulary (record §30). Every assertion in the system
+  carries exactly one category.
+
+usage_note: >
+  Expansion or change only by Decision Record (DR-0025) — the record's own
+  instruction that the vocabulary stay small and grow only when real cases
+  require it.
+
+labels:
+  en:
+    prefLabel: epistemic category
+
+members:
+  - id: observation
+    labels: {en: {prefLabel: observation}}
+    definition: >
+      A recorded act of perceiving or measuring by a person or instrument,
+      with observer, method, and time.
+    scope_note: >
+      Subsumes both scientific-observation modelling (CRMsci S4) and the
+      intelligence sense. Machine observations add the §49 metadata:
+      provider, acquisition method, timestamp precision, measurement
+      uncertainty, processing, spoofing risk. Conflict register C-12.
+    not: >
+      A negative observation ("we did not observe X") is not the absence of
+      X; see absence-states and record §48.
+
+  - id: claim
+    labels: {en: {prefLabel: claim}}
+    definition: >
+      A proposition asserted by a source or actor, held by them, adopted into
+      the graph with attribution.
+    scope_note: >
+      "The source says X" — a documentary assertion (DR-0024 layer 2). Its
+      truth is a separate question (Principle 3).
+
+  - id: assessment
+    labels: {en: {prefLabel: assessment}}
+    definition: >
+      An evaluative judgment about a proposition or a source, made by a named
+      assessor on a stated basis, carrying likelihood and confidence where
+      applicable.
+
+  - id: hypothesis
+    labels: {en: {prefLabel: hypothesis}}
+    definition: >
+      A candidate explanation under investigation, member of a
+      competing-hypothesis set (DR-0035).
+    not: >
+      Not a loose guess; a hypothesis belongs to a hypothesis set with typed
+      evidence relations. Conflict register C-27.
+
+  - id: finding
+    labels: {en: {prefLabel: finding}}
+    definition: >
+      A conclusion of a defined investigation or review process, recording its
+      scope and method — including negative findings (§76).
+    not: >
+      Not a legal finding, which is jurisdiction- and authority-specific and
+      always qualified as such (§62). Conflict register C-21.
+
+  - id: project-conclusion
+    labels: {en: {prefLabel: project conclusion}}
+    definition: >
+      An editorially accountable assertion published in the project's own
+      voice (§33), requiring human accountability (§79) and visible inference
+      (DR-0032).

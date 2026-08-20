@@ -1,0 +1,64 @@
+id: analytic-confidence
+type: vocabulary
+layer: epistemic
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0026]
+satisfies_requirements: [EVID-006]
+
+definition: >
+  The strength of an analytic judgment, derived from stated evidence quality,
+  corroboration weighted by independence (DR-0028), and reasoning strength.
+  The second of the two uncertainty dimensions, never collapsed into the
+  first.
+
+scope_note: >
+  Confidence is about the judgment; likelihood is about the proposition. A
+  high-confidence judgment that something is very unlikely is coherent and
+  common.
+
+usage_note: >
+  Bare numeric confidence scores are prohibited (DR-0026). Confidence is
+  derived from stated grounds — an assessment must be able to say why its
+  confidence is what it is.
+
+not: >
+  Not likelihood (see likelihood-bands). Not a statistical confidence
+  interval. Conflict register C-18.
+
+labels:
+  en:
+    prefLabel: analytic confidence
+
+mappings:
+  - target: "ICD 203 confidence levels"
+    relation: closeMatch
+    note: >
+      ICD 203 separates confidence from probability on the same principle,
+      but does not fix a three-value scale; the low/moderate/high members and
+      their derivation basis are the project's, per DR-0026.
+  - target: "IPCC confidence scale (evidence × agreement)"
+    relation: closeMatch
+    note: >
+      IPCC derives confidence from evidence type/amount/quality and
+      agreement across sources; the derivation basis here is the same in
+      substance.
+
+members:
+  - id: low
+    labels: {en: {prefLabel: low confidence}}
+    definition: >
+      Evidence is sparse, of uncertain quality, or drawn from dependent
+      lines; or the reasoning relies on unverified assumptions.
+  - id: moderate
+    labels: {en: {prefLabel: moderate confidence}}
+    definition: >
+      Evidence is adequate and partly corroborated by independent lines;
+      some gaps or unresolved defeaters remain.
+  - id: high
+    labels: {en: {prefLabel: high confidence}}
+    definition: >
+      Evidence is strong and corroborated across independent lines; raised
+      defeaters have been addressed; reasoning is explicit and reviewed.

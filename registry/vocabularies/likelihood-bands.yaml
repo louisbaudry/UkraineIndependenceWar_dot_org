@@ -1,0 +1,143 @@
+id: likelihood-bands
+type: vocabulary
+layer: epistemic
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0026, DR-0065]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-006, I18N-003]
+
+definition: >
+  The calibrated verbal probability scale used to express how likely a
+  proposition is. Seven contiguous bands spanning 1–99%, adopted from
+  ICD 203 (US Intelligence Community analytic standards).
+
+scope_note: >
+  The band identifier is stored; the numeric range is the anchor of meaning;
+  the words are labels rendered at the presentation layer (§61). A band means
+  the same thing in every language because the range, not the wording,
+  carries the meaning.
+
+usage_note: >
+  A band belongs to an assessment (DR-0026) with its evidence and reasoning.
+  Bands never attach to bare data fields, and are never inherited: reporting
+  another body's estimative language is a documentary assertion carrying
+  their scale (§32), mapped but never converted into a project judgment.
+
+not: >
+  Not analytic confidence (see analytic-confidence), which measures the
+  strength of the judgment rather than the probability of the proposition.
+  Not a statistical confidence interval. Conflict register C-18.
+
+labels:
+  en:
+    prefLabel: likelihood band
+
+mappings:
+  - target: "ICD 203 probability expressions"
+    relation: exactMatch
+    note: >
+      Adopted verbatim, primary synonym row only. ICD 203's alternative row
+      (remote / highly improbable / improbable / roughly even odds /
+      probable / highly probable / nearly certain) is registered as altLabels
+      and is never mixed with the primary row in a single product.
+  - target: "PHIA Probability Yardstick"
+    relation: closeMatch
+    note: >
+      Band-by-band closeMatch only. PHIA's bands are deliberately gapped and
+      none shares boundaries with an ICD 203 band; PHIA also has no
+      even-odds term. Per-member mappings below.
+
+members:
+  - id: almost-no-chance
+    labels:
+      en: {prefLabel: almost no chance, altLabel: [remote]}
+    range: {min: 1, max: 5, unit: percent}
+    mappings:
+      - target: "PHIA: remote chance"
+        relation: closeMatch
+        note: PHIA states ~5%; this band spans 1–5%.
+
+  - id: very-unlikely
+    labels:
+      en: {prefLabel: very unlikely, altLabel: [highly improbable]}
+    range: {min: 5, max: 20, unit: percent}
+    mappings:
+      - target: "PHIA: highly unlikely"
+        relation: closeMatch
+        note: PHIA states 10–20%; this band spans 5–20%.
+
+  - id: unlikely
+    labels:
+      en: {prefLabel: unlikely, altLabel: [improbable]}
+    range: {min: 20, max: 45, unit: percent}
+    mappings:
+      - target: "PHIA: unlikely"
+        relation: closeMatch
+        note: PHIA states 25–35%.
+      - target: "PHIA: realistic possibility"
+        relation: closeMatch
+        note: >
+          PHIA's 40–<50% band falls inside this band's upper range. PHIA
+          names the "could well have happened, below even odds" region that
+          this wider band subsumes; retained here as a mapping so
+          PHIA-sourced assessments ingest without loss.
+
+  - id: roughly-even-chance
+    labels:
+      en: {prefLabel: roughly even chance, altLabel: [roughly even odds]}
+    range: {min: 45, max: 55, unit: percent}
+    mappings:
+      - target: "PHIA"
+        relation: relatedMatch
+        note: PHIA has no even-odds band; no equivalent exists.
+
+  - id: likely
+    labels:
+      en: {prefLabel: likely, altLabel: [probable]}
+    range: {min: 55, max: 80, unit: percent}
+    mappings:
+      - target: "PHIA: likely / probably"
+        relation: closeMatch
+        note: PHIA states 55–75%.
+
+  - id: very-likely
+    labels:
+      en: {prefLabel: very likely, altLabel: [highly probable]}
+    range: {min: 80, max: 95, unit: percent}
+    mappings:
+      - target: "PHIA: highly likely"
+        relation: closeMatch
+        note: PHIA states 80–90%.
+
+  - id: almost-certain
+    labels:
+      en: {prefLabel: almost certain, altLabel: [nearly certain]}
+    range: {min: 95, max: 99, unit: percent}
+    mappings:
+      - target: "PHIA: almost certain"
+        relation: closeMatch
+        note: PHIA states ~95%.
+
+forbidden_translations:
+  - lang: any
+    pattern: renderings of `likely` that read as near-certainty
+    reason: >
+      Collapses the 55–80% band into the 95–99% band. Named explicitly in
+      DR-0065.
+  - lang: any
+    pattern: renderings of `roughly even chance` as "possible"
+    reason: >
+      "Possible" carries no probability content and destroys the band's
+      meaning. Named explicitly in DR-0065.
+
+open_questions:
+  - >
+    Whether public outputs display the numeric range alongside the term
+    (presentation-layer decision; WP 3.2 §5).
+  - >
+    Retrospective phrasing: a scope note is needed clarifying that a band
+    expresses the project's credence about a past fact, not a forecast
+    (WP 3.2 §5).

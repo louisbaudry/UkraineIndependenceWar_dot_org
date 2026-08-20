@@ -1,0 +1,48 @@
+id: entity-statuses
+type: vocabulary
+layer: world
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0062]
+depends_on_specs: [SPEC-0002]
+satisfies_requirements: [DATA-002]
+
+definition: >
+  The status of a world-layer entity as a referent: whether the project
+  treats it as real and distinct, provisional, invented, or disproved.
+
+usage_note: >
+  Status changes are assertions with evidence — concluding that a persona is
+  fabricated is a project assertion under DR-0024, not a data-entry action.
+
+scope_note: >
+  Fabricated and disproved entities are **preserved as referents, never
+  deleted**: claims about them exist and remain citable (§17, §54).
+  Impersonation analysis links a fabricated identity to the real person it
+  imitates without merging them.
+
+labels:
+  en:
+    prefLabel: entity status
+
+members:
+  - id: canonical
+    labels: {en: {prefLabel: canonical}}
+    definition: An entity the project treats as a real, distinct referent.
+  - id: candidate
+    labels: {en: {prefLabel: candidate}}
+    definition: >
+      A provisionally distinct entity, not yet consolidated — e.g. a name
+      cluster from one dataset awaiting resolution.
+  - id: fabricated
+    labels: {en: {prefLabel: fabricated}}
+    definition: >
+      An identity concluded never to have referred to a real distinct
+      referent — an invented persona or sockpuppet identity.
+  - id: disproved
+    labels: {en: {prefLabel: disproved}}
+    definition: >
+      A formerly canonical or candidate entity shown to be a duplicate or
+      error, superseded via merge/split lineage (DR-0064).
