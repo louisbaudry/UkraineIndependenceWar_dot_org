@@ -12,11 +12,24 @@ from here cannot enter the data.
 ## Layout
 
 ```
-registry.yaml          Registry-level metadata and version
+registry.yaml          Registry-level metadata, version, namespace
 vocabularies/          Controlled enumerations and their members
 schemes/               Argument schemes with critical questions (DR-0034)
 concepts/              Defined project concepts, incl. conflict-register scope notes
+dist/                  DERIVED — generated projections, never edited
 ```
+
+## Tools
+
+```
+python3 registry/validate.py           # source conformance; non-zero on error
+python3 registry/compile.py            # regenerate dist/ projections
+python3 registry/compile.py --check    # verify dist/ is current; non-zero if stale
+```
+
+Both exit non-zero on failure so they can gate a release baseline (DR-0048).
+The projection mapping and its documented export losses are specified in
+[SPEC-0005](../docs/specifications/SPEC-0005-registry-skos-mapping.md).
 
 ## Entry format
 
