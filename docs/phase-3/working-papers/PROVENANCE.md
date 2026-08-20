@@ -27,3 +27,15 @@ supersession never in-place (§77).
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction; not an upload |
 | Inputs | DR-0026, DR-0050; record §42–43, §60; ICD 203 and PHIA primary texts (verified via web retrieval, cited in the paper) |
 | Status | Reviewed — CDR-P3-12 approved by the founder 2026-08-16 (ICD 203 canonical option selected) and enacted as DR-0065 |
+
+## wp-3.3-storage-preservation-layout.md
+
+| Field | Value |
+|---|---|
+| Title | Phase III / Study 3 — Storage & Preservation Layout (Working Paper 3.3) |
+| Version | 3.3 |
+| SHA-256 at deposit | `555c516c66a477ccd18eeae85864571dc069d37f285480d026b050282e2a7ece` |
+| Deposited | 2026-08-16 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction; not an upload |
+| Inputs | DR-0001/0005/0007/0009/0055/0058/0061/0068/0069; PRES requirements; OCFL specification status verified by web retrieval |
+| Status | Candidate — awaiting founder review; its five candidate DRs (CDR-P3-20…24) are proposals only |
