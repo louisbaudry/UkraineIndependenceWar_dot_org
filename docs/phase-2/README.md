@@ -20,7 +20,7 @@ technical stack is frozen.
 | 3 | Conceptual conflict register | **Candidate delivered** — 39 entries, [outputs/03-conflict-register.md](outputs/03-conflict-register.md) |
 | 4 | Candidate foundational vocabulary | **Candidate delivered** — [outputs/04-foundational-vocabulary.md](outputs/04-foundational-vocabulary.md) |
 | 5 | Candidate Decision Records (consolidated from Phase I, submitted for human approval) | **Delivered** — fifty-two CDRs approved and enacted as [DR-0001…0052](../decision-records/README.md) (WS1: 2026-08-10; WS2–7: 2026-08-11) |
-| 6 | Candidate Requirements (stable IDs, categories, traceability, verification criteria) | **Candidate delivered** — 63 requirements across 10 categories, [outputs/06-candidate-requirements.md](outputs/06-candidate-requirements.md) |
+| 6 | Candidate Requirements (stable IDs, categories, traceability, verification criteria) | **Candidate delivered** — 73 requirements across 10 categories, [outputs/06-candidate-requirements.md](outputs/06-candidate-requirements.md); enacted 2026-08-16 as [REQ documents](../requirements/README.md) |
 | 7 | Unresolved research questions | **Candidate delivered** — 35 open + 8 resolved, [outputs/07-open-questions.md](outputs/07-open-questions.md) |
 | 8 | Phase II methodology version | **Candidate delivered** — v1.0, [outputs/08-phase-2-methodology.md](outputs/08-phase-2-methodology.md) |
 

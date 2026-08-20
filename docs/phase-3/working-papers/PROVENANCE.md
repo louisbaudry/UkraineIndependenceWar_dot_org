@@ -15,6 +15,7 @@ supersession never in-place (§77).
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction following Phase II closure (DR-0053); not an upload |
 | Inputs | Phase II outputs 1–8; DR-0001…0053; candidate requirements |
 | Status | Reviewed — its five candidate DRs approved by the founder 2026-08-16 ("approved all") and enacted as DR-0054…0058 |
+| SHA-256 after editorial correction | `e527c7676b023aa7277cf339ac2a2cf7bc317f58743732516b4a744c10717fe2` (2026-08-16) — §1 said "63 candidate requirements"; the register contains 73. Editorial correction of a miscount under DR-0080's change classes; no reasoning, comparison, or decision content changed. Both hashes retained per §77 |
 
 ## wp-3.2-likelihood-band-scale.md
 

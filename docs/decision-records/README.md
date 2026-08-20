@@ -98,6 +98,7 @@ security, legal, editorial.
 | [DR-0079](DR-0079-registry-entry-typology.md) | Registry entry typology and structure | architecture | Approved | 2026-08-16 |
 | [DR-0080](DR-0080-registry-lifecycle-and-change-classes.md) | Registry lifecycle and change classes | architecture / methodology | Approved | 2026-08-16 |
 | [DR-0081](DR-0081-governed-translation.md) | Governed translation of registry terminology | architecture / editorial | Approved | 2026-08-16 |
+| [DR-0082](DR-0082-requirements-enactment.md) | Enactment of the requirement set (73 requirements, ten REQ documents) | architecture / methodology | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 

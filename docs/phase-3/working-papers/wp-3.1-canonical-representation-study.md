@@ -21,7 +21,7 @@
 
 ## 1. What the requirements actually demand of the canonical store
 
-Extracted from the enacted DRs and the 63 candidate requirements, the load-
+Extracted from the enacted DRs and the 73 candidate requirements, the load-
 bearing properties are:
 
 1. **Assertion-centric reification everywhere.** Names, identifiers, roles,
