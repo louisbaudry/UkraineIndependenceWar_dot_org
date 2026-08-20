@@ -1,0 +1,61 @@
+id: source-grades
+type: vocabulary
+layer: epistemic
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0027]
+satisfies_requirements: [EVID-008]
+
+definition: >
+  A two-axis triage grade — source reliability × item credibility — in the
+  Admiralty/NATO tradition, recorded to steer scrutiny depth and review
+  priority.
+
+usage_note: >
+  **Triage only.** Architecturally barred from propagating into any
+  proposition's truth status, likelihood, or confidence (record §37,
+  DR-0027). Assessments must cite evidence and reasoning, never a grade. A
+  grade is itself an assessment with an assessor and basis, and is revisable.
+
+scope_note: >
+  A propaganda outlet can publish an authentic document; a reputable
+  institution can make an error. The grade prioritises attention, nothing
+  more.
+
+not: >
+  Not a reliability score determining truth — the universal source-reliability
+  score record §37 explicitly forbids.
+
+labels:
+  en:
+    prefLabel: source grade
+
+mappings:
+  - target: "NATO/Admiralty source evaluation (AJP-2.1 tradition)"
+    relation: closeMatch
+    note: Structure adopted; the project's use is confined to triage.
+
+axes:
+  - id: source-reliability
+    labels: {en: {prefLabel: source reliability}}
+    definition: An assessment of the source as such, independent of any particular item.
+    members:
+      - {id: "A", labels: {en: {prefLabel: completely reliable}}}
+      - {id: "B", labels: {en: {prefLabel: usually reliable}}}
+      - {id: "C", labels: {en: {prefLabel: fairly reliable}}}
+      - {id: "D", labels: {en: {prefLabel: not usually reliable}}}
+      - {id: "E", labels: {en: {prefLabel: unreliable}}}
+      - {id: "F", labels: {en: {prefLabel: reliability cannot be judged}}}
+
+  - id: item-credibility
+    labels: {en: {prefLabel: item credibility}}
+    definition: An assessment of the particular item, independent of its source's general standing.
+    members:
+      - {id: "1", labels: {en: {prefLabel: confirmed by other sources}}}
+      - {id: "2", labels: {en: {prefLabel: probably true}}}
+      - {id: "3", labels: {en: {prefLabel: possibly true}}}
+      - {id: "4", labels: {en: {prefLabel: doubtful}}}
+      - {id: "5", labels: {en: {prefLabel: improbable}}}
+      - {id: "6", labels: {en: {prefLabel: truth cannot be judged}}}

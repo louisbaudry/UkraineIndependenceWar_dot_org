@@ -1,0 +1,61 @@
+id: territorial-statuses
+type: vocabulary
+layer: legal
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0044, DR-0015]
+satisfies_requirements: [DATA-007]
+
+definition: >
+  Typed, evidence-backed temporal relations between actors and territorial
+  extents, grounded in period phenomena (record §46).
+
+usage_note: >
+  Each is a separate relation with its own time-span, evidence, and asserting
+  party where it is a legal characterisation. Competing characterisations of
+  the same territory and period **coexist** under the epistemic layer (§40)
+  — the system does not take silent sides, and the project's own view is an
+  explicit project assertion (§33).
+
+scope_note: >
+  An occupation is a spatiotemporal phenomenon (CRM period pattern), not an
+  attribute of a place. Geometry attaches per the place model with temporal
+  validity (DR-0010).
+
+not: >
+  Territorial control is never corporate control (see interest-types) or
+  export control. Conflict register C-30.
+
+labels:
+  en:
+    prefLabel: territorial status
+
+members:
+  - id: sovereignty-claim
+    labels: {en: {prefLabel: sovereignty claim}}
+    definition: An actor's assertion of sovereign title over a territory.
+  - id: international-recognition
+    labels: {en: {prefLabel: international recognition}}
+    definition: >
+      Recognition of a sovereignty claim by another state or body. A
+      recognition or non-recognition instrument (e.g. a UN General Assembly
+      resolution) is an **authority-attributed assertion** (§62), not a
+      project conclusion.
+  - id: non-recognition
+    labels: {en: {prefLabel: non-recognition}}
+    definition: Explicit refusal to recognise a claim or a purported change of status.
+  - id: administration
+    labels: {en: {prefLabel: administration}}
+    definition: The exercise of civil administrative authority over a territory.
+  - id: occupation
+    labels: {en: {prefLabel: occupation}}
+    definition: >
+      Effective control of territory by a foreign armed force, as a
+      spatiotemporal phenomenon with a time-span.
+  - id: de-facto-control
+    labels: {en: {prefLabel: de facto control}}
+    definition: >
+      Actual control exercised over a territory irrespective of legal title
+      or recognition.

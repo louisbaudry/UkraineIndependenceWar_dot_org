@@ -1,0 +1,55 @@
+id: match-states
+type: vocabulary
+layer: world
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0063]
+depends_on_specs: [SPEC-0002]
+satisfies_requirements: [DATA-002, LEGAL-003, AI-003]
+
+definition: >
+  The lifecycle states of a match assertion proposing that two identity
+  bearers refer to the same referent.
+
+usage_note: >
+  **Automated matchers and AI create `proposed` matches only** (AI-001).
+  Human confirmation requires discriminating evidence beyond name or
+  transliteration similarity — **name similarity alone never confirms, at any
+  tier** (§72). Rejections are permanent and consultable so matchers do not
+  re-propose them.
+
+scope_note: >
+  Applies to candidate↔canonical, designation-record↔entity (DR-0039),
+  account↔actor (DR-0023), external-dataset↔entity, and cross-registry
+  same-person links (DR-0059). State changes are superseding assertions
+  (DR-0055) with actor and basis.
+
+labels:
+  en:
+    prefLabel: match state
+
+members:
+  - id: proposed
+    labels: {en: {prefLabel: proposed}}
+    definition: >
+      Proposed by a matcher, AI, or researcher, recording the feature basis
+      of the proposal. Carries no canonical effect.
+  - id: under-review
+    labels: {en: {prefLabel: under review}}
+    definition: Taken up for human review at the subject's tier.
+  - id: confirmed
+    labels: {en: {prefLabel: confirmed}}
+    definition: >
+      Confirmed by a human on discriminating evidence at the applicable
+      tier. Takes effect by assertion, not mutation: underlying records stay
+      distinct.
+  - id: rejected
+    labels: {en: {prefLabel: rejected}}
+    definition: >
+      Reviewed and rejected, with reason. Retained permanently and consulted
+      by matchers.
+  - id: withdrawn
+    labels: {en: {prefLabel: withdrawn}}
+    definition: Retracted by its proposer before review concluded.

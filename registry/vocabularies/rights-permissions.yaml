@@ -1,0 +1,50 @@
+id: rights-permissions
+type: vocabulary
+layer: governance
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0002, DR-0067]
+satisfies_requirements: [LEGAL-008]
+
+definition: >
+  What the project is permitted to do with material, recorded per rights
+  statement (record §14).
+
+usage_note: >
+  Preservation rights and republication rights are different (§14). The
+  archive may preserve material it is not permitted to republish. `unknown`
+  is an **explicit registry value**, never a null (DR-0029).
+
+scope_note: >
+  Each permission is recorded with its rights basis (copyright, license,
+  statute, policy) per PREMIS rights (DR-0002/DR-0060).
+
+not: >
+  An export licence (§65) is not a rights licence. Always spelled out.
+  Conflict register C-31.
+
+labels:
+  en:
+    prefLabel: rights permission
+
+members:
+  - id: may-preserve
+    labels: {en: {prefLabel: may preserve}}
+    definition: The project may hold and preserve the material.
+  - id: may-display
+    labels: {en: {prefLabel: may display}}
+    definition: The project may display the material on a public surface.
+  - id: may-redistribute
+    labels: {en: {prefLabel: may redistribute}}
+    definition: The project may redistribute the material to third parties.
+  - id: may-provide-to-subscribers
+    labels: {en: {prefLabel: may provide to subscribers}}
+    definition: The project may make the material available at the subscriber tier.
+  - id: unknown
+    labels: {en: {prefLabel: unknown rights}}
+    definition: >
+      Rights have not been determined. An explicit state requiring
+      resolution before display or redistribution — never a default
+      permission.

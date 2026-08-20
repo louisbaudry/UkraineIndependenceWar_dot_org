@@ -1,0 +1,82 @@
+id: interest-types
+type: vocabulary
+layer: legal
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0040]
+satisfies_requirements: [DATA-005, LEGAL-004]
+
+definition: >
+  The kinds of ownership or control interest one party may hold in another,
+  recorded as typed statements with provenance and validity periods
+  (record §19).
+
+usage_note: >
+  Interests are **statements with provenance**, following the BODS pattern:
+  interested party, subject, interest type, share as a quantity object
+  (DR-0030), validity period, and source. Registry filings, GLEIF
+  relationship records, disclosures, and investigative findings enter as
+  documentary sources (§32). Conflicting statements coexist under the
+  epistemic layer — never averaged (§40).
+
+scope_note: >
+  Derived ownership computation (DR-0041) consumes these statements and
+  preserves the path. Economic-interest calculations do not automatically
+  establish legal control (§71).
+
+not: >
+  "Control" here is corporate control — never territorial control (see
+  territorial-statuses) and never export control. Always qualified.
+  Conflict register C-30. "Owner" is never used bare; these types govern.
+  Conflict register C-34.
+
+labels:
+  en:
+    prefLabel: interest type
+
+mappings:
+  - target: "BODS interest types"
+    relation: closeMatch
+    note: >
+      Structurally aligned with the Beneficial Ownership Data Standard, which
+      independently chose statement-based, provenance-bearing representation.
+      Member-level alignment to be completed when BODS export is implemented.
+
+members:
+  - id: legal-ownership
+    labels: {en: {prefLabel: legal ownership}}
+    definition: Registered legal title to shares or the entity.
+  - id: direct-ownership
+    labels: {en: {prefLabel: direct ownership}}
+    definition: Ownership held directly, without intermediate entities.
+  - id: indirect-ownership
+    labels: {en: {prefLabel: indirect ownership}}
+    definition: Ownership held through one or more intermediate entities.
+  - id: beneficial-ownership
+    labels: {en: {prefLabel: beneficial ownership}}
+    definition: Ultimate benefit from the holding, whoever holds legal title.
+  - id: voting-rights
+    labels: {en: {prefLabel: voting rights}}
+    definition: Rights to vote, which may diverge from economic ownership.
+  - id: managerial-control
+    labels: {en: {prefLabel: managerial control}}
+    definition: Control exercised through management positions.
+  - id: contractual-control
+    labels: {en: {prefLabel: contractual control}}
+    definition: Control arising from contractual arrangements rather than ownership.
+  - id: appointment-rights
+    labels: {en: {prefLabel: appointment rights}}
+    definition: Rights to appoint or remove directors or officers.
+  - id: de-facto-control
+    labels: {en: {prefLabel: de facto control}}
+    definition: >
+      Control exercised in practice without a formal legal basis — an
+      evidence-backed assertion, never an inference from association.
+  - id: nominee-arrangement
+    labels: {en: {prefLabel: nominee arrangement}}
+    definition: Title held by one party on behalf of another.
+  - id: ultimate-beneficial-ownership
+    labels: {en: {prefLabel: ultimate beneficial ownership}}
+    definition: Beneficial ownership at the end of a chain, with the path preserved.

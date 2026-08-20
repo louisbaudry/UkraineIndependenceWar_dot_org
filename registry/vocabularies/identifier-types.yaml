@@ -1,0 +1,72 @@
+id: identifier-types
+type: vocabulary
+layer: world
+status: effective
+effective: 2026-08-16
+closed: false
+steward: founder
+authorised_by: [DR-0012, DR-0045]
+depends_on_specs: [SPEC-0002]
+satisfies_requirements: [DATA-001, DATA-010]
+
+definition: >
+  External identifier systems whose identifiers may be attached to project
+  entities and designation records (record §16).
+
+usage_note: >
+  **Open vocabulary** — new identifier systems will be encountered; additions
+  by registry process (DR-0080). Every external identifier attaches via an
+  **assignment assertion** with actor, time, and basis (DR-0012): identifiers
+  are provenance-bearing relationships, not timeless fields. False merges are
+  costlier than missed matches (§16), so identifier agreement alone does not
+  confirm identity — see match-states.
+
+labels:
+  en:
+    prefLabel: identifier type
+
+members:
+  - id: wikidata
+    labels: {en: {prefLabel: Wikidata Q-identifier}}
+    issuing_authority: Wikimedia Foundation
+  - id: opensanctions
+    labels: {en: {prefLabel: OpenSanctions identifier}}
+    issuing_authority: OpenSanctions
+    scope_note: >
+      Consumed as an identifier spine and collection source (DR-0045); never
+      an auto-merge basis (§72).
+  - id: official-sanctions-id
+    labels: {en: {prefLabel: official sanctions list identifier}}
+    issuing_authority: The designating authority (UN, EU, OFAC, OFSI, …)
+    scope_note: Attaches to designation records (DR-0039), not directly to entities.
+  - id: company-registration-number
+    labels: {en: {prefLabel: company registration number}}
+    issuing_authority: National corporate registry
+  - id: tax-id
+    labels: {en: {prefLabel: tax identification number}}
+    issuing_authority: National tax authority
+    scope_note: >
+      Personal tax identifiers of private individuals are high-risk data and
+      are not structured automatically (POL-0001 §4).
+  - id: lei
+    labels: {en: {prefLabel: Legal Entity Identifier (LEI)}}
+    issuing_authority: GLEIF
+  - id: imo
+    labels: {en: {prefLabel: IMO number}}
+    issuing_authority: International Maritime Organization
+    scope_note: Persists across vessel renaming and reflagging — a strong identifier.
+  - id: mmsi
+    labels: {en: {prefLabel: MMSI}}
+    issuing_authority: National maritime administrations
+    scope_note: >
+      Reassignable and spoofable; weaker than IMO. AIS-derived claims require
+      the spoofing critical questions (DR-0034).
+  - id: aircraft-registration
+    labels: {en: {prefLabel: aircraft registration}}
+    issuing_authority: National civil aviation authority
+  - id: icao-24bit
+    labels: {en: {prefLabel: ICAO 24-bit address}}
+    issuing_authority: ICAO / national authorities
+  - id: official-registry-id
+    labels: {en: {prefLabel: other official registry identifier}}
+    issuing_authority: Varies; recorded on the assignment

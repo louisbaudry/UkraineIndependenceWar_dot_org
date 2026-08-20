@@ -1,0 +1,67 @@
+id: premis-event-types
+type: vocabulary
+layer: pipeline
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0060]
+depends_on_specs: [SPEC-0001, SPEC-0003]
+satisfies_requirements: [PRES-002, PRES-003, PRES-007, SEC-002]
+
+definition: >
+  The preservation event types in the project's initial PREMIS subset. Each
+  event carries date, agents, linked objects, outcome — **including failure**
+  — and detail.
+
+scope_note: >
+  These are **pipeline events**, permanently distinct from historical world
+  events (DR-0004). A capture is never a world event. Conflict register C-02.
+
+usage_note: >
+  Deferred from the initial subset with recorded revisit triggers (DR-0060):
+  bitstream-level objects (trigger: sub-file addressing need), environments
+  (trigger: format-migration planning at scale), preservation-level
+  semantics.
+
+labels:
+  en:
+    prefLabel: preservation event type
+
+mappings:
+  - target: "PREMIS 3.0 eventType"
+    relation: exactMatch
+    note: Subset selection only; semantics unchanged.
+
+members:
+  - id: ingestion
+    labels: {en: {prefLabel: ingestion}}
+    definition: An object entering archival custody at Gate 1 (DR-0066).
+  - id: message-digest-calculation
+    labels: {en: {prefLabel: message digest calculation}}
+    definition: >
+      Computing content digests. SHA-512 for OCFL content addressing,
+      SHA-256 in the fixity block (DR-0075).
+  - id: fixity-check
+    labels: {en: {prefLabel: fixity check}}
+    definition: >
+      Verifying stored content against recorded digests. Failures are
+      recorded events, never silent re-copies.
+  - id: format-identification
+    labels: {en: {prefLabel: format identification}}
+    definition: Determining an object's format.
+  - id: virus-check
+    labels: {en: {prefLabel: virus check}}
+    definition: >
+      Malware scanning, performed in quarantine before Gate 1 (DR-0069).
+  - id: capture
+    labels: {en: {prefLabel: capture}}
+    definition: >
+      Acquiring content from a source, including WARC capture of web
+      resources (DR-0006).
+  - id: migration-normalization
+    labels: {en: {prefLabel: migration / normalization}}
+    definition: >
+      Producing a preservation-motivated derivative. The derivative is a
+      distinct object with its own PROV lineage (DR-0003) and may live as a
+      later version of the same OCFL object (DR-0074).

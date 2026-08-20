@@ -1,0 +1,75 @@
+id: absence-states
+type: vocabulary
+layer: epistemic
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0029]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-010, LEGAL-008]
+
+definition: >
+  Typed states expressing why a value is absent. A missing value never
+  silently means "no" (record §41, Principle 8).
+
+usage_note: >
+  Schema rejects null wherever an absence state is required. Explicit
+  negative assertions ("X did not occur", "no license was issued") are
+  assertions like any other: attributed, dated, evidence-backed.
+
+scope_note: >
+  This vocabulary will be exercised heavily in the export-control domain,
+  where licensing data is rarely public (DR-0042).
+
+labels:
+  en:
+    prefLabel: absence state
+
+members:
+  - id: unknown
+    labels: {en: {prefLabel: unknown}}
+    definition: The value is not known to the project and its knowability is not characterised.
+
+  - id: not-researched
+    labels: {en: {prefLabel: not researched}}
+    definition: No research has been attempted. Distinct from having looked and found nothing.
+
+  - id: no-evidence-found
+    labels: {en: {prefLabel: no evidence found}}
+    definition: >
+      Research was attempted and found insufficient evidence. Records the
+      scope and method of the search where consequential (§76).
+    not: >
+      Not proof of non-occurrence. "We searched and found insufficient
+      evidence" is not "we proved it did not happen" (§76).
+
+  - id: unavailable
+    labels: {en: {prefLabel: unavailable}}
+    definition: The value exists somewhere but the project cannot obtain it.
+
+  - id: withheld
+    labels: {en: {prefLabel: withheld}}
+    definition: >
+      The value is known to the project but deliberately not exposed at this
+      access tier — for source protection, legal, or privacy reasons.
+
+  - id: redacted
+    labels: {en: {prefLabel: redacted}}
+    definition: >
+      The value was removed under governed redaction (DR-0077), leaving a
+      tombstone recording the fact, date, authority, and grounds.
+
+  - id: lost-or-destroyed
+    labels: {en: {prefLabel: lost or destroyed}}
+    definition: The value existed and is established to be irrecoverable.
+
+  - id: not-applicable
+    labels: {en: {prefLabel: not applicable}}
+    definition: The field has no meaning for this subject.
+
+  - id: indeterminate
+    labels: {en: {prefLabel: indeterminate}}
+    definition: >
+      The value is genuinely indeterminate rather than merely unknown — the
+      question has no determinate answer.

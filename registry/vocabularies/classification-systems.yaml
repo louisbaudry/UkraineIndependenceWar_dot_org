@@ -1,0 +1,56 @@
+id: classification-systems
+type: vocabulary
+layer: legal
+status: effective
+effective: 2026-08-16
+closed: false
+steward: founder
+authorised_by: [DR-0042]
+satisfies_requirements: [LEGAL-005]
+
+definition: >
+  The regulatory classification systems under which a product may be
+  classified (record §66).
+
+usage_note: >
+  **Open vocabulary** — national export-control regimes vary and more will be
+  encountered; additions by registry process (DR-0080). Every classification
+  assertion records its system, jurisdiction, asserting authority, and
+  validity period, and is typed as official, declared, or project-analytical
+  (§66). Classifications attach to **product types** (DR-0014), and to
+  individual items only where evidence individuates.
+
+scope_note: >
+  A product's classification is contextual, not intrinsic: the same good may
+  classify differently by jurisdiction and over time.
+
+labels:
+  en:
+    prefLabel: classification system
+
+members:
+  - id: hs
+    labels: {en: {prefLabel: Harmonized System (HS)}}
+    definition: WCO tariff nomenclature used in customs declarations.
+  - id: cn
+    labels: {en: {prefLabel: Combined Nomenclature (CN)}}
+    definition: EU tariff nomenclature extending HS.
+  - id: eccn
+    labels: {en: {prefLabel: ECCN}}
+    definition: US Export Control Classification Number under the EAR.
+  - id: eu-dual-use
+    labels: {en: {prefLabel: EU dual-use classification}}
+    definition: Classification under EU Regulation 2021/821 annexes.
+  - id: wassenaar
+    labels: {en: {prefLabel: Wassenaar control list}}
+    definition: Multilateral control-list classification upstream of national regimes.
+  - id: common-high-priority-list
+    labels: {en: {prefLabel: Common High Priority List}}
+    definition: >
+      The coordinated list of battlefield-relevant goods used in
+      export-control enforcement against Russian procurement.
+  - id: national-export-control
+    labels: {en: {prefLabel: national export-control classification}}
+    definition: >
+      A national regime's classification not covered by a more specific
+      member; the jurisdiction is recorded on the assertion.

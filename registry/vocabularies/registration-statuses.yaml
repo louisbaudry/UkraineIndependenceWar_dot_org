@@ -1,0 +1,45 @@
+id: registration-statuses
+type: vocabulary
+layer: governance
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0080]
+depends_on_specs: [SPEC-0004]
+satisfies_requirements: [DATA-008]
+
+definition: >
+  The registration status of a semantic-registry entry (SPEC-0004 §5).
+
+usage_note: >
+  **Nothing is ever deleted from the registry**: a dataset can outlive the
+  vocabulary it used, and record §96 exists precisely so its meaning
+  survives.
+
+scope_note: >
+  This vocabulary governs the registry's own entries, including itself.
+
+not: >
+  Not document status (see document-statuses), which governs controlled
+  documents. Conflict register C-39.
+
+labels:
+  en:
+    prefLabel: registration status
+
+members:
+  - id: draft
+    labels: {en: {prefLabel: draft}}
+    definition: Proposed; **may not appear in data**.
+  - id: effective
+    labels: {en: {prefLabel: effective}}
+    definition: Usable in canonical data.
+  - id: deprecated
+    labels: {en: {prefLabel: deprecated}}
+    definition: >
+      Readable in existing data; not permitted for new data. Carries
+      `replaced_by` and a migration note (§96).
+  - id: retired
+    labels: {en: {prefLabel: retired}}
+    definition: No longer applicable; retained for historical interpretation only.

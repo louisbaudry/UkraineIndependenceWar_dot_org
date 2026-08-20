@@ -1,0 +1,52 @@
+id: retention-tiers
+type: vocabulary
+layer: pipeline
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0068]
+depends_on_specs: [SPEC-0003]
+satisfies_requirements: [PRES-011]
+
+definition: >
+  The retention decision applied to every acquired item at Gate 1,
+  defaulting from its source registry entry (record §9).
+
+usage_note: >
+  Tiers **escalate freely**; a downgrade is a governed disposition decision
+  with recorded rationale. Fragile or high-value sources may be collected at
+  `permanent` before item-level relevance is known, and a source's
+  escalation may trigger retrospective recovery from external archives.
+
+scope_note: >
+  Only `permanent` and `medium-term` items have bytes in OCFL, in **separate
+  storage roots** so medium-term disposition can never touch the permanent
+  archive (DR-0076).
+
+labels:
+  en:
+    prefLabel: retention tier
+
+members:
+  - id: discard
+    labels: {en: {prefLabel: discard}}
+    definition: >
+      Not retained. The acquisition event and its outcome are still recorded
+      (§28) — the archive knows it saw this and let it go.
+    storage: none
+  - id: metadata-only
+    labels: {en: {prefLabel: metadata only}}
+    definition: A descriptive record is retained; content is not stored.
+    storage: none
+  - id: medium-term
+    labels: {en: {prefLabel: medium term}}
+    definition: Retained with a review date, then re-decided.
+    storage: ocfl-root:medium-term
+  - id: permanent
+    labels: {en: {prefLabel: permanent}}
+    definition: Archival preservation under full OAIS/PREMIS treatment.
+    storage: ocfl-root:permanent
+
+open_questions:
+  - Whether medium-term review is calendar-driven or volume-driven (SPEC-0003 §11).

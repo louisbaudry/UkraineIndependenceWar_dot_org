@@ -1,0 +1,49 @@
+id: defeater-types
+type: vocabulary
+layer: argument
+status: effective
+effective: 2026-08-16
+closed: true
+steward: founder
+authorised_by: [DR-0033]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-012]
+
+definition: >
+  The three ways an argument can be attacked, from the structured
+  argumentation tradition (ASPIC+/ABA).
+
+usage_note: >
+  An attacked argument with no resolution remains **visibly contested**;
+  "unresolved" is a legitimate end-state (record §40). No computation
+  adjudicates the outcome (DR-0036).
+
+scope_note: >
+  The distinction is load-bearing for evidence work: a forged document and a
+  challenged interpretation of an authentic document are different attacks
+  requiring different answers (§38).
+
+not: >
+  "Attack" here is an argumentation-theoretic conflict relation, never a
+  military attack — those live in the world layer. Always layer-qualified.
+  Conflict register C-24.
+
+labels:
+  en:
+    prefLabel: defeater type
+
+members:
+  - id: rebutting
+    labels: {en: {prefLabel: rebutting}}
+    definition: Attacks the conclusion itself — counter-evidence for the opposite.
+  - id: undercutting
+    labels: {en: {prefLabel: undercutting}}
+    definition: >
+      Attacks the inference link, leaving the premises intact — e.g. the
+      document is authentic but does not show what is claimed. A dependence
+      relation (DR-0028) undercuts a corroboration argument.
+  - id: undermining
+    labels: {en: {prefLabel: undermining}}
+    definition: >
+      Attacks a premise — e.g. the document is forged, or the witness was not
+      present. Authenticity challenges under §38 enter here.
