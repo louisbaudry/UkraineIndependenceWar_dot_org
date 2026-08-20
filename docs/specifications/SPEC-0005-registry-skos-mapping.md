@@ -1,8 +1,9 @@
 # SPEC-0005 — Registry Projection Mapping (JSON and SKOS/RDF)
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — proposed
-**Approval:** pending founder review | **Effective:** upon approval
+**Class:** SPEC (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-20 | **Effective:** 2026-08-20
 **Supersedes:** — | **Superseded by:** —
+**Change history:** 0.1 drafted 2026-08-16 alongside its compiler; approved as 1.0 on 2026-08-20 — status block and §8 enactment note are the only changes
 **Governed by:** DR-0056 (projection mappings are controlled artifacts), DR-0078 (files in Git are source of truth; runtime and interchange forms are derived), DR-0050 (SKOS), DR-0079 (entry structure), DR-0047 (versioning).
 **Generator:** `registry/compile.py`
 
@@ -167,9 +168,8 @@ required by the REQ documents' verification criteria.
 4. Whether release baselines pin the compiled projections themselves or only
    the registry version they were built from (DR-0048 interaction).
 
-## 8. Candidate Decision Record
+## 8. Decision Record arising (enacted)
 
-- **CDR-P3-29:** Adopt SPEC-0005 as the controlled mapping document for the
-  registry's JSON and SKOS/RDF projections, satisfying DR-0056 for these two
-  surfaces, with the export losses of §5 as the documented and accepted loss
-  set.
+**DR-0083** — adoption of this specification, approved by the founder on
+2026-08-20. DR-0056 is satisfied for the JSON and SKOS/RDF surfaces, with
+§5's export losses accepted as documented.
