@@ -88,6 +88,7 @@ security, legal, editorial.
 | [DR-0069](DR-0069-quarantine-zone.md) | Quarantine as a pre-archival zone | security / architecture | Approved | 2026-08-16 |
 | [DR-0070](DR-0070-collector-run-coverage.md) | Collector-run coverage record | operations / preservation | Approved | 2026-08-16 |
 | [DR-0071](DR-0071-interim-personal-data-constraints.md) | Interim personal-data constraints (self-lifting) | legal / operations | Approved | 2026-08-16 |
+| [DR-0072](DR-0072-personal-data-policy-adoption.md) | Adoption of the Personal Data Policy (POL-0001) | legal / editorial | Approved | 2026-08-16 |
 
 ## Provenance of decisions
 
@@ -152,6 +153,11 @@ DR-0065 originates from CDR-P3-12 in
 [WP 3.2](../phase-3/working-papers/wp-3.2-likelihood-band-scale.md), approved
 by the founder on 2026-08-16 after a side-by-side comparison of the ICD 203
 and PHIA scales.
+
+DR-0072 adopts [POL-0001](../policies/POL-0001-personal-data.md), approved by
+the founder on 2026-08-16 with its three §8 rulings taken individually; the
+policy's collection-scope releases remain suspended pending external legal
+review.
 
 DR-0066 through DR-0071 originate from CDR-P3-13…18 in
 [SPEC-0003](../specifications/SPEC-0003-collection-pipeline.md), approved by

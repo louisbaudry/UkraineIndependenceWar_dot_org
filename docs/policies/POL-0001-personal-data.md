@@ -1,8 +1,10 @@
 # POL-0001 — Personal Data Policy
 
-**Class:** POL (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — proposed
-**Approval:** pending founder review | **Effective:** upon approval
+**Class:** POL (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-16 (rulings at §8 taken individually) | **Effective:** 2026-08-16
+**Operative limit:** the §9 releases of the DR-0071 interim constraints are **suspended** until the §10 external legal review is recorded. The policy otherwise binds from its effective date.
 **Supersedes:** — | **Superseded by:** —
+**Change history:** 0.1 drafted 2026-08-16; approved as 1.0 the same day with the §8 rulings settled and §2, §5.4, §5.5 aligned to them
 **Fulfils:** record §13, LEGAL-009, Q-35; releases the interim constraints of DR-0071 on the terms in §9 below.
 **Governed by:** DR-0055 (append-only, governed redaction), DR-0066 (three gates), DR-0069 (quarantine), SEC-001/003, §10 (graphic material), §12 (access tiers), §14 (rights).
 
@@ -42,7 +44,7 @@ the policy must pass, **not as a legal conclusion**:
 
 - **GDPR Art. 6(1)(f)** legitimate interests, and **Art. 89** safeguards for
   archiving in the public interest and historical/scientific research, are
-  the project's expected primary basis.
+  the project's primary basis (ruled at §8.3).
 - **Art. 9** special categories (political opinions, religious belief,
   health, sexual life, biometric and genetic data, racial or ethnic origin)
   require an **Art. 9(2)(j)** archiving/research exception and heightened
@@ -128,10 +130,10 @@ out to be innocent; the argument scheme's critical questions (DR-0034) apply.
 ### 5.4 Rank-and-file combatants
 **Preserve:** yes. **Structure:** restricted — only where the individual is
 relevant to a specific documented act, order, or unit fact; not as a
-population. **Publish:** restricted, with **Geneva III Art. 13** governing:
-no publication that exposes an identified prisoner of war to public
-curiosity, and no gratuitous identification of individual soldiers absent a
-documented act.
+population. **Publish:** under the **documented-act standard** ruled at
+§8.2, with **Geneva III Art. 13** governing: no publication exposing an
+identified prisoner of war to public curiosity, and no identification on
+presence or unit membership alone.
 Rank-and-file personnel are simultaneously potential perpetrators, potential
 victims, and potential prisoners; the project does not build a personnel
 index of an army.
@@ -140,7 +142,9 @@ index of an army.
 **Preserve:** yes — victim documentation is core purpose. **Structure:**
 only where identification serves a documentation or accountability purpose
 (a named victim in an authoritative record, a documented deportation case),
-never as a by-product of extraction. **Publish:** see the decision at §8.1.
+never as a by-product of extraction. **Publish:** under the **already-public
+standard** ruled at §8.1 — the project never becomes the first publisher of
+a victim's name.
 Surviving relatives in occupied territory can be endangered by a published
 name; re-traumatization is a real harm even where no legal duty binds.
 
@@ -208,38 +212,34 @@ and objection.
 - **Training and pipeline changes** that would newly structure personal data
   require a recorded decision before deployment.
 
-## 8. Decision points requiring the founder's ruling
+## 8. Founder rulings
 
-### 8.1 Victim identification in public outputs
-- **(a) Already-public standard (recommended):** the project names a victim
-  publicly only where an authoritative or already-public source has named
-  them (official record, court document, family's own public statement), or
-  where the family has consented.
-- **(b) Documentation-necessity standard:** the project may name where
-  documentation or accountability requires it, even if not previously
-  public.
-- **(c) Never name:** public outputs never identify individual victims;
-  identification remains internal for accountability use.
+Ruled by the founder/principal editor on 2026-08-16 in individual review.
 
-### 8.2 Identification of individual soldiers in documented acts
-- **(a) Documented-act standard (recommended):** an individual combatant may
-  be identified publicly where specific, reviewed evidence ties them to a
-  specific documented act, typed as allegation unless a legal finding exists
-  (§62); never for mere presence or unit membership; Geneva III Art. 13
-  constraints on prisoners always apply.
-- **(b) Conservative:** no public identification of individual rank-and-file
-  personnel at all; identifications held internally for prosecutorial use.
-- **(c) Permissive:** identification permitted wherever evidence supports it,
-  including unit membership in units implicated collectively.
+### 8.1 Victim identification — **already-public standard**
+The project names a victim in public outputs **only** where an authoritative
+or already-public source has named them (official record, court document,
+the family's own public statement), or where the family has consented.
+The project does not become the first publisher of a victim's name.
+Full identification may still be held and used internally for
+accountability, at its access tier.
 
-### 8.3 Primary legal posture
-- **(a) Archiving/research primary, expression secondary (recommended):**
-  the project presents itself as a public-interest archive and research
-  infrastructure under Art. 89 with Art. 9(2)(j), invoking Art. 85
-  expression provisions secondarily.
-- **(b) Journalistic/expression primary:** relies mainly on Art. 85
-  provisions.
-- **(c) Both co-equal**, documented per processing purpose.
+### 8.2 Individual soldiers — **documented-act standard**
+An individual rank-and-file combatant may be identified publicly **only**
+where specific, reviewed evidence ties them to a **specific documented
+act** — typed as an allegation unless a legal finding exists (§62–63).
+Never for mere presence, unit membership, or collective unit implication.
+**Geneva III Art. 13 constraints on prisoners of war always apply**,
+including to imagery.
+
+### 8.3 Primary legal posture — **archiving/research primary**
+The project's primary basis is **archiving in the public interest and
+historical research** (GDPR Art. 89, with the Art. 9(2)(j) exception for
+special categories), invoking **Art. 85** expression provisions
+secondarily. This matches the project's own self-definition (record §1:
+a durable evidence and knowledge repository that happens to publish a
+website) and carries the Art. 17(3)(d) erasure derogation archives depend
+on. The §10 legal review tests this posture rather than choosing it.
 
 ## 9. Release of the DR-0071 interim constraints
 
@@ -274,10 +274,8 @@ This policy is reviewed annually and on any material change to collection
 scope, jurisdiction, or applicable law; the review is recorded as a version
 under DR-0046/DR-0047.
 
-## 12. Candidate Decision Records
+## 12. Decision Record arising (enacted)
 
-- **CDR-P3-19:** Adopt POL-0001 with the founder's rulings at §8, the
-  three-decision model (§1), the never-auto-structure list (§4), the
-  category treatments (§5), the data-subject procedure (§6), and the
-  conditional release of DR-0071 (§9) — conditioned on the legal review of
-  §10.
+**DR-0072** — adoption of this policy, approved by the founder on
+2026-08-16 together with the three §8 rulings, with the §9 releases
+suspended pending the §10 legal review.
