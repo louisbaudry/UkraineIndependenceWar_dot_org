@@ -1,0 +1,2800 @@
+{
+  "entries": {
+    "absence-states": {
+      "_source": "vocabularies/absence-states.yaml",
+      "authorised_by": [
+        "DR-0029"
+      ],
+      "closed": true,
+      "definition": "Typed states expressing why a value is absent. A missing value never silently means \"no\" (record §41, Principle 8).\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-16",
+      "id": "absence-states",
+      "labels": {
+        "en": {
+          "prefLabel": "absence state"
+        }
+      },
+      "layer": "epistemic",
+      "members": [
+        {
+          "definition": "The value is not known to the project and its knowability is not characterised.",
+          "id": "unknown",
+          "labels": {
+            "en": {
+              "prefLabel": "unknown"
+            }
+          }
+        },
+        {
+          "definition": "No research has been attempted. Distinct from having looked and found nothing.",
+          "id": "not-researched",
+          "labels": {
+            "en": {
+              "prefLabel": "not researched"
+            }
+          }
+        },
+        {
+          "definition": "Research was attempted and found insufficient evidence. Records the scope and method of the search where consequential (§76).\n",
+          "id": "no-evidence-found",
+          "labels": {
+            "en": {
+              "prefLabel": "no evidence found"
+            }
+          },
+          "not": "Not proof of non-occurrence. \"We searched and found insufficient evidence\" is not \"we proved it did not happen\" (§76).\n"
+        },
+        {
+          "definition": "The value exists somewhere but the project cannot obtain it.",
+          "id": "unavailable",
+          "labels": {
+            "en": {
+              "prefLabel": "unavailable"
+            }
+          }
+        },
+        {
+          "definition": "The value is known to the project but deliberately not exposed at this access tier — for source protection, legal, or privacy reasons.\n",
+          "id": "withheld",
+          "labels": {
+            "en": {
+              "prefLabel": "withheld"
+            }
+          }
+        },
+        {
+          "definition": "The value was removed under governed redaction (DR-0077), leaving a tombstone recording the fact, date, authority, and grounds.\n",
+          "id": "redacted",
+          "labels": {
+            "en": {
+              "prefLabel": "redacted"
+            }
+          }
+        },
+        {
+          "definition": "The value existed and is established to be irrecoverable.",
+          "id": "lost-or-destroyed",
+          "labels": {
+            "en": {
+              "prefLabel": "lost or destroyed"
+            }
+          }
+        },
+        {
+          "definition": "The field has no meaning for this subject.",
+          "id": "not-applicable",
+          "labels": {
+            "en": {
+              "prefLabel": "not applicable"
+            }
+          }
+        },
+        {
+          "definition": "The value is genuinely indeterminate rather than merely unknown — the question has no determinate answer.\n",
+          "id": "indeterminate",
+          "labels": {
+            "en": {
+              "prefLabel": "indeterminate"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-010",
+        "LEGAL-008"
+      ],
+      "scope_note": "This vocabulary will be exercised heavily in the export-control domain, where licensing data is rarely public (DR-0042).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Schema rejects null wherever an absence state is required. Explicit negative assertions (\"X did not occur\", \"no license was issued\") are assertions like any other: attributed, dated, evidence-backed.\n"
+    },
+    "access-tiers": {
+      "_source": "vocabularies/access-tiers.yaml",
+      "authorised_by": [
+        "DR-0067",
+        "DR-0072"
+      ],
+      "closed": true,
+      "definition": "The publication/access tier at which an object or assertion is available (record §12).\n",
+      "depends_on_specs": [
+        "SPEC-0003"
+      ],
+      "effective": "2026-08-16",
+      "id": "access-tiers",
+      "labels": {
+        "en": {
+          "prefLabel": "access tier"
+        }
+      },
+      "layer": "governance",
+      "members": [
+        {
+          "definition": "Openly available. The public historical archive remains meaningfully open (§4).",
+          "id": "public",
+          "labels": {
+            "en": {
+              "prefLabel": "public"
+            }
+          }
+        },
+        {
+          "definition": "Available to subscribers of professional datasets and tools (§4).",
+          "id": "subscriber",
+          "labels": {
+            "en": {
+              "prefLabel": "subscriber"
+            }
+          }
+        },
+        {
+          "definition": "Available to the project team only.",
+          "id": "internal",
+          "labels": {
+            "en": {
+              "prefLabel": "internal"
+            }
+          }
+        },
+        {
+          "definition": "Restricted beyond internal — including confidential source identity, which additionally lives in a separable store (SEC-001, DR-0059).\n",
+          "id": "confidential",
+          "labels": {
+            "en": {
+              "prefLabel": "confidential"
+            }
+          }
+        },
+        {
+          "definition": "Available to named external researchers under agreed terms.",
+          "id": "researcher-restricted",
+          "labels": {
+            "en": {
+              "prefLabel": "researcher restricted"
+            }
+          }
+        },
+        {
+          "definition": "Available to named investigative or prosecutorial bodies under agreed terms.",
+          "id": "investigator-restricted",
+          "labels": {
+            "en": {
+              "prefLabel": "investigator restricted"
+            }
+          }
+        },
+        {
+          "definition": "Preserved but not disclosed at any tier — material the archive may hold but not expose (Principle 11, §14).\n",
+          "id": "private-preservation",
+          "labels": {
+            "en": {
+              "prefLabel": "private preservation"
+            }
+          }
+        }
+      ],
+      "not": "Not source accessibility (§27) — whether a *source in the world* is public, paywalled, deleted, or archived is a different vocabulary and never shares a field. Conflict register C-16.\n",
+      "satisfies_requirements": [
+        "SEC-003",
+        "SEC-004",
+        "ARCH-006",
+        "PRES-012"
+      ],
+      "scope_note": "Access tiers never create competing versions of historical truth: all tiers read the same canonical assertions, and tier affects visibility only, never values (§4, ARCH-006). Restricted material must be inaccessible below its tier in the canonical store, every projection, the search index, and published surfaces (SEC-004).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "**One of four independent dimensions**, never collapsed: access tier, sensitivity, rights (see rights-permissions), and evidentiary disclosure. There is no universal `is_public` flag (§12, SEC-003).\n"
+    },
+    "analytic-confidence": {
+      "_source": "vocabularies/analytic-confidence.yaml",
+      "authorised_by": [
+        "DR-0026"
+      ],
+      "closed": true,
+      "definition": "The strength of an analytic judgment, derived from stated evidence quality, corroboration weighted by independence (DR-0028), and reasoning strength. The second of the two uncertainty dimensions, never collapsed into the first.\n",
+      "effective": "2026-08-16",
+      "id": "analytic-confidence",
+      "labels": {
+        "en": {
+          "prefLabel": "analytic confidence"
+        }
+      },
+      "layer": "epistemic",
+      "mappings": [
+        {
+          "note": "ICD 203 separates confidence from probability on the same principle, but does not fix a three-value scale; the low/moderate/high members and their derivation basis are the project's, per DR-0026.\n",
+          "relation": "closeMatch",
+          "target": "ICD 203 confidence levels"
+        },
+        {
+          "note": "IPCC derives confidence from evidence type/amount/quality and agreement across sources; the derivation basis here is the same in substance.\n",
+          "relation": "closeMatch",
+          "target": "IPCC confidence scale (evidence × agreement)"
+        }
+      ],
+      "members": [
+        {
+          "definition": "Evidence is sparse, of uncertain quality, or drawn from dependent lines; or the reasoning relies on unverified assumptions.\n",
+          "id": "low",
+          "labels": {
+            "en": {
+              "prefLabel": "low confidence"
+            }
+          }
+        },
+        {
+          "definition": "Evidence is adequate and partly corroborated by independent lines; some gaps or unresolved defeaters remain.\n",
+          "id": "moderate",
+          "labels": {
+            "en": {
+              "prefLabel": "moderate confidence"
+            }
+          }
+        },
+        {
+          "definition": "Evidence is strong and corroborated across independent lines; raised defeaters have been addressed; reasoning is explicit and reviewed.\n",
+          "id": "high",
+          "labels": {
+            "en": {
+              "prefLabel": "high confidence"
+            }
+          }
+        }
+      ],
+      "not": "Not likelihood (see likelihood-bands). Not a statistical confidence interval. Conflict register C-18.\n",
+      "satisfies_requirements": [
+        "EVID-006"
+      ],
+      "scope_note": "Confidence is about the judgment; likelihood is about the proposition. A high-confidence judgment that something is very unlikely is coherent and common.\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Bare numeric confidence scores are prohibited (DR-0026). Confidence is derived from stated grounds — an assessment must be able to say why its confidence is what it is.\n"
+    },
+    "classification-systems": {
+      "_source": "vocabularies/classification-systems.yaml",
+      "authorised_by": [
+        "DR-0042"
+      ],
+      "closed": false,
+      "definition": "The regulatory classification systems under which a product may be classified (record §66).\n",
+      "effective": "2026-08-16",
+      "id": "classification-systems",
+      "labels": {
+        "en": {
+          "prefLabel": "classification system"
+        }
+      },
+      "layer": "legal",
+      "members": [
+        {
+          "definition": "WCO tariff nomenclature used in customs declarations.",
+          "id": "hs",
+          "labels": {
+            "en": {
+              "prefLabel": "Harmonized System (HS)"
+            }
+          }
+        },
+        {
+          "definition": "EU tariff nomenclature extending HS.",
+          "id": "cn",
+          "labels": {
+            "en": {
+              "prefLabel": "Combined Nomenclature (CN)"
+            }
+          }
+        },
+        {
+          "definition": "US Export Control Classification Number under the EAR.",
+          "id": "eccn",
+          "labels": {
+            "en": {
+              "prefLabel": "ECCN"
+            }
+          }
+        },
+        {
+          "definition": "Classification under EU Regulation 2021/821 annexes.",
+          "id": "eu-dual-use",
+          "labels": {
+            "en": {
+              "prefLabel": "EU dual-use classification"
+            }
+          }
+        },
+        {
+          "definition": "Multilateral control-list classification upstream of national regimes.",
+          "id": "wassenaar",
+          "labels": {
+            "en": {
+              "prefLabel": "Wassenaar control list"
+            }
+          }
+        },
+        {
+          "definition": "The coordinated list of battlefield-relevant goods used in export-control enforcement against Russian procurement.\n",
+          "id": "common-high-priority-list",
+          "labels": {
+            "en": {
+              "prefLabel": "Common High Priority List"
+            }
+          }
+        },
+        {
+          "definition": "A national regime's classification not covered by a more specific member; the jurisdiction is recorded on the assertion.\n",
+          "id": "national-export-control",
+          "labels": {
+            "en": {
+              "prefLabel": "national export-control classification"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "LEGAL-005"
+      ],
+      "scope_note": "A product's classification is contextual, not intrinsic: the same good may classify differently by jurisdiction and over time.\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "**Open vocabulary** — national export-control regimes vary and more will be encountered; additions by registry process (DR-0080). Every classification assertion records its system, jurisdiction, asserting authority, and validity period, and is typed as official, declared, or project-analytical (§66). Classifications attach to **product types** (DR-0014), and to individual items only where evidence individuates.\n"
+    },
+    "completeness-states": {
+      "_source": "vocabularies/completeness-states.yaml",
+      "authorised_by": [
+        "DR-0061"
+      ],
+      "closed": true,
+      "definition": "What the archive actually possesses of a documentary item, carried on the holding (record §26).\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-16",
+      "id": "completeness-states",
+      "labels": {
+        "en": {
+          "prefLabel": "completeness state"
+        }
+      },
+      "layer": "documentary",
+      "members": [
+        {
+          "definition": "The original object as acquired.\n",
+          "id": "original",
+          "labels": {
+            "en": {
+              "prefLabel": "original"
+            }
+          },
+          "scope_note": "The earliest copy held by the project is not necessarily *the* original (§38); this records what the archive holds, not a provenance claim.\n"
+        },
+        {
+          "definition": "A complete copy acquired from an archive or intermediary custodian.",
+          "id": "archival-copy",
+          "labels": {
+            "en": {
+              "prefLabel": "archival copy"
+            }
+          }
+        },
+        {
+          "definition": "A processed form — normalized, transcoded, or otherwise derived.",
+          "id": "derivative",
+          "labels": {
+            "en": {
+              "prefLabel": "derivative"
+            }
+          }
+        },
+        {
+          "definition": "A rendered capture of appearance, not the underlying object.",
+          "id": "screenshot",
+          "labels": {
+            "en": {
+              "prefLabel": "screenshot"
+            }
+          }
+        },
+        {
+          "definition": "A textual rendering of spoken or handwritten content.",
+          "id": "transcript",
+          "labels": {
+            "en": {
+              "prefLabel": "transcript"
+            }
+          }
+        },
+        {
+          "definition": "A partial representation, carrying its locus within the whole.",
+          "id": "fragment",
+          "labels": {
+            "en": {
+              "prefLabel": "fragment"
+            }
+          }
+        },
+        {
+          "definition": "A descriptive record with no content held — by rights, sensitivity, or volume decision (DR-0068).\n",
+          "id": "metadata-only",
+          "labels": {
+            "en": {
+              "prefLabel": "metadata only"
+            }
+          }
+        }
+      ],
+      "not": "A holdings fragment (partial possession) is not a fragment selector (annotation locus syntax). Conflict register C-14.\n",
+      "satisfies_requirements": [
+        "PRES-004"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Never imply possession of a full document when only a partial representation survives (§26). A fragment carries its locus within the whole. External custodians' copies are holdings with a non-project custodian and no representation link.\n"
+    },
+    "defeater-types": {
+      "_source": "vocabularies/defeater-types.yaml",
+      "authorised_by": [
+        "DR-0033"
+      ],
+      "closed": true,
+      "definition": "The three ways an argument can be attacked, from the structured argumentation tradition (ASPIC+/ABA).\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-16",
+      "id": "defeater-types",
+      "labels": {
+        "en": {
+          "prefLabel": "defeater type"
+        }
+      },
+      "layer": "argument",
+      "members": [
+        {
+          "definition": "Attacks the conclusion itself — counter-evidence for the opposite.",
+          "id": "rebutting",
+          "labels": {
+            "en": {
+              "prefLabel": "rebutting"
+            }
+          }
+        },
+        {
+          "definition": "Attacks the inference link, leaving the premises intact — e.g. the document is authentic but does not show what is claimed. A dependence relation (DR-0028) undercuts a corroboration argument.\n",
+          "id": "undercutting",
+          "labels": {
+            "en": {
+              "prefLabel": "undercutting"
+            }
+          }
+        },
+        {
+          "definition": "Attacks a premise — e.g. the document is forged, or the witness was not present. Authenticity challenges under §38 enter here.\n",
+          "id": "undermining",
+          "labels": {
+            "en": {
+              "prefLabel": "undermining"
+            }
+          }
+        }
+      ],
+      "not": "\"Attack\" here is an argumentation-theoretic conflict relation, never a military attack — those live in the world layer. Always layer-qualified. Conflict register C-24.\n",
+      "satisfies_requirements": [
+        "EVID-012"
+      ],
+      "scope_note": "The distinction is load-bearing for evidence work: a forged document and a challenged interpretation of an authentic document are different attacks requiring different answers (§38).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "An attacked argument with no resolution remains **visibly contested**; \"unresolved\" is a legitimate end-state (record §40). No computation adjudicates the outcome (DR-0036).\n"
+    },
+    "dependence-relation-types": {
+      "_source": "vocabularies/dependence-relation-types.yaml",
+      "authorised_by": [
+        "DR-0028"
+      ],
+      "closed": true,
+      "definition": "Typed relations recording how one source depends on another, so that corroboration counts independent lines only (record §36).\n",
+      "depends_on_specs": [
+        "SPEC-0003"
+      ],
+      "effective": "2026-08-16",
+      "id": "dependence-relation-types",
+      "labels": {
+        "en": {
+          "prefLabel": "dependence relation"
+        }
+      },
+      "layer": "epistemic",
+      "members": [
+        {
+          "definition": "The source explicitly references the other as its basis.",
+          "id": "cites",
+          "labels": {
+            "en": {
+              "prefLabel": "cites"
+            }
+          }
+        },
+        {
+          "definition": "The source reproduces the other's content, with or without attribution.",
+          "id": "reposts",
+          "labels": {
+            "en": {
+              "prefLabel": "reposts"
+            }
+          }
+        },
+        {
+          "definition": "The source republishes under a distribution arrangement.",
+          "id": "syndicates",
+          "labels": {
+            "en": {
+              "prefLabel": "syndicates"
+            }
+          }
+        },
+        {
+          "definition": "The source's content is materially derived from the other without being a reproduction.",
+          "id": "derives-from",
+          "labels": {
+            "en": {
+              "prefLabel": "derives from"
+            }
+          }
+        },
+        {
+          "definition": "Both rest on the same document; their agreement is not independent.",
+          "id": "shares-underlying-document",
+          "labels": {
+            "en": {
+              "prefLabel": "shares underlying document"
+            }
+          }
+        },
+        {
+          "definition": "Both rest on the same testimony; their agreement is not independent.",
+          "id": "shares-underlying-witness",
+          "labels": {
+            "en": {
+              "prefLabel": "shares underlying witness"
+            }
+          }
+        },
+        {
+          "definition": "Both trace to a common origin not captured by the more specific types — e.g. a shared briefing, dataset, or intermediary.\n",
+          "id": "common-evidentiary-origin",
+          "labels": {
+            "en": {
+              "prefLabel": "common evidentiary origin"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-009"
+      ],
+      "scope_note": "Five publications repeating one original report are not five independent confirmations (§36). A dependence relation *undercuts* a corroboration argument (DR-0033).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Independence is a **researched conclusion** — the established absence of dependence — never a default assumption. Known relationships may be declared at source-registry level (DR-0067) and inherited as a dependence hypothesis by every item, rather than rediscovered per article.\n"
+    },
+    "document-statuses": {
+      "_source": "vocabularies/document-statuses.yaml",
+      "authorised_by": [
+        "DR-0046"
+      ],
+      "closed": true,
+      "definition": "The lifecycle status of a controlled governance document (REQ, POL, PROC, DR, SPEC, METH) under record §100's document classes.\n",
+      "effective": "2026-08-16",
+      "id": "document-statuses",
+      "labels": {
+        "en": {
+          "prefLabel": "document status"
+        }
+      },
+      "layer": "governance",
+      "members": [
+        {
+          "definition": "Being written; carries no authority.",
+          "id": "draft",
+          "labels": {
+            "en": {
+              "prefLabel": "draft"
+            }
+          }
+        },
+        {
+          "definition": "Submitted for the founder's decision; carries no authority.",
+          "id": "proposed",
+          "labels": {
+            "en": {
+              "prefLabel": "proposed"
+            }
+          }
+        },
+        {
+          "definition": "Decided by the founder/principal editor.",
+          "id": "approved",
+          "labels": {
+            "en": {
+              "prefLabel": "approved"
+            }
+          }
+        },
+        {
+          "definition": "In force from its effective date. Where approval and effect differ, both dates are recorded.\n",
+          "id": "effective",
+          "labels": {
+            "en": {
+              "prefLabel": "effective"
+            }
+          }
+        },
+        {
+          "definition": "Replaced by a later document; both are retained (§77).",
+          "id": "superseded",
+          "labels": {
+            "en": {
+              "prefLabel": "superseded"
+            }
+          }
+        },
+        {
+          "definition": "Removed from force without a successor; retained for the record.",
+          "id": "withdrawn",
+          "labels": {
+            "en": {
+              "prefLabel": "withdrawn"
+            }
+          }
+        }
+      ],
+      "not": "Not epistemic status (see epistemic-categories, likelihood-bands) and not legal status. Always class-qualified. Conflict register C-39.\n",
+      "satisfies_requirements": [
+        "EDIT-001",
+        "EDIT-002"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "**Status is explicit document metadata, never inferred from Git state** — a commit is not an approval (DR-0046). Superseded documents remain in place, marked, with supersession links in both directions (§77).\n"
+    },
+    "entity-statuses": {
+      "_source": "vocabularies/entity-statuses.yaml",
+      "authorised_by": [
+        "DR-0062"
+      ],
+      "closed": true,
+      "definition": "The status of a world-layer entity as a referent: whether the project treats it as real and distinct, provisional, invented, or disproved.\n",
+      "depends_on_specs": [
+        "SPEC-0002"
+      ],
+      "effective": "2026-08-16",
+      "id": "entity-statuses",
+      "labels": {
+        "en": {
+          "prefLabel": "entity status"
+        }
+      },
+      "layer": "world",
+      "members": [
+        {
+          "definition": "An entity the project treats as a real, distinct referent.",
+          "id": "canonical",
+          "labels": {
+            "en": {
+              "prefLabel": "canonical"
+            }
+          }
+        },
+        {
+          "definition": "A provisionally distinct entity, not yet consolidated — e.g. a name cluster from one dataset awaiting resolution.\n",
+          "id": "candidate",
+          "labels": {
+            "en": {
+              "prefLabel": "candidate"
+            }
+          }
+        },
+        {
+          "definition": "An identity concluded never to have referred to a real distinct referent — an invented persona or sockpuppet identity.\n",
+          "id": "fabricated",
+          "labels": {
+            "en": {
+              "prefLabel": "fabricated"
+            }
+          }
+        },
+        {
+          "definition": "A formerly canonical or candidate entity shown to be a duplicate or error, superseded via merge/split lineage (DR-0064).\n",
+          "id": "disproved",
+          "labels": {
+            "en": {
+              "prefLabel": "disproved"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "DATA-002"
+      ],
+      "scope_note": "Fabricated and disproved entities are **preserved as referents, never deleted**: claims about them exist and remain citable (§17, §54). Impersonation analysis links a fabricated identity to the real person it imitates without merging them.\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Status changes are assertions with evidence — concluding that a persona is fabricated is a project assertion under DR-0024, not a data-entry action.\n"
+    },
+    "epistemic-categories": {
+      "_source": "vocabularies/epistemic-categories.yaml",
+      "authorised_by": [
+        "DR-0025"
+      ],
+      "closed": true,
+      "definition": "The formal epistemic vocabulary (record §30). Every assertion in the system carries exactly one category.\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-16",
+      "id": "epistemic-categories",
+      "labels": {
+        "en": {
+          "prefLabel": "epistemic category"
+        }
+      },
+      "layer": "epistemic",
+      "members": [
+        {
+          "definition": "A recorded act of perceiving or measuring by a person or instrument, with observer, method, and time.\n",
+          "id": "observation",
+          "labels": {
+            "en": {
+              "prefLabel": "observation"
+            }
+          },
+          "not": "A negative observation (\"we did not observe X\") is not the absence of X; see absence-states and record §48.\n",
+          "scope_note": "Subsumes both scientific-observation modelling (CRMsci S4) and the intelligence sense. Machine observations add the §49 metadata: provider, acquisition method, timestamp precision, measurement uncertainty, processing, spoofing risk. Conflict register C-12.\n"
+        },
+        {
+          "definition": "A proposition asserted by a source or actor, held by them, adopted into the graph with attribution.\n",
+          "id": "claim",
+          "labels": {
+            "en": {
+              "prefLabel": "claim"
+            }
+          },
+          "scope_note": "\"The source says X\" — a documentary assertion (DR-0024 layer 2). Its truth is a separate question (Principle 3).\n"
+        },
+        {
+          "definition": "An evaluative judgment about a proposition or a source, made by a named assessor on a stated basis, carrying likelihood and confidence where applicable.\n",
+          "id": "assessment",
+          "labels": {
+            "en": {
+              "prefLabel": "assessment"
+            }
+          }
+        },
+        {
+          "definition": "A candidate explanation under investigation, member of a competing-hypothesis set (DR-0035).\n",
+          "id": "hypothesis",
+          "labels": {
+            "en": {
+              "prefLabel": "hypothesis"
+            }
+          },
+          "not": "Not a loose guess; a hypothesis belongs to a hypothesis set with typed evidence relations. Conflict register C-27.\n"
+        },
+        {
+          "definition": "A conclusion of a defined investigation or review process, recording its scope and method — including negative findings (§76).\n",
+          "id": "finding",
+          "labels": {
+            "en": {
+              "prefLabel": "finding"
+            }
+          },
+          "not": "Not a legal finding, which is jurisdiction- and authority-specific and always qualified as such (§62). Conflict register C-21.\n"
+        },
+        {
+          "definition": "An editorially accountable assertion published in the project's own voice (§33), requiring human accountability (§79) and visible inference (DR-0032).\n",
+          "id": "project-conclusion",
+          "labels": {
+            "en": {
+              "prefLabel": "project conclusion"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-001",
+        "EVID-002"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Expansion or change only by Decision Record (DR-0025) — the record's own instruction that the vocabulary stay small and grow only when real cases require it.\n"
+    },
+    "identifier-types": {
+      "_source": "vocabularies/identifier-types.yaml",
+      "authorised_by": [
+        "DR-0012",
+        "DR-0045"
+      ],
+      "closed": false,
+      "definition": "External identifier systems whose identifiers may be attached to project entities and designation records (record §16).\n",
+      "depends_on_specs": [
+        "SPEC-0002"
+      ],
+      "effective": "2026-08-16",
+      "id": "identifier-types",
+      "labels": {
+        "en": {
+          "prefLabel": "identifier type"
+        }
+      },
+      "layer": "world",
+      "members": [
+        {
+          "id": "wikidata",
+          "issuing_authority": "Wikimedia Foundation",
+          "labels": {
+            "en": {
+              "prefLabel": "Wikidata Q-identifier"
+            }
+          }
+        },
+        {
+          "id": "opensanctions",
+          "issuing_authority": "OpenSanctions",
+          "labels": {
+            "en": {
+              "prefLabel": "OpenSanctions identifier"
+            }
+          },
+          "scope_note": "Consumed as an identifier spine and collection source (DR-0045); never an auto-merge basis (§72).\n"
+        },
+        {
+          "id": "official-sanctions-id",
+          "issuing_authority": "The designating authority (UN, EU, OFAC, OFSI, …)",
+          "labels": {
+            "en": {
+              "prefLabel": "official sanctions list identifier"
+            }
+          },
+          "scope_note": "Attaches to designation records (DR-0039), not directly to entities."
+        },
+        {
+          "id": "company-registration-number",
+          "issuing_authority": "National corporate registry",
+          "labels": {
+            "en": {
+              "prefLabel": "company registration number"
+            }
+          }
+        },
+        {
+          "id": "tax-id",
+          "issuing_authority": "National tax authority",
+          "labels": {
+            "en": {
+              "prefLabel": "tax identification number"
+            }
+          },
+          "scope_note": "Personal tax identifiers of private individuals are high-risk data and are not structured automatically (POL-0001 §4).\n"
+        },
+        {
+          "id": "lei",
+          "issuing_authority": "GLEIF",
+          "labels": {
+            "en": {
+              "prefLabel": "Legal Entity Identifier (LEI)"
+            }
+          }
+        },
+        {
+          "id": "imo",
+          "issuing_authority": "International Maritime Organization",
+          "labels": {
+            "en": {
+              "prefLabel": "IMO number"
+            }
+          },
+          "scope_note": "Persists across vessel renaming and reflagging — a strong identifier."
+        },
+        {
+          "id": "mmsi",
+          "issuing_authority": "National maritime administrations",
+          "labels": {
+            "en": {
+              "prefLabel": "MMSI"
+            }
+          },
+          "scope_note": "Reassignable and spoofable; weaker than IMO. AIS-derived claims require the spoofing critical questions (DR-0034).\n"
+        },
+        {
+          "id": "aircraft-registration",
+          "issuing_authority": "National civil aviation authority",
+          "labels": {
+            "en": {
+              "prefLabel": "aircraft registration"
+            }
+          }
+        },
+        {
+          "id": "icao-24bit",
+          "issuing_authority": "ICAO / national authorities",
+          "labels": {
+            "en": {
+              "prefLabel": "ICAO 24-bit address"
+            }
+          }
+        },
+        {
+          "id": "official-registry-id",
+          "issuing_authority": "Varies; recorded on the assignment",
+          "labels": {
+            "en": {
+              "prefLabel": "other official registry identifier"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "DATA-001",
+        "DATA-010"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "**Open vocabulary** — new identifier systems will be encountered; additions by registry process (DR-0080). Every external identifier attaches via an **assignment assertion** with actor, time, and basis (DR-0012): identifiers are provenance-bearing relationships, not timeless fields. False merges are costlier than missed matches (§16), so identifier agreement alone does not confirm identity — see match-states.\n"
+    },
+    "interest-types": {
+      "_source": "vocabularies/interest-types.yaml",
+      "authorised_by": [
+        "DR-0040"
+      ],
+      "closed": true,
+      "definition": "The kinds of ownership or control interest one party may hold in another, recorded as typed statements with provenance and validity periods (record §19).\n",
+      "effective": "2026-08-16",
+      "id": "interest-types",
+      "labels": {
+        "en": {
+          "prefLabel": "interest type"
+        }
+      },
+      "layer": "legal",
+      "mappings": [
+        {
+          "note": "Structurally aligned with the Beneficial Ownership Data Standard, which independently chose statement-based, provenance-bearing representation. Member-level alignment to be completed when BODS export is implemented.\n",
+          "relation": "closeMatch",
+          "target": "BODS interest types"
+        }
+      ],
+      "members": [
+        {
+          "definition": "Registered legal title to shares or the entity.",
+          "id": "legal-ownership",
+          "labels": {
+            "en": {
+              "prefLabel": "legal ownership"
+            }
+          }
+        },
+        {
+          "definition": "Ownership held directly, without intermediate entities.",
+          "id": "direct-ownership",
+          "labels": {
+            "en": {
+              "prefLabel": "direct ownership"
+            }
+          }
+        },
+        {
+          "definition": "Ownership held through one or more intermediate entities.",
+          "id": "indirect-ownership",
+          "labels": {
+            "en": {
+              "prefLabel": "indirect ownership"
+            }
+          }
+        },
+        {
+          "definition": "Ultimate benefit from the holding, whoever holds legal title.",
+          "id": "beneficial-ownership",
+          "labels": {
+            "en": {
+              "prefLabel": "beneficial ownership"
+            }
+          }
+        },
+        {
+          "definition": "Rights to vote, which may diverge from economic ownership.",
+          "id": "voting-rights",
+          "labels": {
+            "en": {
+              "prefLabel": "voting rights"
+            }
+          }
+        },
+        {
+          "definition": "Control exercised through management positions.",
+          "id": "managerial-control",
+          "labels": {
+            "en": {
+              "prefLabel": "managerial control"
+            }
+          }
+        },
+        {
+          "definition": "Control arising from contractual arrangements rather than ownership.",
+          "id": "contractual-control",
+          "labels": {
+            "en": {
+              "prefLabel": "contractual control"
+            }
+          }
+        },
+        {
+          "definition": "Rights to appoint or remove directors or officers.",
+          "id": "appointment-rights",
+          "labels": {
+            "en": {
+              "prefLabel": "appointment rights"
+            }
+          }
+        },
+        {
+          "definition": "Control exercised in practice without a formal legal basis — an evidence-backed assertion, never an inference from association.\n",
+          "id": "de-facto-control",
+          "labels": {
+            "en": {
+              "prefLabel": "de facto control"
+            }
+          }
+        },
+        {
+          "definition": "Title held by one party on behalf of another.",
+          "id": "nominee-arrangement",
+          "labels": {
+            "en": {
+              "prefLabel": "nominee arrangement"
+            }
+          }
+        },
+        {
+          "definition": "Beneficial ownership at the end of a chain, with the path preserved.",
+          "id": "ultimate-beneficial-ownership",
+          "labels": {
+            "en": {
+              "prefLabel": "ultimate beneficial ownership"
+            }
+          }
+        }
+      ],
+      "not": "\"Control\" here is corporate control — never territorial control (see territorial-statuses) and never export control. Always qualified. Conflict register C-30. \"Owner\" is never used bare; these types govern. Conflict register C-34.\n",
+      "satisfies_requirements": [
+        "DATA-005",
+        "LEGAL-004"
+      ],
+      "scope_note": "Derived ownership computation (DR-0041) consumes these statements and preserves the path. Economic-interest calculations do not automatically establish legal control (§71).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Interests are **statements with provenance**, following the BODS pattern: interested party, subject, interest type, share as a quantity object (DR-0030), validity period, and source. Registry filings, GLEIF relationship records, disclosures, and investigative findings enter as documentary sources (§32). Conflicting statements coexist under the epistemic layer — never averaged (§40).\n"
+    },
+    "likelihood-bands": {
+      "_source": "vocabularies/likelihood-bands.yaml",
+      "authorised_by": [
+        "DR-0026",
+        "DR-0065"
+      ],
+      "closed": true,
+      "definition": "The calibrated verbal probability scale used to express how likely a proposition is. Seven contiguous bands spanning 1–99%, adopted from ICD 203 (US Intelligence Community analytic standards).\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-16",
+      "forbidden_translations": [
+        {
+          "lang": "any",
+          "pattern": "renderings of `likely` that read as near-certainty",
+          "reason": "Collapses the 55–80% band into the 95–99% band. Named explicitly in DR-0065.\n"
+        },
+        {
+          "lang": "any",
+          "pattern": "renderings of `roughly even chance` as \"possible\"",
+          "reason": "\"Possible\" carries no probability content and destroys the band's meaning. Named explicitly in DR-0065.\n"
+        }
+      ],
+      "id": "likelihood-bands",
+      "labels": {
+        "en": {
+          "prefLabel": "likelihood band"
+        }
+      },
+      "layer": "epistemic",
+      "mappings": [
+        {
+          "note": "Adopted verbatim, primary synonym row only. ICD 203's alternative row (remote / highly improbable / improbable / roughly even odds / probable / highly probable / nearly certain) is registered as altLabels and is never mixed with the primary row in a single product.\n",
+          "relation": "exactMatch",
+          "target": "ICD 203 probability expressions"
+        },
+        {
+          "note": "Band-by-band closeMatch only. PHIA's bands are deliberately gapped and none shares boundaries with an ICD 203 band; PHIA also has no even-odds term. Per-member mappings below.\n",
+          "relation": "closeMatch",
+          "target": "PHIA Probability Yardstick"
+        }
+      ],
+      "members": [
+        {
+          "id": "almost-no-chance",
+          "labels": {
+            "en": {
+              "altLabel": [
+                "remote"
+              ],
+              "prefLabel": "almost no chance"
+            }
+          },
+          "mappings": [
+            {
+              "note": "PHIA states ~5%; this band spans 1–5%.",
+              "relation": "closeMatch",
+              "target": "PHIA: remote chance"
+            }
+          ],
+          "range": {
+            "max": 5,
+            "min": 1,
+            "unit": "percent"
+          }
+        },
+        {
+          "id": "very-unlikely",
+          "labels": {
+            "en": {
+              "altLabel": [
+                "highly improbable"
+              ],
+              "prefLabel": "very unlikely"
+            }
+          },
+          "mappings": [
+            {
+              "note": "PHIA states 10–20%; this band spans 5–20%.",
+              "relation": "closeMatch",
+              "target": "PHIA: highly unlikely"
+            }
+          ],
+          "range": {
+            "max": 20,
+            "min": 5,
+            "unit": "percent"
+          }
+        },
+        {
+          "id": "unlikely",
+          "labels": {
+            "en": {
+              "altLabel": [
+                "improbable"
+              ],
+              "prefLabel": "unlikely"
+            }
+          },
+          "mappings": [
+            {
+              "note": "PHIA states 25–35%.",
+              "relation": "closeMatch",
+              "target": "PHIA: unlikely"
+            },
+            {
+              "note": "PHIA's 40–<50% band falls inside this band's upper range. PHIA names the \"could well have happened, below even odds\" region that this wider band subsumes; retained here as a mapping so PHIA-sourced assessments ingest without loss.\n",
+              "relation": "closeMatch",
+              "target": "PHIA: realistic possibility"
+            }
+          ],
+          "range": {
+            "max": 45,
+            "min": 20,
+            "unit": "percent"
+          }
+        },
+        {
+          "id": "roughly-even-chance",
+          "labels": {
+            "en": {
+              "altLabel": [
+                "roughly even odds"
+              ],
+              "prefLabel": "roughly even chance"
+            }
+          },
+          "mappings": [
+            {
+              "note": "PHIA has no even-odds band; no equivalent exists.",
+              "relation": "relatedMatch",
+              "target": "PHIA"
+            }
+          ],
+          "range": {
+            "max": 55,
+            "min": 45,
+            "unit": "percent"
+          }
+        },
+        {
+          "id": "likely",
+          "labels": {
+            "en": {
+              "altLabel": [
+                "probable"
+              ],
+              "prefLabel": "likely"
+            }
+          },
+          "mappings": [
+            {
+              "note": "PHIA states 55–75%.",
+              "relation": "closeMatch",
+              "target": "PHIA: likely / probably"
+            }
+          ],
+          "range": {
+            "max": 80,
+            "min": 55,
+            "unit": "percent"
+          }
+        },
+        {
+          "id": "very-likely",
+          "labels": {
+            "en": {
+              "altLabel": [
+                "highly probable"
+              ],
+              "prefLabel": "very likely"
+            }
+          },
+          "mappings": [
+            {
+              "note": "PHIA states 80–90%.",
+              "relation": "closeMatch",
+              "target": "PHIA: highly likely"
+            }
+          ],
+          "range": {
+            "max": 95,
+            "min": 80,
+            "unit": "percent"
+          }
+        },
+        {
+          "id": "almost-certain",
+          "labels": {
+            "en": {
+              "altLabel": [
+                "nearly certain"
+              ],
+              "prefLabel": "almost certain"
+            }
+          },
+          "mappings": [
+            {
+              "note": "PHIA states ~95%.",
+              "relation": "closeMatch",
+              "target": "PHIA: almost certain"
+            }
+          ],
+          "range": {
+            "max": 99,
+            "min": 95,
+            "unit": "percent"
+          }
+        }
+      ],
+      "not": "Not analytic confidence (see analytic-confidence), which measures the strength of the judgment rather than the probability of the proposition. Not a statistical confidence interval. Conflict register C-18.\n",
+      "open_questions": [
+        "Whether public outputs display the numeric range alongside the term (presentation-layer decision; WP 3.2 §5).\n",
+        "Retrospective phrasing: a scope note is needed clarifying that a band expresses the project's credence about a past fact, not a forecast (WP 3.2 §5).\n"
+      ],
+      "satisfies_requirements": [
+        "EVID-006",
+        "I18N-003"
+      ],
+      "scope_note": "The band identifier is stored; the numeric range is the anchor of meaning; the words are labels rendered at the presentation layer (§61). A band means the same thing in every language because the range, not the wording, carries the meaning.\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "A band belongs to an assessment (DR-0026) with its evidence and reasoning. Bands never attach to bare data fields, and are never inherited: reporting another body's estimative language is a documentary assertion carrying their scale (§32), mapped but never converted into a project judgment.\n"
+    },
+    "match-states": {
+      "_source": "vocabularies/match-states.yaml",
+      "authorised_by": [
+        "DR-0063"
+      ],
+      "closed": true,
+      "definition": "The lifecycle states of a match assertion proposing that two identity bearers refer to the same referent.\n",
+      "depends_on_specs": [
+        "SPEC-0002"
+      ],
+      "effective": "2026-08-16",
+      "id": "match-states",
+      "labels": {
+        "en": {
+          "prefLabel": "match state"
+        }
+      },
+      "layer": "world",
+      "members": [
+        {
+          "definition": "Proposed by a matcher, AI, or researcher, recording the feature basis of the proposal. Carries no canonical effect.\n",
+          "id": "proposed",
+          "labels": {
+            "en": {
+              "prefLabel": "proposed"
+            }
+          }
+        },
+        {
+          "definition": "Taken up for human review at the subject's tier.",
+          "id": "under-review",
+          "labels": {
+            "en": {
+              "prefLabel": "under review"
+            }
+          }
+        },
+        {
+          "definition": "Confirmed by a human on discriminating evidence at the applicable tier. Takes effect by assertion, not mutation: underlying records stay distinct.\n",
+          "id": "confirmed",
+          "labels": {
+            "en": {
+              "prefLabel": "confirmed"
+            }
+          }
+        },
+        {
+          "definition": "Reviewed and rejected, with reason. Retained permanently and consulted by matchers.\n",
+          "id": "rejected",
+          "labels": {
+            "en": {
+              "prefLabel": "rejected"
+            }
+          }
+        },
+        {
+          "definition": "Retracted by its proposer before review concluded.",
+          "id": "withdrawn",
+          "labels": {
+            "en": {
+              "prefLabel": "withdrawn"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "DATA-002",
+        "LEGAL-003",
+        "AI-003"
+      ],
+      "scope_note": "Applies to candidate↔canonical, designation-record↔entity (DR-0039), account↔actor (DR-0023), external-dataset↔entity, and cross-registry same-person links (DR-0059). State changes are superseding assertions (DR-0055) with actor and basis.\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "**Automated matchers and AI create `proposed` matches only** (AI-001). Human confirmation requires discriminating evidence beyond name or transliteration similarity — **name similarity alone never confirms, at any tier** (§72). Rejections are permanent and consultable so matchers do not re-propose them.\n"
+    },
+    "premis-event-types": {
+      "_source": "vocabularies/premis-event-types.yaml",
+      "authorised_by": [
+        "DR-0060"
+      ],
+      "closed": true,
+      "definition": "The preservation event types in the project's initial PREMIS subset. Each event carries date, agents, linked objects, outcome — **including failure** — and detail.\n",
+      "depends_on_specs": [
+        "SPEC-0001",
+        "SPEC-0003"
+      ],
+      "effective": "2026-08-16",
+      "id": "premis-event-types",
+      "labels": {
+        "en": {
+          "prefLabel": "preservation event type"
+        }
+      },
+      "layer": "pipeline",
+      "mappings": [
+        {
+          "note": "Subset selection only; semantics unchanged.",
+          "relation": "exactMatch",
+          "target": "PREMIS 3.0 eventType"
+        }
+      ],
+      "members": [
+        {
+          "definition": "An object entering archival custody at Gate 1 (DR-0066).",
+          "id": "ingestion",
+          "labels": {
+            "en": {
+              "prefLabel": "ingestion"
+            }
+          }
+        },
+        {
+          "definition": "Computing content digests. SHA-512 for OCFL content addressing, SHA-256 in the fixity block (DR-0075).\n",
+          "id": "message-digest-calculation",
+          "labels": {
+            "en": {
+              "prefLabel": "message digest calculation"
+            }
+          }
+        },
+        {
+          "definition": "Verifying stored content against recorded digests. Failures are recorded events, never silent re-copies.\n",
+          "id": "fixity-check",
+          "labels": {
+            "en": {
+              "prefLabel": "fixity check"
+            }
+          }
+        },
+        {
+          "definition": "Determining an object's format.",
+          "id": "format-identification",
+          "labels": {
+            "en": {
+              "prefLabel": "format identification"
+            }
+          }
+        },
+        {
+          "definition": "Malware scanning, performed in quarantine before Gate 1 (DR-0069).\n",
+          "id": "virus-check",
+          "labels": {
+            "en": {
+              "prefLabel": "virus check"
+            }
+          }
+        },
+        {
+          "definition": "Acquiring content from a source, including WARC capture of web resources (DR-0006).\n",
+          "id": "capture",
+          "labels": {
+            "en": {
+              "prefLabel": "capture"
+            }
+          }
+        },
+        {
+          "definition": "Producing a preservation-motivated derivative. The derivative is a distinct object with its own PROV lineage (DR-0003) and may live as a later version of the same OCFL object (DR-0074).\n",
+          "id": "migration-normalization",
+          "labels": {
+            "en": {
+              "prefLabel": "migration / normalization"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "PRES-002",
+        "PRES-003",
+        "PRES-007",
+        "SEC-002"
+      ],
+      "scope_note": "These are **pipeline events**, permanently distinct from historical world events (DR-0004). A capture is never a world event. Conflict register C-02.\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Deferred from the initial subset with recorded revisit triggers (DR-0060): bitstream-level objects (trigger: sub-file addressing need), environments (trigger: format-migration planning at scale), preservation-level semantics.\n"
+    },
+    "quantity-semantic-types": {
+      "_source": "vocabularies/quantity-semantic-types.yaml",
+      "authorised_by": [
+        "DR-0030"
+      ],
+      "closed": true,
+      "definition": "The semantic type of a quantitative assertion, preserving what the source actually expressed (record §44).\n",
+      "effective": "2026-08-16",
+      "id": "quantity-semantic-types",
+      "labels": {
+        "en": {
+          "prefLabel": "quantity semantic type"
+        }
+      },
+      "layer": "epistemic",
+      "members": [
+        {
+          "definition": "The source asserts a precise value.",
+          "id": "exact",
+          "labels": {
+            "en": {
+              "prefLabel": "exact"
+            }
+          }
+        },
+        {
+          "definition": "The source asserts a value as an approximation (\"about\", \"some\").",
+          "id": "approximate",
+          "labels": {
+            "en": {
+              "prefLabel": "approximate"
+            }
+          }
+        },
+        {
+          "definition": "A lower bound; the true value may be higher.",
+          "id": "at-least",
+          "labels": {
+            "en": {
+              "prefLabel": "at least"
+            }
+          }
+        },
+        {
+          "definition": "An upper bound; the true value may be lower.",
+          "id": "at-most",
+          "labels": {
+            "en": {
+              "prefLabel": "at most"
+            }
+          }
+        },
+        {
+          "definition": "A bounded interval with a stated minimum and maximum.",
+          "id": "range",
+          "labels": {
+            "en": {
+              "prefLabel": "range"
+            }
+          }
+        },
+        {
+          "definition": "A strict lower bound.",
+          "id": "greater-than",
+          "labels": {
+            "en": {
+              "prefLabel": "greater than"
+            }
+          }
+        },
+        {
+          "definition": "A strict upper bound.",
+          "id": "fewer-than",
+          "labels": {
+            "altLabel": [
+              "less than"
+            ],
+            "en": {
+              "prefLabel": "fewer than"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-011",
+        "DATA-005"
+      ],
+      "scope_note": "Aggregations must respect semantic type: a sum of at-leasts is an at-least, never an exact. \"At least 17\" must never become \"exactly 17\" (§44).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Quantity objects carry the original expression (in the original language where relevant), the semantic type, value(s) and units, significant precision, stated uncertainty, and derivation method for computed values. Normalized or comparable values are derived data linked by provenance (DR-0003) and never overwrite the original expression.\n"
+    },
+    "registration-statuses": {
+      "_source": "vocabularies/registration-statuses.yaml",
+      "authorised_by": [
+        "DR-0080"
+      ],
+      "closed": true,
+      "definition": "The registration status of a semantic-registry entry (SPEC-0004 §5).\n",
+      "depends_on_specs": [
+        "SPEC-0004"
+      ],
+      "effective": "2026-08-16",
+      "id": "registration-statuses",
+      "labels": {
+        "en": {
+          "prefLabel": "registration status"
+        }
+      },
+      "layer": "governance",
+      "members": [
+        {
+          "definition": "Proposed; **may not appear in data**.",
+          "id": "draft",
+          "labels": {
+            "en": {
+              "prefLabel": "draft"
+            }
+          }
+        },
+        {
+          "definition": "Usable in canonical data.",
+          "id": "effective",
+          "labels": {
+            "en": {
+              "prefLabel": "effective"
+            }
+          }
+        },
+        {
+          "definition": "Readable in existing data; not permitted for new data. Carries `replaced_by` and a migration note (§96).\n",
+          "id": "deprecated",
+          "labels": {
+            "en": {
+              "prefLabel": "deprecated"
+            }
+          }
+        },
+        {
+          "definition": "No longer applicable; retained for historical interpretation only.",
+          "id": "retired",
+          "labels": {
+            "en": {
+              "prefLabel": "retired"
+            }
+          }
+        }
+      ],
+      "not": "Not document status (see document-statuses), which governs controlled documents. Conflict register C-39.\n",
+      "satisfies_requirements": [
+        "DATA-008"
+      ],
+      "scope_note": "This vocabulary governs the registry's own entries, including itself.\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "**Nothing is ever deleted from the registry**: a dataset can outlive the vocabulary it used, and record §96 exists precisely so its meaning survives.\n"
+    },
+    "retention-tiers": {
+      "_source": "vocabularies/retention-tiers.yaml",
+      "authorised_by": [
+        "DR-0068"
+      ],
+      "closed": true,
+      "definition": "The retention decision applied to every acquired item at Gate 1, defaulting from its source registry entry (record §9).\n",
+      "depends_on_specs": [
+        "SPEC-0003"
+      ],
+      "effective": "2026-08-16",
+      "id": "retention-tiers",
+      "labels": {
+        "en": {
+          "prefLabel": "retention tier"
+        }
+      },
+      "layer": "pipeline",
+      "members": [
+        {
+          "definition": "Not retained. The acquisition event and its outcome are still recorded (§28) — the archive knows it saw this and let it go.\n",
+          "id": "discard",
+          "labels": {
+            "en": {
+              "prefLabel": "discard"
+            }
+          },
+          "storage": "none"
+        },
+        {
+          "definition": "A descriptive record is retained; content is not stored.",
+          "id": "metadata-only",
+          "labels": {
+            "en": {
+              "prefLabel": "metadata only"
+            }
+          },
+          "storage": "none"
+        },
+        {
+          "definition": "Retained with a review date, then re-decided.",
+          "id": "medium-term",
+          "labels": {
+            "en": {
+              "prefLabel": "medium term"
+            }
+          },
+          "storage": "ocfl-root:medium-term"
+        },
+        {
+          "definition": "Archival preservation under full OAIS/PREMIS treatment.",
+          "id": "permanent",
+          "labels": {
+            "en": {
+              "prefLabel": "permanent"
+            }
+          },
+          "storage": "ocfl-root:permanent"
+        }
+      ],
+      "open_questions": [
+        "Whether medium-term review is calendar-driven or volume-driven (SPEC-0003 §11)."
+      ],
+      "satisfies_requirements": [
+        "PRES-011"
+      ],
+      "scope_note": "Only `permanent` and `medium-term` items have bytes in OCFL, in **separate storage roots** so medium-term disposition can never touch the permanent archive (DR-0076).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Tiers **escalate freely**; a downgrade is a governed disposition decision with recorded rationale. Fragile or high-value sources may be collected at `permanent` before item-level relevance is known, and a source's escalation may trigger retrospective recovery from external archives.\n"
+    },
+    "review-tiers": {
+      "_source": "vocabularies/review-tiers.yaml",
+      "authorised_by": [
+        "DR-0063"
+      ],
+      "closed": true,
+      "definition": "The risk tiers governing how much review an identity confirmation — and, by extension, other consequential decisions — requires. Record §78's risk-based review model, made concrete.\n",
+      "depends_on_specs": [
+        "SPEC-0002"
+      ],
+      "effective": "2026-08-16",
+      "id": "review-tiers",
+      "labels": {
+        "en": {
+          "prefLabel": "review tier"
+        }
+      },
+      "layer": "governance",
+      "members": [
+        {
+          "definition": "Designation-record↔entity mappings and any identity used in a legal-layer conclusion (DR-0041 ownership paths, LEGAL-003).\n",
+          "id": "T1",
+          "labels": {
+            "en": {
+              "prefLabel": "T1 — highest"
+            }
+          },
+          "requires": "Human confirmation on discriminating evidence; a recorded review; the independence of evidence lines considered (DR-0028).\n"
+        },
+        {
+          "definition": "World actors appearing in consequential project assertions; cross-registry same-person links; individual physical items in tracing chains.\n",
+          "id": "T2",
+          "labels": {
+            "en": {
+              "prefLabel": "T2 — elevated"
+            }
+          },
+          "requires": "Human confirmation on discriminating evidence."
+        },
+        {
+          "definition": "Bibliographic identity (work/expression clustering), places with authoritative gazetteer identifiers, low-stakes dataset alignment.\n",
+          "id": "T3",
+          "labels": {
+            "en": {
+              "prefLabel": "T3 — routine"
+            }
+          },
+          "open_question": "Whether batch confirmations need sampling-based audit (SPEC-0002 §6); POL/PROC territory.\n",
+          "requires": "Human confirmation, which may be batch-wise; a single strong shared identifier suffices.\n"
+        }
+      ],
+      "satisfies_requirements": [
+        "EDIT-001",
+        "LEGAL-003"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "False merges remain costlier than missed matches at every tier (§16): when in doubt, entities stay separate and the match stays `proposed`.\n"
+    },
+    "rights-permissions": {
+      "_source": "vocabularies/rights-permissions.yaml",
+      "authorised_by": [
+        "DR-0002",
+        "DR-0067"
+      ],
+      "closed": true,
+      "definition": "What the project is permitted to do with material, recorded per rights statement (record §14).\n",
+      "effective": "2026-08-16",
+      "id": "rights-permissions",
+      "labels": {
+        "en": {
+          "prefLabel": "rights permission"
+        }
+      },
+      "layer": "governance",
+      "members": [
+        {
+          "definition": "The project may hold and preserve the material.",
+          "id": "may-preserve",
+          "labels": {
+            "en": {
+              "prefLabel": "may preserve"
+            }
+          }
+        },
+        {
+          "definition": "The project may display the material on a public surface.",
+          "id": "may-display",
+          "labels": {
+            "en": {
+              "prefLabel": "may display"
+            }
+          }
+        },
+        {
+          "definition": "The project may redistribute the material to third parties.",
+          "id": "may-redistribute",
+          "labels": {
+            "en": {
+              "prefLabel": "may redistribute"
+            }
+          }
+        },
+        {
+          "definition": "The project may make the material available at the subscriber tier.",
+          "id": "may-provide-to-subscribers",
+          "labels": {
+            "en": {
+              "prefLabel": "may provide to subscribers"
+            }
+          }
+        },
+        {
+          "definition": "Rights have not been determined. An explicit state requiring resolution before display or redistribution — never a default permission.\n",
+          "id": "unknown",
+          "labels": {
+            "en": {
+              "prefLabel": "unknown rights"
+            }
+          }
+        }
+      ],
+      "not": "An export licence (§65) is not a rights licence. Always spelled out. Conflict register C-31.\n",
+      "satisfies_requirements": [
+        "LEGAL-008"
+      ],
+      "scope_note": "Each permission is recorded with its rights basis (copyright, license, statute, policy) per PREMIS rights (DR-0002/DR-0060).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Preservation rights and republication rights are different (§14). The archive may preserve material it is not permitted to republish. `unknown` is an **explicit registry value**, never a null (DR-0029).\n"
+    },
+    "scheme-geolocation": {
+      "_source": "schemes/geolocation.yaml",
+      "authorised_by": [
+        "DR-0034"
+      ],
+      "conclusion": "I depicts location L, at the precision the assessment records.\n",
+      "critical_questions": [
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-distinctiveness",
+          "text": "Are the matched features distinctive enough to exclude other locations, or generic (a treeline, a standard apartment block) and therefore weakly discriminating?\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-reference-currency",
+          "text": "Is reference source R contemporaneous with the claimed date, or could construction, destruction, or seasonal change explain a mismatch — or a false match?\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-image-provenance",
+          "text": "Is I authentic and unmanipulated, and is this its earliest known appearance? An authentic image may be attached to a false context (§38); the earliest copy held is not necessarily the original.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-date-independence",
+          "text": "Is the claimed **date** established independently of the location, or inherited from the post that carried the image? Location and date are separate contextual assertions (§39).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-shadow-consistency",
+          "text": "Where solar geometry is used, are shadow direction and length consistent with the claimed date, time, and latitude?\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-precision",
+          "text": "Is the stated precision warranted — exact coordinates, or an area with an uncertainty radius? Representational precision is not accuracy (§43).\n"
+        }
+      ],
+      "definition": "From matched features between imagery and reference geodata to the claim that the imagery depicts a particular place.\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-16",
+      "id": "scheme-geolocation",
+      "labels": {
+        "en": {
+          "prefLabel": "argument from geolocation"
+        }
+      },
+      "layer": "argument",
+      "premises": [
+        {
+          "id": "features",
+          "text": "Image I contains features F1…Fn (terrain, structures, signage, shadows, vegetation, infrastructure).\n"
+        },
+        {
+          "id": "match",
+          "text": "Reference source R shows the same features in the same spatial relationship at location L.\n"
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-012",
+        "DATA-007"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "argument-scheme",
+      "usage_note": "A geolocation conclusion is an analyst-derived location, distinguished in the data from a source-supplied one (§46, CRMgeo's phenomenal/declarative distinction). Coordinates carry their derivation method and uncertainty as quantity objects (DR-0030).\n"
+    },
+    "scheme-witness-testimony": {
+      "_source": "schemes/witness-testimony.yaml",
+      "authorised_by": [
+        "DR-0034"
+      ],
+      "conclusion": "E occurred, at the likelihood band and confidence the assessment records.\n",
+      "critical_questions": [
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-position",
+          "text": "Was W actually positioned — in place, in time, with line of sight or other access — to observe E?\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-capacity",
+          "text": "Was W in a condition to observe and recall accurately (visibility, duration, stress, elapsed time before recording)?\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-bias",
+          "text": "Does W have an interest, affiliation, or pressure that bears on the account? Note: bias does not make an account false; it raises the scrutiny required.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-coercion",
+          "text": "Was the account given under coercion, captivity, or state supervision? Accounts from prisoners require particular care (Geneva III Art. 13; POL-0001 §5.4).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-internal-consistency",
+          "text": "Is the account internally consistent, and consistent across retellings?"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-independent-corroboration",
+          "text": "Is the account corroborated by an **independent** line? Corroboration by sources sharing this witness is not independent (DR-0028).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-transmission",
+          "text": "Is the account preserved as W gave it, or transmitted through translation, paraphrase, or edited republication? Each step is a derivation with its own provenance (DR-0003, DR-0019).\n"
+        }
+      ],
+      "definition": "From a witness's account of an event to the occurrence of that event.\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-16",
+      "id": "scheme-witness-testimony",
+      "labels": {
+        "en": {
+          "prefLabel": "argument from witness testimony"
+        }
+      },
+      "layer": "argument",
+      "premises": [
+        {
+          "id": "position",
+          "text": "Witness W was in a position to observe event E."
+        },
+        {
+          "id": "assertion",
+          "text": "W asserts that E occurred (as recorded in a preserved source)."
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-012"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "argument-scheme",
+      "usage_note": "Witness identity is held in the separable confidential store by default and is not structured into the research graph (POL-0001 §5.6, SEC-001). A scheme instance references a pseudonymous witness ID.\n"
+    },
+    "source-grades": {
+      "_source": "vocabularies/source-grades.yaml",
+      "authorised_by": [
+        "DR-0027"
+      ],
+      "axes": [
+        {
+          "definition": "An assessment of the source as such, independent of any particular item.",
+          "id": "source-reliability",
+          "labels": {
+            "en": {
+              "prefLabel": "source reliability"
+            }
+          },
+          "members": [
+            {
+              "id": "A",
+              "labels": {
+                "en": {
+                  "prefLabel": "completely reliable"
+                }
+              }
+            },
+            {
+              "id": "B",
+              "labels": {
+                "en": {
+                  "prefLabel": "usually reliable"
+                }
+              }
+            },
+            {
+              "id": "C",
+              "labels": {
+                "en": {
+                  "prefLabel": "fairly reliable"
+                }
+              }
+            },
+            {
+              "id": "D",
+              "labels": {
+                "en": {
+                  "prefLabel": "not usually reliable"
+                }
+              }
+            },
+            {
+              "id": "E",
+              "labels": {
+                "en": {
+                  "prefLabel": "unreliable"
+                }
+              }
+            },
+            {
+              "id": "F",
+              "labels": {
+                "en": {
+                  "prefLabel": "reliability cannot be judged"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "definition": "An assessment of the particular item, independent of its source's general standing.",
+          "id": "item-credibility",
+          "labels": {
+            "en": {
+              "prefLabel": "item credibility"
+            }
+          },
+          "members": [
+            {
+              "id": "1",
+              "labels": {
+                "en": {
+                  "prefLabel": "confirmed by other sources"
+                }
+              }
+            },
+            {
+              "id": "2",
+              "labels": {
+                "en": {
+                  "prefLabel": "probably true"
+                }
+              }
+            },
+            {
+              "id": "3",
+              "labels": {
+                "en": {
+                  "prefLabel": "possibly true"
+                }
+              }
+            },
+            {
+              "id": "4",
+              "labels": {
+                "en": {
+                  "prefLabel": "doubtful"
+                }
+              }
+            },
+            {
+              "id": "5",
+              "labels": {
+                "en": {
+                  "prefLabel": "improbable"
+                }
+              }
+            },
+            {
+              "id": "6",
+              "labels": {
+                "en": {
+                  "prefLabel": "truth cannot be judged"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "closed": true,
+      "definition": "A two-axis triage grade — source reliability × item credibility — in the Admiralty/NATO tradition, recorded to steer scrutiny depth and review priority.\n",
+      "effective": "2026-08-16",
+      "id": "source-grades",
+      "labels": {
+        "en": {
+          "prefLabel": "source grade"
+        }
+      },
+      "layer": "epistemic",
+      "mappings": [
+        {
+          "note": "Structure adopted; the project's use is confined to triage.",
+          "relation": "closeMatch",
+          "target": "NATO/Admiralty source evaluation (AJP-2.1 tradition)"
+        }
+      ],
+      "not": "Not a reliability score determining truth — the universal source-reliability score record §37 explicitly forbids.\n",
+      "satisfies_requirements": [
+        "EVID-008"
+      ],
+      "scope_note": "A propaganda outlet can publish an authentic document; a reputable institution can make an error. The grade prioritises attention, nothing more.\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "**Triage only.** Architecturally barred from propagating into any proposition's truth status, likelihood, or confidence (record §37, DR-0027). Assessments must cite evidence and reasoning, never a grade. A grade is itself an assessment with an assessor and basis, and is revisable.\n"
+    },
+    "source-types": {
+      "_source": "vocabularies/source-types.yaml",
+      "authorised_by": [
+        "DR-0067"
+      ],
+      "closed": false,
+      "definition": "The kind of source a registry entry describes, from record §8's source list.\n",
+      "depends_on_specs": [
+        "SPEC-0003"
+      ],
+      "effective": "2026-08-16",
+      "id": "source-types",
+      "labels": {
+        "en": {
+          "prefLabel": "source type"
+        }
+      },
+      "layer": "pipeline",
+      "members": [
+        {
+          "definition": "An official organ of a state other than Russia or Ukraine, publishing in its governmental capacity.\n",
+          "id": "government",
+          "labels": {
+            "en": {
+              "prefLabel": "government website or publication"
+            }
+          }
+        },
+        {
+          "definition": "A Russian state body, state-controlled outlet, or official of the Russian Federation or its occupation administrations, publishing in an official capacity.\n",
+          "id": "official-russian",
+          "labels": {
+            "en": {
+              "prefLabel": "official Russian source"
+            }
+          },
+          "scope_note": "Typed separately from `government` because such material is simultaneously primary evidence of official position and a principal propaganda corpus (§54). The type drives collection and review defaults; it drives no truth judgment (DR-0027).\n"
+        },
+        {
+          "definition": "A Ukrainian state body or official publishing in an official capacity.\n",
+          "id": "official-ukrainian",
+          "labels": {
+            "en": {
+              "prefLabel": "official Ukrainian source"
+            }
+          },
+          "scope_note": "Typed separately for the same structural reason as `official-russian`: wartime official communication is a party's account, evidence of what that party stated (§32). The project is supportive of Ukrainian sovereignty and applies the same evidentiary discipline regardless (record §1).\n"
+        },
+        {
+          "definition": "Armed forces, intelligence services, or security agencies of any state, publishing institutionally.\n",
+          "id": "military-security-institution",
+          "labels": {
+            "en": {
+              "prefLabel": "military or security institution"
+            }
+          }
+        },
+        {
+          "definition": "An intergovernmental body — UN organs and agencies, OSCE, ICC, Council of Europe, EU institutions in their institutional capacity.\n",
+          "id": "international-organisation",
+          "labels": {
+            "en": {
+              "prefLabel": "international organisation"
+            }
+          }
+        },
+        {
+          "definition": "An outlet publishing news reporting as its principal activity.\n",
+          "id": "news-media",
+          "labels": {
+            "en": {
+              "prefLabel": "news media"
+            }
+          }
+        },
+        {
+          "definition": "An outlet or collective whose principal output is original investigation rather than daily reporting.\n",
+          "id": "investigative-media",
+          "labels": {
+            "en": {
+              "prefLabel": "investigative media"
+            }
+          },
+          "scope_note": "Distinguished from `news-media` because such outlets typically publish underlying documents and methodology, which affects both what is worth capturing and what dependence relations to expect (DR-0028).\n"
+        },
+        {
+          "definition": "A research institution publishing analysis, typically with a policy orientation.\n",
+          "id": "think-tank",
+          "labels": {
+            "en": {
+              "prefLabel": "think tank"
+            }
+          }
+        },
+        {
+          "definition": "A non-governmental organisation publishing documentation, reporting, or advocacy — including human-rights monitors and humanitarian bodies.\n",
+          "id": "ngo",
+          "labels": {
+            "en": {
+              "prefLabel": "NGO"
+            }
+          }
+        },
+        {
+          "definition": "A syndication feed used as an acquisition channel.\n",
+          "id": "feed",
+          "labels": {
+            "en": {
+              "prefLabel": "RSS/Atom feed"
+            }
+          },
+          "scope_note": "A collection *method* rather than a kind of publisher; used where the feed is the registered entry point and the underlying publisher is recorded separately.\n"
+        },
+        {
+          "definition": "A publicly accessible account or page on a social platform other than Telegram.\n",
+          "id": "social-media",
+          "labels": {
+            "en": {
+              "prefLabel": "public social media"
+            }
+          }
+        },
+        {
+          "definition": "A broadcast Telegram channel, where posting is restricted to operators.\n",
+          "id": "telegram-channel",
+          "labels": {
+            "en": {
+              "prefLabel": "Telegram channel"
+            }
+          }
+        },
+        {
+          "definition": "A public Telegram group or chat in which participants post.\n",
+          "id": "telegram-group",
+          "labels": {
+            "en": {
+              "prefLabel": "public Telegram group or chat"
+            }
+          },
+          "scope_note": "Typed separately from `telegram-channel` because participant content raises materially different personal-data exposure: group members are typically private individuals, so the more protective structuring defaults apply (POL-0001 §5.8, DR-0071).\n"
+        },
+        {
+          "definition": "A channel or account on a video hosting platform.\n",
+          "id": "video-platform",
+          "labels": {
+            "en": {
+              "prefLabel": "video platform"
+            }
+          }
+        },
+        {
+          "definition": "An audio programme or its published transcripts.\n",
+          "id": "podcast",
+          "labels": {
+            "en": {
+              "prefLabel": "podcast or transcript source"
+            }
+          }
+        },
+        {
+          "definition": "A third-party web archive from which material is retrieved.\n",
+          "id": "web-archive",
+          "labels": {
+            "en": {
+              "prefLabel": "web archive"
+            }
+          },
+          "scope_note": "Material retrieved here carries a dependence relation to the original publisher and is not an independent line (DR-0028); the archive is a custodian, not the origin (§23).\n"
+        },
+        {
+          "definition": "A structured dataset published for reuse.\n",
+          "id": "public-dataset",
+          "labels": {
+            "en": {
+              "prefLabel": "public dataset"
+            }
+          }
+        },
+        {
+          "definition": "A designating authority and the lists it publishes (UN committees, EU, OFAC, OFSI, and national equivalents).\n",
+          "id": "sanctions-authority",
+          "labels": {
+            "en": {
+              "prefLabel": "sanctions authority or list"
+            }
+          },
+          "scope_note": "Its published rationales are authority-attributed assertions, not project conclusions (DR-0038, DR-0039).\n"
+        },
+        {
+          "definition": "A court, tribunal, or prosecuting authority publishing indictments, judgments, or case records.\n",
+          "id": "court-prosecutor",
+          "labels": {
+            "en": {
+              "prefLabel": "court or prosecutor publication"
+            }
+          },
+          "scope_note": "Allegations and findings are distinguished by procedural posture, never conflated (§62–63, LEGAL-006).\n"
+        },
+        {
+          "definition": "An official register of companies, directors, or beneficial ownership.\n",
+          "id": "corporate-registry",
+          "labels": {
+            "en": {
+              "prefLabel": "corporate or beneficial-ownership registry"
+            }
+          },
+          "scope_note": "Registry entries are documentary assertions about the corporate record, not established facts about control (§32, DR-0040).\n"
+        },
+        {
+          "definition": "Customs records, trade statistics, vessel or aircraft tracking, and comparable movement data.\n",
+          "id": "trade-transport-data",
+          "labels": {
+            "en": {
+              "or transport data": null,
+              "prefLabel": "customs",
+              "trade": null
+            }
+          },
+          "scope_note": "Declarations are documentary assertions (§67); machine-generated tracking carries the §49 metadata including spoofing risk.\n"
+        },
+        {
+          "definition": "Material submitted to the project by an external party.\n",
+          "id": "third-party-submission",
+          "labels": {
+            "en": {
+              "prefLabel": "third-party submission"
+            }
+          },
+          "scope_note": "Enters through quarantine with submitter claims held separately from project conclusions, and confidential identity in the separable store (DR-0069, SEC-001). At-scale intake remains constrained (DR-0071).\n"
+        }
+      ],
+      "satisfies_requirements": [
+        "OPS-001"
+      ],
+      "scope_note": "Source type is descriptive and drives no automatic trust judgment. Triage grading is a separate, explicitly triage-only vocabulary (see source-grades, DR-0027).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "**Open vocabulary** — new source types may be added by registry process with rationale (DR-0080), since §8's list is explicitly non-exhaustive and the collection programme will encounter kinds not anticipated here.\n"
+    },
+    "territorial-statuses": {
+      "_source": "vocabularies/territorial-statuses.yaml",
+      "authorised_by": [
+        "DR-0044",
+        "DR-0015"
+      ],
+      "closed": true,
+      "definition": "Typed, evidence-backed temporal relations between actors and territorial extents, grounded in period phenomena (record §46).\n",
+      "effective": "2026-08-16",
+      "id": "territorial-statuses",
+      "labels": {
+        "en": {
+          "prefLabel": "territorial status"
+        }
+      },
+      "layer": "legal",
+      "members": [
+        {
+          "definition": "An actor's assertion of sovereign title over a territory.",
+          "id": "sovereignty-claim",
+          "labels": {
+            "en": {
+              "prefLabel": "sovereignty claim"
+            }
+          }
+        },
+        {
+          "definition": "Recognition of a sovereignty claim by another state or body. A recognition or non-recognition instrument (e.g. a UN General Assembly resolution) is an **authority-attributed assertion** (§62), not a project conclusion.\n",
+          "id": "international-recognition",
+          "labels": {
+            "en": {
+              "prefLabel": "international recognition"
+            }
+          }
+        },
+        {
+          "definition": "Explicit refusal to recognise a claim or a purported change of status.",
+          "id": "non-recognition",
+          "labels": {
+            "en": {
+              "prefLabel": "non-recognition"
+            }
+          }
+        },
+        {
+          "definition": "The exercise of civil administrative authority over a territory.",
+          "id": "administration",
+          "labels": {
+            "en": {
+              "prefLabel": "administration"
+            }
+          }
+        },
+        {
+          "definition": "Effective control of territory by a foreign armed force, as a spatiotemporal phenomenon with a time-span.\n",
+          "id": "occupation",
+          "labels": {
+            "en": {
+              "prefLabel": "occupation"
+            }
+          }
+        },
+        {
+          "definition": "Actual control exercised over a territory irrespective of legal title or recognition.\n",
+          "id": "de-facto-control",
+          "labels": {
+            "en": {
+              "prefLabel": "de facto control"
+            }
+          }
+        }
+      ],
+      "not": "Territorial control is never corporate control (see interest-types) or export control. Conflict register C-30.\n",
+      "satisfies_requirements": [
+        "DATA-007"
+      ],
+      "scope_note": "An occupation is a spatiotemporal phenomenon (CRM period pattern), not an attribute of a place. Geometry attaches per the place model with temporal validity (DR-0010).\n",
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Each is a separate relation with its own time-span, evidence, and asserting party where it is a legal characterisation. Competing characterisations of the same territory and period **coexist** under the epistemic layer (§40) — the system does not take silent sides, and the project's own view is an explicit project assertion (§33).\n"
+    }
+  },
+  "enumerations": {
+    "absence-states": {
+      "closed": true,
+      "values": [
+        "indeterminate",
+        "lost-or-destroyed",
+        "no-evidence-found",
+        "not-applicable",
+        "not-researched",
+        "redacted",
+        "unavailable",
+        "unknown",
+        "withheld"
+      ]
+    },
+    "access-tiers": {
+      "closed": true,
+      "values": [
+        "confidential",
+        "internal",
+        "investigator-restricted",
+        "private-preservation",
+        "public",
+        "researcher-restricted",
+        "subscriber"
+      ]
+    },
+    "analytic-confidence": {
+      "closed": true,
+      "values": [
+        "high",
+        "low",
+        "moderate"
+      ]
+    },
+    "classification-systems": {
+      "closed": false,
+      "values": [
+        "cn",
+        "common-high-priority-list",
+        "eccn",
+        "eu-dual-use",
+        "hs",
+        "national-export-control",
+        "wassenaar"
+      ]
+    },
+    "completeness-states": {
+      "closed": true,
+      "values": [
+        "archival-copy",
+        "derivative",
+        "fragment",
+        "metadata-only",
+        "original",
+        "screenshot",
+        "transcript"
+      ]
+    },
+    "defeater-types": {
+      "closed": true,
+      "values": [
+        "rebutting",
+        "undercutting",
+        "undermining"
+      ]
+    },
+    "dependence-relation-types": {
+      "closed": true,
+      "values": [
+        "cites",
+        "common-evidentiary-origin",
+        "derives-from",
+        "reposts",
+        "shares-underlying-document",
+        "shares-underlying-witness",
+        "syndicates"
+      ]
+    },
+    "document-statuses": {
+      "closed": true,
+      "values": [
+        "approved",
+        "draft",
+        "effective",
+        "proposed",
+        "superseded",
+        "withdrawn"
+      ]
+    },
+    "entity-statuses": {
+      "closed": true,
+      "values": [
+        "candidate",
+        "canonical",
+        "disproved",
+        "fabricated"
+      ]
+    },
+    "epistemic-categories": {
+      "closed": true,
+      "values": [
+        "assessment",
+        "claim",
+        "finding",
+        "hypothesis",
+        "observation",
+        "project-conclusion"
+      ]
+    },
+    "identifier-types": {
+      "closed": false,
+      "values": [
+        "aircraft-registration",
+        "company-registration-number",
+        "icao-24bit",
+        "imo",
+        "lei",
+        "mmsi",
+        "official-registry-id",
+        "official-sanctions-id",
+        "opensanctions",
+        "tax-id",
+        "wikidata"
+      ]
+    },
+    "interest-types": {
+      "closed": true,
+      "values": [
+        "appointment-rights",
+        "beneficial-ownership",
+        "contractual-control",
+        "de-facto-control",
+        "direct-ownership",
+        "indirect-ownership",
+        "legal-ownership",
+        "managerial-control",
+        "nominee-arrangement",
+        "ultimate-beneficial-ownership",
+        "voting-rights"
+      ]
+    },
+    "likelihood-bands": {
+      "closed": true,
+      "values": [
+        "almost-certain",
+        "almost-no-chance",
+        "likely",
+        "roughly-even-chance",
+        "unlikely",
+        "very-likely",
+        "very-unlikely"
+      ]
+    },
+    "match-states": {
+      "closed": true,
+      "values": [
+        "confirmed",
+        "proposed",
+        "rejected",
+        "under-review",
+        "withdrawn"
+      ]
+    },
+    "premis-event-types": {
+      "closed": true,
+      "values": [
+        "capture",
+        "fixity-check",
+        "format-identification",
+        "ingestion",
+        "message-digest-calculation",
+        "migration-normalization",
+        "virus-check"
+      ]
+    },
+    "quantity-semantic-types": {
+      "closed": true,
+      "values": [
+        "approximate",
+        "at-least",
+        "at-most",
+        "exact",
+        "fewer-than",
+        "greater-than",
+        "range"
+      ]
+    },
+    "registration-statuses": {
+      "closed": true,
+      "values": [
+        "deprecated",
+        "draft",
+        "effective",
+        "retired"
+      ]
+    },
+    "retention-tiers": {
+      "closed": true,
+      "values": [
+        "discard",
+        "medium-term",
+        "metadata-only",
+        "permanent"
+      ]
+    },
+    "review-tiers": {
+      "closed": true,
+      "values": [
+        "T1",
+        "T2",
+        "T3"
+      ]
+    },
+    "rights-permissions": {
+      "closed": true,
+      "values": [
+        "may-display",
+        "may-preserve",
+        "may-provide-to-subscribers",
+        "may-redistribute",
+        "unknown"
+      ]
+    },
+    "source-grades": {
+      "closed": true,
+      "values": {
+        "item-credibility": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "source-reliability": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F"
+        ]
+      }
+    },
+    "source-types": {
+      "closed": false,
+      "values": [
+        "corporate-registry",
+        "court-prosecutor",
+        "feed",
+        "government",
+        "international-organisation",
+        "investigative-media",
+        "military-security-institution",
+        "news-media",
+        "ngo",
+        "official-russian",
+        "official-ukrainian",
+        "podcast",
+        "public-dataset",
+        "sanctions-authority",
+        "social-media",
+        "telegram-channel",
+        "telegram-group",
+        "think-tank",
+        "third-party-submission",
+        "trade-transport-data",
+        "video-platform",
+        "web-archive"
+      ]
+    },
+    "territorial-statuses": {
+      "closed": true,
+      "values": [
+        "administration",
+        "de-facto-control",
+        "international-recognition",
+        "non-recognition",
+        "occupation",
+        "sovereignty-claim"
+      ]
+    }
+  },
+  "generated_by": "registry/compile.py",
+  "layers": [
+    "pipeline",
+    "world",
+    "documentary",
+    "epistemic",
+    "argument",
+    "legal",
+    "governance"
+  ],
+  "registry": {
+    "authoring_language": "en",
+    "effective": "2026-08-16",
+    "id": "uiw-semantic-registry",
+    "status": "effective",
+    "title": "Ukraine's Second War of Independence — Semantic Registry",
+    "version": "0.1.0"
+  },
+  "specification": "SPEC-0005"
+}

@@ -14,6 +14,20 @@ registry:
   steward: founder
   authorised_by: [DR-0050, DR-0078, DR-0079, DR-0080, DR-0081]
 
+# Namespace used by the SKOS/RDF projection (SPEC-0005).
+namespaces:
+  base: "https://ukraineindependencewar.org/ns/registry#"
+  prefix: uiw
+  provisional: true
+  note: >
+    Provisional. Record §15 forbids freezing a custom identifier syntax before
+    researching established patterns, and the identifier design remains open
+    (Q-12). The compiler reads the namespace from here, so changing it is a
+    configuration edit rather than a code change — but note that changing it
+    changes every generated URI, which is a structural change requiring a
+    Decision Record (DR-0080) once anything external has consumed the
+    projection.
+
 changelog:
   - version: "0.1.0"
     date: 2026-08-16

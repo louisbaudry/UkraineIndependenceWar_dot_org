@@ -1,0 +1,1604 @@
+# SKOS/RDF projection of the semantic registry.
+#
+# DERIVED ARTIFACT — do not edit. The source of truth is the YAML
+# under registry/ (DR-0078). Regenerate with registry/compile.py.
+# Mapping and its documented export losses: SPEC-0005.
+# Registry version: 0.1.0
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix uiw: <https://ukraineindependencewar.org/ns/registry#> .
+
+uiw:uiw-semantic-registry
+    a skos:ConceptScheme ;
+    skos:prefLabel "Ukraine's Second War of Independence — Semantic Registry"@en ;
+    uiw:version "0.1.0" ;
+    uiw:status "effective" ;
+    dcterms:issued "2026-08-16" .
+
+uiw:absence-states
+    a skos:ConceptScheme ;
+    skos:prefLabel "absence state"@en ;
+    skos:definition "Typed states expressing why a value is absent. A missing value never silently means \"no\" (record §41, Principle 8)."@en ;
+    skos:scopeNote "This vocabulary will be exercised heavily in the export-control domain, where licensing data is rarely public (DR-0042)."@en ;
+    skos:note "Schema rejects null wherever an absence state is required. Explicit negative assertions (\"X did not occur\", \"no license was issued\") are assertions like any other: attributed, dated, evidence-backed."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "epistemic" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0029" ;
+    uiw:satisfies_requirements "EVID-010", "LEGAL-008" ;
+    uiw:depends_on_specs "SPEC-0001" .
+
+uiw:absence-states--unknown
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "unknown"@en ;
+    skos:definition "The value is not known to the project and its knowability is not characterised."@en .
+
+uiw:absence-states--not-researched
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "not researched"@en ;
+    skos:definition "No research has been attempted. Distinct from having looked and found nothing."@en .
+
+uiw:absence-states--no-evidence-found
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "no evidence found"@en ;
+    skos:definition "Research was attempted and found insufficient evidence. Records the scope and method of the search where consequential (§76)."@en ;
+    skos:scopeNote "Not: Not proof of non-occurrence. \"We searched and found insufficient evidence\" is not \"we proved it did not happen\" (§76)."@en .
+
+uiw:absence-states--unavailable
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "unavailable"@en ;
+    skos:definition "The value exists somewhere but the project cannot obtain it."@en .
+
+uiw:absence-states--withheld
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "withheld"@en ;
+    skos:definition "The value is known to the project but deliberately not exposed at this access tier — for source protection, legal, or privacy reasons."@en .
+
+uiw:absence-states--redacted
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "redacted"@en ;
+    skos:definition "The value was removed under governed redaction (DR-0077), leaving a tombstone recording the fact, date, authority, and grounds."@en .
+
+uiw:absence-states--lost-or-destroyed
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "lost or destroyed"@en ;
+    skos:definition "The value existed and is established to be irrecoverable."@en .
+
+uiw:absence-states--not-applicable
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "not applicable"@en ;
+    skos:definition "The field has no meaning for this subject."@en .
+
+uiw:absence-states--indeterminate
+    a skos:Concept ;
+    skos:inScheme uiw:absence-states ;
+    skos:topConceptOf uiw:absence-states ;
+    skos:prefLabel "indeterminate"@en ;
+    skos:definition "The value is genuinely indeterminate rather than merely unknown — the question has no determinate answer."@en .
+
+uiw:access-tiers
+    a skos:ConceptScheme ;
+    skos:prefLabel "access tier"@en ;
+    skos:definition "The publication/access tier at which an object or assertion is available (record §12)."@en ;
+    skos:scopeNote "Access tiers never create competing versions of historical truth: all tiers read the same canonical assertions, and tier affects visibility only, never values (§4, ARCH-006). Restricted material must be inaccessible below its tier in the canonical store, every projection, the search index, and published surfaces (SEC-004)."@en ;
+    skos:note "**One of four independent dimensions**, never collapsed: access tier, sensitivity, rights (see rights-permissions), and evidentiary disclosure. There is no universal `is_public` flag (§12, SEC-003)."@en ;
+    skos:scopeNote "Not: Not source accessibility (§27) — whether a *source in the world* is public, paywalled, deleted, or archived is a different vocabulary and never shares a field. Conflict register C-16."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "governance" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0067", "DR-0072" ;
+    uiw:satisfies_requirements "SEC-003", "SEC-004", "ARCH-006", "PRES-012" ;
+    uiw:depends_on_specs "SPEC-0003" .
+
+uiw:access-tiers--public
+    a skos:Concept ;
+    skos:inScheme uiw:access-tiers ;
+    skos:topConceptOf uiw:access-tiers ;
+    skos:prefLabel "public"@en ;
+    skos:definition "Openly available. The public historical archive remains meaningfully open (§4)."@en .
+
+uiw:access-tiers--subscriber
+    a skos:Concept ;
+    skos:inScheme uiw:access-tiers ;
+    skos:topConceptOf uiw:access-tiers ;
+    skos:prefLabel "subscriber"@en ;
+    skos:definition "Available to subscribers of professional datasets and tools (§4)."@en .
+
+uiw:access-tiers--internal
+    a skos:Concept ;
+    skos:inScheme uiw:access-tiers ;
+    skos:topConceptOf uiw:access-tiers ;
+    skos:prefLabel "internal"@en ;
+    skos:definition "Available to the project team only."@en .
+
+uiw:access-tiers--confidential
+    a skos:Concept ;
+    skos:inScheme uiw:access-tiers ;
+    skos:topConceptOf uiw:access-tiers ;
+    skos:prefLabel "confidential"@en ;
+    skos:definition "Restricted beyond internal — including confidential source identity, which additionally lives in a separable store (SEC-001, DR-0059)."@en .
+
+uiw:access-tiers--researcher-restricted
+    a skos:Concept ;
+    skos:inScheme uiw:access-tiers ;
+    skos:topConceptOf uiw:access-tiers ;
+    skos:prefLabel "researcher restricted"@en ;
+    skos:definition "Available to named external researchers under agreed terms."@en .
+
+uiw:access-tiers--investigator-restricted
+    a skos:Concept ;
+    skos:inScheme uiw:access-tiers ;
+    skos:topConceptOf uiw:access-tiers ;
+    skos:prefLabel "investigator restricted"@en ;
+    skos:definition "Available to named investigative or prosecutorial bodies under agreed terms."@en .
+
+uiw:access-tiers--private-preservation
+    a skos:Concept ;
+    skos:inScheme uiw:access-tiers ;
+    skos:topConceptOf uiw:access-tiers ;
+    skos:prefLabel "private preservation"@en ;
+    skos:definition "Preserved but not disclosed at any tier — material the archive may hold but not expose (Principle 11, §14)."@en .
+
+uiw:analytic-confidence
+    a skos:ConceptScheme ;
+    skos:prefLabel "analytic confidence"@en ;
+    skos:definition "The strength of an analytic judgment, derived from stated evidence quality, corroboration weighted by independence (DR-0028), and reasoning strength. The second of the two uncertainty dimensions, never collapsed into the first."@en ;
+    skos:scopeNote "Confidence is about the judgment; likelihood is about the proposition. A high-confidence judgment that something is very unlikely is coherent and common."@en ;
+    skos:note "Bare numeric confidence scores are prohibited (DR-0026). Confidence is derived from stated grounds — an assessment must be able to say why its confidence is what it is."@en ;
+    skos:scopeNote "Not: Not likelihood (see likelihood-bands). Not a statistical confidence interval. Conflict register C-18."@en ;
+    uiw:closeMatchTarget "ICD 203 confidence levels" ;
+    uiw:closeMatchTarget "IPCC confidence scale (evidence × agreement)" ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "epistemic" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0026" ;
+    uiw:satisfies_requirements "EVID-006" .
+
+uiw:analytic-confidence--low
+    a skos:Concept ;
+    skos:inScheme uiw:analytic-confidence ;
+    skos:topConceptOf uiw:analytic-confidence ;
+    skos:prefLabel "low confidence"@en ;
+    skos:definition "Evidence is sparse, of uncertain quality, or drawn from dependent lines; or the reasoning relies on unverified assumptions."@en .
+
+uiw:analytic-confidence--moderate
+    a skos:Concept ;
+    skos:inScheme uiw:analytic-confidence ;
+    skos:topConceptOf uiw:analytic-confidence ;
+    skos:prefLabel "moderate confidence"@en ;
+    skos:definition "Evidence is adequate and partly corroborated by independent lines; some gaps or unresolved defeaters remain."@en .
+
+uiw:analytic-confidence--high
+    a skos:Concept ;
+    skos:inScheme uiw:analytic-confidence ;
+    skos:topConceptOf uiw:analytic-confidence ;
+    skos:prefLabel "high confidence"@en ;
+    skos:definition "Evidence is strong and corroborated across independent lines; raised defeaters have been addressed; reasoning is explicit and reviewed."@en .
+
+uiw:classification-systems
+    a skos:ConceptScheme ;
+    skos:prefLabel "classification system"@en ;
+    skos:definition "The regulatory classification systems under which a product may be classified (record §66)."@en ;
+    skos:scopeNote "A product's classification is contextual, not intrinsic: the same good may classify differently by jurisdiction and over time."@en ;
+    skos:note "**Open vocabulary** — national export-control regimes vary and more will be encountered; additions by registry process (DR-0080). Every classification assertion records its system, jurisdiction, asserting authority, and validity period, and is typed as official, declared, or project-analytical (§66). Classifications attach to **product types** (DR-0014), and to individual items only where evidence individuates."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "false"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "legal" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0042" ;
+    uiw:satisfies_requirements "LEGAL-005" .
+
+uiw:classification-systems--hs
+    a skos:Concept ;
+    skos:inScheme uiw:classification-systems ;
+    skos:topConceptOf uiw:classification-systems ;
+    skos:prefLabel "Harmonized System (HS)"@en ;
+    skos:definition "WCO tariff nomenclature used in customs declarations."@en .
+
+uiw:classification-systems--cn
+    a skos:Concept ;
+    skos:inScheme uiw:classification-systems ;
+    skos:topConceptOf uiw:classification-systems ;
+    skos:prefLabel "Combined Nomenclature (CN)"@en ;
+    skos:definition "EU tariff nomenclature extending HS."@en .
+
+uiw:classification-systems--eccn
+    a skos:Concept ;
+    skos:inScheme uiw:classification-systems ;
+    skos:topConceptOf uiw:classification-systems ;
+    skos:prefLabel "ECCN"@en ;
+    skos:definition "US Export Control Classification Number under the EAR."@en .
+
+uiw:classification-systems--eu-dual-use
+    a skos:Concept ;
+    skos:inScheme uiw:classification-systems ;
+    skos:topConceptOf uiw:classification-systems ;
+    skos:prefLabel "EU dual-use classification"@en ;
+    skos:definition "Classification under EU Regulation 2021/821 annexes."@en .
+
+uiw:classification-systems--wassenaar
+    a skos:Concept ;
+    skos:inScheme uiw:classification-systems ;
+    skos:topConceptOf uiw:classification-systems ;
+    skos:prefLabel "Wassenaar control list"@en ;
+    skos:definition "Multilateral control-list classification upstream of national regimes."@en .
+
+uiw:classification-systems--common-high-priority-list
+    a skos:Concept ;
+    skos:inScheme uiw:classification-systems ;
+    skos:topConceptOf uiw:classification-systems ;
+    skos:prefLabel "Common High Priority List"@en ;
+    skos:definition "The coordinated list of battlefield-relevant goods used in export-control enforcement against Russian procurement."@en .
+
+uiw:classification-systems--national-export-control
+    a skos:Concept ;
+    skos:inScheme uiw:classification-systems ;
+    skos:topConceptOf uiw:classification-systems ;
+    skos:prefLabel "national export-control classification"@en ;
+    skos:definition "A national regime's classification not covered by a more specific member; the jurisdiction is recorded on the assertion."@en .
+
+uiw:completeness-states
+    a skos:ConceptScheme ;
+    skos:prefLabel "completeness state"@en ;
+    skos:definition "What the archive actually possesses of a documentary item, carried on the holding (record §26)."@en ;
+    skos:note "Never imply possession of a full document when only a partial representation survives (§26). A fragment carries its locus within the whole. External custodians' copies are holdings with a non-project custodian and no representation link."@en ;
+    skos:scopeNote "Not: A holdings fragment (partial possession) is not a fragment selector (annotation locus syntax). Conflict register C-14."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "documentary" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0061" ;
+    uiw:satisfies_requirements "PRES-004" ;
+    uiw:depends_on_specs "SPEC-0001" .
+
+uiw:completeness-states--original
+    a skos:Concept ;
+    skos:inScheme uiw:completeness-states ;
+    skos:topConceptOf uiw:completeness-states ;
+    skos:prefLabel "original"@en ;
+    skos:definition "The original object as acquired."@en ;
+    skos:scopeNote "The earliest copy held by the project is not necessarily *the* original (§38); this records what the archive holds, not a provenance claim."@en .
+
+uiw:completeness-states--archival-copy
+    a skos:Concept ;
+    skos:inScheme uiw:completeness-states ;
+    skos:topConceptOf uiw:completeness-states ;
+    skos:prefLabel "archival copy"@en ;
+    skos:definition "A complete copy acquired from an archive or intermediary custodian."@en .
+
+uiw:completeness-states--derivative
+    a skos:Concept ;
+    skos:inScheme uiw:completeness-states ;
+    skos:topConceptOf uiw:completeness-states ;
+    skos:prefLabel "derivative"@en ;
+    skos:definition "A processed form — normalized, transcoded, or otherwise derived."@en .
+
+uiw:completeness-states--screenshot
+    a skos:Concept ;
+    skos:inScheme uiw:completeness-states ;
+    skos:topConceptOf uiw:completeness-states ;
+    skos:prefLabel "screenshot"@en ;
+    skos:definition "A rendered capture of appearance, not the underlying object."@en .
+
+uiw:completeness-states--transcript
+    a skos:Concept ;
+    skos:inScheme uiw:completeness-states ;
+    skos:topConceptOf uiw:completeness-states ;
+    skos:prefLabel "transcript"@en ;
+    skos:definition "A textual rendering of spoken or handwritten content."@en .
+
+uiw:completeness-states--fragment
+    a skos:Concept ;
+    skos:inScheme uiw:completeness-states ;
+    skos:topConceptOf uiw:completeness-states ;
+    skos:prefLabel "fragment"@en ;
+    skos:definition "A partial representation, carrying its locus within the whole."@en .
+
+uiw:completeness-states--metadata-only
+    a skos:Concept ;
+    skos:inScheme uiw:completeness-states ;
+    skos:topConceptOf uiw:completeness-states ;
+    skos:prefLabel "metadata only"@en ;
+    skos:definition "A descriptive record with no content held — by rights, sensitivity, or volume decision (DR-0068)."@en .
+
+uiw:defeater-types
+    a skos:ConceptScheme ;
+    skos:prefLabel "defeater type"@en ;
+    skos:definition "The three ways an argument can be attacked, from the structured argumentation tradition (ASPIC+/ABA)."@en ;
+    skos:scopeNote "The distinction is load-bearing for evidence work: a forged document and a challenged interpretation of an authentic document are different attacks requiring different answers (§38)."@en ;
+    skos:note "An attacked argument with no resolution remains **visibly contested**; \"unresolved\" is a legitimate end-state (record §40). No computation adjudicates the outcome (DR-0036)."@en ;
+    skos:scopeNote "Not: \"Attack\" here is an argumentation-theoretic conflict relation, never a military attack — those live in the world layer. Always layer-qualified. Conflict register C-24."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "argument" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0033" ;
+    uiw:satisfies_requirements "EVID-012" ;
+    uiw:depends_on_specs "SPEC-0001" .
+
+uiw:defeater-types--rebutting
+    a skos:Concept ;
+    skos:inScheme uiw:defeater-types ;
+    skos:topConceptOf uiw:defeater-types ;
+    skos:prefLabel "rebutting"@en ;
+    skos:definition "Attacks the conclusion itself — counter-evidence for the opposite."@en .
+
+uiw:defeater-types--undercutting
+    a skos:Concept ;
+    skos:inScheme uiw:defeater-types ;
+    skos:topConceptOf uiw:defeater-types ;
+    skos:prefLabel "undercutting"@en ;
+    skos:definition "Attacks the inference link, leaving the premises intact — e.g. the document is authentic but does not show what is claimed. A dependence relation (DR-0028) undercuts a corroboration argument."@en .
+
+uiw:defeater-types--undermining
+    a skos:Concept ;
+    skos:inScheme uiw:defeater-types ;
+    skos:topConceptOf uiw:defeater-types ;
+    skos:prefLabel "undermining"@en ;
+    skos:definition "Attacks a premise — e.g. the document is forged, or the witness was not present. Authenticity challenges under §38 enter here."@en .
+
+uiw:dependence-relation-types
+    a skos:ConceptScheme ;
+    skos:prefLabel "dependence relation"@en ;
+    skos:definition "Typed relations recording how one source depends on another, so that corroboration counts independent lines only (record §36)."@en ;
+    skos:scopeNote "Five publications repeating one original report are not five independent confirmations (§36). A dependence relation *undercuts* a corroboration argument (DR-0033)."@en ;
+    skos:note "Independence is a **researched conclusion** — the established absence of dependence — never a default assumption. Known relationships may be declared at source-registry level (DR-0067) and inherited as a dependence hypothesis by every item, rather than rediscovered per article."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "epistemic" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0028" ;
+    uiw:satisfies_requirements "EVID-009" ;
+    uiw:depends_on_specs "SPEC-0003" .
+
+uiw:dependence-relation-types--cites
+    a skos:Concept ;
+    skos:inScheme uiw:dependence-relation-types ;
+    skos:topConceptOf uiw:dependence-relation-types ;
+    skos:prefLabel "cites"@en ;
+    skos:definition "The source explicitly references the other as its basis."@en .
+
+uiw:dependence-relation-types--reposts
+    a skos:Concept ;
+    skos:inScheme uiw:dependence-relation-types ;
+    skos:topConceptOf uiw:dependence-relation-types ;
+    skos:prefLabel "reposts"@en ;
+    skos:definition "The source reproduces the other's content, with or without attribution."@en .
+
+uiw:dependence-relation-types--syndicates
+    a skos:Concept ;
+    skos:inScheme uiw:dependence-relation-types ;
+    skos:topConceptOf uiw:dependence-relation-types ;
+    skos:prefLabel "syndicates"@en ;
+    skos:definition "The source republishes under a distribution arrangement."@en .
+
+uiw:dependence-relation-types--derives-from
+    a skos:Concept ;
+    skos:inScheme uiw:dependence-relation-types ;
+    skos:topConceptOf uiw:dependence-relation-types ;
+    skos:prefLabel "derives from"@en ;
+    skos:definition "The source's content is materially derived from the other without being a reproduction."@en .
+
+uiw:dependence-relation-types--shares-underlying-document
+    a skos:Concept ;
+    skos:inScheme uiw:dependence-relation-types ;
+    skos:topConceptOf uiw:dependence-relation-types ;
+    skos:prefLabel "shares underlying document"@en ;
+    skos:definition "Both rest on the same document; their agreement is not independent."@en .
+
+uiw:dependence-relation-types--shares-underlying-witness
+    a skos:Concept ;
+    skos:inScheme uiw:dependence-relation-types ;
+    skos:topConceptOf uiw:dependence-relation-types ;
+    skos:prefLabel "shares underlying witness"@en ;
+    skos:definition "Both rest on the same testimony; their agreement is not independent."@en .
+
+uiw:dependence-relation-types--common-evidentiary-origin
+    a skos:Concept ;
+    skos:inScheme uiw:dependence-relation-types ;
+    skos:topConceptOf uiw:dependence-relation-types ;
+    skos:prefLabel "common evidentiary origin"@en ;
+    skos:definition "Both trace to a common origin not captured by the more specific types — e.g. a shared briefing, dataset, or intermediary."@en .
+
+uiw:document-statuses
+    a skos:ConceptScheme ;
+    skos:prefLabel "document status"@en ;
+    skos:definition "The lifecycle status of a controlled governance document (REQ, POL, PROC, DR, SPEC, METH) under record §100's document classes."@en ;
+    skos:note "**Status is explicit document metadata, never inferred from Git state** — a commit is not an approval (DR-0046). Superseded documents remain in place, marked, with supersession links in both directions (§77)."@en ;
+    skos:scopeNote "Not: Not epistemic status (see epistemic-categories, likelihood-bands) and not legal status. Always class-qualified. Conflict register C-39."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "governance" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0046" ;
+    uiw:satisfies_requirements "EDIT-001", "EDIT-002" .
+
+uiw:document-statuses--draft
+    a skos:Concept ;
+    skos:inScheme uiw:document-statuses ;
+    skos:topConceptOf uiw:document-statuses ;
+    skos:prefLabel "draft"@en ;
+    skos:definition "Being written; carries no authority."@en .
+
+uiw:document-statuses--proposed
+    a skos:Concept ;
+    skos:inScheme uiw:document-statuses ;
+    skos:topConceptOf uiw:document-statuses ;
+    skos:prefLabel "proposed"@en ;
+    skos:definition "Submitted for the founder's decision; carries no authority."@en .
+
+uiw:document-statuses--approved
+    a skos:Concept ;
+    skos:inScheme uiw:document-statuses ;
+    skos:topConceptOf uiw:document-statuses ;
+    skos:prefLabel "approved"@en ;
+    skos:definition "Decided by the founder/principal editor."@en .
+
+uiw:document-statuses--effective
+    a skos:Concept ;
+    skos:inScheme uiw:document-statuses ;
+    skos:topConceptOf uiw:document-statuses ;
+    skos:prefLabel "effective"@en ;
+    skos:definition "In force from its effective date. Where approval and effect differ, both dates are recorded."@en .
+
+uiw:document-statuses--superseded
+    a skos:Concept ;
+    skos:inScheme uiw:document-statuses ;
+    skos:topConceptOf uiw:document-statuses ;
+    skos:prefLabel "superseded"@en ;
+    skos:definition "Replaced by a later document; both are retained (§77)."@en .
+
+uiw:document-statuses--withdrawn
+    a skos:Concept ;
+    skos:inScheme uiw:document-statuses ;
+    skos:topConceptOf uiw:document-statuses ;
+    skos:prefLabel "withdrawn"@en ;
+    skos:definition "Removed from force without a successor; retained for the record."@en .
+
+uiw:entity-statuses
+    a skos:ConceptScheme ;
+    skos:prefLabel "entity status"@en ;
+    skos:definition "The status of a world-layer entity as a referent: whether the project treats it as real and distinct, provisional, invented, or disproved."@en ;
+    skos:scopeNote "Fabricated and disproved entities are **preserved as referents, never deleted**: claims about them exist and remain citable (§17, §54). Impersonation analysis links a fabricated identity to the real person it imitates without merging them."@en ;
+    skos:note "Status changes are assertions with evidence — concluding that a persona is fabricated is a project assertion under DR-0024, not a data-entry action."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "world" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0062" ;
+    uiw:satisfies_requirements "DATA-002" ;
+    uiw:depends_on_specs "SPEC-0002" .
+
+uiw:entity-statuses--canonical
+    a skos:Concept ;
+    skos:inScheme uiw:entity-statuses ;
+    skos:topConceptOf uiw:entity-statuses ;
+    skos:prefLabel "canonical"@en ;
+    skos:definition "An entity the project treats as a real, distinct referent."@en .
+
+uiw:entity-statuses--candidate
+    a skos:Concept ;
+    skos:inScheme uiw:entity-statuses ;
+    skos:topConceptOf uiw:entity-statuses ;
+    skos:prefLabel "candidate"@en ;
+    skos:definition "A provisionally distinct entity, not yet consolidated — e.g. a name cluster from one dataset awaiting resolution."@en .
+
+uiw:entity-statuses--fabricated
+    a skos:Concept ;
+    skos:inScheme uiw:entity-statuses ;
+    skos:topConceptOf uiw:entity-statuses ;
+    skos:prefLabel "fabricated"@en ;
+    skos:definition "An identity concluded never to have referred to a real distinct referent — an invented persona or sockpuppet identity."@en .
+
+uiw:entity-statuses--disproved
+    a skos:Concept ;
+    skos:inScheme uiw:entity-statuses ;
+    skos:topConceptOf uiw:entity-statuses ;
+    skos:prefLabel "disproved"@en ;
+    skos:definition "A formerly canonical or candidate entity shown to be a duplicate or error, superseded via merge/split lineage (DR-0064)."@en .
+
+uiw:epistemic-categories
+    a skos:ConceptScheme ;
+    skos:prefLabel "epistemic category"@en ;
+    skos:definition "The formal epistemic vocabulary (record §30). Every assertion in the system carries exactly one category."@en ;
+    skos:note "Expansion or change only by Decision Record (DR-0025) — the record's own instruction that the vocabulary stay small and grow only when real cases require it."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "epistemic" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0025" ;
+    uiw:satisfies_requirements "EVID-001", "EVID-002" ;
+    uiw:depends_on_specs "SPEC-0001" .
+
+uiw:epistemic-categories--observation
+    a skos:Concept ;
+    skos:inScheme uiw:epistemic-categories ;
+    skos:topConceptOf uiw:epistemic-categories ;
+    skos:prefLabel "observation"@en ;
+    skos:definition "A recorded act of perceiving or measuring by a person or instrument, with observer, method, and time."@en ;
+    skos:scopeNote "Subsumes both scientific-observation modelling (CRMsci S4) and the intelligence sense. Machine observations add the §49 metadata: provider, acquisition method, timestamp precision, measurement uncertainty, processing, spoofing risk. Conflict register C-12."@en ;
+    skos:scopeNote "Not: A negative observation (\"we did not observe X\") is not the absence of X; see absence-states and record §48."@en .
+
+uiw:epistemic-categories--claim
+    a skos:Concept ;
+    skos:inScheme uiw:epistemic-categories ;
+    skos:topConceptOf uiw:epistemic-categories ;
+    skos:prefLabel "claim"@en ;
+    skos:definition "A proposition asserted by a source or actor, held by them, adopted into the graph with attribution."@en ;
+    skos:scopeNote "\"The source says X\" — a documentary assertion (DR-0024 layer 2). Its truth is a separate question (Principle 3)."@en .
+
+uiw:epistemic-categories--assessment
+    a skos:Concept ;
+    skos:inScheme uiw:epistemic-categories ;
+    skos:topConceptOf uiw:epistemic-categories ;
+    skos:prefLabel "assessment"@en ;
+    skos:definition "An evaluative judgment about a proposition or a source, made by a named assessor on a stated basis, carrying likelihood and confidence where applicable."@en .
+
+uiw:epistemic-categories--hypothesis
+    a skos:Concept ;
+    skos:inScheme uiw:epistemic-categories ;
+    skos:topConceptOf uiw:epistemic-categories ;
+    skos:prefLabel "hypothesis"@en ;
+    skos:definition "A candidate explanation under investigation, member of a competing-hypothesis set (DR-0035)."@en ;
+    skos:scopeNote "Not: Not a loose guess; a hypothesis belongs to a hypothesis set with typed evidence relations. Conflict register C-27."@en .
+
+uiw:epistemic-categories--finding
+    a skos:Concept ;
+    skos:inScheme uiw:epistemic-categories ;
+    skos:topConceptOf uiw:epistemic-categories ;
+    skos:prefLabel "finding"@en ;
+    skos:definition "A conclusion of a defined investigation or review process, recording its scope and method — including negative findings (§76)."@en ;
+    skos:scopeNote "Not: Not a legal finding, which is jurisdiction- and authority-specific and always qualified as such (§62). Conflict register C-21."@en .
+
+uiw:epistemic-categories--project-conclusion
+    a skos:Concept ;
+    skos:inScheme uiw:epistemic-categories ;
+    skos:topConceptOf uiw:epistemic-categories ;
+    skos:prefLabel "project conclusion"@en ;
+    skos:definition "An editorially accountable assertion published in the project's own voice (§33), requiring human accountability (§79) and visible inference (DR-0032)."@en .
+
+uiw:identifier-types
+    a skos:ConceptScheme ;
+    skos:prefLabel "identifier type"@en ;
+    skos:definition "External identifier systems whose identifiers may be attached to project entities and designation records (record §16)."@en ;
+    skos:note "**Open vocabulary** — new identifier systems will be encountered; additions by registry process (DR-0080). Every external identifier attaches via an **assignment assertion** with actor, time, and basis (DR-0012): identifiers are provenance-bearing relationships, not timeless fields. False merges are costlier than missed matches (§16), so identifier agreement alone does not confirm identity — see match-states."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "false"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "world" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0012", "DR-0045" ;
+    uiw:satisfies_requirements "DATA-001", "DATA-010" ;
+    uiw:depends_on_specs "SPEC-0002" .
+
+uiw:identifier-types--wikidata
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "Wikidata Q-identifier"@en ;
+    uiw:issuingAuthority "Wikimedia Foundation" .
+
+uiw:identifier-types--opensanctions
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "OpenSanctions identifier"@en ;
+    skos:scopeNote "Consumed as an identifier spine and collection source (DR-0045); never an auto-merge basis (§72)."@en ;
+    uiw:issuingAuthority "OpenSanctions" .
+
+uiw:identifier-types--official-sanctions-id
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "official sanctions list identifier"@en ;
+    skos:scopeNote "Attaches to designation records (DR-0039), not directly to entities."@en ;
+    uiw:issuingAuthority "The designating authority (UN, EU, OFAC, OFSI, …)" .
+
+uiw:identifier-types--company-registration-number
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "company registration number"@en ;
+    uiw:issuingAuthority "National corporate registry" .
+
+uiw:identifier-types--tax-id
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "tax identification number"@en ;
+    skos:scopeNote "Personal tax identifiers of private individuals are high-risk data and are not structured automatically (POL-0001 §4)."@en ;
+    uiw:issuingAuthority "National tax authority" .
+
+uiw:identifier-types--lei
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "Legal Entity Identifier (LEI)"@en ;
+    uiw:issuingAuthority "GLEIF" .
+
+uiw:identifier-types--imo
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "IMO number"@en ;
+    skos:scopeNote "Persists across vessel renaming and reflagging — a strong identifier."@en ;
+    uiw:issuingAuthority "International Maritime Organization" .
+
+uiw:identifier-types--mmsi
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "MMSI"@en ;
+    skos:scopeNote "Reassignable and spoofable; weaker than IMO. AIS-derived claims require the spoofing critical questions (DR-0034)."@en ;
+    uiw:issuingAuthority "National maritime administrations" .
+
+uiw:identifier-types--aircraft-registration
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "aircraft registration"@en ;
+    uiw:issuingAuthority "National civil aviation authority" .
+
+uiw:identifier-types--icao-24bit
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "ICAO 24-bit address"@en ;
+    uiw:issuingAuthority "ICAO / national authorities" .
+
+uiw:identifier-types--official-registry-id
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "other official registry identifier"@en ;
+    uiw:issuingAuthority "Varies; recorded on the assignment" .
+
+uiw:interest-types
+    a skos:ConceptScheme ;
+    skos:prefLabel "interest type"@en ;
+    skos:definition "The kinds of ownership or control interest one party may hold in another, recorded as typed statements with provenance and validity periods (record §19)."@en ;
+    skos:scopeNote "Derived ownership computation (DR-0041) consumes these statements and preserves the path. Economic-interest calculations do not automatically establish legal control (§71)."@en ;
+    skos:note "Interests are **statements with provenance**, following the BODS pattern: interested party, subject, interest type, share as a quantity object (DR-0030), validity period, and source. Registry filings, GLEIF relationship records, disclosures, and investigative findings enter as documentary sources (§32). Conflicting statements coexist under the epistemic layer — never averaged (§40)."@en ;
+    skos:scopeNote "Not: \"Control\" here is corporate control — never territorial control (see territorial-statuses) and never export control. Always qualified. Conflict register C-30. \"Owner\" is never used bare; these types govern. Conflict register C-34."@en ;
+    uiw:closeMatchTarget "BODS interest types" ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "legal" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0040" ;
+    uiw:satisfies_requirements "DATA-005", "LEGAL-004" .
+
+uiw:interest-types--legal-ownership
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "legal ownership"@en ;
+    skos:definition "Registered legal title to shares or the entity."@en .
+
+uiw:interest-types--direct-ownership
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "direct ownership"@en ;
+    skos:definition "Ownership held directly, without intermediate entities."@en .
+
+uiw:interest-types--indirect-ownership
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "indirect ownership"@en ;
+    skos:definition "Ownership held through one or more intermediate entities."@en .
+
+uiw:interest-types--beneficial-ownership
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "beneficial ownership"@en ;
+    skos:definition "Ultimate benefit from the holding, whoever holds legal title."@en .
+
+uiw:interest-types--voting-rights
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "voting rights"@en ;
+    skos:definition "Rights to vote, which may diverge from economic ownership."@en .
+
+uiw:interest-types--managerial-control
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "managerial control"@en ;
+    skos:definition "Control exercised through management positions."@en .
+
+uiw:interest-types--contractual-control
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "contractual control"@en ;
+    skos:definition "Control arising from contractual arrangements rather than ownership."@en .
+
+uiw:interest-types--appointment-rights
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "appointment rights"@en ;
+    skos:definition "Rights to appoint or remove directors or officers."@en .
+
+uiw:interest-types--de-facto-control
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "de facto control"@en ;
+    skos:definition "Control exercised in practice without a formal legal basis — an evidence-backed assertion, never an inference from association."@en .
+
+uiw:interest-types--nominee-arrangement
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "nominee arrangement"@en ;
+    skos:definition "Title held by one party on behalf of another."@en .
+
+uiw:interest-types--ultimate-beneficial-ownership
+    a skos:Concept ;
+    skos:inScheme uiw:interest-types ;
+    skos:topConceptOf uiw:interest-types ;
+    skos:prefLabel "ultimate beneficial ownership"@en ;
+    skos:definition "Beneficial ownership at the end of a chain, with the path preserved."@en .
+
+uiw:likelihood-bands
+    a skos:ConceptScheme ;
+    skos:prefLabel "likelihood band"@en ;
+    skos:definition "The calibrated verbal probability scale used to express how likely a proposition is. Seven contiguous bands spanning 1–99%, adopted from ICD 203 (US Intelligence Community analytic standards)."@en ;
+    skos:scopeNote "The band identifier is stored; the numeric range is the anchor of meaning; the words are labels rendered at the presentation layer (§61). A band means the same thing in every language because the range, not the wording, carries the meaning."@en ;
+    skos:note "A band belongs to an assessment (DR-0026) with its evidence and reasoning. Bands never attach to bare data fields, and are never inherited: reporting another body's estimative language is a documentary assertion carrying their scale (§32), mapped but never converted into a project judgment."@en ;
+    skos:scopeNote "Not: Not analytic confidence (see analytic-confidence), which measures the strength of the judgment rather than the probability of the proposition. Not a statistical confidence interval. Conflict register C-18."@en ;
+    uiw:exactMatchTarget "ICD 203 probability expressions" ;
+    uiw:closeMatchTarget "PHIA Probability Yardstick" ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "epistemic" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0026", "DR-0065" ;
+    uiw:satisfies_requirements "EVID-006", "I18N-003" ;
+    uiw:depends_on_specs "SPEC-0001" .
+
+uiw:likelihood-bands--almost-no-chance
+    a skos:Concept ;
+    skos:inScheme uiw:likelihood-bands ;
+    skos:topConceptOf uiw:likelihood-bands ;
+    skos:prefLabel "almost no chance"@en ;
+    skos:altLabel "remote"@en ;
+    uiw:closeMatchTarget "PHIA: remote chance" ;
+    uiw:range "1-5 percent" .
+
+uiw:likelihood-bands--very-unlikely
+    a skos:Concept ;
+    skos:inScheme uiw:likelihood-bands ;
+    skos:topConceptOf uiw:likelihood-bands ;
+    skos:prefLabel "very unlikely"@en ;
+    skos:altLabel "highly improbable"@en ;
+    uiw:closeMatchTarget "PHIA: highly unlikely" ;
+    uiw:range "5-20 percent" .
+
+uiw:likelihood-bands--unlikely
+    a skos:Concept ;
+    skos:inScheme uiw:likelihood-bands ;
+    skos:topConceptOf uiw:likelihood-bands ;
+    skos:prefLabel "unlikely"@en ;
+    skos:altLabel "improbable"@en ;
+    uiw:closeMatchTarget "PHIA: unlikely" ;
+    uiw:closeMatchTarget "PHIA: realistic possibility" ;
+    uiw:range "20-45 percent" .
+
+uiw:likelihood-bands--roughly-even-chance
+    a skos:Concept ;
+    skos:inScheme uiw:likelihood-bands ;
+    skos:topConceptOf uiw:likelihood-bands ;
+    skos:prefLabel "roughly even chance"@en ;
+    skos:altLabel "roughly even odds"@en ;
+    uiw:relatedMatchTarget "PHIA" ;
+    uiw:range "45-55 percent" .
+
+uiw:likelihood-bands--likely
+    a skos:Concept ;
+    skos:inScheme uiw:likelihood-bands ;
+    skos:topConceptOf uiw:likelihood-bands ;
+    skos:prefLabel "likely"@en ;
+    skos:altLabel "probable"@en ;
+    uiw:closeMatchTarget "PHIA: likely / probably" ;
+    uiw:range "55-80 percent" .
+
+uiw:likelihood-bands--very-likely
+    a skos:Concept ;
+    skos:inScheme uiw:likelihood-bands ;
+    skos:topConceptOf uiw:likelihood-bands ;
+    skos:prefLabel "very likely"@en ;
+    skos:altLabel "highly probable"@en ;
+    uiw:closeMatchTarget "PHIA: highly likely" ;
+    uiw:range "80-95 percent" .
+
+uiw:likelihood-bands--almost-certain
+    a skos:Concept ;
+    skos:inScheme uiw:likelihood-bands ;
+    skos:topConceptOf uiw:likelihood-bands ;
+    skos:prefLabel "almost certain"@en ;
+    skos:altLabel "nearly certain"@en ;
+    uiw:closeMatchTarget "PHIA: almost certain" ;
+    uiw:range "95-99 percent" .
+
+uiw:match-states
+    a skos:ConceptScheme ;
+    skos:prefLabel "match state"@en ;
+    skos:definition "The lifecycle states of a match assertion proposing that two identity bearers refer to the same referent."@en ;
+    skos:scopeNote "Applies to candidate↔canonical, designation-record↔entity (DR-0039), account↔actor (DR-0023), external-dataset↔entity, and cross-registry same-person links (DR-0059). State changes are superseding assertions (DR-0055) with actor and basis."@en ;
+    skos:note "**Automated matchers and AI create `proposed` matches only** (AI-001). Human confirmation requires discriminating evidence beyond name or transliteration similarity — **name similarity alone never confirms, at any tier** (§72). Rejections are permanent and consultable so matchers do not re-propose them."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "world" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0063" ;
+    uiw:satisfies_requirements "DATA-002", "LEGAL-003", "AI-003" ;
+    uiw:depends_on_specs "SPEC-0002" .
+
+uiw:match-states--proposed
+    a skos:Concept ;
+    skos:inScheme uiw:match-states ;
+    skos:topConceptOf uiw:match-states ;
+    skos:prefLabel "proposed"@en ;
+    skos:definition "Proposed by a matcher, AI, or researcher, recording the feature basis of the proposal. Carries no canonical effect."@en .
+
+uiw:match-states--under-review
+    a skos:Concept ;
+    skos:inScheme uiw:match-states ;
+    skos:topConceptOf uiw:match-states ;
+    skos:prefLabel "under review"@en ;
+    skos:definition "Taken up for human review at the subject's tier."@en .
+
+uiw:match-states--confirmed
+    a skos:Concept ;
+    skos:inScheme uiw:match-states ;
+    skos:topConceptOf uiw:match-states ;
+    skos:prefLabel "confirmed"@en ;
+    skos:definition "Confirmed by a human on discriminating evidence at the applicable tier. Takes effect by assertion, not mutation: underlying records stay distinct."@en .
+
+uiw:match-states--rejected
+    a skos:Concept ;
+    skos:inScheme uiw:match-states ;
+    skos:topConceptOf uiw:match-states ;
+    skos:prefLabel "rejected"@en ;
+    skos:definition "Reviewed and rejected, with reason. Retained permanently and consulted by matchers."@en .
+
+uiw:match-states--withdrawn
+    a skos:Concept ;
+    skos:inScheme uiw:match-states ;
+    skos:topConceptOf uiw:match-states ;
+    skos:prefLabel "withdrawn"@en ;
+    skos:definition "Retracted by its proposer before review concluded."@en .
+
+uiw:premis-event-types
+    a skos:ConceptScheme ;
+    skos:prefLabel "preservation event type"@en ;
+    skos:definition "The preservation event types in the project's initial PREMIS subset. Each event carries date, agents, linked objects, outcome — **including failure** — and detail."@en ;
+    skos:scopeNote "These are **pipeline events**, permanently distinct from historical world events (DR-0004). A capture is never a world event. Conflict register C-02."@en ;
+    skos:note "Deferred from the initial subset with recorded revisit triggers (DR-0060): bitstream-level objects (trigger: sub-file addressing need), environments (trigger: format-migration planning at scale), preservation-level semantics."@en ;
+    uiw:exactMatchTarget "PREMIS 3.0 eventType" ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "pipeline" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0060" ;
+    uiw:satisfies_requirements "PRES-002", "PRES-003", "PRES-007", "SEC-002" ;
+    uiw:depends_on_specs "SPEC-0001", "SPEC-0003" .
+
+uiw:premis-event-types--ingestion
+    a skos:Concept ;
+    skos:inScheme uiw:premis-event-types ;
+    skos:topConceptOf uiw:premis-event-types ;
+    skos:prefLabel "ingestion"@en ;
+    skos:definition "An object entering archival custody at Gate 1 (DR-0066)."@en .
+
+uiw:premis-event-types--message-digest-calculation
+    a skos:Concept ;
+    skos:inScheme uiw:premis-event-types ;
+    skos:topConceptOf uiw:premis-event-types ;
+    skos:prefLabel "message digest calculation"@en ;
+    skos:definition "Computing content digests. SHA-512 for OCFL content addressing, SHA-256 in the fixity block (DR-0075)."@en .
+
+uiw:premis-event-types--fixity-check
+    a skos:Concept ;
+    skos:inScheme uiw:premis-event-types ;
+    skos:topConceptOf uiw:premis-event-types ;
+    skos:prefLabel "fixity check"@en ;
+    skos:definition "Verifying stored content against recorded digests. Failures are recorded events, never silent re-copies."@en .
+
+uiw:premis-event-types--format-identification
+    a skos:Concept ;
+    skos:inScheme uiw:premis-event-types ;
+    skos:topConceptOf uiw:premis-event-types ;
+    skos:prefLabel "format identification"@en ;
+    skos:definition "Determining an object's format."@en .
+
+uiw:premis-event-types--virus-check
+    a skos:Concept ;
+    skos:inScheme uiw:premis-event-types ;
+    skos:topConceptOf uiw:premis-event-types ;
+    skos:prefLabel "virus check"@en ;
+    skos:definition "Malware scanning, performed in quarantine before Gate 1 (DR-0069)."@en .
+
+uiw:premis-event-types--capture
+    a skos:Concept ;
+    skos:inScheme uiw:premis-event-types ;
+    skos:topConceptOf uiw:premis-event-types ;
+    skos:prefLabel "capture"@en ;
+    skos:definition "Acquiring content from a source, including WARC capture of web resources (DR-0006)."@en .
+
+uiw:premis-event-types--migration-normalization
+    a skos:Concept ;
+    skos:inScheme uiw:premis-event-types ;
+    skos:topConceptOf uiw:premis-event-types ;
+    skos:prefLabel "migration / normalization"@en ;
+    skos:definition "Producing a preservation-motivated derivative. The derivative is a distinct object with its own PROV lineage (DR-0003) and may live as a later version of the same OCFL object (DR-0074)."@en .
+
+uiw:quantity-semantic-types
+    a skos:ConceptScheme ;
+    skos:prefLabel "quantity semantic type"@en ;
+    skos:definition "The semantic type of a quantitative assertion, preserving what the source actually expressed (record §44)."@en ;
+    skos:scopeNote "Aggregations must respect semantic type: a sum of at-leasts is an at-least, never an exact. \"At least 17\" must never become \"exactly 17\" (§44)."@en ;
+    skos:note "Quantity objects carry the original expression (in the original language where relevant), the semantic type, value(s) and units, significant precision, stated uncertainty, and derivation method for computed values. Normalized or comparable values are derived data linked by provenance (DR-0003) and never overwrite the original expression."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "epistemic" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0030" ;
+    uiw:satisfies_requirements "EVID-011", "DATA-005" .
+
+uiw:quantity-semantic-types--exact
+    a skos:Concept ;
+    skos:inScheme uiw:quantity-semantic-types ;
+    skos:topConceptOf uiw:quantity-semantic-types ;
+    skos:prefLabel "exact"@en ;
+    skos:definition "The source asserts a precise value."@en .
+
+uiw:quantity-semantic-types--approximate
+    a skos:Concept ;
+    skos:inScheme uiw:quantity-semantic-types ;
+    skos:topConceptOf uiw:quantity-semantic-types ;
+    skos:prefLabel "approximate"@en ;
+    skos:definition "The source asserts a value as an approximation (\"about\", \"some\")."@en .
+
+uiw:quantity-semantic-types--at-least
+    a skos:Concept ;
+    skos:inScheme uiw:quantity-semantic-types ;
+    skos:topConceptOf uiw:quantity-semantic-types ;
+    skos:prefLabel "at least"@en ;
+    skos:definition "A lower bound; the true value may be higher."@en .
+
+uiw:quantity-semantic-types--at-most
+    a skos:Concept ;
+    skos:inScheme uiw:quantity-semantic-types ;
+    skos:topConceptOf uiw:quantity-semantic-types ;
+    skos:prefLabel "at most"@en ;
+    skos:definition "An upper bound; the true value may be lower."@en .
+
+uiw:quantity-semantic-types--range
+    a skos:Concept ;
+    skos:inScheme uiw:quantity-semantic-types ;
+    skos:topConceptOf uiw:quantity-semantic-types ;
+    skos:prefLabel "range"@en ;
+    skos:definition "A bounded interval with a stated minimum and maximum."@en .
+
+uiw:quantity-semantic-types--greater-than
+    a skos:Concept ;
+    skos:inScheme uiw:quantity-semantic-types ;
+    skos:topConceptOf uiw:quantity-semantic-types ;
+    skos:prefLabel "greater than"@en ;
+    skos:definition "A strict lower bound."@en .
+
+uiw:quantity-semantic-types--fewer-than
+    a skos:Concept ;
+    skos:inScheme uiw:quantity-semantic-types ;
+    skos:topConceptOf uiw:quantity-semantic-types ;
+    skos:prefLabel "fewer than"@en ;
+    skos:definition "A strict upper bound."@en .
+
+uiw:registration-statuses
+    a skos:ConceptScheme ;
+    skos:prefLabel "registration status"@en ;
+    skos:definition "The registration status of a semantic-registry entry (SPEC-0004 §5)."@en ;
+    skos:scopeNote "This vocabulary governs the registry's own entries, including itself."@en ;
+    skos:note "**Nothing is ever deleted from the registry**: a dataset can outlive the vocabulary it used, and record §96 exists precisely so its meaning survives."@en ;
+    skos:scopeNote "Not: Not document status (see document-statuses), which governs controlled documents. Conflict register C-39."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "governance" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0080" ;
+    uiw:satisfies_requirements "DATA-008" ;
+    uiw:depends_on_specs "SPEC-0004" .
+
+uiw:registration-statuses--draft
+    a skos:Concept ;
+    skos:inScheme uiw:registration-statuses ;
+    skos:topConceptOf uiw:registration-statuses ;
+    skos:prefLabel "draft"@en ;
+    skos:definition "Proposed; **may not appear in data**."@en .
+
+uiw:registration-statuses--effective
+    a skos:Concept ;
+    skos:inScheme uiw:registration-statuses ;
+    skos:topConceptOf uiw:registration-statuses ;
+    skos:prefLabel "effective"@en ;
+    skos:definition "Usable in canonical data."@en .
+
+uiw:registration-statuses--deprecated
+    a skos:Concept ;
+    skos:inScheme uiw:registration-statuses ;
+    skos:topConceptOf uiw:registration-statuses ;
+    skos:prefLabel "deprecated"@en ;
+    skos:definition "Readable in existing data; not permitted for new data. Carries `replaced_by` and a migration note (§96)."@en .
+
+uiw:registration-statuses--retired
+    a skos:Concept ;
+    skos:inScheme uiw:registration-statuses ;
+    skos:topConceptOf uiw:registration-statuses ;
+    skos:prefLabel "retired"@en ;
+    skos:definition "No longer applicable; retained for historical interpretation only."@en .
+
+uiw:retention-tiers
+    a skos:ConceptScheme ;
+    skos:prefLabel "retention tier"@en ;
+    skos:definition "The retention decision applied to every acquired item at Gate 1, defaulting from its source registry entry (record §9)."@en ;
+    skos:scopeNote "Only `permanent` and `medium-term` items have bytes in OCFL, in **separate storage roots** so medium-term disposition can never touch the permanent archive (DR-0076)."@en ;
+    skos:note "Tiers **escalate freely**; a downgrade is a governed disposition decision with recorded rationale. Fragile or high-value sources may be collected at `permanent` before item-level relevance is known, and a source's escalation may trigger retrospective recovery from external archives."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "pipeline" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0068" ;
+    uiw:satisfies_requirements "PRES-011" ;
+    uiw:depends_on_specs "SPEC-0003" .
+
+uiw:retention-tiers--discard
+    a skos:Concept ;
+    skos:inScheme uiw:retention-tiers ;
+    skos:topConceptOf uiw:retention-tiers ;
+    skos:prefLabel "discard"@en ;
+    skos:definition "Not retained. The acquisition event and its outcome are still recorded (§28) — the archive knows it saw this and let it go."@en .
+
+uiw:retention-tiers--metadata-only
+    a skos:Concept ;
+    skos:inScheme uiw:retention-tiers ;
+    skos:topConceptOf uiw:retention-tiers ;
+    skos:prefLabel "metadata only"@en ;
+    skos:definition "A descriptive record is retained; content is not stored."@en .
+
+uiw:retention-tiers--medium-term
+    a skos:Concept ;
+    skos:inScheme uiw:retention-tiers ;
+    skos:topConceptOf uiw:retention-tiers ;
+    skos:prefLabel "medium term"@en ;
+    skos:definition "Retained with a review date, then re-decided."@en .
+
+uiw:retention-tiers--permanent
+    a skos:Concept ;
+    skos:inScheme uiw:retention-tiers ;
+    skos:topConceptOf uiw:retention-tiers ;
+    skos:prefLabel "permanent"@en ;
+    skos:definition "Archival preservation under full OAIS/PREMIS treatment."@en .
+
+uiw:review-tiers
+    a skos:ConceptScheme ;
+    skos:prefLabel "review tier"@en ;
+    skos:definition "The risk tiers governing how much review an identity confirmation — and, by extension, other consequential decisions — requires. Record §78's risk-based review model, made concrete."@en ;
+    skos:note "False merges remain costlier than missed matches at every tier (§16): when in doubt, entities stay separate and the match stays `proposed`."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "governance" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0063" ;
+    uiw:satisfies_requirements "EDIT-001", "LEGAL-003" ;
+    uiw:depends_on_specs "SPEC-0002" .
+
+uiw:review-tiers--T1
+    a skos:Concept ;
+    skos:inScheme uiw:review-tiers ;
+    skos:topConceptOf uiw:review-tiers ;
+    skos:prefLabel "T1 — highest"@en ;
+    skos:definition "Designation-record↔entity mappings and any identity used in a legal-layer conclusion (DR-0041 ownership paths, LEGAL-003)."@en .
+
+uiw:review-tiers--T2
+    a skos:Concept ;
+    skos:inScheme uiw:review-tiers ;
+    skos:topConceptOf uiw:review-tiers ;
+    skos:prefLabel "T2 — elevated"@en ;
+    skos:definition "World actors appearing in consequential project assertions; cross-registry same-person links; individual physical items in tracing chains."@en .
+
+uiw:review-tiers--T3
+    a skos:Concept ;
+    skos:inScheme uiw:review-tiers ;
+    skos:topConceptOf uiw:review-tiers ;
+    skos:prefLabel "T3 — routine"@en ;
+    skos:definition "Bibliographic identity (work/expression clustering), places with authoritative gazetteer identifiers, low-stakes dataset alignment."@en .
+
+uiw:rights-permissions
+    a skos:ConceptScheme ;
+    skos:prefLabel "rights permission"@en ;
+    skos:definition "What the project is permitted to do with material, recorded per rights statement (record §14)."@en ;
+    skos:scopeNote "Each permission is recorded with its rights basis (copyright, license, statute, policy) per PREMIS rights (DR-0002/DR-0060)."@en ;
+    skos:note "Preservation rights and republication rights are different (§14). The archive may preserve material it is not permitted to republish. `unknown` is an **explicit registry value**, never a null (DR-0029)."@en ;
+    skos:scopeNote "Not: An export licence (§65) is not a rights licence. Always spelled out. Conflict register C-31."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "governance" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0002", "DR-0067" ;
+    uiw:satisfies_requirements "LEGAL-008" .
+
+uiw:rights-permissions--may-preserve
+    a skos:Concept ;
+    skos:inScheme uiw:rights-permissions ;
+    skos:topConceptOf uiw:rights-permissions ;
+    skos:prefLabel "may preserve"@en ;
+    skos:definition "The project may hold and preserve the material."@en .
+
+uiw:rights-permissions--may-display
+    a skos:Concept ;
+    skos:inScheme uiw:rights-permissions ;
+    skos:topConceptOf uiw:rights-permissions ;
+    skos:prefLabel "may display"@en ;
+    skos:definition "The project may display the material on a public surface."@en .
+
+uiw:rights-permissions--may-redistribute
+    a skos:Concept ;
+    skos:inScheme uiw:rights-permissions ;
+    skos:topConceptOf uiw:rights-permissions ;
+    skos:prefLabel "may redistribute"@en ;
+    skos:definition "The project may redistribute the material to third parties."@en .
+
+uiw:rights-permissions--may-provide-to-subscribers
+    a skos:Concept ;
+    skos:inScheme uiw:rights-permissions ;
+    skos:topConceptOf uiw:rights-permissions ;
+    skos:prefLabel "may provide to subscribers"@en ;
+    skos:definition "The project may make the material available at the subscriber tier."@en .
+
+uiw:rights-permissions--unknown
+    a skos:Concept ;
+    skos:inScheme uiw:rights-permissions ;
+    skos:topConceptOf uiw:rights-permissions ;
+    skos:prefLabel "unknown rights"@en ;
+    skos:definition "Rights have not been determined. An explicit state requiring resolution before display or redistribution — never a default permission."@en .
+
+uiw:scheme-geolocation
+    a skos:Concept ;
+    skos:inScheme uiw:uiw-semantic-registry ;
+    skos:prefLabel "argument from geolocation"@en ;
+    skos:definition "From matched features between imagery and reference geodata to the claim that the imagery depicts a particular place."@en ;
+    skos:note "A geolocation conclusion is an analyst-derived location, distinguished in the data from a source-supplied one (§46, CRMgeo's phenomenal/declarative distinction). Coordinates carry their derivation method and uncertainty as quantity objects (DR-0030)."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:steward "founder" ;
+    uiw:layer "argument" ;
+    uiw:type "argument-scheme" ;
+    uiw:authorised_by "DR-0034" ;
+    uiw:satisfies_requirements "EVID-012", "DATA-007" ;
+    uiw:depends_on_specs "SPEC-0001" ;
+    uiw:conclusion "I depicts location L, at the precision the assessment records."@en ;
+    uiw:premise "Image I contains features F1…Fn (terrain, structures, signage, shadows, vegetation, infrastructure)."@en, "Reference source R shows the same features in the same spatial relationship at location L."@en ;
+    uiw:criticalQuestion "Are the matched features distinctive enough to exclude other locations, or generic (a treeline, a standard apartment block) and therefore weakly discriminating?"@en, "Is reference source R contemporaneous with the claimed date, or could construction, destruction, or seasonal change explain a mismatch — or a false match?"@en, "Is I authentic and unmanipulated, and is this its earliest known appearance? An authentic image may be attached to a false context (§38); the earliest copy held is not necessarily the original."@en, "Is the claimed **date** established independently of the location, or inherited from the post that carried the image? Location and date are separate contextual assertions (§39)."@en, "Where solar geometry is used, are shadow direction and length consistent with the claimed date, time, and latitude?"@en, "Is the stated precision warranted — exact coordinates, or an area with an uncertainty radius? Representational precision is not accuracy (§43)."@en .
+
+uiw:scheme-witness-testimony
+    a skos:Concept ;
+    skos:inScheme uiw:uiw-semantic-registry ;
+    skos:prefLabel "argument from witness testimony"@en ;
+    skos:definition "From a witness's account of an event to the occurrence of that event."@en ;
+    skos:note "Witness identity is held in the separable confidential store by default and is not structured into the research graph (POL-0001 §5.6, SEC-001). A scheme instance references a pseudonymous witness ID."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:steward "founder" ;
+    uiw:layer "argument" ;
+    uiw:type "argument-scheme" ;
+    uiw:authorised_by "DR-0034" ;
+    uiw:satisfies_requirements "EVID-012" ;
+    uiw:depends_on_specs "SPEC-0001" ;
+    uiw:conclusion "E occurred, at the likelihood band and confidence the assessment records."@en ;
+    uiw:premise "Witness W was in a position to observe event E."@en, "W asserts that E occurred (as recorded in a preserved source)."@en ;
+    uiw:criticalQuestion "Was W actually positioned — in place, in time, with line of sight or other access — to observe E?"@en, "Was W in a condition to observe and recall accurately (visibility, duration, stress, elapsed time before recording)?"@en, "Does W have an interest, affiliation, or pressure that bears on the account? Note: bias does not make an account false; it raises the scrutiny required."@en, "Was the account given under coercion, captivity, or state supervision? Accounts from prisoners require particular care (Geneva III Art. 13; POL-0001 §5.4)."@en, "Is the account internally consistent, and consistent across retellings?"@en, "Is the account corroborated by an **independent** line? Corroboration by sources sharing this witness is not independent (DR-0028)."@en, "Is the account preserved as W gave it, or transmitted through translation, paraphrase, or edited republication? Each step is a derivation with its own provenance (DR-0003, DR-0019)."@en .
+
+uiw:source-grades-source-reliability
+    a skos:ConceptScheme ;
+    skos:prefLabel "source reliability"@en ;
+    skos:definition "An assessment of the source as such, independent of any particular item."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "epistemic" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0027" ;
+    uiw:satisfies_requirements "EVID-008" ;
+    uiw:axisOf uiw:source-grades .
+
+uiw:source-grades-source-reliability--A
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-source-reliability ;
+    skos:topConceptOf uiw:source-grades-source-reliability ;
+    skos:prefLabel "completely reliable"@en .
+
+uiw:source-grades-source-reliability--B
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-source-reliability ;
+    skos:topConceptOf uiw:source-grades-source-reliability ;
+    skos:prefLabel "usually reliable"@en .
+
+uiw:source-grades-source-reliability--C
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-source-reliability ;
+    skos:topConceptOf uiw:source-grades-source-reliability ;
+    skos:prefLabel "fairly reliable"@en .
+
+uiw:source-grades-source-reliability--D
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-source-reliability ;
+    skos:topConceptOf uiw:source-grades-source-reliability ;
+    skos:prefLabel "not usually reliable"@en .
+
+uiw:source-grades-source-reliability--E
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-source-reliability ;
+    skos:topConceptOf uiw:source-grades-source-reliability ;
+    skos:prefLabel "unreliable"@en .
+
+uiw:source-grades-source-reliability--F
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-source-reliability ;
+    skos:topConceptOf uiw:source-grades-source-reliability ;
+    skos:prefLabel "reliability cannot be judged"@en .
+
+uiw:source-grades-item-credibility
+    a skos:ConceptScheme ;
+    skos:prefLabel "item credibility"@en ;
+    skos:definition "An assessment of the particular item, independent of its source's general standing."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "epistemic" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0027" ;
+    uiw:satisfies_requirements "EVID-008" ;
+    uiw:axisOf uiw:source-grades .
+
+uiw:source-grades-item-credibility--1
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-item-credibility ;
+    skos:topConceptOf uiw:source-grades-item-credibility ;
+    skos:prefLabel "confirmed by other sources"@en .
+
+uiw:source-grades-item-credibility--2
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-item-credibility ;
+    skos:topConceptOf uiw:source-grades-item-credibility ;
+    skos:prefLabel "probably true"@en .
+
+uiw:source-grades-item-credibility--3
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-item-credibility ;
+    skos:topConceptOf uiw:source-grades-item-credibility ;
+    skos:prefLabel "possibly true"@en .
+
+uiw:source-grades-item-credibility--4
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-item-credibility ;
+    skos:topConceptOf uiw:source-grades-item-credibility ;
+    skos:prefLabel "doubtful"@en .
+
+uiw:source-grades-item-credibility--5
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-item-credibility ;
+    skos:topConceptOf uiw:source-grades-item-credibility ;
+    skos:prefLabel "improbable"@en .
+
+uiw:source-grades-item-credibility--6
+    a skos:Concept ;
+    skos:inScheme uiw:source-grades-item-credibility ;
+    skos:topConceptOf uiw:source-grades-item-credibility ;
+    skos:prefLabel "truth cannot be judged"@en .
+
+uiw:source-types
+    a skos:ConceptScheme ;
+    skos:prefLabel "source type"@en ;
+    skos:definition "The kind of source a registry entry describes, from record §8's source list."@en ;
+    skos:scopeNote "Source type is descriptive and drives no automatic trust judgment. Triage grading is a separate, explicitly triage-only vocabulary (see source-grades, DR-0027)."@en ;
+    skos:note "**Open vocabulary** — new source types may be added by registry process with rationale (DR-0080), since §8's list is explicitly non-exhaustive and the collection programme will encounter kinds not anticipated here."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "false"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "pipeline" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0067" ;
+    uiw:satisfies_requirements "OPS-001" ;
+    uiw:depends_on_specs "SPEC-0003" .
+
+uiw:source-types--government
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "government website or publication"@en ;
+    skos:definition "An official organ of a state other than Russia or Ukraine, publishing in its governmental capacity."@en .
+
+uiw:source-types--official-russian
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "official Russian source"@en ;
+    skos:definition "A Russian state body, state-controlled outlet, or official of the Russian Federation or its occupation administrations, publishing in an official capacity."@en ;
+    skos:scopeNote "Typed separately from `government` because such material is simultaneously primary evidence of official position and a principal propaganda corpus (§54). The type drives collection and review defaults; it drives no truth judgment (DR-0027)."@en .
+
+uiw:source-types--official-ukrainian
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "official Ukrainian source"@en ;
+    skos:definition "A Ukrainian state body or official publishing in an official capacity."@en ;
+    skos:scopeNote "Typed separately for the same structural reason as `official-russian`: wartime official communication is a party's account, evidence of what that party stated (§32). The project is supportive of Ukrainian sovereignty and applies the same evidentiary discipline regardless (record §1)."@en .
+
+uiw:source-types--military-security-institution
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "military or security institution"@en ;
+    skos:definition "Armed forces, intelligence services, or security agencies of any state, publishing institutionally."@en .
+
+uiw:source-types--international-organisation
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "international organisation"@en ;
+    skos:definition "An intergovernmental body — UN organs and agencies, OSCE, ICC, Council of Europe, EU institutions in their institutional capacity."@en .
+
+uiw:source-types--news-media
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "news media"@en ;
+    skos:definition "An outlet publishing news reporting as its principal activity."@en .
+
+uiw:source-types--investigative-media
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "investigative media"@en ;
+    skos:definition "An outlet or collective whose principal output is original investigation rather than daily reporting."@en ;
+    skos:scopeNote "Distinguished from `news-media` because such outlets typically publish underlying documents and methodology, which affects both what is worth capturing and what dependence relations to expect (DR-0028)."@en .
+
+uiw:source-types--think-tank
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "think tank"@en ;
+    skos:definition "A research institution publishing analysis, typically with a policy orientation."@en .
+
+uiw:source-types--ngo
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "NGO"@en ;
+    skos:definition "A non-governmental organisation publishing documentation, reporting, or advocacy — including human-rights monitors and humanitarian bodies."@en .
+
+uiw:source-types--feed
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "RSS/Atom feed"@en ;
+    skos:definition "A syndication feed used as an acquisition channel."@en ;
+    skos:scopeNote "A collection *method* rather than a kind of publisher; used where the feed is the registered entry point and the underlying publisher is recorded separately."@en .
+
+uiw:source-types--social-media
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "public social media"@en ;
+    skos:definition "A publicly accessible account or page on a social platform other than Telegram."@en .
+
+uiw:source-types--telegram-channel
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "Telegram channel"@en ;
+    skos:definition "A broadcast Telegram channel, where posting is restricted to operators."@en .
+
+uiw:source-types--telegram-group
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "public Telegram group or chat"@en ;
+    skos:definition "A public Telegram group or chat in which participants post."@en ;
+    skos:scopeNote "Typed separately from `telegram-channel` because participant content raises materially different personal-data exposure: group members are typically private individuals, so the more protective structuring defaults apply (POL-0001 §5.8, DR-0071)."@en .
+
+uiw:source-types--video-platform
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "video platform"@en ;
+    skos:definition "A channel or account on a video hosting platform."@en .
+
+uiw:source-types--podcast
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "podcast or transcript source"@en ;
+    skos:definition "An audio programme or its published transcripts."@en .
+
+uiw:source-types--web-archive
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "web archive"@en ;
+    skos:definition "A third-party web archive from which material is retrieved."@en ;
+    skos:scopeNote "Material retrieved here carries a dependence relation to the original publisher and is not an independent line (DR-0028); the archive is a custodian, not the origin (§23)."@en .
+
+uiw:source-types--public-dataset
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "public dataset"@en ;
+    skos:definition "A structured dataset published for reuse."@en .
+
+uiw:source-types--sanctions-authority
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "sanctions authority or list"@en ;
+    skos:definition "A designating authority and the lists it publishes (UN committees, EU, OFAC, OFSI, and national equivalents)."@en ;
+    skos:scopeNote "Its published rationales are authority-attributed assertions, not project conclusions (DR-0038, DR-0039)."@en .
+
+uiw:source-types--court-prosecutor
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "court or prosecutor publication"@en ;
+    skos:definition "A court, tribunal, or prosecuting authority publishing indictments, judgments, or case records."@en ;
+    skos:scopeNote "Allegations and findings are distinguished by procedural posture, never conflated (§62–63, LEGAL-006)."@en .
+
+uiw:source-types--corporate-registry
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "corporate or beneficial-ownership registry"@en ;
+    skos:definition "An official register of companies, directors, or beneficial ownership."@en ;
+    skos:scopeNote "Registry entries are documentary assertions about the corporate record, not established facts about control (§32, DR-0040)."@en .
+
+uiw:source-types--trade-transport-data
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "customs"@en ;
+    skos:definition "Customs records, trade statistics, vessel or aircraft tracking, and comparable movement data."@en ;
+    skos:scopeNote "Declarations are documentary assertions (§67); machine-generated tracking carries the §49 metadata including spoofing risk."@en .
+
+uiw:source-types--third-party-submission
+    a skos:Concept ;
+    skos:inScheme uiw:source-types ;
+    skos:topConceptOf uiw:source-types ;
+    skos:prefLabel "third-party submission"@en ;
+    skos:definition "Material submitted to the project by an external party."@en ;
+    skos:scopeNote "Enters through quarantine with submitter claims held separately from project conclusions, and confidential identity in the separable store (DR-0069, SEC-001). At-scale intake remains constrained (DR-0071)."@en .
+
+uiw:territorial-statuses
+    a skos:ConceptScheme ;
+    skos:prefLabel "territorial status"@en ;
+    skos:definition "Typed, evidence-backed temporal relations between actors and territorial extents, grounded in period phenomena (record §46)."@en ;
+    skos:scopeNote "An occupation is a spatiotemporal phenomenon (CRM period pattern), not an attribute of a place. Geometry attaches per the place model with temporal validity (DR-0010)."@en ;
+    skos:note "Each is a separate relation with its own time-span, evidence, and asserting party where it is a legal characterisation. Competing characterisations of the same territory and period **coexist** under the epistemic layer (§40) — the system does not take silent sides, and the project's own view is an explicit project assertion (§33)."@en ;
+    skos:scopeNote "Not: Territorial control is never corporate control (see interest-types) or export control. Conflict register C-30."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-08-16" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "legal" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0044", "DR-0015" ;
+    uiw:satisfies_requirements "DATA-007" .
+
+uiw:territorial-statuses--sovereignty-claim
+    a skos:Concept ;
+    skos:inScheme uiw:territorial-statuses ;
+    skos:topConceptOf uiw:territorial-statuses ;
+    skos:prefLabel "sovereignty claim"@en ;
+    skos:definition "An actor's assertion of sovereign title over a territory."@en .
+
+uiw:territorial-statuses--international-recognition
+    a skos:Concept ;
+    skos:inScheme uiw:territorial-statuses ;
+    skos:topConceptOf uiw:territorial-statuses ;
+    skos:prefLabel "international recognition"@en ;
+    skos:definition "Recognition of a sovereignty claim by another state or body. A recognition or non-recognition instrument (e.g. a UN General Assembly resolution) is an **authority-attributed assertion** (§62), not a project conclusion."@en .
+
+uiw:territorial-statuses--non-recognition
+    a skos:Concept ;
+    skos:inScheme uiw:territorial-statuses ;
+    skos:topConceptOf uiw:territorial-statuses ;
+    skos:prefLabel "non-recognition"@en ;
+    skos:definition "Explicit refusal to recognise a claim or a purported change of status."@en .
+
+uiw:territorial-statuses--administration
+    a skos:Concept ;
+    skos:inScheme uiw:territorial-statuses ;
+    skos:topConceptOf uiw:territorial-statuses ;
+    skos:prefLabel "administration"@en ;
+    skos:definition "The exercise of civil administrative authority over a territory."@en .
+
+uiw:territorial-statuses--occupation
+    a skos:Concept ;
+    skos:inScheme uiw:territorial-statuses ;
+    skos:topConceptOf uiw:territorial-statuses ;
+    skos:prefLabel "occupation"@en ;
+    skos:definition "Effective control of territory by a foreign armed force, as a spatiotemporal phenomenon with a time-span."@en .
+
+uiw:territorial-statuses--de-facto-control
+    a skos:Concept ;
+    skos:inScheme uiw:territorial-statuses ;
+    skos:topConceptOf uiw:territorial-statuses ;
+    skos:prefLabel "de facto control"@en ;
+    skos:definition "Actual control exercised over a territory irrespective of legal title or recognition."@en .
