@@ -11,6 +11,7 @@ Status is document metadata, never inferred from Git.
 | [SPEC-0003](SPEC-0003-collection-pipeline.md) | Collection Pipeline Architecture | 1.0 | **Approved — Effective 2026-08-16** |
 | [SPEC-0004](SPEC-0004-semantic-registry.md) | Semantic Registry Implementation | 1.0 | **Approved — Effective 2026-08-16** |
 | [SPEC-0005](SPEC-0005-registry-skos-mapping.md) | Registry Projection Mapping (JSON and SKOS/RDF) | 1.0 | **Approved — Effective 2026-08-20** |
+| [SPEC-0006](SPEC-0006-durable-export-format.md) | Durable Export Format | 0.1 | Draft — proposed, awaiting founder review |
 
 ## Provenance
 
@@ -26,3 +27,4 @@ Status is document metadata, never inferred from Git.
 | SPEC-0004 v1.0 (approved) | `3718f5412e7b752e54dd0533b06ad91121d397f5e5ffc2d8cbdc8b27766c2372` | 2026-08-16 | v0.1 approved by the founder (DR-0078…0081 enacted alongside); status block and §10 enactment note are the only changes |
 | SPEC-0005 v0.1 (draft) | `5625e3f624ebbd9d1ed6bd79b97a7ac3bb4d1e826b678c230e3a58076af42731` | 2026-08-16 | AI-drafted (Anthropic Claude Code agent session) alongside the compiler it specifies |
 | SPEC-0005 v1.0 (approved) | `cccb4f2ce684889d9e60752e0b7f71c49abc606d3930574a4da6cf9817f16f9f` | 2026-08-20 | v0.1 approved by the founder (DR-0083); status block and §8 enactment note are the only changes |
+| SPEC-0006 v0.1 (draft) | `de47628f2c3e60d48b03e535cf5b90c118fda0e6230bedf22cae5dc4e94f5175` | 2026-08-21 | AI-drafted (Anthropic Claude Code agent session) alongside the implementation it specifies; candidate until approved |
