@@ -1,0 +1,11 @@
+# Python bytecode — build artifacts, never source
+__pycache__/
+*.py[cod]
+
+# Local PostgreSQL test clusters and scratch data
+*.pgdata/
+
+# Note: registry/dist/ is deliberately NOT ignored. Those projections are
+# derived (SPEC-0005) but committed so a registry change shows both its
+# source diff and its projection diff in one review; compile.py --check
+# prevents them going stale.
