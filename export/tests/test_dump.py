@@ -27,6 +27,7 @@ sys.path.insert(0, str(ROOT / "export"))
 import psycopg  # noqa: E402
 
 from dump import create_dump, list_tables, verify_dump  # noqa: E402
+from tiers import TIER_RULES, TierPolicyError, unclassified_tables  # noqa: E402
 from fetch import FixtureFetcher  # noqa: E402
 from ocfl import StorageRoot  # noqa: E402
 from pipeline import Collector  # noqa: E402
@@ -112,7 +113,8 @@ def run() -> int:
         # ---- dump --------------------------------------------------------
 
         dump_dir = work / "dump"
-        manifest = create_dump(conn, dump_dir, ROOT / "registry/dist/registry.json")
+        manifest = create_dump(conn, dump_dir, ROOT / "registry/dist/registry.json",
+                               purpose="preservation")
 
         # ---- DR-0058: the dump is complete by construction ---------------
 
@@ -176,6 +178,96 @@ def run() -> int:
         check("EVID-010", "a time span keeps its structure in JSONL",
               isinstance(assertions[0]["valid_time"], dict)
               and "absence" in assertions[0]["valid_time"])
+
+
+        # ---- DR-0084: no dump without a declared purpose ------------------
+
+        try:
+            create_dump(conn, work / "no-purpose", None, purpose="")
+            check("DR-0084", "a dump without a purpose is refused", False)
+        except TierPolicyError:
+            check("DR-0084", "a dump without a purpose is refused", True)
+
+        try:
+            create_dump(conn, work / "no-tier", None, purpose="disclosure")
+            check("DR-0084", "a disclosure dump without a tier is refused", False)
+        except TierPolicyError:
+            check("DR-0084", "a disclosure dump without a tier is refused", True)
+
+        try:
+            create_dump(conn, work / "conf", None, purpose="disclosure",
+                        access_tier="confidential")
+            check("SEC-001", "'confidential' is not a disclosure target", False)
+        except TierPolicyError:
+            check("SEC-001", "'confidential' is not a disclosure target", True)
+
+        # ---- fail closed on an unclassified table -------------------------
+
+        check("DR-0084", "every table in the schema has a declared tier rule",
+              unclassified_tables(list_tables(conn)) == [])
+
+        conn.execute("CREATE TABLE surprise_table (id uuid PRIMARY KEY)")
+        try:
+            create_dump(conn, work / "surprise", None, purpose="preservation")
+            check("DR-0084", "an unclassified table stops the dump", False)
+        except TierPolicyError as exc:
+            check("DR-0084", "an unclassified table stops the dump",
+                  "surprise_table" in str(exc))
+        conn.execute("DROP TABLE surprise_table")
+
+        # ---- disclosure filtering actually withholds ----------------------
+
+        public_dir = work / "dump-public"
+        public_manifest = create_dump(
+            conn, public_dir, ROOT / "registry/dist/registry.json",
+            purpose="disclosure", access_tier="public")
+
+        def rows_in(directory, table):
+            path = directory / "data" / f"{table}.jsonl"
+            return [json.loads(x) for x in path.open() if x.strip()]
+
+        check("SEC-001", "quarantine items never appear in a public dump",
+              rows_in(public_dir, "quarantine_item") == [])
+        check("SEC-001", "pipeline agents never appear in a public dump",
+              rows_in(public_dir, "pipeline_agent") == [])
+        check("§12", "internal operational records are withheld from a public dump",
+              rows_in(public_dir, "acquisition_attempt") == []
+              and rows_in(public_dir, "collector_run") == [])
+        check("§12", "public holdings are present in a public dump",
+              len(rows_in(public_dir, "holding")) == 1)
+        check("§12", "public reference vocabularies are present",
+              len(rows_in(public_dir, "source_types")) > 0)
+
+        # ---- omissions are counted, not silent ----------------------------
+
+        check("§57", "the manifest counts what was omitted",
+              public_manifest["total_rows_omitted"] > 0)
+        check("§57", "the manifest states the dump is not complete",
+              "not the complete archive" in public_manifest["completeness_statement"])
+        check("§57", "per-table omission counts are recorded",
+              public_manifest["tables"]["quarantine_item"]["omitted_rows"] >= 1)
+        check("DR-0084", "the manifest records which tiers were included",
+              public_manifest["included_tiers"] == ["public"])
+
+        # ---- a filtered dump still verifies against its own manifest ------
+
+        check("DR-0005", "a filtered dump verifies against its manifest",
+              verify_dump(public_dir) == [])
+
+        # ---- CSV and JSONL agree about what was filtered ------------------
+
+        import csv as _csv
+        with (public_dir / "data" / "quarantine_item.csv").open() as handle:
+            csv_rows = list(_csv.reader(handle))
+        check("SPEC-0006", "filtered CSV matches filtered JSONL",
+              len(csv_rows) == 1)  # header only
+
+        # ---- a preservation dump says what it carries ---------------------
+
+        check("PRES-010", "a preservation dump names the highest tier it carries",
+              manifest["highest_tier_present"] == "confidential")
+        check("PRES-010", "a preservation dump says it is not a disclosure export",
+              "not a disclosure export" in manifest["completeness_statement"])
 
         # ---- PRES-009: reconstruction, in a separate process --------------
 

@@ -1,8 +1,9 @@
 # SPEC-0006 — Durable Export Format
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — proposed
-**Approval:** pending founder review | **Effective:** upon approval
+**Class:** SPEC (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-21 | **Effective:** 2026-08-21
 **Supersedes:** — | **Superseded by:** —
+**Change history:** 0.1 drafted 2026-08-21 alongside its implementation. Approved as 1.0 the same day on the condition that unfiltered dumps be blocked until access-tier filtering existed (DR-0084); §9's open question 3 is accordingly resolved and replaced by §9A, and the implementation now refuses to produce a dump without a declared purpose.
 **Governed by:** DR-0058 (durable export is a standing obligation; the format specification is a SPEC-class controlled document), DR-0048 (release baselines), DR-0005 (fixity), DR-0050 (registry), DR-0054 (layered representation).
 **Implemented by:** `export/dump.py`. Verified by `export/tests/reconstruct.py`.
 
@@ -120,20 +121,64 @@ block, so a disagreement between dump and storage is caught.
 If that script stops working, the archive's central promise has stopped
 being true. That is what it is for.
 
-## 9. Open questions
+## 9A. Access tiers — no dump without a declared purpose
+
+A dump of everything is a dump of confidential material too (§12, SEC-001).
+The founder's ruling on CDR-P3-30 was that unfiltered dumps be **blocked**
+until filtering existed rather than governed by a documented caveat; DR-0084
+records it, and the implementation enforces it. **There is no default
+purpose and no default tier.**
+
+### Two purposes
+
+| Purpose | Contents | Handling |
+|---|---|---|
+| **preservation** | Complete — nothing filtered, because succession (PRES-010) and reconstruction (PRES-009) need the whole archive | Carries the highest tier present, named in the manifest, and must be handled at that tier. Not a disclosure export. |
+| **disclosure** | Filtered to a named access tier | Omissions counted per table; the manifest states plainly that it is not the complete archive |
+
+### Tiers are not a ladder
+
+`researcher-restricted` and `investigator-restricted` are lateral grants to
+named parties, not steps above `internal`; `private-preservation` means
+disclosed to nobody (§12). Containment is therefore **declared**, not
+computed from an ordering — `export/tiers.py` states which tiers each
+disclosure target admits.
+
+**`confidential` and `private-preservation` are not disclosure targets at
+all.** Material at those tiers reaches a recipient through a preservation
+dump under an explicit arrangement, never a routine export (SEC-001).
+
+### Two structural safety properties
+
+- **Fail closed.** Every table must have a declared tier rule. A table added
+  to the schema without one makes the dump *refuse*, not export it at
+  whatever tier is convenient. With §3's catalogue-derived table list, a
+  forgotten table is loud in both directions: it appears, and it halts the
+  run until someone classifies it deliberately.
+- **Unresolvable means withheld.** A row whose tier cannot be determined is
+  omitted, never published. Failing open here would be the single mistake
+  this machinery exists to prevent.
+
+### Omission is stated, not silent
+
+A filtered dump records per-table omission counts and a completeness
+statement saying it is not the whole archive — §57's discipline applied to
+exports, so a reader cannot mistake a public dump for the archive itself.
+
+## 9B. Remaining open questions
 
 1. Whether a dump should carry the compiled registry itself, so a reader
    need not obtain it separately. Currently it records only the version.
 2. Whether release baselines pin a dump by digest or merely require one
    (DR-0048 interaction).
-3. Encryption or access-tier filtering for dumps containing restricted
-   material — a dump of everything is a dump of confidential material too
-   (§12, SEC-001). **Until this is resolved, dumps must be treated as
-   carrying the highest access tier of any row they contain.**
+3. Whether disclosure dumps should eventually **redact** rather than omit —
+   keeping the row and replacing restricted values with the `withheld`
+   absence state (DR-0029), so a reader can see that something exists
+   without seeing it. Omission is the safer starting point; redaction is
+   more informative and can follow once the column-level classification it
+   needs exists.
 
-## 10. Candidate Decision Record
+## 10. Decision Record arising (enacted)
 
-- **CDR-P3-30:** Adopt SPEC-0006 as the controlled specification of the
-  durable export format required by DR-0058, with JSONL authoritative and
-  CSV documented as lossy, completeness derived from the database catalogue,
-  and reconstruction verified by a process importing no project code.
+**DR-0084** — adoption of this specification, approved by the founder on
+2026-08-21 with the condition recorded in §9A.
