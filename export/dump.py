@@ -21,13 +21,20 @@ catalogue, not from a list maintained here. A table added to the schema and
 forgotten in the dumper would break PRES-009 silently; deriving the list
 means a new table is exported whether or not anyone remembered it.
 
+**No dump without a declared purpose** (DR-0084). An unfiltered dump carries
+confidential material (SEC-001, §12), so there is no default: every run says
+what it is for, and a disclosure dump also says which tier it is filtered to.
+
 Usage:
-  python3 export/dump.py <output-dir> [--registry registry/dist/registry.json]
+  python3 export/dump.py <dir> --purpose preservation
+  python3 export/dump.py <dir> --purpose disclosure --access-tier public
+  python3 export/dump.py <dir> --verify-only
 """
 
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import sys
@@ -35,6 +42,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import psycopg
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import tiers  # noqa: E402
 
 FORMAT_VERSION = "1.0"
 SPECIFICATION = "SPEC-0006"
@@ -147,26 +157,60 @@ def describe_schema(conn: psycopg.Connection, registry: dict | None) -> dict:
     }
 
 
-def dump_table(conn: psycopg.Connection, table: str, data_dir: Path) -> dict:
-    """Write one table as JSONL (authoritative) and CSV (convenience)."""
+def dump_table(
+    conn: psycopg.Connection,
+    table: str,
+    data_dir: Path,
+    included_tiers: frozenset[str] | None = None,
+) -> dict:
+    """Write one table as JSONL (authoritative) and CSV (convenience).
+
+    `included_tiers` is None for a preservation dump (nothing filtered) and a
+    set of tiers for a disclosure dump. Omissions are counted, never silent:
+    a dump that quietly dropped rows would misrepresent its own completeness
+    (§57).
+    """
+    tier_map = None if included_tiers is None else tiers.row_tiers(conn, table)
+
     jsonl_path = data_dir / f"{table}.jsonl"
     rows = 0
+    omitted = 0
+
     with jsonl_path.open("w", encoding="utf-8") as out:
         # row_to_json expands composite columns and renders bytea as a hex
         # string, so structure survives without a custom encoder.
         for (record,) in conn.execute(f'SELECT row_to_json(t)::text FROM "{table}" t'):
+            if included_tiers is not None:
+                row = json.loads(record)
+                tier = (
+                    tier_map
+                    if isinstance(tier_map, str)
+                    else tier_map.get(tiers.row_key(table, row))
+                )
+                # An unresolvable tier is withheld, not published. Failing
+                # open here would be the one mistake this whole module exists
+                # to prevent.
+                if tier is None or tier not in included_tiers:
+                    omitted += 1
+                    continue
             out.write(record + "\n")
             rows += 1
 
     csv_path = data_dir / f"{table}.csv"
     with csv_path.open("w", encoding="utf-8") as out:
-        with conn.cursor().copy(
-            f'COPY (SELECT * FROM "{table}") TO STDOUT WITH (FORMAT csv, HEADER true)'
-        ) as copy:
-            for chunk in copy:
-                out.write(bytes(chunk).decode("utf-8"))
+        if included_tiers is None:
+            source_sql = f'SELECT * FROM "{table}"'
+            with conn.cursor().copy(
+                f"COPY ({source_sql}) TO STDOUT WITH (FORMAT csv, HEADER true)"
+            ) as copy:
+                for chunk in copy:
+                    out.write(bytes(chunk).decode("utf-8"))
+        else:
+            # Filtered CSV is derived from the filtered JSONL, so the two can
+            # never disagree about what was included.
+            _csv_from_jsonl(conn, table, jsonl_path, csv_path)
 
-    return {
+    result = {
         "rows": rows,
         "files": {
             "jsonl": {"path": f"data/{table}.jsonl",
@@ -177,6 +221,39 @@ def dump_table(conn: psycopg.Connection, table: str, data_dir: Path) -> dict:
                     "bytes": csv_path.stat().st_size},
         },
     }
+    if included_tiers is not None:
+        result["omitted_rows"] = omitted
+        result["tier_rule"] = tiers.TIER_RULES[table].kind
+    return result
+
+
+def _csv_from_jsonl(
+    conn: psycopg.Connection, table: str, jsonl_path: Path, csv_path: Path
+) -> None:
+    """Render the already-filtered JSONL as CSV, preserving column order."""
+    columns = [
+        row[0] for row in conn.execute(
+            """
+            SELECT column_name FROM information_schema.columns
+             WHERE table_schema = 'public' AND table_name = %s
+             ORDER BY ordinal_position
+            """,
+            (table,),
+        )
+    ]
+    with csv_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(columns)
+        for line in jsonl_path.open(encoding="utf-8"):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            writer.writerow([
+                "" if row.get(c) is None
+                else row[c] if isinstance(row[c], str)
+                else json.dumps(row[c], ensure_ascii=False)
+                for c in columns
+            ])
 
 
 README = """\
@@ -229,8 +306,44 @@ READING IT HONESTLY
 
 
 def create_dump(
-    conn: psycopg.Connection, output: Path, registry_path: Path | None
+    conn: psycopg.Connection,
+    output: Path,
+    registry_path: Path | None,
+    purpose: str,
+    access_tier: str | None = None,
 ) -> dict:
+    """Produce a dump. There is no default purpose, by design (DR-0084).
+
+    purpose='preservation'  complete; for succession and reconstruction, and
+                            carries the highest tier present
+    purpose='disclosure'    filtered to `access_tier`; omissions counted
+    """
+    if purpose not in ("preservation", "disclosure"):
+        raise tiers.TierPolicyError(
+            f"purpose must be 'preservation' or 'disclosure', not {purpose!r}. "
+            "DR-0084 forbids producing a dump without saying what it is for."
+        )
+
+    all_tables = list_tables(conn)
+    # Fail closed: an unclassified table stops the dump rather than being
+    # exported at whatever tier happens to be convenient.
+    tiers.check_complete(all_tables)
+
+    if purpose == "disclosure":
+        if not access_tier:
+            raise tiers.TierPolicyError(
+                "a disclosure dump requires an explicit --access-tier (DR-0084)"
+            )
+        included = tiers.resolve_disclosure(access_tier)
+    else:
+        included = None
+        if access_tier:
+            raise tiers.TierPolicyError(
+                "a preservation dump is complete by definition; it takes no "
+                "access tier. It carries the highest tier present and must be "
+                "handled accordingly."
+            )
+
     output.mkdir(parents=True, exist_ok=True)
     if any(output.iterdir()):
         raise SystemExit(f"output directory {output} is not empty")
@@ -247,13 +360,14 @@ def create_dump(
     )
     (output / "README.txt").write_text(README)
 
-    tables = {t: dump_table(conn, t, data_dir) for t in list_tables(conn)}
+    tables = {t: dump_table(conn, t, data_dir, included) for t in all_tables}
 
     manifest = {
         "format_version": FORMAT_VERSION,
         "specification": SPECIFICATION,
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "registry_version": schema["registry_version"],
+        "purpose": purpose,
         "total_rows": sum(t["rows"] for t in tables.values()),
         "tables": tables,
         "files": {
@@ -261,6 +375,29 @@ def create_dump(
             "README.txt": {"sha256": _sha256_file(output / "README.txt")},
         },
     }
+
+    if purpose == "disclosure":
+        manifest["access_tier"] = access_tier
+        manifest["included_tiers"] = sorted(included)
+        manifest["total_rows_omitted"] = sum(
+            t.get("omitted_rows", 0) for t in tables.values()
+        )
+        # §57 applied to dumps: a filtered export states what it left out, so
+        # a reader cannot mistake it for the whole archive.
+        manifest["completeness_statement"] = (
+            f"Filtered for disclosure at access tier {access_tier!r}. "
+            f"{manifest['total_rows_omitted']} row(s) above that tier were "
+            "omitted; per-table counts are in `tables.*.omitted_rows`. This is "
+            "not the complete archive and must not be cited as one."
+        )
+    else:
+        highest = _highest_tier_present(conn, all_tables)
+        manifest["highest_tier_present"] = highest
+        manifest["completeness_statement"] = (
+            "Complete preservation dump for succession and reconstruction "
+            f"(PRES-009, PRES-010). Carries material at access tier {highest!r} "
+            "and must be handled at that tier: it is not a disclosure export."
+        )
     manifest_path = output / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     # The manifest attests to everything else; a sidecar attests to it.
@@ -268,6 +405,28 @@ def create_dump(
         f"{_sha256_file(manifest_path)}  manifest.json\n"
     )
     return manifest
+
+
+def _highest_tier_present(conn: psycopg.Connection, tables: list[str]) -> str:
+    """The most restrictive tier any row in the archive sits at.
+
+    Ordered by how much handling care each demands, not by any inherent
+    ranking: the point is only to name the level a preservation dump must be
+    handled at.
+    """
+    severity = [
+        "public", "subscriber", "researcher-restricted",
+        "investigator-restricted", "internal", "confidential",
+        "private-preservation",
+    ]
+    worst = "public"
+    for table in tables:
+        found = tiers.row_tiers(conn, table)
+        candidates = [found] if isinstance(found, str) else list(found.values())
+        for tier in candidates:
+            if tier in severity and severity.index(tier) > severity.index(worst):
+                worst = tier
+    return worst
 
 
 def verify_dump(output: Path) -> list[str]:
@@ -316,8 +475,23 @@ def main() -> int:
     parser.add_argument(
         "--registry", type=Path, default=Path("registry/dist/registry.json")
     )
+    parser.add_argument(
+        "--purpose", choices=("preservation", "disclosure"),
+        help="required (DR-0084): what this dump is for. There is no default.",
+    )
+    parser.add_argument(
+        "--access-tier",
+        help="required for --purpose disclosure: the tier this dump is filtered to",
+    )
     parser.add_argument("--verify-only", action="store_true")
     args = parser.parse_args()
+
+    if not args.verify_only and not args.purpose:
+        parser.error(
+            "--purpose is required. DR-0084 forbids producing a dump without "
+            "declaring what it is for, because an unfiltered dump carries "
+            "confidential material (SEC-001, §12)."
+        )
 
     if args.verify_only:
         problems = verify_dump(args.output)
@@ -326,12 +500,22 @@ def main() -> int:
         print("dump verifies clean" if not problems else f"{len(problems)} problem(s)")
         return 1 if problems else 0
 
-    with psycopg.connect(dbname=args.dbname) if args.dbname else psycopg.connect() as conn:
-        manifest = create_dump(conn, args.output, args.registry)
+    connect = (
+        psycopg.connect(dbname=args.dbname) if args.dbname else psycopg.connect()
+    )
+    with connect as conn:
+        try:
+            manifest = create_dump(
+                conn, args.output, args.registry, args.purpose, args.access_tier
+            )
+        except tiers.TierPolicyError as exc:
+            print(f"refused: {exc}")
+            return 2
 
     print(f"wrote {args.output}")
     print(f"  {len(manifest['tables'])} tables, {manifest['total_rows']} rows")
     print(f"  registry version {manifest['registry_version']}")
+    print(f"  {manifest['completeness_statement']}")
     return 0
 
 
