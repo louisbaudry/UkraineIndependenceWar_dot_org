@@ -219,9 +219,23 @@ def run() -> int:
         # ---- the readiness check reports honestly ---------------------------
 
         live = collect_configuration(conn, preservation_dump)
+        # .get() throughout: when an item unexpectedly pins there is no note,
+        # and the suite should report that as a failure rather than erroring.
+        meth_note = live.notes.get("methodology_version", "")
         check("§97", "the readiness check reports the missing METH document",
-              "methodology_version" in live.missing()
-              and "METH" in live.notes["methodology_version"])
+              "methodology_version" in live.missing() and "METH" in meth_note)
+
+        # A METH document now exists but is a candidate. A draft carries no
+        # authority (DR-0046), so it must not satisfy the item — and the
+        # report must say *which* state it is in rather than implying that
+        # nothing was written.
+        meth = next((ROOT / "docs" / "methodology").glob("METH-*.md"), None)
+        check("DR-0046", "a drafted but unapproved METH document does not pin",
+              meth is not None
+              and "Status:** Approved — Effective" not in meth.read_text()[:1200]
+              and "methodology_version" in live.missing())
+        check("DR-0029", "the report distinguishes 'not approved' from 'not written'",
+              "exists but is not Approved" in meth_note)
         check("DR-0047", "an unclean working tree blocks pinning the code commit",
               "code_commit" not in live.missing()
               or "not clean" in live.notes.get("code_commit", ""))

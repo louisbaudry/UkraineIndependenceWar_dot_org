@@ -101,6 +101,7 @@ security, legal, editorial.
 | [DR-0082](DR-0082-requirements-enactment.md) | Enactment of the requirement set (73 requirements, ten REQ documents) | architecture / methodology | Approved | 2026-08-16 |
 | [DR-0083](DR-0083-registry-projection-mapping.md) | Adoption of the registry projection mapping (SPEC-0005) | architecture | Approved | 2026-08-20 |
 | [DR-0084](DR-0084-durable-export-format-adoption.md) | Durable export format adopted; unfiltered dumps blocked | architecture / security | Approved | 2026-08-21 |
+| [DR-0085](DR-0085-evidentiary-method-adoption.md) | Adoption of the evidentiary method (METH-0001) | methodology / epistemology | **Proposed** | — |
 
 ## Provenance of decisions
 
@@ -189,3 +190,11 @@ the founder on 2026-08-16 — DR-0066, DR-0069, and DR-0071 in individual
 review; DR-0067, DR-0068, and DR-0070 as a reviewed group of mechanical
 implementations. SPEC-0003 v1.0 was approved as effective in the same
 review.
+
+DR-0085 proposes adoption of
+[METH-0001](../methodology/METH-0001-evidentiary-method.md), drafted
+2026-08-25 after the DR-0048 release-readiness check reported that no METH
+document existed and therefore no release could be created. **Awaiting
+founder decision**; the DR also puts METH-0001 §15's five open questions
+forward for ruling. Until it is decided, the methodology gap in the release
+baseline remains open by design.

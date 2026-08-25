@@ -198,11 +198,19 @@ def collect_configuration(
         _effective_document_version(meth) if meth else None
     )
     if not config.items["methodology_version"]:
+        # "None written" and "one written, not yet approved" are different
+        # states and the report says which, rather than leaving the reader to
+        # infer that nothing exists (DR-0029's rule applied to this tool's
+        # own output).
         config.notes["methodology_version"] = (
-            "no effective METH document exists. §97 makes methodology a "
-            "first-class versioned artifact and DR-0047 requires releases to "
-            "pin it; until one is approved, no release can be created"
-        )
+            f"{meth.name} exists but is not Approved — Effective; a draft "
+            "carries no authority and pinning one would claim a release rests "
+            "on it (DR-0046)"
+            if meth else
+            "no METH document exists at all"
+        ) + ". §97 makes methodology a first-class versioned artifact and " \
+            "DR-0047 requires releases to pin it; until one is effective, " \
+            "no release can be created"
 
     # Terminology travels with the registry until localization resources
     # exist as their own versioned artifact (DR-0081: none are seeded).

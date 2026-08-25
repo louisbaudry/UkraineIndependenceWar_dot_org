@@ -35,7 +35,7 @@ the project still lacks.
   pinned   registry_version       0.1.0
   MISSING  collector_version      ← no collector has run
   MISSING  pipeline_version
-  MISSING  methodology_version    ← no effective METH document exists
+  MISSING  methodology_version    ← METH-0001 exists but is not yet approved
   pinned   terminology_version    registry:0.1.0
   pinned   build_configuration    …
   MISSING  dataset_snapshot       ← no preservation dump supplied
@@ -43,9 +43,20 @@ the project still lacks.
 
 The `methodology_version` gap is the substantive one and this tool is how it
 surfaced: §97 makes methodology a first-class versioned artifact and DR-0047
-requires releases to pin it, but no METH document had been written. **Until
-one is effective, no release can be created.** That is the machinery working
-as intended, not a defect in it.
+requires releases to pin it, but no METH document had been written.
+[METH-0001](../docs/methodology/METH-0001-evidentiary-method.md) has since
+been drafted, and the check still refuses it — **a draft carries no
+authority** (DR-0046), so pinning one would claim a release rests on a
+document nobody has approved. Adoption is proposed in DR-0085.
+
+The report names which of the two states it found, because "nobody wrote one"
+and "one is written and awaiting approval" call for different actions. Both
+are reported as MISSING; neither is reported as the other.
+
+The remaining three gaps need a real collection run, not a document:
+`collector_version` and `pipeline_version` come from software agents that
+have actually executed, and `dataset_snapshot` from a preservation dump of
+the resulting archive.
 
 ## What a baseline contains
 
@@ -81,7 +92,8 @@ baseline, because it looks reproducible.
 
 ## Tests
 
-23, each naming the requirement it verifies — including that creation is
+25, each naming the requirement it verifies — including that creation is
 refused for each missing configuration item individually, that a disclosure
 dump cannot be pinned as the snapshot, that coverage records failures rather
-than only successes, and that tampering with a released file is detected.
+than only successes, that a drafted-but-unapproved METH document does not
+pin, and that tampering with a released file is detected.
