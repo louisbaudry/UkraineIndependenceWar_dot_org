@@ -1,9 +1,9 @@
 # METH-0001 — Evidentiary Method
 
-**Class:** METH (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — Candidate for approval
-**Approval:** — | **Effective:** —
+**Class:** METH (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-26 (the five §15 questions ruled individually) | **Effective:** 2026-08-26
 **Supersedes:** — | **Superseded by:** —
-**Change history:** 0.1 drafted 2026-08-25 as a candidate, at the founder's direction, after the DR-0048 release-readiness check reported that no METH document existed.
+**Change history:** 0.1 drafted 2026-08-25 as a candidate, at the founder's direction, after the DR-0048 release-readiness check reported that no METH document existed. Approved as 1.0 on 2026-08-26 with the five open questions ruled one at a time (DR-0085); §1.5, §6.2, §7 and §10.1 are aligned to the rulings, and §10.1 is **stricter** than the draft.
 **Fulfils:** record §97 (methodology as a first-class versioned artifact); supplies the `methodology_version` that DR-0047 and DR-0048 require every release baseline to pin.
 **Governed by:** DR-0024 (six layers), DR-0025 (epistemic vocabulary), DR-0026 + DR-0065 (two-dimensional uncertainty), DR-0027 (grading is triage), DR-0028 (dependence), DR-0029 (absence), DR-0030 (quantities), DR-0031/0032/0033/0034 (argumentation), DR-0035 (hypothesis competition), DR-0036 (no automatic adjudication), DR-0037 (Toulmin scaffold), DR-0008 (custody claims), DR-0018/0019 (anchoring, quotation), DR-0066 (three gates), DR-0055 (append-only), POL-0001 (personal data).
 **Implemented by:** the registry vocabularies and argument schemes it cites; verification per §14.
@@ -13,8 +13,9 @@
 Drafted 2026-08-25 by an AI assistant (Anthropic Claude Code agent session)
 at the founder's direction. It **codifies decisions already taken** by the
 founder in DR-0008 and DR-0018…DR-0037; it does not originate method. Where
-it goes beyond enacted decisions it says so explicitly and marks the passage
-as an open question for founder ruling (§15). Candidate until approved.
+the draft went beyond enacted decisions it said so and asked; the founder
+ruled those five questions individually on 2026-08-26 and the rulings are
+recorded at §15. The document is approved and effective.
 
 ---
 
@@ -52,6 +53,36 @@ negative findings, review, and correction.
 
 Everyone producing project assertions, including the founder. AI agents
 operate under §11 and never under their own authority (§79, AI-001).
+
+### 1.5 "Consequential" — the test
+
+The record uses the word throughout — §78 review depth, §79 human
+accountability, §80 AI provenance, §86 publication provenance — without
+defining it. It is defined here, once, and every later use in this document
+means this.
+
+**A conclusion is consequential if any one of the following holds:**
+
+1. it **names an identifiable person or entity**, whether by name or by any
+   identifier that resolves to one;
+2. it **feeds a legal-layer conclusion** — a designation mapping, an
+   ownership path, an export-control or sanctions applicability assessment
+   (DR-0038…0043);
+3. it **would be materially relied on by others** — a figure, a chronology,
+   or an attribution that a reader, journalist, researcher, or authority
+   would act or publish on.
+
+Any one suffices; they are not cumulative.
+
+Limb (3) is a judgment and must be made honestly rather than read narrowly.
+The question is not whether the project intends the conclusion to be relied
+on, but whether someone reasonably would. An unattributed structural claim —
+"this route carried controlled goods throughout 2024" — names nobody and
+still meets limb (3) squarely.
+
+Consequence is what triggers the obligations that follow: mandatory argument
+structure (§6), a hypothesis set (§7), AI provenance capture (§11), and T1 or
+T2 review (§10). *Ruled by the founder, 2026-08-26 (DR-0085, §15 Q1).*
 
 ---
 
@@ -219,7 +250,25 @@ assessment must be able to say *why* its confidence is what it is.
   converted.
 - Attaching a band to a bare data field. Bands belong to assessments.
 
-### 5.4 Keeping the dimensions apart in prose
+### 5.4 Bands are credences, not forecasts
+
+ICD 203's wording was built for prediction. Nearly every assessment this
+project makes is **retrospective**: a past fact either occurred or it did
+not, and the band states how likely the evidence makes it that it did. "Very
+likely that shipment X carried controlled goods in 2023" is a claim about the
+analyst's uncertainty, never about the world's.
+
+One scale serves both directions — the numeric range is the anchor, and
+probability about a determinate past fact is ordinary practice. What differs
+is only how the words can be misread, and that is handled where it belongs:
+the registry's `likelihood-bands` entry carries a retrospective scope note
+and a forbidden translation covering renderings that read as prediction.
+Ukrainian and Russian renderings are checked against it specifically.
+
+*Ruled by the founder, 2026-08-26 (DR-0085, §15 Q5), closing the open item
+DR-0065 carried forward.*
+
+### 5.5 Keeping the dimensions apart in prose
 
 Published wording derives from the typed values (EDIT-004). A common error is
 prose that reads confidence as likelihood — "we are fairly sure" for a
@@ -251,9 +300,23 @@ defeater type it implies if left so. **An unanswered critical question is not
 a neutral silence** — the scheme declares in advance what kind of doubt it
 leaves open.
 
-Unanswered critical questions cap confidence. A conclusion resting on a
-scheme whose distinctiveness or provenance questions are open does not carry
-`high` confidence.
+**Unanswered critical questions cap analytic confidence at `moderate`.** A
+conclusion resting on a scheme with an open critical question does not carry
+`high` confidence, whatever the defeater type the question implies.
+
+This is a hard rule, not a factor to weigh. It is the one thing that makes
+the critical-question discipline bite rather than being a checklist one can
+note and move past — which is the failure mode DR-0034 exists to prevent.
+
+It blocks nothing from publication: `moderate` and `low` remain available,
+and the conclusion is published with the confidence its gaps warrant. What
+it forbids is claiming the top of the scale while a check the scheme itself
+declared necessary has not been performed.
+
+Where an open question is genuinely immaterial to the conclusion, the answer
+is to say so and answer it — an argued dismissal *is* an answer. Confidence
+is capped only while the question stands untouched. *Ruled by the founder,
+2026-08-26 (DR-0085, §15 Q2).*
 
 ### 6.3 Type every defeater
 
@@ -297,11 +360,24 @@ conclude.
 For any investigation designated important, competing hypotheses are
 first-class objects, not a prose aside (DR-0035).
 
-**When required.** Any question where a single explanation is being built
-toward, where the conclusion would be consequential, or where the project's
-prior expectation is strong. The third case is the point: the instrument
-exists to counter confirmation bias, so a strong prior is a reason to use it,
-not a reason to skip it.
+**When required — mandatory, not recommended.** A hypothesis set is required
+wherever any one of these holds:
+
+1. a single explanation is being built toward;
+2. the conclusion would be **consequential** (§1.5);
+3. **the project's prior expectation is strong.**
+
+The third case is the point, and it is deliberately the uncomfortable one.
+The instrument exists to counter confirmation bias, so a strong prior is the
+reason to use it, not a reason to skip it. For a project with an explicit
+interpretive stance — *Ukraine's Second War of Independence* is an
+interpretive choice, stated as one — this is the trigger that most needs to
+bind. Exempting it would exempt the instrument from its own purpose.
+
+The known failure mode is the strawman: an alternative written to satisfy
+the rule rather than to compete. A hypothesis set containing no alternative
+anyone could believe has not been built, and review treats it as absent.
+*Ruled by the founder, 2026-08-26 (DR-0085, §15 Q3).*
 
 **How.** A hypothesis set for a defined question, with at least two
 hypotheses including a genuine alternative. Evidence relations to each
@@ -389,12 +465,31 @@ evidential annotation.
 
 ## 10. Review
 
-### 10.1 Present authority
+### 10.1 Present authority, and what a reader is told
 
 The founder is final editorial authority (§78, EDIT-001). The tiered model
-below is the standing structure; while the project is one person it operates
-as self-applied discipline, with the tier recorded so that later independent
-review knows what was and was not done.
+below is the standing structure. While the project is one person, no
+conclusion can receive the second-party or independent review that T1 and T2
+require — and §83's whole point is that a second look by the same mind is not
+an independent judgment.
+
+**A conclusion that needs T1 or T2 review and has received only self-review
+is recorded as `unreviewed` at its tier, and published carrying that
+qualification visibly.** Not as an internal note: on the published surface,
+where the reader who might rely on it can see it.
+
+The reasoning is that the alternative — recording the shortfall internally
+and publishing without a caveat — quietly implies a review that did not
+happen. The reader is the one relying on the conclusion and is the one person
+who would not be told. Saying so costs a line of text, and it puts a standing
+visible incentive on obtaining real review.
+
+Publication is not blocked. A conclusion may be published unreviewed at its
+tier, qualified as such; what it may not do is present itself as reviewed.
+When independent review later occurs, it is recorded as a new act and the
+qualification is lifted — the earlier published state remains in the revision
+history (§90, DR-0052), because it was true when published. *Ruled by the
+founder, 2026-08-26 (DR-0085, §15 Q4), stricter than the drafted version.*
 
 ### 10.2 Tiers
 
@@ -528,35 +623,34 @@ waiting for material.
 
 ---
 
-## 15. Open questions for founder ruling
+## 15. Rulings taken on approval
 
-These are places where this draft goes beyond what an enacted DR settles.
-Each needs a ruling; none blocks approval of the rest if ruled on approval.
+The v0.1 draft went beyond enacted decisions in five places and said so. The
+founder ruled each individually on 2026-08-26; the rulings are enacted by
+DR-0085 and are recorded here so that a later reader can see what was
+genuinely open and how it was closed.
 
-**Q1 — The threshold for "consequential."** The record uses the word
-throughout without defining it, deliberately. This draft treats a conclusion
-as consequential if it names an identifiable person or entity, feeds a
-legal-layer conclusion, or would be materially relied on by others. Is that
-the test, or should it be narrower?
+| | Question | Ruling | Where it now lives |
+|---|---|---|---|
+| **Q1** | The test for "consequential" | **Three-part test**, any limb sufficing: names an identifiable person or entity; feeds a legal-layer conclusion; would be materially relied on by others | §1.5 |
+| **Q2** | Do unanswered critical questions cap analytic confidence? | **Hard cap at `moderate`**, whatever the defeater type implied. Publication is not blocked; the top of the scale is | §6.2 |
+| **Q3** | Are competing-hypothesis sets mandatory? | **Mandatory in all three cases**, including where the project's prior expectation is strong | §7 |
+| **Q4** | Self-review while the project is one person | **Recorded `unreviewed` at tier and published carrying that qualification visibly** — stricter than the draft, which kept the shortfall internal | §10.1 |
+| **Q5** | Retrospective likelihood phrasing | **One scale, registry scope note** plus a forbidden translation for renderings that read as prediction. Closes DR-0065's open item | §5.4 and the registry `likelihood-bands` entry |
 
-**Q2 — Whether unanswered critical questions cap confidence.** §6.2 asserts
-they do, and that `high` confidence is unavailable while a scheme's
-provenance or distinctiveness questions are open. This is a real constraint
-on the analyst and is not enacted by any DR.
+Three of the five make the method stricter than the draft proposed, and Q4
+makes it stricter than was asked for. That direction is worth recording: the
+rulings resolved consistently toward the reader being told what was and was
+not done.
 
-**Q3 — Mandatory hypothesis sets.** §7 requires them where the project's
-prior expectation is strong. That is deliberately the uncomfortable case. Is
-it a requirement or a recommendation?
+### Still open, ruled elsewhere or not yet raised
 
-**Q4 — Self-review while the project is one person.** §10.1 records the tier
-even when review is self-applied. An alternative is to record such
-conclusions as unreviewed at their tier and publish them qualified as such,
-which is more honest and more restrictive.
-
-**Q5 — Retrospective likelihood phrasing.** DR-0065's consequences left open
-whether a band used as credence about a past fact ("it is very likely that X
-occurred in 2023") needs distinct wording from a forecast. It affects every
-historical assessment the project will make, and needs a registry scope note.
+- Whether public outputs display a band's numeric range alongside its term
+  remains open in the registry (a presentation-layer question, WP 3.2 §5).
+- §14's audit-verified requirements cannot be discharged until real
+  investigations exist.
+- The requirement gap noted in DR-0085 — no REQ entry names §97's own
+  obligation — is proposed as OPS-007 for the next requirements revision.
 
 ---
 
@@ -578,8 +672,8 @@ re-attributed to the new method.
 
 ---
 
-## 17. Decision Record arising
+## 17. Decision Record enacting this document
 
-Approval of this document requires a DR enacting it and ruling §15's five
-open questions. Drafted as **DR-0085 — Adoption of the evidentiary method**,
-candidate alongside this document.
+**[DR-0085 — Adoption of the evidentiary method](../decision-records/DR-0085-evidentiary-method-adoption.md)**,
+approved by the founder on 2026-08-26, adopts this document as v1.0 and
+records the five §15 rulings, each taken individually.

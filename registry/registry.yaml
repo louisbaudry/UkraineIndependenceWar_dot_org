@@ -4,7 +4,7 @@
 registry:
   id: uiw-semantic-registry
   title: Ukraine's Second War of Independence — Semantic Registry
-  version: "0.1.0"
+  version: "0.1.1"
   version_regime: >
     Ontology/vocabulary regime per DR-0047: explicit versions with changelog,
     deprecations and replacement mappings. Not SemVer arithmetic.
@@ -29,6 +29,17 @@ namespaces:
     projection.
 
 changelog:
+  - version: "0.1.1"
+    date: 2026-08-26
+    summary: >
+      Editorial change (DR-0080): a retrospective scope note added to
+      likelihood-bands, clarifying that a band expresses the assessor's
+      credence about a determinate past fact rather than a forecast, plus a
+      forbidden translation covering renderings that read as prediction.
+    notes: >
+      No member, range, or mapping changed; the scale is unaltered and
+      existing assessments keep their meaning. Ruled by DR-0085 (METH-0001
+      §15 Q5), closing an open item DR-0065 carried forward.
   - version: "0.1.0"
     date: 2026-08-16
     summary: >

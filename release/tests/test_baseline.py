@@ -23,6 +23,7 @@ import psycopg  # noqa: E402
 from baseline import (  # noqa: E402
     REQUIRED_ITEMS,
     BaselineIncomplete,
+    _effective_document_version,
     Configuration,
     change_sets,
     collect_configuration,
@@ -219,26 +220,34 @@ def run() -> int:
         # ---- the readiness check reports honestly ---------------------------
 
         live = collect_configuration(conn, preservation_dump)
-        # .get() throughout: when an item unexpectedly pins there is no note,
-        # and the suite should report that as a failure rather than erroring.
-        meth_note = live.notes.get("methodology_version", "")
-        check("§97", "the readiness check reports the missing METH document",
-              "methodology_version" in live.missing() and "METH" in meth_note)
-
-        # A METH document now exists but is a candidate. A draft carries no
-        # authority (DR-0046), so it must not satisfy the item — and the
-        # report must say *which* state it is in rather than implying that
-        # nothing was written.
-        meth = next((ROOT / "docs" / "methodology").glob("METH-*.md"), None)
-        check("DR-0046", "a drafted but unapproved METH document does not pin",
-              meth is not None
-              and "Status:** Approved — Effective" not in meth.read_text()[:1200]
-              and "methodology_version" in live.missing())
-        check("DR-0029", "the report distinguishes 'not approved' from 'not written'",
-              "exists but is not Approved" in meth_note)
+        # .get(): when an item unexpectedly pins there is no note, and the
+        # suite should report that as a failure rather than erroring.
+        check("§97", "METH-0001 is effective, so methodology_version pins",
+              live.items.get("methodology_version") == "1.0")
         check("DR-0047", "an unclean working tree blocks pinning the code commit",
               "code_commit" not in live.missing()
               or "not clean" in live.notes.get("code_commit", ""))
+
+        # Draft rejection is tested against fixtures, not against the live
+        # document. Asserting on METH-0001's own status would make the test
+        # mean the opposite of itself the moment the founder approved it —
+        # which is exactly what happened on 2026-08-26.
+        header = ("# {id} — T\n\n**Class:** METH | **Version:** {v} | "
+                  "**Status:** {status}\n")
+        for status, version, pins in (
+            ("Draft — Candidate for approval", "0.1", False),
+            ("Proposed", "0.9", False),
+            ("Approved — Effective", "1.0", True),
+            ("Superseded", "1.0", False),
+        ):
+            fixture = work / f"meth-{version}-{status.split()[0]}.md"
+            fixture.write_text(header.format(id="METH-0001", v=version,
+                                             status=status))
+            got = _effective_document_version(fixture)
+            check("DR-0046",
+                  f"a METH document marked {status.split(chr(32))[0]!r} "
+                  f"{'pins' if pins else 'does not pin'}",
+                  (got == version) is pins)
 
     finally:
         conn.close()
