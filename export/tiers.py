@@ -54,6 +54,47 @@ DISCLOSURE_TIERS: dict[str, frozenset[str]] = {
 }
 
 
+# How restrictive each tier is, for the question "several tiers apply; which
+# governs?" The answer must be the most restrictive, and it cannot be read off
+# an alphabetical or enum ordering — `min('public','subscriber')` is 'public'
+# alphabetically, which is the *less* restrictive of the two and exactly the
+# wrong answer.
+#
+# `researcher-restricted` and `investigator-restricted` share a rank because
+# they are lateral grants to different named parties, not rungs. Where both
+# apply, neither grant covers the other's material, so the resolution
+# escalates to `internal` rather than picking one.
+RESTRICTIVENESS: dict[str, int] = {
+    "public": 0,
+    "subscriber": 1,
+    "researcher-restricted": 2,
+    "investigator-restricted": 2,
+    "internal": 3,
+    "confidential": 4,
+    "private-preservation": 5,
+}
+
+
+def most_restrictive(tiers) -> str:
+    """The tier that governs when several apply. Fails closed on the unknown."""
+    tiers = [t for t in tiers if t is not None]
+    if not tiers:
+        return "confidential"          # unclassified is not the same as safe
+    unknown = [t for t in tiers if t not in RESTRICTIVENESS]
+    if unknown:
+        raise TierPolicyError(
+            "unranked access tier(s): " + ", ".join(sorted(set(unknown)))
+            + ". A tier with no declared restrictiveness cannot be resolved "
+            "against others; add it to RESTRICTIVENESS deliberately."
+        )
+    top = max(RESTRICTIVENESS[t] for t in tiers)
+    winners = {t for t in tiers if RESTRICTIVENESS[t] == top}
+    if len(winners) > 1:
+        # Two lateral grants. Neither covers the other's material.
+        return "internal"
+    return winners.pop()
+
+
 @dataclass(frozen=True)
 class TierRule:
     """How to determine the access tier of a table's rows.
@@ -88,7 +129,8 @@ TIER_RULES: dict[str, TierRule] = {
     "preserved_object": TierRule(
         "join",
         sql="""
-            SELECT o.id, coalesce(min(h.access_tier::text), 'confidential')
+            SELECT o.id, most_restrictive_tier(
+                       array_remove(array_agg(h.access_tier), NULL))::text
               FROM preserved_object o
               LEFT JOIN holding_representation hr ON hr.object_id = o.id
               LEFT JOIN holding h ON h.id = hr.holding_id
@@ -97,7 +139,11 @@ TIER_RULES: dict[str, TierRule] = {
         rationale=(
             "Bytes are as restricted as the most restricted holding that "
             "references them. An object referenced by no holding is treated as "
-            "confidential, not public: an unclassified object is not a safe one."
+            "confidential, not public: an unclassified object is not a safe "
+            "one. Resolution goes through `most_restrictive_tier()` — an "
+            "earlier version used min() over the tier text, which is "
+            "alphabetical and returns 'public' for {public, subscriber}, "
+            "the opposite of what this rationale claims."
         ),
     ),
     "holding_representation": TierRule(
@@ -270,6 +316,82 @@ TIER_RULES: dict[str, TierRule] = {
             "attack without the conclusion it attacks misleads in both "
             "directions."
         ),
+    ),
+
+    # -- Gate 3: the published surface --------------------------------------
+    #
+    # These are the one part of the store that is public by nature: they
+    # record what the project already said in public, at a tier a person
+    # deliberately chose. They travel at that tier — a decision to publish at
+    # `public` is itself public, and one taken at `subscriber` travels with
+    # its content.
+    #
+    # The deliberate cost: `rationale` and `sensitivity` travel too. That is
+    # the right default for a project whose method is meant to be
+    # inspectable (§85), but it makes the rationale field a place where
+    # personal data must not be written casually — POL-0001's structuring
+    # decision governs what goes in it.
+
+    "publication_decision": TierRule(
+        "column", column="access_tier",
+        rationale=(
+            "A publication decision travels at the tier it granted. Its "
+            "rationale is disclosed with it, which is intended: the reasons "
+            "for publishing are part of what makes editorial independence "
+            "demonstrable (§85)."
+        ),
+    ),
+    "published_page": TierRule(
+        "join",
+        sql="""
+            SELECT p.id, most_restrictive_tier(
+                       array_remove(array_agg(pd.access_tier), NULL))::text
+              FROM published_page p
+              LEFT JOIN page_revision r ON r.page_id = p.id
+              LEFT JOIN revision_assertion ra ON ra.revision_id = r.id
+              LEFT JOIN publication_decision pd
+                     ON pd.assertion_id = ra.assertion_id
+                    AND pd.withdrawn_at IS NULL
+             GROUP BY p.id
+        """,
+        rationale=(
+            "A page is as restricted as its most restricted live decision. A "
+            "page whose decisions were all withdrawn resolves to "
+            "`confidential` and stays out of disclosure dumps — it is no "
+            "longer published, and re-disclosing it through an export would "
+            "undo the withdrawal (§77)."
+        ),
+    ),
+    "page_revision": TierRule(
+        "join",
+        sql="""
+            SELECT r.id, most_restrictive_tier(
+                       array_remove(array_agg(pd.access_tier), NULL))::text
+              FROM page_revision r
+              LEFT JOIN revision_assertion ra ON ra.revision_id = r.id
+              LEFT JOIN publication_decision pd
+                     ON pd.assertion_id = ra.assertion_id
+                    AND pd.withdrawn_at IS NULL
+             GROUP BY r.id
+        """,
+        rationale=(
+            "Follows the decisions behind the content it rendered. The "
+            "revision carries the exact published text, so its tier must "
+            "track what that text was cleared to say."
+        ),
+    ),
+    "revision_assertion": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "Which internal assertions a page rendered. The page text is as "
+            "public as its decision; the mapping back into the assertion "
+            "layer is working data, and the assertions themselves are "
+            "`internal` (above)."
+        ),
+    ),
+    "revision_holding": TierRule(
+        "fixed", tier="internal",
+        rationale="Follows revision_assertion, for the same reason.",
     ),
 
     # -- public reference data --------------------------------------------

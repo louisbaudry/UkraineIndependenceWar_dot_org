@@ -102,6 +102,7 @@ security, legal, editorial.
 | [DR-0083](DR-0083-registry-projection-mapping.md) | Adoption of the registry projection mapping (SPEC-0005) | architecture | Approved | 2026-08-20 |
 | [DR-0084](DR-0084-durable-export-format-adoption.md) | Durable export format adopted; unfiltered dumps blocked | architecture / security | Approved | 2026-08-21 |
 | [DR-0085](DR-0085-evidentiary-method-adoption.md) | Adoption of the evidentiary method (METH-0001) | methodology / epistemology | Approved | 2026-08-26 |
+| [DR-0086](DR-0086-tier-restrictiveness-declared.md) | Access-tier restrictiveness is declared, never derived from an ordering | security / architecture | Approved | 2026-08-26 |
 
 ## Provenance of decisions
 
@@ -202,3 +203,15 @@ recorded and published, and retrospective likelihood phrasing (which closes
 DR-0065's carried-forward open item). Three rulings made the method stricter
 than the draft proposed. METH-0001 v1.0 was approved as effective in the same
 review.
+
+DR-0086 arises from a defect found while implementing Gate 3: the export
+policy resolved competing access tiers with `min()` over the tier text, which
+is alphabetical and returns `public` for {public, subscriber} — the opposite
+of the "most restricted wins" rule its own rationale stated. Approved by the
+founder on 2026-08-26: restrictiveness is declared in both the schema and the
+export policy, never derived from any ordering the database supplies, with
+the suite checking the two agree. The alternative of reordering the
+`access_tiers` enum was rejected — it cannot express the lateral grants, and
+changing an enumeration data depends on is a structural registry change
+(DR-0080). Its open item — whether the two lateral tiers should remain
+distinct at all — is a §12 vocabulary question, not a resolution one.

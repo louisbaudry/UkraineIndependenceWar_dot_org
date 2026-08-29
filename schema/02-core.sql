@@ -112,6 +112,56 @@ COMMENT ON TABLE world_actor IS
     'entities are retained as referents, never deleted (DR-0062).';
 
 -- ---------------------------------------------------------------------------
+-- Tier resolution (§12, SEC-003/004)
+-- ---------------------------------------------------------------------------
+--
+-- "Several tiers apply; which governs?" The answer must be the most
+-- restrictive, and it cannot be read off any ordering the database supplies:
+-- both the enum order and the alphabetical order put `public` before
+-- `subscriber`, so min() over {public, subscriber} yields `public` — the less
+-- restrictive of the two, and precisely the wrong answer.
+--
+-- Restrictiveness is therefore declared. This mirrors RESTRICTIVENESS in
+-- export/tiers.py; the test suite checks the two agree rather than trusting
+-- them to stay aligned.
+
+CREATE FUNCTION tier_restrictiveness(t access_tiers) RETURNS integer
+LANGUAGE sql IMMUTABLE AS $$
+    SELECT CASE t
+        WHEN 'public' THEN 0
+        WHEN 'subscriber' THEN 1
+        -- Lateral grants to different named parties, not rungs: same rank,
+        -- because neither covers the other's material.
+        WHEN 'researcher-restricted' THEN 2
+        WHEN 'investigator-restricted' THEN 2
+        WHEN 'internal' THEN 3
+        WHEN 'confidential' THEN 4
+        WHEN 'private-preservation' THEN 5
+    END;
+$$;
+
+CREATE FUNCTION most_restrictive_tier(tiers access_tiers[])
+RETURNS access_tiers LANGUAGE sql IMMUTABLE AS $$
+    SELECT CASE
+        -- Nothing to go on. Unclassified is not the same as safe.
+        WHEN tiers IS NULL OR cardinality(tiers) = 0 THEN 'confidential'
+        -- Two different tiers tie at the top: both lateral grants apply and
+        -- neither admits the other's material, so escalate.
+        WHEN (SELECT count(DISTINCT t) FROM unnest(tiers) t
+               WHERE tier_restrictiveness(t) =
+                     (SELECT max(tier_restrictiveness(u)) FROM unnest(tiers) u)
+             ) > 1 THEN 'internal'
+        ELSE (SELECT t FROM unnest(tiers) t
+               ORDER BY tier_restrictiveness(t) DESC LIMIT 1)
+    END::access_tiers;
+$$;
+
+COMMENT ON FUNCTION most_restrictive_tier IS
+    'Which tier governs when several apply (§12). Never derive this from the '
+    'enum or alphabetical order: both rank `public` below `subscriber`, which '
+    'is backwards for restrictiveness and errs toward disclosure.';
+
+-- ---------------------------------------------------------------------------
 -- The assertion core
 -- ---------------------------------------------------------------------------
 --
