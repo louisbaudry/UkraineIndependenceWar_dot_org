@@ -20,6 +20,20 @@ scope_note: >
   the same thing in every language because the range, not the wording,
   carries the meaning.
 
+retrospective_scope_note: >
+  **A band expresses the assessor's credence, not a forecast.** ICD 203's
+  wording was built for prediction, but nearly every assessment this project
+  makes is retrospective: a past fact either occurred or did not, and the
+  band states how likely the evidence makes it that it did. "Very likely that
+  shipment X carried controlled goods in 2023" is a claim about the analyst's
+  uncertainty, never about the world's.
+
+  One scale serves both directions, because the numeric range is the anchor
+  and probability about a determinate past fact is ordinary practice. What
+  differs is only how the words can be misread — see the forbidden
+  translations below. Ruled by DR-0085 (METH-0001 §15 Q5), closing DR-0065's
+  open item.
+
 usage_note: >
   A band belongs to an assessment (DR-0026) with its evidence and reasoning.
   Bands never attach to bare data fields, and are never inherited: reporting
@@ -132,12 +146,19 @@ forbidden_translations:
     reason: >
       "Possible" carries no probability content and destroys the band's
       meaning. Named explicitly in DR-0065.
+  - lang: any
+    pattern: >
+      renderings of any band that read as prediction when the assessment is
+      retrospective — future tenses, prospective aspect, or wording that
+      implies the fact is not yet settled
+    reason: >
+      Turns a credence about a past fact into a forecast about an open one.
+      English carries a mild forward-looking sense in "likely"; several
+      languages carry a stronger one, and Ukrainian and Russian renderings
+      must be checked against this specifically. Added by DR-0085
+      (retrospective_scope_note above).
 
 open_questions:
   - >
     Whether public outputs display the numeric range alongside the term
     (presentation-layer decision; WP 3.2 §5).
-  - >
-    Retrospective phrasing: a scope note is needed clarifying that a band
-    expresses the project's credence about a past fact, not a forecast
-    (WP 3.2 §5).

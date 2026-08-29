@@ -1,0 +1,679 @@
+# METH-0001 — Evidentiary Method
+
+**Class:** METH (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-26 (the five §15 questions ruled individually) | **Effective:** 2026-08-26
+**Supersedes:** — | **Superseded by:** —
+**Change history:** 0.1 drafted 2026-08-25 as a candidate, at the founder's direction, after the DR-0048 release-readiness check reported that no METH document existed. Approved as 1.0 on 2026-08-26 with the five open questions ruled one at a time (DR-0085); §1.5, §6.2, §7 and §10.1 are aligned to the rulings, and §10.1 is **stricter** than the draft.
+**Fulfils:** record §97 (methodology as a first-class versioned artifact); supplies the `methodology_version` that DR-0047 and DR-0048 require every release baseline to pin.
+**Governed by:** DR-0024 (six layers), DR-0025 (epistemic vocabulary), DR-0026 + DR-0065 (two-dimensional uncertainty), DR-0027 (grading is triage), DR-0028 (dependence), DR-0029 (absence), DR-0030 (quantities), DR-0031/0032/0033/0034 (argumentation), DR-0035 (hypothesis competition), DR-0036 (no automatic adjudication), DR-0037 (Toulmin scaffold), DR-0008 (custody claims), DR-0018/0019 (anchoring, quotation), DR-0066 (three gates), DR-0055 (append-only), POL-0001 (personal data).
+**Implemented by:** the registry vocabularies and argument schemes it cites; verification per §14.
+
+### AI provenance (record §80)
+
+Drafted 2026-08-25 by an AI assistant (Anthropic Claude Code agent session)
+at the founder's direction. It **codifies decisions already taken** by the
+founder in DR-0008 and DR-0018…DR-0037; it does not originate method. Where
+the draft went beyond enacted decisions it said so and asked; the founder
+ruled those five questions individually on 2026-08-26 and the rulings are
+recorded at §15. The document is approved and effective.
+
+---
+
+## 1. What this document is
+
+This is the project's **evidentiary method**: the route by which preserved
+material becomes something the project is willing to say, and the discipline
+that route imposes at each step.
+
+It exists because §97 requires methodology to be a first-class versioned
+artifact from the beginning, and because §86 requires the project to be able
+to answer *what exactly did we say about X, on date Z, and on what evidence
+and methodology?* The second half of that question is unanswerable without a
+versioned method to point at. Release baselines pin this document by version
+(DR-0047, DR-0048); a significant change to it becomes release provenance.
+
+### What it governs
+
+The movement from a preserved holding to a published project conclusion —
+verification, source handling, uncertainty, argument, hypothesis competition,
+negative findings, review, and correction.
+
+### What it does not govern
+
+- **Collection.** What to collect and how to acquire it is SPEC-0003 and
+  DR-0066/0067/0069; the personal-data limits are POL-0001 and DR-0071.
+- **Storage.** DR-0073…0077 and SPEC-0006.
+- **Identity resolution.** SPEC-0002 governs when two records are the same
+  entity. This document uses its outputs and its review tiers; it does not
+  restate its rules.
+- **Legal conclusions.** The project does not reach them. §12 of this
+  document states the boundary.
+
+### Who it binds
+
+Everyone producing project assertions, including the founder. AI agents
+operate under §11 and never under their own authority (§79, AI-001).
+
+### 1.5 "Consequential" — the test
+
+The record uses the word throughout — §78 review depth, §79 human
+accountability, §80 AI provenance, §86 publication provenance — without
+defining it. It is defined here, once, and every later use in this document
+means this.
+
+**A conclusion is consequential if any one of the following holds:**
+
+1. it **names an identifiable person or entity**, whether by name or by any
+   identifier that resolves to one;
+2. it **feeds a legal-layer conclusion** — a designation mapping, an
+   ownership path, an export-control or sanctions applicability assessment
+   (DR-0038…0043);
+3. it **would be materially relied on by others** — a figure, a chronology,
+   or an attribution that a reader, journalist, researcher, or authority
+   would act or publish on.
+
+Any one suffices; they are not cumulative.
+
+Limb (3) is a judgment and must be made honestly rather than read narrowly.
+The question is not whether the project intends the conclusion to be relied
+on, but whether someone reasonably would. An unattributed structural claim —
+"this route carried controlled goods throughout 2024" — names nobody and
+still meets limb (3) squarely.
+
+Consequence is what triggers the obligations that follow: mandatory argument
+structure (§6), a hypothesis set (§7), AI provenance capture (§11), and T1 or
+T2 review (§10). *Ruled by the founder, 2026-08-26 (DR-0085, §15 Q1).*
+
+---
+
+## 2. The route from source to claim
+
+The six layers of DR-0024 are not a filing scheme; they are the **stages of
+this method**, and each transition is a distinct act that someone performs
+and is accountable for.
+
+| # | Stage | The act | Authority |
+|---|---|---|---|
+| 1 | Preserved holding | Acquisition and fixity | SPEC-0003, DR-0061 |
+| 2 | Documentary assertion | Reading a source and recording *what it says*, anchored to an exact passage | DR-0017, DR-0018, DR-0019 |
+| 3 | Evidence relation | Deciding this passage bears on this proposition, and how | DR-0024 layer 3 |
+| 4 | Project assertion | Concluding something in the project's own voice | DR-0024 layer 4, §79 |
+| 5 | Assessment | Attaching likelihood and confidence, with a basis | DR-0026, DR-0065 |
+| 6 | Argument | Recording the inference and its defeaters | DR-0032, DR-0033 |
+
+Four rules bind the route as a whole.
+
+**R1 — No stage is skipped.** A project assertion with no evidence relation
+beneath it is not a conclusion; it is an opinion wearing a conclusion's
+clothes. If the chain is not there, the claim is not made.
+
+**R2 — Being in the corpus is never evidential use** (Principle 5, EVID-003).
+Preserving a document asserts nothing about its contents. Sources that bear
+no evidence relation are normal and expected.
+
+**R3 — Stages are never conflated.** "The source says X", "X happened", and
+"we conclude X" are permanently distinct objects (EVID-002). A documentary
+assertion is never promoted to a project assertion by editing it; a project
+assertion is a separate record with its own asserter.
+
+**R4 — The chain runs downward, not upward.** Evidence supports conclusions.
+A conclusion never justifies reinterpreting the evidence beneath it. Where a
+conclusion requires a passage to mean something the passage does not say, the
+conclusion fails — that is the finding.
+
+---
+
+## 3. Verification: six questions, not one flag
+
+§81 forbids a single ambiguous `verified` flag. Six distinct questions exist,
+each with its own answer, its own evidence, and its own failure mode. Confusing
+them is the most common way evidence work goes wrong.
+
+| Question | Establishes | Does **not** establish |
+|---|---|---|
+| **Extraction verification** | The text/data we hold matches what the object contains | That the object is genuine |
+| **Copy integrity** | The bytes are unaltered since acquisition (DR-0005) | Anything about the original |
+| **Source authenticity** | The object is what it purports to be, from whom it purports | That its contents are true |
+| **Semantic validation** | Our structured representation is a correct reading | That the reading's subject matter is true |
+| **Analytical review** | The reasoning has been examined by a second party | That the conclusion is correct |
+| **Proposition truth** | An assessment of whether the claim holds | Certainty |
+
+The rule that follows is §38's, and it is load-bearing: **authenticity of an
+object and veracity of its content are separate questions, answered
+separately.** An authentic document may contain a lie. A forgery may report a
+true event. Neither answer transfers to the other.
+
+Each verification act is recorded as a typed QA action (§82) naming which of
+the six it is. No act is recorded as unqualified "verification".
+
+### Custody
+
+The archive documents custody history in PREMIS/PROV vocabulary as fully as
+practical. It **never emits "chain of custody" as a status claim** about its
+own holdings (DR-0008). The phrase appears only when describing what others
+assert, or as documented custody history explicitly labelled as such.
+Downloading, hashing, timestamping, and preserving a file is preservation
+practice; it is not legal custody, and calling it that would be false.
+
+---
+
+## 4. Handling sources
+
+### 4.1 Grading is triage and nothing else
+
+A two-axis Admiralty-style grade (source reliability × item credibility) may
+be recorded to decide **what to look at first and how hard to look**
+(DR-0027). It is barred from propagating into any proposition's likelihood,
+confidence, or status.
+
+The reason is §37's and it is empirical, not squeamish: a propaganda outlet
+can publish an authentic document, and a reputable institution can err. A
+grade predicts how much scrutiny is warranted. It never predicts truth.
+
+**An assessment that cites a grade as its basis is malformed** and is
+rejected in review. Assessments cite evidence and reasoning.
+
+### 4.2 Dependence is researched; independence is never assumed
+
+Five publications repeating one original report are one line, not five
+(§36). Where consequential, dependence is recorded as a typed relation:
+`cites`, `reposts`, `syndicates`, `derives-from`,
+`shares-underlying-document`, `shares-underlying-witness`,
+`common-evidentiary-origin`.
+
+**Independence is a researched conclusion — the established absence of
+dependence — never a default.** The default runs the other way: sources
+reporting the same thing at the same time are presumed possibly dependent
+until someone has looked.
+
+### 4.3 Counting corroboration
+
+Corroboration counts **independent lines**. Before a corroboration claim is
+made, the analyst states:
+
+1. which lines are claimed independent;
+2. what was done to establish that independence;
+3. which dependence relations are known and how they were handled.
+
+A corroboration claim that cannot answer (2) is a repetition count, and is
+recorded as such.
+
+**Convergence is not corroboration when the convergence has a common cause.**
+Two accounts agreeing because both derive from one briefing agree about the
+briefing.
+
+---
+
+## 5. Assigning uncertainty
+
+Two dimensions, never collapsed (DR-0026). They answer different questions
+and can move independently.
+
+- **Likelihood** — about the *proposition*. One of the seven ICD 203 bands
+  (DR-0065), stored as the band identifier.
+- **Analytic confidence** — about the *judgment*. `low` / `moderate` /
+  `high`, derived from evidence quality, corroboration weighted by
+  independence, and reasoning strength.
+
+High confidence that something is very unlikely is coherent and common. So is
+low confidence in a "likely" judgment — it means the evidence is thin, not
+that the estimate should be softened.
+
+### 5.1 Procedure for a likelihood band
+
+1. State the proposition precisely enough that it could be wrong. A
+   proposition that cannot fail cannot be assessed.
+2. List the evidence relations bearing on it, in both directions.
+3. Apply the relevant argument scheme(s) and answer their critical questions
+   (§6).
+4. Select the band whose numeric range matches the judgment. **The range is
+   the anchor; the words are labels** rendered at the presentation layer.
+5. Record the basis. **No band without a stated basis** (DR-0065 §6).
+
+### 5.2 Procedure for confidence
+
+Confidence is derived, and the derivation is stated: evidence quality;
+corroboration and the independence of the lines counted; whether raised
+defeaters have been answered; whether the reasoning has been reviewed. An
+assessment must be able to say *why* its confidence is what it is.
+
+### 5.3 Prohibited
+
+- Bare numeric confidence scores.
+- Probability values detached from their band.
+- **Averaging contradictory assessments** (§40). Contradiction is preserved
+  and displayed, not resolved by arithmetic. Two analysts disagreeing is a
+  fact about the state of knowledge and is recorded as one.
+- Inheriting another body's estimative language as a project judgment.
+  Reporting that an agency assessed something "highly likely" is a
+  documentary assertion carrying *their* scale (DR-0065 §5) — mapped, never
+  converted.
+- Attaching a band to a bare data field. Bands belong to assessments.
+
+### 5.4 Bands are credences, not forecasts
+
+ICD 203's wording was built for prediction. Nearly every assessment this
+project makes is **retrospective**: a past fact either occurred or it did
+not, and the band states how likely the evidence makes it that it did. "Very
+likely that shipment X carried controlled goods in 2023" is a claim about the
+analyst's uncertainty, never about the world's.
+
+One scale serves both directions — the numeric range is the anchor, and
+probability about a determinate past fact is ordinary practice. What differs
+is only how the words can be misread, and that is handled where it belongs:
+the registry's `likelihood-bands` entry carries a retrospective scope note
+and a forbidden translation covering renderings that read as prediction.
+Ukrainian and Russian renderings are checked against it specifically.
+
+*Ruled by the founder, 2026-08-26 (DR-0085, §15 Q5), closing the open item
+DR-0065 carried forward.*
+
+### 5.5 Keeping the dimensions apart in prose
+
+Published wording derives from the typed values (EDIT-004). A common error is
+prose that reads confidence as likelihood — "we are fairly sure" for a
+`roughly-even-chance` band with `high` confidence. The rendering states both
+or states neither.
+
+---
+
+## 6. Building an argument
+
+Every consequential conclusion carries a recorded argument: premises, the
+scheme relied on, and any defeaters raised, with their type (EVID-012).
+
+### 6.1 Select a scheme
+
+The registry holds the seed scheme library (DR-0034): witness testimony,
+expert opinion, sign/indicator, document authenticity, geolocation,
+image/video verification, coordination/attribution. Each carries **critical
+questions** — the structured form of "what would make this reasoning fail?"
+
+If no scheme fits, the argument is recorded with explicit premises and
+warrant anyway, and the gap is proposed to the registry (DR-0080). A missing
+scheme is not a licence to reason unstructured.
+
+### 6.2 Answer the critical questions
+
+Each critical question is answered, or recorded as unanswered with the
+defeater type it implies if left so. **An unanswered critical question is not
+a neutral silence** — the scheme declares in advance what kind of doubt it
+leaves open.
+
+**Unanswered critical questions cap analytic confidence at `moderate`.** A
+conclusion resting on a scheme with an open critical question does not carry
+`high` confidence, whatever the defeater type the question implies.
+
+This is a hard rule, not a factor to weigh. It is the one thing that makes
+the critical-question discipline bite rather than being a checklist one can
+note and move past — which is the failure mode DR-0034 exists to prevent.
+
+It blocks nothing from publication: `moderate` and `low` remain available,
+and the conclusion is published with the confidence its gaps warrant. What
+it forbids is claiming the top of the scale while a check the scheme itself
+declared necessary has not been performed.
+
+Where an open question is genuinely immaterial to the conclusion, the answer
+is to say so and answer it — an argued dismissal *is* an answer. Confidence
+is capped only while the question stands untouched. *Ruled by the founder,
+2026-08-26 (DR-0085, §15 Q2).*
+
+### 6.3 Type every defeater
+
+- **Rebutting** — attacks the conclusion (counter-evidence for the opposite).
+- **Undercutting** — attacks the inference link, premises intact: the
+  document is authentic but does not show what is claimed.
+- **Undermining** — attacks a premise: the document is forged; the witness
+  was not present.
+
+Authenticity challenges enter as undermining; interpretation challenges as
+undercutting (DR-0033). The distinction determines what an answer must do —
+answering a forgery claim with more counter-evidence about the event
+addresses nothing.
+
+**"Unresolved" is a legitimate end-state** (§40). A contested conclusion
+stays visibly contested. The method has no step that makes a live objection
+go away.
+
+### 6.4 Draft against the Toulmin slots
+
+Consequential conclusions are drafted and reviewed against claim, grounds,
+**warrant**, **qualifier**, and anticipated rebuttals (DR-0037). The warrant
+and the qualifier are the two elements most often left implicit, which is why
+the scaffold names them. The scaffold is for drafting and review; the stored
+representation remains the argument structure of DR-0032, from which the
+Toulmin rendering is derivable.
+
+### 6.5 Nothing computes a conclusion
+
+Consistency checkers, defeater-coverage analysis, and formal acceptability
+semantics may run as **analytic aids**: they surface unanswered critical
+questions, unattacked assumptions, and inconsistencies. Their outputs are
+advisory inputs to human judgment and are never written as a conclusion's
+status (DR-0036, EVID-014). Tooling may rank, flag, and warn. It may never
+conclude.
+
+---
+
+## 7. Competing hypotheses
+
+For any investigation designated important, competing hypotheses are
+first-class objects, not a prose aside (DR-0035).
+
+**When required — mandatory, not recommended.** A hypothesis set is required
+wherever any one of these holds:
+
+1. a single explanation is being built toward;
+2. the conclusion would be **consequential** (§1.5);
+3. **the project's prior expectation is strong.**
+
+The third case is the point, and it is deliberately the uncomfortable one.
+The instrument exists to counter confirmation bias, so a strong prior is the
+reason to use it, not a reason to skip it. For a project with an explicit
+interpretive stance — *Ukraine's Second War of Independence* is an
+interpretive choice, stated as one — this is the trigger that most needs to
+bind. Exempting it would exempt the instrument from its own purpose.
+
+The known failure mode is the strawman: an alternative written to satisfy
+the rule rather than to compete. A hypothesis set containing no alternative
+anyone could believe has not been built, and review treats it as absent.
+*Ruled by the founder, 2026-08-26 (DR-0085, §15 Q3).*
+
+**How.** A hypothesis set for a defined question, with at least two
+hypotheses including a genuine alternative. Evidence relations to each
+hypothesis are typed: `supports` / `contradicts` / `discriminates` /
+`neutral`. ACH matrices are derived views over these relations, never
+separate data.
+
+**Discriminating evidence is the object of the exercise.** Evidence
+consistent with every hypothesis distinguishes nothing, however voluminous.
+The analytically useful question is *what would tell these apart* — which is
+also the research-gap inventory (§74–75).
+
+Absence states and negative findings participate as evidence: "we looked for
+the records this hypothesis predicts and they are not there" is
+discriminating evidence when the search was adequate.
+
+Hypothesis status changes are versioned assessments. Prior states are never
+rewritten (§63, EVID-015).
+
+---
+
+## 8. Absence, negative findings, and quantities
+
+### 8.1 A missing value never means "no"
+
+Absence is typed: `unknown`, `not-researched`, `no-evidence-found`,
+`unavailable`, `withheld`, `redacted`, `lost-or-destroyed`,
+`not-applicable`, `indeterminate` (DR-0029). "We never looked" and "we
+searched and found nothing" are different facts and are recorded differently.
+
+Explicit negatives — "X did not occur", "no licence was issued" — are
+assertions like any other: attributed, dated, evidence-backed.
+
+### 8.2 Negative findings state scope and method
+
+"We searched and found insufficient evidence" is **not** "we proved
+non-occurrence" (§76). A consequential negative finding records:
+
+1. the question searched;
+2. the sources and holdings searched, and the period covered;
+3. the method — search terms, languages, coverage limits;
+4. what would have been found had the proposition been true;
+5. what the finding therefore does and does not support.
+
+Item (4) is what makes a negative finding evidential rather than merely
+discouraging. Absent it, the finding records an effort, not a result.
+
+Negative findings are published (§76). A project that publishes only what it
+confirmed misrepresents its own evidence base.
+
+### 8.3 Quantities keep their original semantics
+
+"At least 17" never becomes "17" (§43–44). Quantitative assertions preserve
+the original expression, semantic type (`exact`, `approximate`, `at-least`,
+`at-most`, `range`, `greater-than`, `fewer-than`), value and units, stated
+precision, stated uncertainty, and derivation method for computed values.
+
+**Aggregation respects semantic type: a sum of at-leasts is an at-least.**
+Normalized values are derived data and never overwrite the original.
+
+Casualty figures are the case where this matters most and where the pressure
+to round is strongest. The pressure is resisted structurally, not by
+discipline.
+
+---
+
+## 9. Quotation
+
+A project quotation targets the preserved original-language expression at an
+exact locus and carries the exact passage, marked omissions, the locus,
+linked translations where present, and transcription/OCR derivation where
+the text passed through such a step (DR-0019).
+
+**No quotation is minted from a paraphrase or a summary.** Quotation,
+paraphrase, and summary are distinct types and are never silently converted
+into one another. Back-translating a translated passage into the original
+language does not produce a quotation; it produces a reconstruction, and is
+typed as one.
+
+Evidential annotations target preserved captures, never a live URL
+(DR-0018). Where material is not yet preserved, preservation precedes
+evidential annotation.
+
+---
+
+## 10. Review
+
+### 10.1 Present authority, and what a reader is told
+
+The founder is final editorial authority (§78, EDIT-001). The tiered model
+below is the standing structure. While the project is one person, no
+conclusion can receive the second-party or independent review that T1 and T2
+require — and §83's whole point is that a second look by the same mind is not
+an independent judgment.
+
+**A conclusion that needs T1 or T2 review and has received only self-review
+is recorded as `unreviewed` at its tier, and published carrying that
+qualification visibly.** Not as an internal note: on the published surface,
+where the reader who might rely on it can see it.
+
+The reasoning is that the alternative — recording the shortfall internally
+and publishing without a caveat — quietly implies a review that did not
+happen. The reader is the one relying on the conclusion and is the one person
+who would not be told. Saying so costs a line of text, and it puts a standing
+visible incentive on obtaining real review.
+
+Publication is not blocked. A conclusion may be published unreviewed at its
+tier, qualified as such; what it may not do is present itself as reviewed.
+When independent review later occurs, it is recorded as a new act and the
+qualification is lifted — the earlier published state remains in the revision
+history (§90, DR-0052), because it was true when published. *Ruled by the
+founder, 2026-08-26 (DR-0085, §15 Q4), stricter than the drafted version.*
+
+### 10.2 Tiers
+
+Review depth tracks consequence (§78), using the registry review tiers:
+
+| Tier | Applies to | Requires |
+|---|---|---|
+| **T1 — highest** | Conclusions naming individuals or entities in wrongdoing; anything feeding a legal-layer conclusion; identity mappings to designation records | Independent reassessment (§10.3); critical-question coverage; independence of evidence lines established, not assumed |
+| **T2 — elevated** | Consequential project conclusions generally; cross-registry identity links | Second-party review of argument structure and qualifier; recorded disposition |
+| **T3 — routine** | Bibliographic identity, gazetteer-anchored places, low-stakes alignment | Review, which may be batch-wise |
+
+### 10.3 Independent reassessment
+
+Second-person review is not automatically independent review (§83). At T1,
+independence means **the reviewer examines the evidence and forms a judgment
+before seeing the original conclusion.** Two signatures do not necessarily
+mean two independent judgments, and the record states which kind was obtained.
+
+### 10.4 Conflicts of interest
+
+Conflicts are case-relative and are declared, managed, reviewed, or met with
+recusal (§84). A conflict does not itself prove research wrong; it raises the
+review tier. Undeclared conflicts are the failure, not conflicts.
+
+### 10.5 Personal data
+
+Publishing a conclusion about a person is a separate decision from
+concluding it, and from preserving the material behind it. POL-0001's three
+gates govern; this method does not create an exception to them. Where
+POL-0001 §9's releases remain suspended pending its §10 legal review, the
+DR-0071 interim constraints bind.
+
+---
+
+## 11. AI within the method
+
+AI may collect, extract, translate, classify, summarize, and **propose**
+assertions, matches, and relationships (§79). What it may not do is become
+canonical knowledge without a human accepting it.
+
+| Stage | AI may | Boundary |
+|---|---|---|
+| 1 — Preservation | Fetch, checksum, characterise | None; mechanical |
+| 2 — Documentary assertion | Propose extractions and anchors | Proposal state; a human accepts |
+| 3 — Evidence relation | Suggest candidate relevance | A human decides that this passage bears on this proposition |
+| 4 — Project assertion | Draft | Never asserts. The asserter is a human |
+| 5 — Assessment | Surface the inputs to a band or a confidence | Never selects either |
+| 6 — Argument | Surface unanswered critical questions and inconsistencies | Never adjudicates (DR-0036) |
+
+**The adoption boundary.** An AI-proposed assertion is a belief held by a
+software agent until a human adopts it, and adoption is a separate recorded
+act that changes who holds the belief (DR-0031, AI-003). Adoption is not a
+formality: the accepting human is accountable for the content as if they had
+authored it, which is the only thing that makes the accountability real.
+
+**Provenance.** Consequential AI outputs preserve provider, model and
+version, instructions, input references, output, pipeline version,
+structured-output schema, validation result, reviewer, and disposition
+(§80, AI-002). Routine disposable model calls are exempt by documented rule,
+never by omission.
+
+**Low-risk factual enrichment may be automated** under defined controls
+(§79) — normalization to registry vocabularies, format conversion,
+deduplication of identical strings. The control is that the class is defined
+in advance and the automated act is logged, not that the act is small.
+
+---
+
+## 12. What this method does not claim
+
+Stated plainly, because each of these is a claim the project could drift into
+making by implication.
+
+- **Not legal chain of custody.** §3, DR-0008.
+- **Not legal findings.** The project does not determine that a crime
+  occurred, that a person is guilty, or that a sanction was breached. It may
+  record and assess what competent authorities have found, always qualified
+  as theirs (§62).
+- **Not proof of non-occurrence.** §8.2.
+- **Not truth by corroboration count.** §4.3.
+- **Not resolution by computation.** §6.5.
+- **Not completeness.** The archive's coverage is what it is; collector-run
+  coverage records what was sought, acquired, and missed (DR-0070), and
+  frequency in the archive is not frequency in the world.
+- **Not legal advice, and not a legal compliance framework.** POL-0001 §10's
+  external legal review is a condition of that layer, not of this one.
+
+---
+
+## 13. Correction and retraction
+
+Substantive mistakes are never silently overwritten (§77, EDIT-002). The
+supported acts are correction, retraction, supersession, merge, split, legal
+restriction, privacy removal, and archival withdrawal.
+
+A substantive correction records rationale, supporting evidence, the editor
+or reviewer, and the effect on published outputs. Corrections are new
+records; the prior state remains (DR-0055). Governed redaction is the sole
+exception to immutability and follows DR-0077.
+
+**A retraction is a finding.** It states what was concluded, what is now
+concluded, and what went wrong in the reasoning — which is the part with
+future value. Being wrong and correcting the record leaves a trace, and the
+trace is part of the evidence base.
+
+---
+
+## 14. Verification of this method
+
+A method that cannot be checked is an aspiration. This one is checked
+through the requirements that already bind it, which name their own
+verification means:
+
+| Method section | Requirements verified against |
+|---|---|
+| §2 route | EVID-001, EVID-002, EVID-003 |
+| §3 verification | PRES-002, EVID-004 |
+| §4 sources | EVID-008, EVID-009 |
+| §5 uncertainty | EVID-006, EVID-007 |
+| §6 argument | EVID-012, EVID-014, EDIT-003 |
+| §7 hypotheses | EVID-013 |
+| §8 absence and quantities | EVID-010, EVID-011 |
+| §9 quotation | EVID-005 |
+| §10 review | EDIT-001, EDIT-004 |
+| §11 AI | AI-001, AI-002, AI-003 |
+| §13 correction | EDIT-002, EVID-015 |
+
+The audit-verified requirements above cannot be discharged until real
+investigations exist. That is not a gap in the method; it is the method
+waiting for material.
+
+---
+
+## 15. Rulings taken on approval
+
+The v0.1 draft went beyond enacted decisions in five places and said so. The
+founder ruled each individually on 2026-08-26; the rulings are enacted by
+DR-0085 and are recorded here so that a later reader can see what was
+genuinely open and how it was closed.
+
+| | Question | Ruling | Where it now lives |
+|---|---|---|---|
+| **Q1** | The test for "consequential" | **Three-part test**, any limb sufficing: names an identifiable person or entity; feeds a legal-layer conclusion; would be materially relied on by others | §1.5 |
+| **Q2** | Do unanswered critical questions cap analytic confidence? | **Hard cap at `moderate`**, whatever the defeater type implied. Publication is not blocked; the top of the scale is | §6.2 |
+| **Q3** | Are competing-hypothesis sets mandatory? | **Mandatory in all three cases**, including where the project's prior expectation is strong | §7 |
+| **Q4** | Self-review while the project is one person | **Recorded `unreviewed` at tier and published carrying that qualification visibly** — stricter than the draft, which kept the shortfall internal | §10.1 |
+| **Q5** | Retrospective likelihood phrasing | **One scale, registry scope note** plus a forbidden translation for renderings that read as prediction. Closes DR-0065's open item | §5.4 and the registry `likelihood-bands` entry |
+
+Three of the five make the method stricter than the draft proposed, and Q4
+makes it stricter than was asked for. That direction is worth recording: the
+rulings resolved consistently toward the reader being told what was and was
+not done.
+
+### Still open, ruled elsewhere or not yet raised
+
+- Whether public outputs display a band's numeric range alongside its term
+  remains open in the registry (a presentation-layer question, WP 3.2 §5).
+- §14's audit-verified requirements cannot be discharged until real
+  investigations exist.
+- The requirement gap noted in DR-0085 — no REQ entry names §97's own
+  obligation — is proposed as OPS-007 for the next requirements revision.
+
+---
+
+## 16. Versioning
+
+Per DR-0047, this document versions on its own regime, not with code.
+
+- **Editorial revisions** (clarity, examples, cross-references) increment the
+  minor version and do not require re-approval of the whole.
+- **Substantive method changes** — anything that would alter a past
+  conclusion had it been in force — increment the major version, require
+  founder approval, and become **release provenance** under §97.
+- Superseded versions remain in place, marked (DR-0046).
+
+A release baseline pins the version in force at build time. When this
+document's major version changes, conclusions produced under the prior
+version keep pointing at that prior version; they are not retroactively
+re-attributed to the new method.
+
+---
+
+## 17. Decision Record enacting this document
+
+**[DR-0085 — Adoption of the evidentiary method](../decision-records/DR-0085-evidentiary-method-adoption.md)**,
+approved by the founder on 2026-08-26, adopts this document as v1.0 and
+records the five §15 rulings, each taken individually.

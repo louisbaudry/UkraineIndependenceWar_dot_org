@@ -173,6 +173,12 @@ def notes_for(node, pairs):
         pairs.append(("skos:definition", lit(node["definition"], "en")))
     if node.get("scope_note"):
         pairs.append(("skos:scopeNote", lit(node["scope_note"], "en")))
+    # A qualified scope note narrows how the entry applies in one direction —
+    # likelihood-bands' retrospective reading (DR-0085) is the first. SKOS
+    # permits repeated scopeNotes, so it projects without loss; dropping it
+    # would let the projection say less than the registry does.
+    for key in sorted(k for k in node if k.endswith("_scope_note")):
+        pairs.append(("skos:scopeNote", lit(node[key], "en")))
     if node.get("usage_note"):
         pairs.append(("skos:note", lit(node["usage_note"], "en")))
     # `not:` carries a conflict-register disambiguation. SKOS has no

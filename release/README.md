@@ -31,21 +31,39 @@ the project still lacks.
 
 ```
   MISSING  code_commit            ← working tree not clean
-  pinned   schema_version         sha256:…
-  pinned   registry_version       0.1.0
+  pinned   schema_version         sha256:650829529fd8ec0a
+  pinned   registry_version       0.1.1
   MISSING  collector_version      ← no collector has run
   MISSING  pipeline_version
-  MISSING  methodology_version    ← no effective METH document exists
-  pinned   terminology_version    registry:0.1.0
+  pinned   methodology_version    1.0
+  pinned   terminology_version    registry:0.1.1
   pinned   build_configuration    …
   MISSING  dataset_snapshot       ← no preservation dump supplied
 ```
 
-The `methodology_version` gap is the substantive one and this tool is how it
+`methodology_version` was the substantive gap, and this tool is how it
 surfaced: §97 makes methodology a first-class versioned artifact and DR-0047
-requires releases to pin it, but no METH document had been written. **Until
-one is effective, no release can be created.** That is the machinery working
-as intended, not a defect in it.
+requires releases to pin it, but no METH document had been written.
+[METH-0001](../docs/methodology/METH-0001-evidentiary-method.md) was drafted
+in response and approved as v1.0 on 2026-08-26 (DR-0085); the item now pins.
+
+While it was a candidate the check went on refusing it, which was the point:
+**a draft carries no authority** (DR-0046), so pinning one would claim a
+release rests on a document nobody has approved. The status logic that
+enforces this is tested against fixtures for all four document statuses,
+rather than against METH-0001's own header — an assertion about the live
+document would have meant the opposite of itself the moment it was approved.
+
+The remaining gaps need a real collection run, not a document:
+`collector_version` and `pipeline_version` come from software agents that
+have actually executed, and `dataset_snapshot` from a preservation dump of
+the resulting archive.
+
+One branch is currently unexercised: the note distinguishing "no METH
+document exists at all" from "one exists but is not approved" is only
+reachable while no effective METH document is present, which is no longer the
+case. The status logic it depends on is covered; the wording of that one note
+is not.
 
 ## What a baseline contains
 
@@ -81,7 +99,9 @@ baseline, because it looks reproducible.
 
 ## Tests
 
-23, each naming the requirement it verifies — including that creation is
+27, each naming the requirement it verifies — including that creation is
 refused for each missing configuration item individually, that a disclosure
 dump cannot be pinned as the snapshot, that coverage records failures rather
-than only successes, and that tampering with a released file is detected.
+than only successes, that a controlled document pins only when Approved —
+Effective (checked across all four statuses), and that tampering with a
+released file is detected.
