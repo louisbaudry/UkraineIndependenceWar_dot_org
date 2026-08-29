@@ -43,6 +43,14 @@ docs/
   policies/           POL-class controlled documents (DR-0046)
   requirements/       REQ-class controlled documents (DR-0046/0051)
   methodology/        METH-class controlled documents (DR-0046, record §97)
+
+registry/             Semantic registry: vocabularies, schemes, compiler
+schema/               Canonical store DDL (PostgreSQL)
+storage/              OCFL archival storage and fixity scheduling
+collector/            Gate 1 — acquisition, quarantine, preservation
+editorial/            Gate 2 — editorial acceptance
+export/               Durable export and access-tier policy
+release/              Release baselines
 ```
 
 This README is an entry point, not the project's institutional memory (record §100).
