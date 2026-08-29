@@ -82,7 +82,10 @@ rather than trusting them to stay aligned. Where two lateral grants tie,
 resolution escalates to `internal`, because neither grant covers the other's
 material.
 
-Recorded as **DR-0086**.
+Enacted as **DR-0086**, approved 2026-08-26. Its open item — whether
+`researcher-restricted` and `investigator-restricted` should remain
+distinct at all, given that they never compose — is a §12 vocabulary
+question, not a resolution one, and stays open.
 
 ## Two places where "absent" is not "restricted"
 

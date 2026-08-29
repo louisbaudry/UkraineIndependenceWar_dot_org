@@ -1,6 +1,6 @@
 # DR-0086 — Access-tier restrictiveness is declared, never derived from an ordering
 
-**Category:** security / architecture | **Status:** Proposed — awaiting founder decision
+**Category:** security / architecture | **Status:** Approved | **Decided:** 2026-08-26 by founder/principal editor
 **Origin:** defect found while implementing Gate 3 (`schema/07-publication.sql`) | **Supersedes:** — | **Superseded by:** —
 
 ## Context
@@ -53,8 +53,6 @@ material — but it sat in the code path SEC-004 names as blocking release.
    failure a comment cannot catch).
 
 ## Decision
-
-*Proposed, not yet decided.*
 
 1. **Restrictiveness is declared, never derived.** `tier_restrictiveness()`
    and `most_restrictive_tier()` in `schema/02-core.sql`; `RESTRICTIVENESS`
