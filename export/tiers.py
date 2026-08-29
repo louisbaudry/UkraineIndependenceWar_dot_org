@@ -188,6 +188,90 @@ TIER_RULES: dict[str, TierRule] = {
         rationale="Propositions under investigation, including ones not concluded.",
     ),
 
+    # -- Gate 2: editorial layer -------------------------------------------
+    #
+    # Everything Gate 2 produces sits at `internal` for one structural
+    # reason: **Gate 3 does not exist yet.** OPS-001 requires that no path
+    # lead to a public surface without a recorded Gate 3 decision, and
+    # publishing this material in a public dump would be exactly that path.
+    #
+    # This is not a judgment that the project's own conclusions are secret.
+    # It is the classification that holds while the publication gate is
+    # unbuilt; when Gate 3 lands, these become `join` rules following each
+    # conclusion's recorded publication decision, the way holdings already
+    # follow their source.
+
+    "proposal": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "What automation extracted, including what a person then "
+            "rejected. Reveals what the project is investigating before it "
+            "has concluded anything (DR-0063)."
+        ),
+    ),
+    "acceptance": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "Editorial decisions with their reasoning, including rejections "
+            "and the discriminating evidence relied on. Working record, not "
+            "published output (SPEC-0003 §7)."
+        ),
+    ),
+    "project_assertion": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "The project's own voice — but nothing here has passed Gate 3. "
+            "Disclosing a conclusion at public tier without a publication "
+            "decision is the path OPS-001 forbids."
+        ),
+    ),
+    "critical_question_answer": TierRule(
+        "fixed", tier="internal",
+        rationale="Follows its assertion; discloses which checks remain open.",
+    ),
+    "review_record": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "Editorial process record. The *qualification* a reader must see "
+            "is rendered from `publishable_conclusion` at Gate 3 "
+            "(METH-0001 §10.1); the review record itself stays internal."
+        ),
+    ),
+    "hypothesis_set": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "Which explanations the project entertains about named parties. "
+            "Publishing an unconcluded hypothesis reads as an accusation — "
+            "the same reasoning that keeps entity statuses internal "
+            "(DR-0062)."
+        ),
+    ),
+    "hypothesis": TierRule(
+        "fixed", tier="internal", rationale="Follows its set.",
+    ),
+    "conclusion_hypothesis_set": TierRule(
+        "fixed", tier="internal", rationale="Follows its set.",
+    ),
+    "argument": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "Reasoning about conclusions that have not been published. "
+            "Evidence packages export argument structure deliberately and "
+            "case by case (DR-0007), never through a routine dump."
+        ),
+    ),
+    "argument_premise": TierRule(
+        "fixed", tier="internal", rationale="Follows its argument.",
+    ),
+    "defeater": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "A live objection to an unpublished conclusion. Disclosing the "
+            "attack without the conclusion it attacks misleads in both "
+            "directions."
+        ),
+    ),
+
     # -- public reference data --------------------------------------------
     "source_types": TierRule("fixed", tier="public", rationale="Registry vocabulary."),
     "classification_systems": TierRule("fixed", tier="public", rationale="Registry vocabulary."),
