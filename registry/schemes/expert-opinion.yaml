@@ -1,0 +1,84 @@
+id: scheme-expert-opinion
+type: argument-scheme
+layer: argument
+status: effective
+effective: 2026-08-26
+steward: founder
+authorised_by: [DR-0034]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-012]
+
+labels:
+  en:
+    prefLabel: argument from expert opinion
+
+definition: >
+  From an expert's judgment within their field to the proposition judged.
+  The classic Walton scheme, which the project uses heavily — component
+  identification, munitions analysis, forensic pathology, financial
+  structuring, legal characterisation by others.
+
+premises:
+  - id: standing
+    text: Source S has expertise in domain D.
+  - id: assertion
+    text: S asserts proposition P, and P falls within D.
+
+conclusion: >
+  P holds, at the likelihood band and confidence the assessment records.
+
+critical_questions:
+  - id: cq-expertise-basis
+    text: >
+      What establishes S's expertise — credentials, institutional position,
+      publication record, demonstrated track record? Expertise asserted by
+      the source itself, or by whoever is citing them, is not established.
+    defeater_type_if_unanswered: undermining
+  - id: cq-domain-fit
+    text: >
+      Is P actually inside S's domain? A munitions specialist on fragmentation
+      patterns is an expert; the same person on command responsibility is
+      not. This is the most frequently skipped question and the most
+      frequently decisive one.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-reasoning-shown
+    text: >
+      Did S give reasons, or only a conclusion? An expert judgment with
+      visible reasoning can be assessed on its merits; one without can only
+      be deferred to. Prefer the former and record which you have (§34).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-consensus
+    text: >
+      Is P consistent with what other experts in D hold? Where experts
+      disagree, the disagreement is the finding — record both and do not
+      average them (§40, DR-0026).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-interest
+    text: >
+      Does S have an interest in the conclusion — employment, funding,
+      affiliation, prior public commitment to a position? An interest raises
+      required scrutiny; it does not make the judgment wrong (§84).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-evidence-access
+    text: >
+      What did S actually examine? An expert reasoning from photographs, from
+      a summary, or from another expert's report is in a materially different
+      position from one who examined the object.
+    defeater_type_if_unanswered: undermining
+  - id: cq-report-fidelity
+    text: >
+      Is S's judgment reported accurately, in full, and in context? Expert
+      qualifications are the first thing lost in republication, and a
+      hedged judgment reported flatly is a different claim (DR-0019, §58).
+    defeater_type_if_unanswered: undermining
+
+usage_note: >
+  An expert's judgment enters the archive as a **documentary assertion** —
+  what the expert said (DR-0024 layer 2). Adopting it as a project assertion
+  is a separate act, and the project's likelihood band is its own, never
+  inherited from the expert's estimative language (DR-0065 rule 5).
+
+  Legal characterisation by a competent authority is **not** this scheme.
+  Judicial findings carry jurisdiction, standard of proof and procedural
+  posture, and are recorded as legal findings qualified as theirs (§62,
+  METH-0001 §12).

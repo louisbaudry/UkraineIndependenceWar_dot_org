@@ -1,0 +1,93 @@
+id: scheme-document-authenticity
+type: argument-scheme
+layer: argument
+status: effective
+effective: 2026-08-26
+steward: founder
+authorised_by: [DR-0034]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-012]
+
+labels:
+  en:
+    prefLabel: argument from document authenticity
+
+definition: >
+  From a document's features and provenance to the claim that it is what it
+  purports to be — issued by the body named, at the date borne, in the form
+  held.
+
+premises:
+  - id: features
+    text: >
+      Document D bears the formal features of its purported class — issuing
+      body, register or reference number, signature or seal, layout,
+      letterhead, classification markings, distribution list.
+  - id: provenance
+    text: >
+      D reached the archive by a route consistent with its purported origin,
+      recorded as custody history (DR-0008).
+
+conclusion: >
+  D is authentic — genuinely issued by the body named, at the date borne —
+  at the likelihood band and confidence the assessment records.
+
+critical_questions:
+  - id: cq-issuing-conventions
+    text: >
+      Do the formal features match the issuing body's conventions **for that
+      date**? Registry number formats, seal designs, letterhead and
+      classification markings change over time; a document correct for 2024
+      may be wrong for 2015.
+    defeater_type_if_unanswered: undermining
+  - id: cq-internal-consistency
+    text: >
+      Are internal references — to other documents, to persons in named
+      posts, to organisational structures — consistent with what those were
+      at the borne date? Anachronism is the commonest forgery tell.
+    defeater_type_if_unanswered: undermining
+  - id: cq-technical-artifacts
+    text: >
+      What do the file's own characteristics say — embedded metadata, PDF
+      producer and revision history, fonts, scan artifacts, compression
+      history, digital signature validity? Absence of metadata is not
+      evidence of forgery; a scan legitimately has none (DR-0029).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-provenance-route
+    text: >
+      Is the route by which D reached the archive documented and plausible?
+      An anonymous leak and an official publication support very different
+      confidences. Note the discipline: custody history is documented, but
+      "chain of custody" is never claimed as a status (DR-0008, §6).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-motive
+    text: >
+      Who benefits if D is believed? A document favouring the interests of
+      whoever supplied it warrants more scrutiny — but interest alone
+      establishes nothing (§53: deception attribution needs specific
+      evidence, not suspicion).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-independent-attestation
+    text: >
+      Has the purported issuer confirmed, denied, or ignored D? A denial is a
+      documentary assertion by an interested party, not a finding — record it
+      as such and assess it separately.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-copy-completeness
+    text: >
+      Is what the archive holds the whole document, or an extract, a page, a
+      photograph of a screen? A partial copy may be authentic and still
+      unable to support the claim made from it (DR-0061 completeness states).
+    defeater_type_if_unanswered: undercutting
+
+usage_note: >
+  **Authenticity is not veracity.** This scheme concludes only that a
+  document is what it purports to be. An authentic document may contain
+  falsehoods, and an established forgery may report a true event (§38,
+  METH-0001 §3). A claim about the document's *contents* requires its own
+  argument, and an authenticity conclusion is a premise in that argument,
+  never a substitute for it.
+
+  Authenticity challenges enter the argument layer as **undermining**
+  defeaters; challenges to what an authentic document shows enter as
+  **undercutting** (DR-0033).

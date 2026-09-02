@@ -1,0 +1,104 @@
+id: scheme-image-video-verification
+type: argument-scheme
+layer: argument
+status: effective
+effective: 2026-08-26
+steward: founder
+authorised_by: [DR-0034]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-012]
+
+labels:
+  en:
+    prefLabel: argument from image or video verification
+
+definition: >
+  From a visual record's features to the claim that it depicts what it is
+  presented as depicting — the event, the place, the time, the people. Sits
+  before geolocation, which assumes an authentic image; here that assumption
+  is the conclusion.
+
+premises:
+  - id: record
+    text: >
+      Visual record V is presented as depicting event E at place P and
+      time T.
+  - id: features
+    text: >
+      V's content, technical characteristics and provenance are consistent
+      with that presentation.
+
+conclusion: >
+  V depicts E at P and T, at the likelihood band and confidence the
+  assessment records.
+
+critical_questions:
+  - id: cq-earliest-appearance
+    text: >
+      What is the earliest known appearance of V? Reverse search, hash
+      comparison, and archive lookups establish whether the archive's copy is
+      early or a re-upload. **An authentic image attached to a false context
+      is the commonest form of visual disinformation**, and the earliest copy
+      held is still not necessarily the original (§38, §39).
+    defeater_type_if_unanswered: undermining
+  - id: cq-manipulation
+    text: >
+      Does technical analysis show manipulation — splicing, cloning, frame
+      insertion, synthetic generation? Error-level analysis, compression
+      artifacts, frame-rate discontinuities, lighting inconsistency, sensor
+      noise pattern. A clean result is not proof of authenticity; a
+      re-encoded copy loses most of the evidence either way.
+    defeater_type_if_unanswered: undermining
+  - id: cq-synthetic
+    text: >
+      Could V be wholly or partly synthetic? Generative tools now produce
+      images and video that pass casual inspection. Detection is
+      probabilistic and degrades with re-encoding; the question is whether
+      the *content* is corroborated by anything that could not have been
+      generated alongside it.
+    defeater_type_if_unanswered: undermining
+  - id: cq-context-independence
+    text: >
+      Are P and T established **independently of the post that carried V**,
+      or inherited from its caption? Place, time, and event are three
+      separate contextual claims, each needing its own support (§39).
+      Geolocation answers P; this question is about whether P and T were
+      assumed or derived.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-internal-consistency
+    text: >
+      Is V internally consistent — weather, season, vegetation, shadows,
+      visible timestamps, signage, vehicle types, uniforms — with the claimed
+      P and T?
+    defeater_type_if_unanswered: undermining
+  - id: cq-selective-framing
+    text: >
+      What is outside the frame, before the first frame, after the last? An
+      authentic, unmanipulated clip can still misrepresent by selection. A
+      longer version or a second angle changes what V shows.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-chain-of-copies
+    text: >
+      Through how many hands, platforms and re-encodings has V passed before
+      reaching the archive? Each is a derivation with its own provenance
+      (DR-0003); metadata does not survive most of them, and its absence is
+      not suspicious in itself (DR-0029).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-depicted-persons
+    text: >
+      Does V show identifiable people — victims, witnesses, minors,
+      prisoners? Their appearance in an evidentiary argument is governed by
+      POL-0001 §5 and Geneva III Art. 13 before it is a verification
+      question at all.
+    defeater_type_if_unanswered: undercutting
+
+usage_note: >
+  Verification is layered: this scheme establishes that V is what it is
+  presented as; `scheme-geolocation` then establishes where; a separate
+  argument establishes what the depicted event *means*. Collapsing the
+  three is how a genuine image of the wrong place becomes a false claim
+  about the right one.
+
+  Graphic material is preserved at its access tier and never defaults to
+  public (PRES-012). The verification argument references the holding; it
+  does not reproduce the image.

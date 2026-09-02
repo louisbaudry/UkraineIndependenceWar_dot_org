@@ -1,0 +1,86 @@
+id: scheme-sign-indicator
+type: argument-scheme
+layer: argument
+status: effective
+effective: 2026-08-26
+steward: founder
+authorised_by: [DR-0034]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-012]
+
+labels:
+  en:
+    prefLabel: argument from sign or indicator
+
+definition: >
+  From an observed indicator to the state of affairs it signals. The
+  workhorse of open-source analysis — insignia to unit, shipping pattern to
+  trade route, corporate filing to control, procurement notice to capability.
+
+premises:
+  - id: observation
+    text: Indicator I is observed in context C.
+  - id: association
+    text: >
+      I is associated with state of affairs S — by convention, regulation,
+      physical necessity, or established practice.
+
+conclusion: >
+  S obtains, at the likelihood band and confidence the assessment records.
+
+critical_questions:
+  - id: cq-strength
+    text: >
+      How strongly is I associated with S? Is the link necessary, regulated,
+      conventional, or merely frequent? A regulated marking and an observed
+      habit support very different confidences.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-alternative-causes
+    text: >
+      What else produces I? This is the question the scheme exists for: an
+      indicator consistent with S and with three other explanations
+      discriminates nothing. Where alternatives are live, a hypothesis set is
+      required (METH-0001 §7).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-observation-reliability
+    text: >
+      Is I reliably observed, or inferred from a low-resolution image, a
+      partial record, or a third-hand description? The indicator's own
+      evidential basis is a premise, not a given.
+    defeater_type_if_unanswered: undermining
+  - id: cq-deliberate-display
+    text: >
+      Could I have been displayed deliberately to produce this inference?
+      Insignia are removed and applied; flags are planted; filings are
+      structured to be read a particular way. Note §53: attributing deception
+      requires specific evidence, not the mere possibility of it.
+    defeater_type_if_unanswered: undermining
+  - id: cq-temporal-validity
+    text: >
+      Does the association between I and S hold **at the time observed**?
+      Unit markings, corporate structures, regulatory schemes and routing
+      conventions all change; an association valid in 2018 may not be in 2025.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-base-rate
+    text: >
+      How common is I among cases where S does *not* obtain? A distinctive
+      indicator in a large population may still yield many false positives —
+      the question is the rate, not the distinctiveness alone.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-absence-meaning
+    text: >
+      Where the argument relies on I being **absent**, is the absence
+      observed or merely unrecorded? "We looked and it was not there" and "we
+      have no record" are different claims (DR-0029, METH-0001 §8).
+    defeater_type_if_unanswered: undermining
+
+usage_note: >
+  This scheme is where confirmation bias does most of its work: an indicator
+  is noticed *because* it fits an expected conclusion, and the alternatives
+  are never enumerated. `cq-alternative-causes` and `cq-base-rate` are the
+  two that most often go unanswered, and under METH-0001 §6.2 leaving either
+  open caps analytic confidence at `moderate`.
+
+  Chains of indicators compound rather than accumulate: three weak signs are
+  not one strong one, and where they share an origin they are not
+  independent at all (DR-0028, §36).

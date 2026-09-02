@@ -280,12 +280,12 @@ def run() -> int:
         refuses("METH §6.2", "a late objection is refused while the claim stands high",
                 lambda: gate.record_critical_question(
                     assertion_id=standing, scheme_id="scheme-sign-indicator",
-                    question_id="cq-signal-spoofing",
+                    question_id="cq-deliberate-display",
                     unanswered_defeater="undermining"))
 
         successor, _ = gate.raise_late_critical_question(
             assertion_id=standing, scheme_id="scheme-sign-indicator",
-            question_id="cq-signal-spoofing",
+            question_id="cq-deliberate-display",
             unanswered_defeater="undermining", asserter_id=editor,
             reason="AIS spoofing in the Kerch Strait was not ruled out.")
         check("DR-0055", "a late objection is admitted with a superseding assertion",
@@ -298,7 +298,7 @@ def run() -> int:
                            "WHERE id = %s", (standing,)).fetchone()[0] == "high")
         check("METH §6.2", "the objection is recorded against the live assertion",
               gate.open_questions(successor) ==
-              [("scheme-sign-indicator", "cq-signal-spoofing", "undermining")])
+              [("scheme-sign-indicator", "cq-deliberate-display", "undermining")])
 
         # ---- METH-0001 §7 / DR-0085 Q3: hypothesis sets --------------------
 
