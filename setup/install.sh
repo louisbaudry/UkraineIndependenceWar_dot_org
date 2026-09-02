@@ -49,13 +49,96 @@ else
 fi
 ok "Debian-family system"
 
+# Refuse to install anything into a directory a web server publishes. The
+# archive holds material at every access tier, including `confidential`, and a
+# document root is the one place on the machine where a file is public by
+# default. SEC-004 forbids a tier leak in any layer; a path leak is the
+# crudest possible version of one.
+for path in "$INSTALL_DIR" "$ARCHIVE_ROOT"; do
+  case "$path" in
+    /var/www/*|/srv/www/*|/usr/share/nginx/*|/home/*/public_html/*|*/httpdocs/*)
+      die "refusing to install into '$path', which looks web-served.
+  The archive holds material at every access tier and a document root
+  publishes files by default. Choose a path outside the web tree:
+
+      INSTALL_DIR=/opt/uiw ARCHIVE_ROOT=/opt/uiw-archive bash setup/install.sh"
+      ;;
+  esac
+done
+
+# A control panel manages its own services and package pins. Postgres from apt
+# does not normally collide with one, but it is worth knowing you are on such
+# a machine before it does.
+if [ -d /usr/local/psa ] || [ -d /usr/local/cpanel ] || [ -d /opt/plesk ]; then
+  warn "this looks like a control-panel host (Plesk/cPanel)"
+  warn "the archive will run alongside whatever else it serves — see the note"
+  warn "at the end of this script about keeping the two separate"
+  CONTROL_PANEL=yes
+else
+  CONTROL_PANEL=no
+fi
+
 # ---------------------------------------------------------------------------
 
 step "Installing PostgreSQL, Python and git"
 
 export DEBIAN_FRONTEND=noninteractive
-$SUDO apt-get update -qq
-$SUDO apt-get install -y -qq \
+
+# Another process may hold the dpkg lock — unattended-upgrades on a fresh
+# server, or a control panel doing its own housekeeping. That is ordinary and
+# temporary, so wait for it rather than failing. Waiting is also the only safe
+# response: killing the holder or deleting the lock can leave dpkg in a
+# half-configured state that is far more work to repair than the wait.
+wait_for_apt() {
+    local waited=0 holder
+    while $SUDO fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
+        if [ "$waited" -eq 0 ]; then
+            holder="$($SUDO fuser /var/lib/dpkg/lock-frontend 2>/dev/null \
+                      | tr -d ' ')"
+            warn "another process (pid ${holder:-?}) is using apt; waiting"
+            [ -n "$holder" ] && ps -p "$holder" -o cmd= 2>/dev/null \
+                | sed 's/^/      /'
+        fi
+        sleep 5
+        waited=$((waited + 5))
+        [ "$waited" -lt 600 ] || die \
+          "apt has been locked for 10 minutes. Check how long the holder has
+  actually been running:
+
+    ps -o pid,stat,tty,etime,cmd -p \$(sudo fuser /var/lib/dpkg/lock-frontend)
+
+  If ELAPSED is minutes, it is working — wait and re-run this script.
+
+  If ELAPSED is hours or days, it is STUCK, not busy. An interactive
+  apt/dpkg run that lost its terminal sits forever on a prompt nobody can
+  answer (a modified config file, or 'which services should be restarted?').
+  A machine in that state has also stopped receiving security updates.
+  Check for a recoverable session first — 'screen -ls', 'tmux ls' — since
+  reattaching and answering the prompt is much the cleanest fix.
+
+  Either way: do NOT delete the lock file, and do not SIGKILL the holder.
+  Interrupting a package transaction mid-write turns an annoyance into a
+  broken system."
+        [ $((waited % 60)) -eq 0 ] && warn "still waiting (${waited}s)"
+    done
+    [ "$waited" -gt 0 ] && ok "apt lock released after ${waited}s"
+    return 0
+}
+
+# `fuser` lives in psmisc, which is not guaranteed to be present. Without it
+# the wait cannot run, so fall through to apt's own retry behaviour rather
+# than pretending to have waited.
+if command -v fuser >/dev/null 2>&1; then
+    wait_for_apt
+else
+    warn "fuser not available; cannot detect the apt lock in advance"
+fi
+
+# -o DPkg::Lock::Timeout makes apt itself wait too, which covers the race
+# between the check above and the command below.
+APT_OPTS=(-o DPkg::Lock::Timeout=300)
+$SUDO apt-get "${APT_OPTS[@]}" update -qq
+$SUDO apt-get "${APT_OPTS[@]}" install -y -qq \
   postgresql postgresql-client python3 python3-pip python3-venv git \
   >/dev/null
 ok "packages installed"
@@ -221,3 +304,26 @@ cat <<EOF
     * No firewall or hardening. This is a plain server.
 
 EOF
+
+if [ "$CONTROL_PANEL" = yes ]; then
+cat <<EOF
+  A note about this machine specifically.
+
+  It runs a control panel, so it is presumably also serving a public website.
+  The archive now shares it. That works, and it is a reasonable place to
+  start, but two things follow:
+
+    * Keep them apart on disk. The archive lives at $ARCHIVE_ROOT
+      and the repository at $INSTALL_DIR, both outside the web tree.
+      Nothing should ever be moved or symlinked into a document root: the
+      archive holds material at every access tier, and a document root
+      publishes files by default (SEC-004).
+
+    * They fail together. A compromise of the public site, or of the panel,
+      reaches the archive on the same box. The archive is the part that
+      cannot be rebuilt. Separating them onto different machines is worth
+      doing before there is much in it — and backups matter more here, not
+      less, for the same reason.
+
+EOF
+fi
