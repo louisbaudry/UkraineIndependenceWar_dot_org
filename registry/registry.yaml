@@ -4,7 +4,7 @@
 registry:
   id: uiw-semantic-registry
   title: Ukraine's Second War of Independence — Semantic Registry
-  version: "0.1.1"
+  version: "0.1.2"
   version_regime: >
     Ontology/vocabulary regime per DR-0047: explicit versions with changelog,
     deprecations and replacement mappings. Not SemVer arithmetic.
@@ -29,6 +29,18 @@ namespaces:
     projection.
 
 changelog:
+  - version: "0.1.2"
+    date: 2026-08-26
+    summary: >
+      Additive change (DR-0080): five argument schemes added, completing
+      DR-0034's named set — expert opinion, sign/indicator, document
+      authenticity, image/video verification, and coordination/attribution.
+      Each carries critical questions with declared defeater types.
+    notes: >
+      No vocabulary, member, or mapping changed. The schemes are untested
+      against real investigations; SPEC-0004 §11 Q4 anticipates revision
+      once the archive holds material. Their critical questions now bind
+      through METH-0001 §6.2's confidence cap, enforced at Gate 2.
   - version: "0.1.1"
     date: 2026-08-26
     summary: >

@@ -1,0 +1,98 @@
+id: scheme-coordination-attribution
+type: argument-scheme
+layer: argument
+status: effective
+effective: 2026-08-26
+steward: founder
+authorised_by: [DR-0034]
+depends_on_specs: [SPEC-0001]
+satisfies_requirements: [EVID-012]
+
+labels:
+  en:
+    prefLabel: argument from coordination to attribution
+
+definition: >
+  From observed coordination among actors or accounts to the claim that a
+  common hand directs them — an operator, an organisation, a state. The
+  scheme behind every attribution ladder (§52) and the one most exposed to
+  §53's rule that deception attribution needs specific evidence.
+
+premises:
+  - id: coordination
+    text: >
+      Actors or accounts A1…An exhibit coordinated behaviour B — timing,
+      content, infrastructure, funding, targeting — beyond what independent
+      action would produce.
+  - id: signature
+    text: >
+      B, or the infrastructure behind it, bears features characteristic of
+      actor X.
+
+conclusion: >
+  X directs A1…An, at the rung of the attribution ladder and the likelihood
+  band and confidence the assessment records.
+
+critical_questions:
+  - id: cq-coordination-real
+    text: >
+      Is the coordination real, or an artifact of how the sample was
+      selected? Accounts found *because* they share a behaviour will share
+      that behaviour. What is the base rate of B among accounts not selected
+      for it?
+    defeater_type_if_unanswered: undermining
+  - id: cq-organic-alternatives
+    text: >
+      Could B arise without direction — shared source, shared audience,
+      platform recommendation, genuine common cause, copycat behaviour? This
+      is the strong-prior case where METH-0001 §7 makes a hypothesis set
+      mandatory: the project expects coordination, so it must model the
+      alternatives it does not expect.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-ladder-rung
+    text: >
+      Which rung of the attribution ladder does the evidence actually reach —
+      coordination exists; an operator exists; the operator is identified;
+      the operator acts for X; X directed this? Each rung is a separate
+      claim. State the one reached and do not let the conclusion drift a rung
+      above it (§52).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-signature-specificity
+    text: >
+      Is the signature specific to X, or shared with others — including
+      others who imitate X? Tools, infrastructure, and stylistic tells are
+      reused, sold, and deliberately copied. A false-flag possibility is not
+      itself evidence of a false flag (§53), but it caps confidence until
+      addressed.
+    defeater_type_if_unanswered: undercutting
+  - id: cq-infrastructure-independence
+    text: >
+      Do the lines of evidence — behavioural, technical, financial,
+      documentary — trace to independent origins, or does one observation
+      underwrite them all? Three analyses of one dataset are one line
+      (DR-0028).
+    defeater_type_if_unanswered: undercutting
+  - id: cq-prior-attributions
+    text: >
+      Does this attribution rest on earlier attributions by others? If those
+      are premises, their own critical questions are inherited, and an
+      attribution chain is only as strong as its weakest published link.
+    defeater_type_if_unanswered: undermining
+  - id: cq-consequence
+    text: >
+      Attribution to a named actor is consequential by definition
+      (METH-0001 §1.5, limb 1). Has the review tier, the hypothesis set, and
+      the review qualification the conclusion requires actually been applied
+      — or is the argument being built to a conclusion already published?
+    defeater_type_if_unanswered: undercutting
+
+usage_note: >
+  The rung matters more than the verdict. "These accounts are coordinated"
+  is a finding; "the FSB directs them" is a different claim several rungs
+  up, and the archive must be able to show which rung each published
+  statement rests on (§52, §86).
+
+  Attribution to a state is a project conclusion in the project's own voice
+  (DR-0024 layer 4) and is never a legal finding (§62). Where a competent
+  authority has itself attributed, that is a documentary assertion carrying
+  their standard of proof and is recorded as theirs.

@@ -1882,6 +1882,225 @@
       "type": "vocabulary",
       "usage_note": "Preservation rights and republication rights are different (§14). The archive may preserve material it is not permitted to republish. `unknown` is an **explicit registry value**, never a null (DR-0029).\n"
     },
+    "scheme-coordination-attribution": {
+      "_source": "schemes/coordination-attribution.yaml",
+      "authorised_by": [
+        "DR-0034"
+      ],
+      "conclusion": "X directs A1…An, at the rung of the attribution ladder and the likelihood band and confidence the assessment records.\n",
+      "critical_questions": [
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-coordination-real",
+          "text": "Is the coordination real, or an artifact of how the sample was selected? Accounts found *because* they share a behaviour will share that behaviour. What is the base rate of B among accounts not selected for it?\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-organic-alternatives",
+          "text": "Could B arise without direction — shared source, shared audience, platform recommendation, genuine common cause, copycat behaviour? This is the strong-prior case where METH-0001 §7 makes a hypothesis set mandatory: the project expects coordination, so it must model the alternatives it does not expect.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-ladder-rung",
+          "text": "Which rung of the attribution ladder does the evidence actually reach — coordination exists; an operator exists; the operator is identified; the operator acts for X; X directed this? Each rung is a separate claim. State the one reached and do not let the conclusion drift a rung above it (§52).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-signature-specificity",
+          "text": "Is the signature specific to X, or shared with others — including others who imitate X? Tools, infrastructure, and stylistic tells are reused, sold, and deliberately copied. A false-flag possibility is not itself evidence of a false flag (§53), but it caps confidence until addressed.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-infrastructure-independence",
+          "text": "Do the lines of evidence — behavioural, technical, financial, documentary — trace to independent origins, or does one observation underwrite them all? Three analyses of one dataset are one line (DR-0028).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-prior-attributions",
+          "text": "Does this attribution rest on earlier attributions by others? If those are premises, their own critical questions are inherited, and an attribution chain is only as strong as its weakest published link.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-consequence",
+          "text": "Attribution to a named actor is consequential by definition (METH-0001 §1.5, limb 1). Has the review tier, the hypothesis set, and the review qualification the conclusion requires actually been applied — or is the argument being built to a conclusion already published?\n"
+        }
+      ],
+      "definition": "From observed coordination among actors or accounts to the claim that a common hand directs them — an operator, an organisation, a state. The scheme behind every attribution ladder (§52) and the one most exposed to §53's rule that deception attribution needs specific evidence.\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-26",
+      "id": "scheme-coordination-attribution",
+      "labels": {
+        "en": {
+          "prefLabel": "argument from coordination to attribution"
+        }
+      },
+      "layer": "argument",
+      "premises": [
+        {
+          "id": "coordination",
+          "text": "Actors or accounts A1…An exhibit coordinated behaviour B — timing, content, infrastructure, funding, targeting — beyond what independent action would produce.\n"
+        },
+        {
+          "id": "signature",
+          "text": "B, or the infrastructure behind it, bears features characteristic of actor X.\n"
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-012"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "argument-scheme",
+      "usage_note": "The rung matters more than the verdict. \"These accounts are coordinated\" is a finding; \"the FSB directs them\" is a different claim several rungs up, and the archive must be able to show which rung each published statement rests on (§52, §86).\nAttribution to a state is a project conclusion in the project's own voice (DR-0024 layer 4) and is never a legal finding (§62). Where a competent authority has itself attributed, that is a documentary assertion carrying their standard of proof and is recorded as theirs.\n"
+    },
+    "scheme-document-authenticity": {
+      "_source": "schemes/document-authenticity.yaml",
+      "authorised_by": [
+        "DR-0034"
+      ],
+      "conclusion": "D is authentic — genuinely issued by the body named, at the date borne — at the likelihood band and confidence the assessment records.\n",
+      "critical_questions": [
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-issuing-conventions",
+          "text": "Do the formal features match the issuing body's conventions **for that date**? Registry number formats, seal designs, letterhead and classification markings change over time; a document correct for 2024 may be wrong for 2015.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-internal-consistency",
+          "text": "Are internal references — to other documents, to persons in named posts, to organisational structures — consistent with what those were at the borne date? Anachronism is the commonest forgery tell.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-technical-artifacts",
+          "text": "What do the file's own characteristics say — embedded metadata, PDF producer and revision history, fonts, scan artifacts, compression history, digital signature validity? Absence of metadata is not evidence of forgery; a scan legitimately has none (DR-0029).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-provenance-route",
+          "text": "Is the route by which D reached the archive documented and plausible? An anonymous leak and an official publication support very different confidences. Note the discipline: custody history is documented, but \"chain of custody\" is never claimed as a status (DR-0008, §6).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-motive",
+          "text": "Who benefits if D is believed? A document favouring the interests of whoever supplied it warrants more scrutiny — but interest alone establishes nothing (§53: deception attribution needs specific evidence, not suspicion).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-independent-attestation",
+          "text": "Has the purported issuer confirmed, denied, or ignored D? A denial is a documentary assertion by an interested party, not a finding — record it as such and assess it separately.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-copy-completeness",
+          "text": "Is what the archive holds the whole document, or an extract, a page, a photograph of a screen? A partial copy may be authentic and still unable to support the claim made from it (DR-0061 completeness states).\n"
+        }
+      ],
+      "definition": "From a document's features and provenance to the claim that it is what it purports to be — issued by the body named, at the date borne, in the form held.\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-26",
+      "id": "scheme-document-authenticity",
+      "labels": {
+        "en": {
+          "prefLabel": "argument from document authenticity"
+        }
+      },
+      "layer": "argument",
+      "premises": [
+        {
+          "id": "features",
+          "text": "Document D bears the formal features of its purported class — issuing body, register or reference number, signature or seal, layout, letterhead, classification markings, distribution list.\n"
+        },
+        {
+          "id": "provenance",
+          "text": "D reached the archive by a route consistent with its purported origin, recorded as custody history (DR-0008).\n"
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-012"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "argument-scheme",
+      "usage_note": "**Authenticity is not veracity.** This scheme concludes only that a document is what it purports to be. An authentic document may contain falsehoods, and an established forgery may report a true event (§38, METH-0001 §3). A claim about the document's *contents* requires its own argument, and an authenticity conclusion is a premise in that argument, never a substitute for it.\nAuthenticity challenges enter the argument layer as **undermining** defeaters; challenges to what an authentic document shows enter as **undercutting** (DR-0033).\n"
+    },
+    "scheme-expert-opinion": {
+      "_source": "schemes/expert-opinion.yaml",
+      "authorised_by": [
+        "DR-0034"
+      ],
+      "conclusion": "P holds, at the likelihood band and confidence the assessment records.\n",
+      "critical_questions": [
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-expertise-basis",
+          "text": "What establishes S's expertise — credentials, institutional position, publication record, demonstrated track record? Expertise asserted by the source itself, or by whoever is citing them, is not established.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-domain-fit",
+          "text": "Is P actually inside S's domain? A munitions specialist on fragmentation patterns is an expert; the same person on command responsibility is not. This is the most frequently skipped question and the most frequently decisive one.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-reasoning-shown",
+          "text": "Did S give reasons, or only a conclusion? An expert judgment with visible reasoning can be assessed on its merits; one without can only be deferred to. Prefer the former and record which you have (§34).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-consensus",
+          "text": "Is P consistent with what other experts in D hold? Where experts disagree, the disagreement is the finding — record both and do not average them (§40, DR-0026).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-interest",
+          "text": "Does S have an interest in the conclusion — employment, funding, affiliation, prior public commitment to a position? An interest raises required scrutiny; it does not make the judgment wrong (§84).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-evidence-access",
+          "text": "What did S actually examine? An expert reasoning from photographs, from a summary, or from another expert's report is in a materially different position from one who examined the object.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-report-fidelity",
+          "text": "Is S's judgment reported accurately, in full, and in context? Expert qualifications are the first thing lost in republication, and a hedged judgment reported flatly is a different claim (DR-0019, §58).\n"
+        }
+      ],
+      "definition": "From an expert's judgment within their field to the proposition judged. The classic Walton scheme, which the project uses heavily — component identification, munitions analysis, forensic pathology, financial structuring, legal characterisation by others.\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-26",
+      "id": "scheme-expert-opinion",
+      "labels": {
+        "en": {
+          "prefLabel": "argument from expert opinion"
+        }
+      },
+      "layer": "argument",
+      "premises": [
+        {
+          "id": "standing",
+          "text": "Source S has expertise in domain D."
+        },
+        {
+          "id": "assertion",
+          "text": "S asserts proposition P, and P falls within D."
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-012"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "argument-scheme",
+      "usage_note": "An expert's judgment enters the archive as a **documentary assertion** — what the expert said (DR-0024 layer 2). Adopting it as a project assertion is a separate act, and the project's likelihood band is its own, never inherited from the expert's estimative language (DR-0065 rule 5).\nLegal characterisation by a competent authority is **not** this scheme. Judicial findings carry jurisdiction, standard of proof and procedural posture, and are recorded as legal findings qualified as theirs (§62, METH-0001 §12).\n"
+    },
     "scheme-geolocation": {
       "_source": "schemes/geolocation.yaml",
       "authorised_by": [
@@ -1950,6 +2169,157 @@
       "steward": "founder",
       "type": "argument-scheme",
       "usage_note": "A geolocation conclusion is an analyst-derived location, distinguished in the data from a source-supplied one (§46, CRMgeo's phenomenal/declarative distinction). Coordinates carry their derivation method and uncertainty as quantity objects (DR-0030).\n"
+    },
+    "scheme-image-video-verification": {
+      "_source": "schemes/image-video-verification.yaml",
+      "authorised_by": [
+        "DR-0034"
+      ],
+      "conclusion": "V depicts E at P and T, at the likelihood band and confidence the assessment records.\n",
+      "critical_questions": [
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-earliest-appearance",
+          "text": "What is the earliest known appearance of V? Reverse search, hash comparison, and archive lookups establish whether the archive's copy is early or a re-upload. **An authentic image attached to a false context is the commonest form of visual disinformation**, and the earliest copy held is still not necessarily the original (§38, §39).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-manipulation",
+          "text": "Does technical analysis show manipulation — splicing, cloning, frame insertion, synthetic generation? Error-level analysis, compression artifacts, frame-rate discontinuities, lighting inconsistency, sensor noise pattern. A clean result is not proof of authenticity; a re-encoded copy loses most of the evidence either way.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-synthetic",
+          "text": "Could V be wholly or partly synthetic? Generative tools now produce images and video that pass casual inspection. Detection is probabilistic and degrades with re-encoding; the question is whether the *content* is corroborated by anything that could not have been generated alongside it.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-context-independence",
+          "text": "Are P and T established **independently of the post that carried V**, or inherited from its caption? Place, time, and event are three separate contextual claims, each needing its own support (§39). Geolocation answers P; this question is about whether P and T were assumed or derived.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-internal-consistency",
+          "text": "Is V internally consistent — weather, season, vegetation, shadows, visible timestamps, signage, vehicle types, uniforms — with the claimed P and T?\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-selective-framing",
+          "text": "What is outside the frame, before the first frame, after the last? An authentic, unmanipulated clip can still misrepresent by selection. A longer version or a second angle changes what V shows.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-chain-of-copies",
+          "text": "Through how many hands, platforms and re-encodings has V passed before reaching the archive? Each is a derivation with its own provenance (DR-0003); metadata does not survive most of them, and its absence is not suspicious in itself (DR-0029).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-depicted-persons",
+          "text": "Does V show identifiable people — victims, witnesses, minors, prisoners? Their appearance in an evidentiary argument is governed by POL-0001 §5 and Geneva III Art. 13 before it is a verification question at all.\n"
+        }
+      ],
+      "definition": "From a visual record's features to the claim that it depicts what it is presented as depicting — the event, the place, the time, the people. Sits before geolocation, which assumes an authentic image; here that assumption is the conclusion.\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-26",
+      "id": "scheme-image-video-verification",
+      "labels": {
+        "en": {
+          "prefLabel": "argument from image or video verification"
+        }
+      },
+      "layer": "argument",
+      "premises": [
+        {
+          "id": "record",
+          "text": "Visual record V is presented as depicting event E at place P and time T.\n"
+        },
+        {
+          "id": "features",
+          "text": "V's content, technical characteristics and provenance are consistent with that presentation.\n"
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-012"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "argument-scheme",
+      "usage_note": "Verification is layered: this scheme establishes that V is what it is presented as; `scheme-geolocation` then establishes where; a separate argument establishes what the depicted event *means*. Collapsing the three is how a genuine image of the wrong place becomes a false claim about the right one.\nGraphic material is preserved at its access tier and never defaults to public (PRES-012). The verification argument references the holding; it does not reproduce the image.\n"
+    },
+    "scheme-sign-indicator": {
+      "_source": "schemes/sign-indicator.yaml",
+      "authorised_by": [
+        "DR-0034"
+      ],
+      "conclusion": "S obtains, at the likelihood band and confidence the assessment records.\n",
+      "critical_questions": [
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-strength",
+          "text": "How strongly is I associated with S? Is the link necessary, regulated, conventional, or merely frequent? A regulated marking and an observed habit support very different confidences.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-alternative-causes",
+          "text": "What else produces I? This is the question the scheme exists for: an indicator consistent with S and with three other explanations discriminates nothing. Where alternatives are live, a hypothesis set is required (METH-0001 §7).\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-observation-reliability",
+          "text": "Is I reliably observed, or inferred from a low-resolution image, a partial record, or a third-hand description? The indicator's own evidential basis is a premise, not a given.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-deliberate-display",
+          "text": "Could I have been displayed deliberately to produce this inference? Insignia are removed and applied; flags are planted; filings are structured to be read a particular way. Note §53: attributing deception requires specific evidence, not the mere possibility of it.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-temporal-validity",
+          "text": "Does the association between I and S hold **at the time observed**? Unit markings, corporate structures, regulatory schemes and routing conventions all change; an association valid in 2018 may not be in 2025.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undercutting",
+          "id": "cq-base-rate",
+          "text": "How common is I among cases where S does *not* obtain? A distinctive indicator in a large population may still yield many false positives — the question is the rate, not the distinctiveness alone.\n"
+        },
+        {
+          "defeater_type_if_unanswered": "undermining",
+          "id": "cq-absence-meaning",
+          "text": "Where the argument relies on I being **absent**, is the absence observed or merely unrecorded? \"We looked and it was not there\" and \"we have no record\" are different claims (DR-0029, METH-0001 §8).\n"
+        }
+      ],
+      "definition": "From an observed indicator to the state of affairs it signals. The workhorse of open-source analysis — insignia to unit, shipping pattern to trade route, corporate filing to control, procurement notice to capability.\n",
+      "depends_on_specs": [
+        "SPEC-0001"
+      ],
+      "effective": "2026-08-26",
+      "id": "scheme-sign-indicator",
+      "labels": {
+        "en": {
+          "prefLabel": "argument from sign or indicator"
+        }
+      },
+      "layer": "argument",
+      "premises": [
+        {
+          "id": "observation",
+          "text": "Indicator I is observed in context C."
+        },
+        {
+          "id": "association",
+          "text": "I is associated with state of affairs S — by convention, regulation, physical necessity, or established practice.\n"
+        }
+      ],
+      "satisfies_requirements": [
+        "EVID-012"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "argument-scheme",
+      "usage_note": "This scheme is where confirmation bias does most of its work: an indicator is noticed *because* it fits an expected conclusion, and the alternatives are never enumerated. `cq-alternative-causes` and `cq-base-rate` are the two that most often go unanswered, and under METH-0001 §6.2 leaving either open caps analytic confidence at `moderate`.\nChains of indicators compound rather than accumulate: three weak signs are not one strong one, and where they share an origin they are not independent at all (DR-0028, §36).\n"
     },
     "scheme-witness-testimony": {
       "_source": "schemes/witness-testimony.yaml",
@@ -2799,7 +3169,7 @@
     "id": "uiw-semantic-registry",
     "status": "effective",
     "title": "Ukraine's Second War of Independence — Semantic Registry",
-    "version": "0.1.1"
+    "version": "0.1.2"
   },
   "specification": "SPEC-0005"
 }
