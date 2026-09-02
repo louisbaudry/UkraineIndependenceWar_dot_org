@@ -1,0 +1,269 @@
+# Candidate sources — sanctions authorities and their instruments
+#
+# Status: CANDIDATE. Nothing here is registered until the founder accepts it
+# (per source, not as a block) and `register.py --commit` is run.
+#
+# Drafted 2026-08-26 by an AI assistant at the founder's direction, against
+# the DR-0067 source-registry schema. Every field carries reasoning in
+# sources/README.md so a decision can be made on the reasoning rather than on
+# the value alone.
+#
+# Scope: the founder chose sanctions and export control as the first thematic
+# area. These are institutional publishers with stable formats and near-zero
+# special-category personal data, so DR-0071's interim constraints barely bite
+# and POL-0001's structuring limits are straightforward to honour.
+#
+# UNVERIFIED: no locator below has been fetched. This environment's proxy
+# blocks general internet hosts, so every URL is drawn from documentation and
+# prior knowledge, not from a successful request. Treat each as a claim to be
+# checked on first run — `register.py --dry-run` reports exactly what would be
+# attempted, and a 404 on first collection is an expected outcome, not a
+# system failure (PRES-007: failed acquisitions are first-class).
+
+sources:
+
+  # ---------------------------------------------------------------------
+  # EU — the primary instrument publisher for this project
+  # ---------------------------------------------------------------------
+
+  - key: eur-lex-sanctions
+    source_type: sanctions-authority
+    name: EUR-Lex — restrictive measures (Ukraine/Russia)
+    locator: https://eur-lex.europa.eu/
+    publisher: Publications Office of the European Union
+    jurisdiction: EU
+    primary_languages: [en, fr, de, uk]
+    coverage_start: 2014-03-01        # first Crimea-related measures
+    collection_method: http
+    collection_cadence: daily
+    scope_rules: >
+      Regulations, Council Decisions and implementing acts under the
+      Ukraine/Russia restrictive-measures regimes, plus their consolidated
+      versions. Legal instruments only.
+    exclusions: >
+      Case law, preparatory acts, and unrelated regimes. Consolidated texts
+      are collected as derivatives alongside the originals, never in place of
+      them (DR-0038: instruments have lifecycles).
+    capture_format: warc
+    default_retention_tier: permanent
+    default_access_tier: public
+    expects_graphic_content: false
+    rights_permission: may-redistribute
+    rights_basis: >
+      Reuse of Commission documents under Decision 2011/833/EU, subject to
+      source acknowledgement. NOT LEGALLY REVIEWED — see POL-0001 §10.
+    grade_source_reliability: A
+    grade_item_credibility: "1"
+
+  - key: eu-consolidated-list
+    source_type: sanctions-authority
+    name: EU Consolidated Financial Sanctions List
+    locator: https://webgate.ec.europa.eu/fsd/fsf
+    publisher: European Commission (DG FISMA)
+    jurisdiction: EU
+    primary_languages: [en]
+    coverage_start: 2014-03-17
+    collection_method: http
+    collection_cadence: daily
+    scope_rules: >
+      The consolidated list in its structured form, captured as a whole file
+      each time it changes. Each capture is a distinct holding forming a
+      capture series (DR-0074), so the designation lifecycle is reconstructible
+      from successive states rather than asserted.
+    exclusions: >
+      No enrichment against other registries at collection time. Designation
+      records stay distinct from canonical entities; mapping is a reviewed act
+      at T1 (DR-0039, DR-0063, LEGAL-003).
+    capture_format: http
+    default_retention_tier: permanent
+    default_access_tier: public
+    expects_graphic_content: false
+    rights_permission: may-redistribute
+    rights_basis: >
+      Published for public reuse by the Commission. NOT LEGALLY REVIEWED.
+    grade_source_reliability: A
+    grade_item_credibility: "1"
+    # Personal-data note: designation records name individuals, including
+    # dates and places of birth. POL-0001 §4 governs; DR-0071(b) forbids
+    # automatic promotion into structured searchable fields, which is why
+    # `scope_rules` captures whole files rather than parsing on ingest.
+
+  # ---------------------------------------------------------------------
+  # United States
+  # ---------------------------------------------------------------------
+
+  - key: ofac-sdn
+    source_type: sanctions-authority
+    name: OFAC Specially Designated Nationals list
+    locator: https://sanctionslist.ofac.treas.gov/
+    publisher: US Treasury, Office of Foreign Assets Control
+    jurisdiction: US
+    primary_languages: [en]
+    coverage_start: 2014-03-06
+    collection_method: http
+    collection_cadence: daily
+    scope_rules: >
+      SDN list and the Consolidated Sanctions List in their structured forms,
+      whole-file captures forming a capture series.
+    exclusions: >
+      Interpretive guidance, FAQs and press releases — different evidentiary
+      character, registered separately if wanted.
+    capture_format: http
+    default_retention_tier: permanent
+    default_access_tier: public
+    expects_graphic_content: false
+    rights_permission: may-redistribute
+    rights_basis: >
+      US federal government work, not subject to domestic copyright.
+      NOT LEGALLY REVIEWED.
+    grade_source_reliability: A
+    grade_item_credibility: "1"
+
+  - key: bis-entity-list
+    source_type: sanctions-authority
+    name: BIS Entity List and Denied Persons List
+    locator: https://www.bis.doc.gov/
+    publisher: US Department of Commerce, Bureau of Industry and Security
+    jurisdiction: US
+    primary_languages: [en]
+    coverage_start: 2014-08-01
+    collection_method: http
+    collection_cadence: weekly
+    scope_rules: >
+      Entity List, Denied Persons List, Unverified List, and Federal Register
+      notices amending them. Export-control state is decomposed (DR-0042), so
+      listing on any of these is recorded as its own restriction rather than
+      collapsed into one "restricted" flag.
+    exclusions: Licensing statistics and general policy commentary.
+    capture_format: http
+    default_retention_tier: permanent
+    default_access_tier: public
+    expects_graphic_content: false
+    rights_permission: may-redistribute
+    rights_basis: US federal government work. NOT LEGALLY REVIEWED.
+    grade_source_reliability: A
+    grade_item_credibility: "1"
+
+  # ---------------------------------------------------------------------
+  # United Kingdom and Switzerland
+  # ---------------------------------------------------------------------
+
+  - key: uk-ofsi-consolidated
+    source_type: sanctions-authority
+    name: UK OFSI Consolidated List of Financial Sanctions Targets
+    locator: https://www.gov.uk/government/publications/financial-sanctions-consolidated-list-of-targets
+    publisher: HM Treasury, Office of Financial Sanctions Implementation
+    jurisdiction: GB
+    primary_languages: [en]
+    coverage_start: 2014-03-01
+    collection_method: http
+    collection_cadence: daily
+    scope_rules: Consolidated list, whole-file captures forming a capture series.
+    exclusions: General licences and enforcement notices (registered separately if wanted).
+    capture_format: http
+    default_retention_tier: permanent
+    default_access_tier: public
+    expects_graphic_content: false
+    rights_permission: may-redistribute
+    rights_basis: >
+      Open Government Licence v3.0, subject to attribution.
+      NOT LEGALLY REVIEWED.
+    grade_source_reliability: A
+    grade_item_credibility: "1"
+
+  - key: seco-sanctions
+    source_type: sanctions-authority
+    name: SECO sanctions list (Switzerland)
+    locator: https://www.seco.admin.ch/
+    publisher: State Secretariat for Economic Affairs
+    jurisdiction: CH
+    primary_languages: [de, fr, it, en]
+    coverage_start: 2014-03-01
+    collection_method: http
+    collection_cadence: weekly
+    scope_rules: >
+      Swiss sanctions ordinances and the consolidated list. Included because
+      Switzerland's non-EU status makes divergence between its measures and
+      the EU's evidentially interesting (§68–70: financial flows).
+    exclusions: Commentary and press material.
+    capture_format: http
+    default_retention_tier: permanent
+    default_access_tier: public
+    expects_graphic_content: false
+    rights_permission: may-preserve
+    rights_basis: >
+      Rights position UNVERIFIED. Conservative default until checked: preserve
+      only, no redistribution (§14, DR-0067).
+    grade_source_reliability: A
+    grade_item_credibility: "1"
+
+  # ---------------------------------------------------------------------
+  # Ukraine
+  # ---------------------------------------------------------------------
+
+  - key: ua-nsdc-sanctions
+    source_type: official-ukrainian
+    name: NSDC sanctions decisions and presidential decrees enacting them
+    locator: https://www.rnbo.gov.ua/
+    publisher: National Security and Defence Council of Ukraine
+    jurisdiction: UA
+    primary_languages: [uk]
+    coverage_start: 2014-09-01
+    collection_method: http
+    collection_cadence: weekly
+    scope_rules: >
+      NSDC decisions imposing sanctions and the presidential decrees enacting
+      them. Ukraine designates entities the EU and US do not, and the
+      divergence is itself evidence.
+    exclusions: >
+      Operational military statements and casualty reporting — different
+      evidentiary character and a different personal-data profile; register
+      separately, not here.
+    capture_format: warc
+    default_retention_tier: permanent
+    default_access_tier: public
+    expects_graphic_content: false
+    rights_permission: may-preserve
+    rights_basis: >
+      Rights position UNVERIFIED. Ukrainian state works may be reusable; not
+      assumed. Conservative default until checked.
+    grade_source_reliability: B
+    grade_item_credibility: "2"
+    # Reliability B rather than A: this is a party to the conflict publishing
+    # about its adversary. The grade is triage only and never touches truth
+    # (DR-0027) — it means "read with the care a belligerent source deserves",
+    # not "less likely to be true".
+    # LANGUAGE: Ukrainian only. Registering this commits the project to
+    # Ukrainian reading capacity at Gate 2. DR-0081 seeds no translations.
+
+# ---------------------------------------------------------------------
+# Declared dependence between these sources (DR-0028, DR-0067)
+# ---------------------------------------------------------------------
+#
+# Stating known republishing once, rather than rediscovering it per item.
+# Five lists naming the same person are not five independent confirmations —
+# they are, in part, one designation propagating (§36).
+
+dependence:
+  - from: eu-consolidated-list
+    to: eur-lex-sanctions
+    relation: derives-from
+    note: >
+      The consolidated list is an administrative compilation of the
+      instruments published in EUR-Lex. It is not independent evidence of a
+      designation; the instrument is.
+
+  - from: uk-ofsi-consolidated
+    to: eu-consolidated-list
+    relation: common-evidentiary-origin
+    note: >
+      For pre-Brexit designations the UK list inherits EU designations
+      wholesale. Post-2021 divergence is real and evidentially interesting;
+      the shared origin before that is not.
+
+  - from: seco-sanctions
+    to: eu-consolidated-list
+    relation: common-evidentiary-origin
+    note: >
+      Switzerland frequently mirrors EU measures. Where it does, the two are
+      one line, not two. Where it does not, the divergence is the finding.

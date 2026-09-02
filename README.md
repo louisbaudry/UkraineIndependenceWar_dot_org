@@ -45,6 +45,7 @@ docs/
   methodology/        METH-class controlled documents (DR-0046, record §97)
 
 registry/             Semantic registry: vocabularies, schemes, compiler
+sources/              Candidate source registrations (DR-0067)
 schema/               Canonical store DDL (PostgreSQL)
 storage/              OCFL archival storage and fixity scheduling
 collector/            Gate 1 — acquisition, quarantine, preservation
