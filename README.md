@@ -22,7 +22,7 @@ The time horizon is measured in years and potentially decades.
 |---|---|
 | Phase I — Requirements Discovery | **Complete** — see the [discovery record](docs/discovery/phase-1-requirements-discovery-record.md) |
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
-| Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md); canonical-representation study drafted (WP 3.1), awaiting founder review |
+| Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md); all nine planned studies delivered, SPEC-0001…0004 and ten REQ documents effective, all three pipeline gates built. Collection at scale stays suspended pending external legal review ([POL-0001](docs/policies/POL-0001-personal-data.md), DR-0072) |
 
 No permanent data model, ontology, API contract, or technical stack has been frozen.
 Per the Phase I record, none may be frozen before Phase II standards research.
@@ -33,7 +33,7 @@ Per the Phase I record, none may be frozen before Phase II standards research.
 docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
-  decision-records/   Unified Decision Record system (record §98); DR-0001…0052
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0086
                       approved and in force
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
@@ -43,6 +43,8 @@ docs/
   policies/           POL-class controlled documents (DR-0046)
   requirements/       REQ-class controlled documents (DR-0046/0051)
   methodology/        METH-class controlled documents (DR-0046, record §97)
+  sources/            Informal candidate-source notes — neither the DR-0067
+                      source registry nor an authorization to collect
 
 registry/             Semantic registry: vocabularies, schemes, compiler
 schema/               Canonical store DDL (PostgreSQL)
