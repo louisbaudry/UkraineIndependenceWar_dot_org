@@ -363,14 +363,20 @@ The original note's caveats stand. The live findings sharpen them.
 
 ## 6. What still needs a founder decision
 
-Unchanged in substance from the original note; item 1 is now discharged, and items 5–6
-are new and were surfaced by the verification itself.
+Items 1 and 3 are now discharged; items 5–6 are new and were surfaced by the
+verification itself.
 
 1. ~~Fetch and review the live page.~~ **Done, 2026-09-02** — this note.
 2. Confirm the NACP → GUR custody lineage (§2) against primary sources.
-3. Decide where source registry *instances* live (DR-0067 approved a schema; no
-   instance store exists). See [docs/sources/README.md](README.md).
-4. Only then does DR-0071(a) permit the pipeline to collect from this source at all.
+3. ~~Decide where source registry *instances* live.~~ **Answered independently**, by
+   the source-registration kit merged to `main` on 2026-09-02: candidate
+   registrations are YAML under [`sources/candidates/`](../../sources/candidates/),
+   registered into the `source` table by `sources/register.py --commit`. A GUR
+   registration would be an entry there. It is gated on items 5 and 6 below — not,
+   any longer, on a missing store.
+4. Accept (or refuse) a GUR registration. DR-0071(a) has the pipeline refuse collection
+   from any unregistered source, so nothing can be collected here until the founder
+   accepts an entry — and accepting it *is* the authorisation, not a configuration step.
 5. **New — rule on the `robots.txt` / User-Agent question.** The operator has expressly
    disallowed `ClaudeBot` and signalled `ai-train=no`. This session obtained pages by
    presenting a browser User-Agent. Whether that is acceptable for verification, for
