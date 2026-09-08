@@ -29,6 +29,7 @@ sophisticated."
 | 7 | ✅ Likelihood-band scale — [WP 3.2](working-papers/wp-3.2-likelihood-band-scale.md); DR-0065 enacted 2026-08-16, ICD 203 canonical with PHIA mappings (Q-16 resolved, DR-0026 complete) | Q-16 |
 | 8 | ✅ Requirements enactment — [ten REQ documents effective 2026-08-16](../requirements/README.md); DR-0082 enacted (73 requirements with completed verification criteria) | — |
 | 9 | ✅ Personal data policy — [POL-0001 v1.0 effective 2026-08-16](../policies/POL-0001-personal-data.md); DR-0072 enacted (record §13, LEGAL-009, Q-35). **Collection-scope releases suspended pending external legal review** | Q-35 |
+| 10 | 🟡 Foundational corpus acquisition strategy — [WP 3.4](working-papers/wp-3.4-foundational-corpus-acquisition.md) deposited 2026-09-08; CDR-P3-31…35 candidate. Founder ruling 2026-09-08: no collection scale-up before the POL-0001 §10 review is recorded; preparatory Track A proceeds under DR-0071 | LEGAL-009 / Q-35 before Track B |
 
 ## Working conventions
 

@@ -40,3 +40,15 @@ supersession never in-place (§77).
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction; not an upload |
 | Inputs | DR-0001/0005/0007/0009/0055/0058/0061/0068/0069; PRES requirements; OCFL specification status verified by web retrieval |
 | Status | Reviewed — its five candidate DRs approved by the founder 2026-08-16 and enacted as DR-0073…0077 |
+
+## wp-3.4-foundational-corpus-acquisition.md
+
+| Field | Value |
+|---|---|
+| Title | Phase III / Study 4 — Foundational Corpus Acquisition Strategy (Working Paper 3.4) |
+| Version | 3.4 |
+| SHA-256 at deposit | `464b647bd11abf31e38b95de980ab9350c8496ffe3f8af9cf9017af792f1e8ca` |
+| Deposited | 2026-09-08 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, following the founder's 2026-09-08 ruling (option C: no collection scale-up before the POL-0001 §10 legal review is recorded); not an upload |
+| Inputs | Record §8–§9, §13–§14, §25–§28, §57, §78–§80; DR-0006, DR-0027, DR-0028, DR-0066…0072, DR-0074; SPEC-0003; POL-0001; REQ-AI/LEGAL/OPS; collector/, sources/ READMEs. **No external service, index, or tool was reached from the drafting environment**; model list prices from a reference cached 2026-06-24 |
+| Status | Candidate — five candidate DRs (CDR-P3-31…35) awaiting founder review |
