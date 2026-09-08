@@ -31,15 +31,40 @@ run ([DR-0087](../docs/decision-records/DR-0087-first-source-registrations.md), 
 What the rehearsal did **not** exercise: behaviour under a slow or
 rate-limiting origin, conditional requests (none are made — an unchanged
 file is fetched and stored again), and the security check (the stand-in
-scanner ran, and recorded that it ran). It also showed two gaps in the
+scanner ran, and recorded that it ran). It also showed three gaps in the
 pipeline itself: successive captures of one locator are not linked through
-`capture_series_member` (DR-0074), and the response headers a publisher
+`capture_series_member` (DR-0074); the response headers a publisher
 sends — `Last-Modified`, `ETag`, filenames, OFAC's publication metadata —
-are received by the fetcher and then discarded by the acquisition record.
+are received by the fetcher and then discarded by the acquisition record;
+and quarantine copies are never removed after Gate 1 admits them, so the
+archive directory holds every capture twice.
 
 This is the reason the fetch layer is the only place that touches the
 network. The seam is not for testing convenience; it is so the untested part
 is one small, replaceable class rather than a property of the whole pipeline.
+
+## Running a collection
+
+```bash
+python3 collector/run.py --source ofac-sdn --dbname uiw \
+        --agent <pipeline_agent uuid> --archive-root ~/uiw-archive [--dry-run]
+```
+
+`run.py` is the operator's entry point to `Collector.run()`. It takes the
+locators from the candidate entry's `run_locators` in `sources/candidates/`
+and refuses to proceed if the candidate is not registered (DR-0071(a)), has
+no verified run locators, is paused (DR-0067), if the agent is not a
+registered person (DR-0087 §3; `--allow-software-agent` exists for the day
+automation is decided), or if the archive root is a non-empty directory that
+is not an OCFL root. `--dry-run` performs every check and nothing else. The
+invocation — candidate key, locators, verification date, User-Agent, code
+commit — is recorded in the run's configuration (DR-0070), and a run with
+failed acquisitions exits 1 after recording them (PRES-007).
+
+18 tests in `collector/tests/test_run.py`. The registration refusal and the
+person-agent refusal were each removed in turn and the suite was seen to
+fail. The full sequence was also rehearsed live against both approved
+sources in a throwaway database on 2026-09-08 (verification record §7).
 
 ## The three gates
 
@@ -58,7 +83,8 @@ outcome of bulk collection (Principle 5).
 
 ## Policy enforcement
 
-- **DR-0071(a)** — collection from unregistered sources is refused outright.
+- **DR-0071(a)** — collection from unregistered sources is refused outright,
+  by `run.py` before any fetch and by `Collector.run()` again underneath it.
   Until POL-0001 §10's legal review is recorded, only registered sources with
   human-configured scope may be collected. An unregistered locator is not
   merely unknown; it is out of policy, and the code says so.

@@ -249,6 +249,7 @@ for suite in \
     storage/tests/test_ocfl.py \
     storage/tests/test_fixity_schedule.py \
     collector/tests/test_pipeline.py \
+    collector/tests/test_run.py \
     editorial/tests/test_gate2.py \
     publication/tests/test_gate3.py \
     export/tests/test_dump.py \

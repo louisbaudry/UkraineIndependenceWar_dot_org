@@ -2,9 +2,10 @@
 
 **Status:** Verification record for two candidate registrations. Nothing here
 is registered, nothing is collected into the project's archive, and nothing
-is enacted. The Decision Record that would act on this is
-[DR-0087](../decision-records/DR-0087-first-source-registrations.md)
-(proposed).
+is enacted by this document. The Decision Record that acts on it is
+[DR-0087](../decision-records/DR-0087-first-source-registrations.md),
+approved by the founder on 2026-09-08; the registrations it authorises are
+executed on the archive server, not here.
 **Verified:** 2026-09-08, ~09:20–09:40 UTC, from this session's container.
 **Candidates:** `eu-consolidated-list` and `ofac-sdn` in
 [`sources/candidates/sanctions-authorities.yaml`](../../sources/candidates/sanctions-authorities.yaml).
@@ -225,10 +226,28 @@ matters.
 | `seco-sanctions` | `https://www.seco.admin.ch/` | 200 after redirect to `/de` |
 | `ua-nsdc-sanctions` | `https://www.rnbo.gov.ua/` | 200 |
 
+## 7. Second rehearsal, through `collector/run.py`
+
+After the founder approved DR-0087 and asked for the run script, the exact
+sequence in the record's *How to execute* section was run in a fresh
+throwaway database and empty archive directory, at commit `e9910b6`:
+
+| Step | Result |
+| --- | --- |
+| `register.py --commit --only eu-consolidated-list ofac-sdn` | 2 sources registered, nothing collected |
+| `run.py --source ofac-sdn … --dry-run` | all checks passed, nothing fetched, nothing written, archive directory not created |
+| `run.py --source ofac-sdn …` | 3 acquired, 0 failed, 160 103 065 bytes, 12 s, exit 0 |
+| `run.py --source eu-consolidated-list …` | 2 acquired, 0 failed, 50 932 812 bytes, 38 s, exit 0 |
+| Digests | identical to §2–§4 for all five files (the publishers had not changed them) |
+| Run records | each carries the candidate key, run locators, verification date, User-Agent and code commit in its configuration |
+| Archive directory | `permanent/` and `medium-term/` initialised as OCFL roots; 5 objects; 0 documentary assertions |
+| Disk | **403 MB** for 211 MB of captures: the quarantine copies remain after admission — finding 8 in DR-0087 |
+| Teardown | database dropped, directory deleted |
+
 ---
 
 **AI provenance (§80).** Drafted by Claude (Claude Code) on 2026-09-08 from
-fetches and a rehearsal performed in this session. Every figure above comes
+fetches and two rehearsals performed in this session. Every figure above comes
 from a response received here and is reproducible from the URLs given;
 counts marked "pattern match" were taken by string search over the files,
 not by parsing them. This is a verification record, not a Decision Record;

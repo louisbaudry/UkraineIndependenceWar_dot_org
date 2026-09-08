@@ -103,7 +103,7 @@ security, legal, editorial.
 | [DR-0084](DR-0084-durable-export-format-adoption.md) | Durable export format adopted; unfiltered dumps blocked | architecture / security | Approved | 2026-08-21 |
 | [DR-0085](DR-0085-evidentiary-method-adoption.md) | Adoption of the evidentiary method (METH-0001) | methodology / epistemology | Approved | 2026-08-26 |
 | [DR-0086](DR-0086-tier-restrictiveness-declared.md) | Access-tier restrictiveness is declared, never derived from an ordering | security / architecture | Approved | 2026-08-26 |
-| [DR-0087](DR-0087-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | **Proposed** | — |
+| [DR-0087](DR-0087-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | Approved | 2026-09-08 |
 
 ## Provenance of decisions
 
@@ -217,13 +217,15 @@ changing an enumeration data depends on is a structural registry change
 (DR-0080). Its open item — whether the two lateral tiers should remain
 distinct at all — is a §12 vocabulary question, not a resolution one.
 
-DR-0087 is **proposed, not approved**. Drafted 2026-09-08 at the founder's
-direction after the founder chose to begin collection with two of the seven
-sanctions-authority candidates. Before drafting, every file a first run would
-collect was fetched, digested and run through the real collector into a
-throwaway database (record in
+DR-0087 was drafted 2026-09-08 at the founder's direction, after the founder
+chose to begin collection with two of the seven sanctions-authority
+candidates, and **approved by the founder the same day for both sources**.
+Before drafting, every file a first run would collect was fetched, digested
+and run through the real collector into a throwaway database (record in
 [docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../sources/verification-eu-consolidated-list-ofac-sdn.md)).
-Approving it registers the two sources and authorises one manual first run
-against five verified locators; it does not automate the daily cadence,
-which waits on two rulings the rehearsal surfaced (captures are not yet
-linked as a series; unchanged bytes are stored again).
+It authorises the two registrations and one manual first run against five
+verified locators, executed by the founder on the archive server with
+`collector/run.py` (built on approval); it does not automate the daily
+cadence, which waits on rulings the rehearsal surfaced (captures are not
+yet linked as a series; unchanged bytes are stored again; quarantine copies
+are never removed).

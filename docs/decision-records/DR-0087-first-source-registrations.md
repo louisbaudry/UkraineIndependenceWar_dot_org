@@ -1,12 +1,15 @@
 # DR-0087 — First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN
 
-**Category:** operations / preservation | **Status:** Proposed | **Decided:** —
+**Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-08 by founder/principal editor
 **Origin:** founder's direction of 2026-09-08 ("draft the registration for the EU list and OFAC"), following the seven-candidate proposal in [`sources/README.md`](../../sources/README.md) | **Supersedes:** — | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted by Claude (Claude Code) on 2026-09-08 at
-> the founder's direction. This is a candidate Decision Record. It enacts
-> nothing until the founder approves it, and approving it is what authorises
-> the registrations and the first run described below — nothing else does.
+> the founder's direction, and **approved by the founder the same day for
+> both sources**, with the instruction to build the run script this record
+> had listed as missing (Consequence 5, now discharged). Approval is what
+> authorises the registrations and the first run described below; the
+> registrations themselves are executed on the archive server by the
+> founder, per *How to execute*, and have not been executed by this record.
 
 ## Context
 
@@ -28,7 +31,7 @@ record is
 [docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../sources/verification-eu-consolidated-list-ofac-sdn.md);
 the short version is that both sources are live, both are served whole as
 structured files, and the pipeline acquired all five files end to end with
-byte-identical results. The rehearsal also found seven things the founder
+byte-identical results. The rehearsals also found eight things the founder
 should know, listed under *Consequences*.
 
 The two candidates as they now stand in
@@ -97,28 +100,46 @@ On approval:
    permanent retention with fixity checking on the DR-0005 cadence, and
    resolution of the rights positions under the POL-0001 §10 review.
 
-### How to execute, once approved
+### How to execute
 
 On the archive server, after `setup/install.sh` has run and the test suites
-pass there:
+pass there (`DB_NAME` and `ARCHIVE_ROOT` are whatever the install used;
+the defaults are `uiw` and `~/uiw-archive`):
 
 ```bash
-# 1. the founder as a pipeline agent (once); keep the id
-psql -d uiw -c "INSERT INTO pipeline_agent (id, kind, name) \
+# 1. the founder as a pipeline agent (once); keep the id it prints
+psql -qtA -d uiw -c "INSERT INTO pipeline_agent (id, kind, name) \
   VALUES (gen_random_uuid(), 'person', '<founder name>') RETURNING id"
 
-# 2. register — this is the authorisation
+# 2. register — this is the authorisation, and it collects nothing
 python3 sources/register.py --check
 python3 sources/register.py --dry-run --only eu-consolidated-list ofac-sdn
 python3 sources/register.py --commit --dbname uiw \
         --only eu-consolidated-list ofac-sdn
 
-# 3. the first run, one source at a time, with the run_locators from the
-#    candidate file, HttpFetcher with an identified User-Agent, the
-#    founder's agent id, and the OCFL roots install.sh created.
-#    Consequence 5: there is no CLI for this yet; it is a short script
-#    around Collector.run(), as the rehearsal was.
+# 3. the first run, one source at a time. --dry-run first: it checks the
+#    registration, the agent, the locators and the archive root, and does
+#    nothing else.
+python3 collector/run.py --source ofac-sdn --dbname uiw \
+        --agent <id from step 1> --archive-root ~/uiw-archive --dry-run
+python3 collector/run.py --source ofac-sdn --dbname uiw \
+        --agent <id from step 1> --archive-root ~/uiw-archive
+python3 collector/run.py --source eu-consolidated-list --dbname uiw \
+        --agent <id from step 1> --archive-root ~/uiw-archive
+
+# 4. see where the project now stands
+python3 release/baseline.py --check --dbname uiw
 ```
+
+`collector/run.py` takes its locators from the candidate file's
+`run_locators` and refuses anything else: an unregistered candidate, a
+candidate with no verified run locators, an agent that is not a registered
+person, a paused source, or an archive root that is not empty and not OCFL.
+It records the invocation — candidate key, locators, verification date,
+User-Agent, code commit — in the run's configuration (DR-0070). This exact
+sequence was rehearsed on 2026-09-08 in a throwaway database and archive
+root (verification record §7): five files, 211 MB, 50 seconds, every check
+and every capture behaving as described.
 
 The website for testing plays no part in this. Collection writes to the
 archive server's database and OCFL roots only; the site is a projection
@@ -154,9 +175,10 @@ automated; each would be its own record.
    its EUR-Lex act, so the relation is recoverable, but the registry will
    not say the list is a compilation until then. Registering EUR-Lex is the
    natural next registration.
-5. **No command-line entry point exists for a run.** `Collector.run()` is a
-   library call. The first run needs a short script, or a `collector/run.py`
-   that takes a source key and reads its `run_locators`.
+5. ~~No command-line entry point exists for a run.~~ **Discharged with this
+   record's approval:** `collector/run.py`, with 18 tests, two of which
+   were seen to fail when the registration check and the person-agent check
+   were removed in turn.
 6. **The EU public token's terms are unverified.** The value is public and
    the files are served without login; no page stating the conditions was
    readable from a non-browser client. Folded into the §10 review.
@@ -166,6 +188,14 @@ automated; each would be its own record.
    Within policy as written (DR-0071(b), POL-0001 §4), and a
    data-minimisation fact the §10 review should see. The candidate file now
    says so on the `ofac-sdn` entry.
+8. **Quarantine copies are never removed.** Found in the CLI rehearsal: the
+   archive directory held 403 MB after 211 MB of captures, because
+   `_quarantine()` writes the bytes to `quarantine/` and nothing deletes
+   them after Gate 1 admits the object into OCFL. DR-0069 wants quarantine
+   outside the archive; it does not want it to be a second archive. A
+   quarantine item admitted at Gate 1 should be removed, and one refused
+   should be kept for the record. Not blocking; the disk cost is the same
+   order as Consequence 2 and should be fixed alongside it.
 
 Also recorded:
 

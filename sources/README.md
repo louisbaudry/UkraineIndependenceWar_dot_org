@@ -16,10 +16,25 @@ Registering a source is **the act that authorises collecting from it**
 (OPS-001). It is not a configuration change, and the gap between "drafted"
 and "registered" exists so that authorising is deliberate.
 
+Collecting from a registered source is a further, separate act:
+
+```bash
+python3 collector/run.py --source ofac-sdn --dbname uiw \
+        --agent <your-pipeline_agent-uuid> --archive-root ~/uiw-archive
+```
+
+which takes the exact `run_locators` listed and verified in the candidate
+file and refuses an unregistered candidate. **DR-0087 (approved 2026-09-08)
+authorises this for `eu-consolidated-list` and `ofac-sdn`**; the other five
+remain proposals.
+
 ## What is proposed
 
 Seven sanctions and export-control authorities — the thematic area the
-founder chose. Institutional publishers, stable formats, near-zero
+founder chose. Two of them, `eu-consolidated-list` and `ofac-sdn`, are
+approved for registration and a first run by
+[DR-0087](../docs/decision-records/DR-0087-first-source-registrations.md);
+the registration itself happens on the archive server. Institutional publishers, stable formats, near-zero
 special-category personal data, so DR-0071's interim constraints barely bite
 and POL-0001's structuring limits are straightforward to honour.
 
