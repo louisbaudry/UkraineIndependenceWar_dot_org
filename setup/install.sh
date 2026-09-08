@@ -8,6 +8,12 @@
 #
 #   bash setup/install.sh
 #
+# To install a branch other than main (fetch the script from that branch too,
+# so the two agree):
+#
+#   curl -fsSL https://raw.githubusercontent.com/louisbaudry/UkraineIndependenceWar_dot_org/<branch>/setup/install.sh \
+#     | BRANCH=<branch> bash
+#
 # Installs PostgreSQL and Python, creates the database and the OCFL storage
 # roots, loads the schema, and runs the test suite. It stops at the first
 # failure rather than continuing in a half-built state.
@@ -22,6 +28,7 @@
 set -euo pipefail
 
 REPO_URL="${REPO_URL:-https://github.com/louisbaudry/UkraineIndependenceWar_dot_org.git}"
+BRANCH="${BRANCH:-main}"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/uiw}"
 DB_NAME="${DB_NAME:-uiw}"
 ARCHIVE_ROOT="${ARCHIVE_ROOT:-$HOME/uiw-archive}"
@@ -155,16 +162,19 @@ ok "Python 3.$PY_MINOR"
 
 # ---------------------------------------------------------------------------
 
-step "Cloning the repository into $INSTALL_DIR"
+step "Cloning the repository into $INSTALL_DIR (branch $BRANCH)"
 
 if [ -d "$INSTALL_DIR/.git" ]; then
-  git -C "$INSTALL_DIR" pull --quiet
-  ok "already present, updated"
+  git -C "$INSTALL_DIR" fetch --quiet origin "$BRANCH"
+  git -C "$INSTALL_DIR" checkout --quiet "$BRANCH"
+  git -C "$INSTALL_DIR" pull --quiet origin "$BRANCH"
+  ok "already present, now at $BRANCH $(git -C "$INSTALL_DIR" rev-parse --short HEAD)"
 else
-  git clone --quiet "$REPO_URL" "$INSTALL_DIR"
-  ok "cloned"
+  git clone --quiet --branch "$BRANCH" "$REPO_URL" "$INSTALL_DIR"
+  ok "cloned at $BRANCH $(git -C "$INSTALL_DIR" rev-parse --short HEAD)"
 fi
 cd "$INSTALL_DIR"
+[ "$BRANCH" = main ] || warn "installed from branch '$BRANCH', not main"
 
 # ---------------------------------------------------------------------------
 
@@ -282,7 +292,7 @@ cat <<EOF
 
   The archive is installed and every test passes on this machine.
 
-    repository   $INSTALL_DIR
+    repository   $INSTALL_DIR  ($BRANCH @ $(git rev-parse --short HEAD))
     database     $DB_NAME
     storage      $ARCHIVE_ROOT
 
