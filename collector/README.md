@@ -16,17 +16,26 @@ events and coverage accounting — is exercised end to end by 29 tests against
 a real PostgreSQL database and real OCFL storage. Only the fetch is
 substituted.
 
-**`HttpFetcher` has never completed a live fetch.** The build environment's
-network policy denies general internet hosts — EUR-Lex, for instance, is
-refused at the proxy with a policy 403 — so no real source has been
-collected. The class is written to the same standard as the rest and is
-structurally simple, but *nothing has confirmed it works against a real
-server*: not its redirect handling, not its encoding behaviour, not its
-timeout semantics under a slow origin, not conditional requests, not how a
-real site's rate limiting responds to it.
+**`HttpFetcher` has completed live fetches once, in a rehearsal, and no
+real source has been collected.** On 2026-09-08 it fetched the EU
+Consolidated Financial Sanctions List (XML and CSV) and three OFAC exports
+(up to 127 MB, through a 302 to a presigned S3 URL) into a throwaway
+database and storage root, byte-identical to independent `curl` downloads,
+with the whole pipeline below it behaving as it does on fixtures. The
+record is
+[docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md).
+Everything from that rehearsal was destroyed; the project's archive is still
+empty, because no source is registered and the founder has not authorised a
+run ([DR-0087](../docs/decision-records/DR-0087-first-source-registrations.md), proposed).
 
-Before anyone claims the project collects: run it against a live source in
-an environment with network access, and expect to find something.
+What the rehearsal did **not** exercise: behaviour under a slow or
+rate-limiting origin, conditional requests (none are made — an unchanged
+file is fetched and stored again), and the security check (the stand-in
+scanner ran, and recorded that it ran). It also showed two gaps in the
+pipeline itself: successive captures of one locator are not linked through
+`capture_series_member` (DR-0074), and the response headers a publisher
+sends — `Last-Modified`, `ETag`, filenames, OFAC's publication metadata —
+are received by the fetcher and then discarded by the acquisition record.
 
 This is the reason the fetch layer is the only place that touches the
 network. The seam is not for testing convenience; it is so the untested part

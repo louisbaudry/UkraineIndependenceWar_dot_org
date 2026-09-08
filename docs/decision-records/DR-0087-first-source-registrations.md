@@ -1,0 +1,183 @@
+# DR-0087 — First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN
+
+**Category:** operations / preservation | **Status:** Proposed | **Decided:** —
+**Origin:** founder's direction of 2026-09-08 ("draft the registration for the EU list and OFAC"), following the seven-candidate proposal in [`sources/README.md`](../../sources/README.md) | **Supersedes:** — | **Superseded by:** —
+
+> **AI provenance (§80).** Drafted by Claude (Claude Code) on 2026-09-08 at
+> the founder's direction. This is a candidate Decision Record. It enacts
+> nothing until the founder approves it, and approving it is what authorises
+> the registrations and the first run described below — nothing else does.
+
+## Context
+
+The archive is empty. Every gate, the storage layout, the export and release
+paths exist and are tested, but no source is registered and nothing has ever
+been collected, so no release baseline can pin a collector, pipeline or
+dataset version (`release/baseline.py --check`). Registering a source is the
+act that authorises collecting from it (OPS-001, DR-0067, DR-0071(a)); the
+gap between "drafted" and "registered" is deliberate, and this record is how
+the gap gets crossed for the first time.
+
+Seven sanctions-authority candidates were drafted on 2026-08-26 with every
+locator unverified, because that environment could not reach the internet.
+On 2026-09-08 the founder chose to begin with two of them. This session could
+reach both publishers, so before drafting anything it fetched every file a
+first run would collect, recorded digests and headers, and ran the real
+collector against them into a throwaway database and storage root. The
+record is
+[docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../sources/verification-eu-consolidated-list-ofac-sdn.md);
+the short version is that both sources are live, both are served whole as
+structured files, and the pipeline acquired all five files end to end with
+byte-identical results. The rehearsal also found seven things the founder
+should know, listed under *Consequences*.
+
+The two candidates as they now stand in
+[`sources/candidates/sanctions-authorities.yaml`](../../sources/candidates/sanctions-authorities.yaml):
+
+| Key | What it is | Registry locator | First-run locators |
+| --- | --- | --- | --- |
+| `eu-consolidated-list` | European Commission (DG FISMA) consolidated list of persons, groups and entities subject to EU financial sanctions; all programmes; ~6 200 entities of which ~2 960 under UKR | the public XML file URL (the application root wants an EU Login session and answers 401) | the full-list XML and CSV |
+| `ofac-sdn` | US Treasury OFAC SDN list and Consolidated Sanctions List; all programmes; 19 329 SDN entries of which 6 348 under RUSSIA-EO14024 | `https://sanctionslist.ofac.treas.gov/` | `SDN.XML`, `SDN_ADVANCED.XML`, `CONS_ADVANCED.XML` from the Sanctions List Service export API |
+
+Both are `sanctions-authority`, `permanent` retention, `public` access,
+`may-redistribute` with a rights basis marked **NOT LEGALLY REVIEWED**,
+triage grade A1, daily cadence, whole-file capture, no parsing on ingest.
+
+## Alternatives considered
+
+1. **Register these two now and authorise a first run against the verified
+   locators** (chosen). Smallest authorisation that produces real data;
+   both publishers are institutional, the files are served whole, and
+   DR-0071's interim constraints are honoured by capturing without
+   structuring.
+2. Register all seven at once. Rejected for now: five locators remain
+   unfetched, two rights positions are unverified, and it commits the
+   project immediately to reading capacity in de, fr, it and uk at Gate 2.
+   Nothing here prevents doing it next.
+3. Register these two plus `eur-lex-sanctions`, so the consolidated list's
+   declared `derives-from` dependence is recorded at the same time.
+   Rejected for now: EUR-Lex's landing locator answered with an empty 202
+   (a challenge page), no instrument locator has been fetched, and WARC
+   capture of legal acts is a different collection problem from downloading
+   two files. The dependence is recorded when EUR-Lex is registered
+   (Consequence 4).
+4. Wait for the POL-0001 §10 legal review before collecting anything.
+   Rejected: POL-0001 and DR-0071 already permit collection from registered
+   sources with human-configured scope, provided personal data is not
+   promoted into structure; that is exactly what whole-file capture does.
+   The review gates scale-up (§9 releases), not this.
+5. Verify only, and register nothing. Rejected: the verification is done and
+   the value now lies in the first real capture series.
+
+## Decision
+
+On approval:
+
+1. **`eu-consolidated-list` and `ofac-sdn` are registered** into the source
+   registry with the field values in the candidate file as of this record's
+   approval, by `sources/register.py --commit --only eu-consolidated-list
+   ofac-sdn`. Each is accepted individually (§78); the founder may approve
+   one and not the other, and this record should be annotated accordingly.
+2. **A first collection run is authorised** against exactly the five
+   `run_locators` listed in the candidate file — two for the EU list, three
+   for OFAC — and no others. Adding a locator is a registry edit, not a run
+   parameter.
+3. **The first run is a manual act, performed once, on the archive server**,
+   with a person as the collector-run's agent of record and the run's
+   configuration recording the User-Agent string presented. Daily cadence is
+   the registered policy but **is not automated by this record**;
+   automating it waits on Consequences 1 and 2.
+4. **Nothing from the run crosses Gate 2.** The captures are preserved
+   holdings and nothing else. A completed run with zero documentary
+   assertions is the expected result (DR-0066, Principle 5).
+5. **The rehearsal of 2026-09-08 does not count as collection.** No system
+   the project keeps holds anything from it; the first run under this record
+   is the first collection, and the coverage record should say so.
+6. The registrations carry the obligations `register.py --dry-run` prints:
+   permanent retention with fixity checking on the DR-0005 cadence, and
+   resolution of the rights positions under the POL-0001 §10 review.
+
+### How to execute, once approved
+
+On the archive server, after `setup/install.sh` has run and the test suites
+pass there:
+
+```bash
+# 1. the founder as a pipeline agent (once); keep the id
+psql -d uiw -c "INSERT INTO pipeline_agent (id, kind, name) \
+  VALUES (gen_random_uuid(), 'person', '<founder name>') RETURNING id"
+
+# 2. register — this is the authorisation
+python3 sources/register.py --check
+python3 sources/register.py --dry-run --only eu-consolidated-list ofac-sdn
+python3 sources/register.py --commit --dbname uiw \
+        --only eu-consolidated-list ofac-sdn
+
+# 3. the first run, one source at a time, with the run_locators from the
+#    candidate file, HttpFetcher with an identified User-Agent, the
+#    founder's agent id, and the OCFL roots install.sh created.
+#    Consequence 5: there is no CLI for this yet; it is a short script
+#    around Collector.run(), as the rehearsal was.
+```
+
+The website for testing plays no part in this. Collection writes to the
+archive server's database and OCFL roots only; the site is a projection
+(Principle 18) and sees nothing until Gate 2 and Gate 3 decisions exist.
+
+## Consequences
+
+Findings from the verification, in the order they matter. None blocks the
+first run. Items 1 and 2 need a ruling before the daily cadence is
+automated; each would be its own record.
+
+1. **Successive captures are not linked as a series.** DR-0074 relates
+   captures of the same locator through `capture_series_member`; the
+   collector never writes it. The repeat capture in the rehearsal became an
+   unrelated second holding. The series the candidates' `scope_rules`
+   promise does not exist until the collector records it.
+2. **Unchanged bytes are stored again.** No conditional request is made and
+   no digest comparison precedes admission, so an unchanged day at daily
+   cadence stores about 211 MB of duplicates. The EU server sends
+   `Last-Modified`, the OFAC object sends `ETag`. Whether an unchanged fetch
+   is "a recorded attempt and no holding" or "a holding that happens to
+   share bytes" is a DR-0070 coverage question, not only a storage one.
+3. **Response provenance is discarded.** The fetcher receives the response
+   headers and the acquisition record keeps none of them. For OFAC that
+   loses the publication id (969 on 2026-09-03), the delta file name, the
+   final S3 URL and the ETag; for the EU it loses the server's filename
+   (`20260805-FULL-1_1(xsd).xml`) and `Last-Modified`. These are the
+   publisher's statements about what was served and belong on the
+   `acquisition_attempt` row.
+4. **The EUR-Lex dependence goes unrecorded** until `eur-lex-sanctions` is
+   registered, because `--only` drops any declared relation whose other end
+   is not in the set. The consolidated list's own file links every entry to
+   its EUR-Lex act, so the relation is recoverable, but the registry will
+   not say the list is a compilation until then. Registering EUR-Lex is the
+   natural next registration.
+5. **No command-line entry point exists for a run.** `Collector.run()` is a
+   library call. The first run needs a short script, or a `collector/run.py`
+   that takes a source key and reads its `run_locators`.
+6. **The EU public token's terms are unverified.** The value is public and
+   the files are served without login; no page stating the conditions was
+   readable from a non-browser client. Folded into the §10 review.
+7. **Whole-file capture is broad.** UKR is under half of the EU list and the
+   Russia programme about a third of the SDN list; the rest, individuals
+   with dates and places of birth included, is preserved in every capture.
+   Within policy as written (DR-0071(b), POL-0001 §4), and a
+   data-minimisation fact the §10 review should see. The candidate file now
+   says so on the `ofac-sdn` entry.
+
+Also recorded:
+
+- `sources/register.py` now accepts three optional, non-stored fields —
+  `locator_verified`, `run_locators`, `verification_note` — so the dry-run
+  can say which locators were fetched and which are still claims, and
+  refuses run locators that carry no verification date. Five tests cover
+  this; the suite was seen to fail when the refusal was removed.
+- The candidate file's `eu-consolidated-list` locator changed from the
+  application root (401) to the public XML file URL. This is a locator
+  correction on an unregistered candidate, not a registry change.
+- The collector's fetch layer has now completed live fetches (five files,
+  up to 127 MB, one through a redirect chain) in a rehearsal. What remains
+  unexercised is stated in `collector/README.md`: slow or rate-limiting
+  origins, conditional requests, and any real security scanner.
