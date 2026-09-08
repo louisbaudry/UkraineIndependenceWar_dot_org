@@ -43,11 +43,12 @@ docs/
   policies/           POL-class controlled documents (DR-0046)
   requirements/       REQ-class controlled documents (DR-0046/0051)
   methodology/        METH-class controlled documents (DR-0046, record §97)
-  sources/            Informal candidate-source notes — neither the DR-0067
-                      source registry nor an authorization to collect
+  sources/            Informal prose notes on possible sources, written before
+                      any registration is drafted (distinct from sources/ below)
 
 registry/             Semantic registry: vocabularies, schemes, compiler
-sources/              Candidate source registrations (DR-0067)
+sources/              DR-0067 source registry — candidate registrations and the
+                      register.py tool; registering authorises collection
 schema/               Canonical store DDL (PostgreSQL)
 storage/              OCFL archival storage and fixity scheduling
 collector/            Gate 1 — acquisition, quarantine, preservation
