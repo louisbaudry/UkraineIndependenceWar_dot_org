@@ -122,8 +122,31 @@ CREATE TABLE acquisition_attempt (
     -- Set when the loss is established as permanent rather than pending retry.
     permanent_loss  boolean NOT NULL DEFAULT false,
     historically_significant boolean NOT NULL DEFAULT false,
+
+    -- §28 distinguishes the acquisition source from the original publisher.
+    -- The source row is the publisher; these columns say how, and from whom,
+    -- the bytes were actually obtained. Retrospective recovery from an
+    -- external web archive (record §9; WP 3.4, CDR-P3-35) is the case that
+    -- makes the distinction load-bearing: the project never implies it
+    -- captured a page itself when Common Crawl or the Wayback Machine did.
+    acquisition_route text NOT NULL DEFAULT 'live-fetch'
+        CHECK (acquisition_route IN ('live-fetch', 'external-archive', 'manual-deposit')),
+    acquisition_source text,            -- the archive or depositor, when not live
+    original_captured_at timestamptz,   -- when the archive captured it (WARC-Date);
+                                        -- attempted_at is when *we* obtained it
+    external_record_id text,            -- e.g. WARC-Record-ID
+    external_payload_digest text,       -- as declared by the archive, e.g. sha1:BASE32
+
     CONSTRAINT failures_explain_themselves
-        CHECK (outcome = 'success' OR error_detail IS NOT NULL)
+        CHECK (outcome = 'success' OR error_detail IS NOT NULL),
+    CONSTRAINT external_acquisitions_name_their_source CHECK (
+        acquisition_route = 'live-fetch'
+        OR (acquisition_source IS NOT NULL)
+    ),
+    CONSTRAINT archived_captures_carry_their_capture_time CHECK (
+        acquisition_route <> 'external-archive'
+        OR original_captured_at IS NOT NULL
+    )
 );
 
 COMMENT ON TABLE acquisition_attempt IS

@@ -82,12 +82,99 @@ the check being absent, and so an outcome is always recorded. A deployment
 substitutes a real scanner through the `scanner` argument; the gate logic
 does not change.
 
+## Retrospective recovery from WARC (WP 3.4 §4, CDR-P3-35 — **candidate**)
+
+`Collector.ingest_warc(source_id, warc_path, acquisition_source, configuration)`
+recovers a registered source's historical captures from a WARC file obtained
+from an external web archive. It implements a **candidate** proposal; if the
+founder amends CDR-P3-35, this path changes with it.
+
+```python
+collector.ingest_warc(source_id, "CC-MAIN-…-segment.warc.gz",
+                      acquisition_source="Common Crawl CC-MAIN-2015-06",
+                      configuration={"operator": "…"})
+```
+
+What it does, and why:
+
+- **Same gate, same quarantine.** Each HTTP response record becomes an
+  acquisition attempt, a quarantine item, a security check and a Gate 1
+  decision exactly as a live fetch does — `_admit()` is shared. Nothing about
+  recovery is a shortcut past DR-0069 or DR-0066.
+- **Scope is enforced, and out-of-scope is not written down.** A WARC from an
+  archive holds whatever the archive crawled. Only records under the
+  registered source's locator (same host or subdomain, path prefix if any)
+  are the source's; the rest are counted as `scope:outside-registered-source`
+  and **no row records their URL** — DR-0071(a) means an unregistered locator
+  is out of policy, not merely unknown. A source with no locator cannot be
+  ingested for at all.
+- **Acquisition source ≠ original publisher (§28).** `acquisition_attempt`
+  now carries `acquisition_route` (`live-fetch` / `external-archive` /
+  `manual-deposit`), the archive's name, **its** capture time
+  (`original_captured_at`, from WARC-Date) distinct from `attempted_at`
+  (when we obtained the record), the WARC-Record-ID, and the archive's
+  declared payload digest. The schema refuses an external-archive attempt
+  without archive name and capture time. Live fetches record `live-fetch`
+  and nothing else.
+- **The archive's digest is checked (DR-0075).** A declared
+  WARC-Payload-Digest that does not match the payload held makes the
+  acquisition a recorded `failure`, never a holding. A match is recorded as
+  a `fixity-check` event on the quarantine item. Both as-transmitted and
+  de-chunked bodies are accepted, since tools differ.
+- **The complete record is what is preserved (DR-0006).** WARC headers, HTTP
+  status line and headers, body — as `original.warc` in the OCFL object,
+  format `application/warc`. The body alone is a derivative for
+  normalization to produce later (SPEC-0003 §6). WARC files are ordinary
+  content inside OCFL objects (WP 3.3 §8 Q5).
+- **Capture series (DR-0074).** Every admitted capture — live or recovered —
+  joins the series for its (source, locator), ordered by the capture time.
+  Two archived captures of one page years apart are two holdings in one
+  series; a live capture today joins the same series.
+- **Archived failures are failures (PRES-007).** An archived 404 is a
+  `not-found` attempt whose detail says when the archive saw it. A file that
+  is truncated or malformed part-way stops the run there, keeps what was
+  admitted, and records the fault in the run's `failure_details`.
+- **Revisit records** (the archive saw the page unchanged) are counted as
+  `warc:revisit` and not admitted. Whether they should become evidence of
+  "unchanged at date" is WP 3.4 §9's open question, deliberately unresolved
+  in code.
+
+`collector/warc.py` is a standard-library reader for WARC 1.0/1.1, plain and
+per-record gzip. It exists so the project's runtime dependencies stay what
+`setup/install.sh` installs, and so the format a future archivist must read is
+one a page of code reads.
+
+**What is verified, and what is not.** The suite writes its own WARC files,
+so every byte is known. Where `warcio` is importable in the test environment
+(it is not a project dependency), the reader is cross-checked in both
+directions: our reader reads a warcio-written record to the same URI,
+payload and verified digest, and warcio reads our fixture to the same URIs
+and payloads. **No file produced by Common Crawl or the Wayback Machine has
+been parsed** — the build environment cannot reach them — and **obtaining
+WARC files from an archive is not implemented**; `ingest_warc` reads a local
+path. Expect the first real file to teach the reader something.
+
 ## Tests
 
-29 tests, each naming the requirement or Decision Record it verifies.
-Verified to fail honestly:
+Two suites, each test naming the requirement or Decision Record it verifies.
+
+**`test_pipeline.py` — 31 tests** on the live path. Verified to fail honestly:
 
 - bypassing the security check turns `SEC-002` red, along with the coverage
   counts that no longer add up;
 - making collection create an assertion automatically turns
   `DR-0066 — collection creates no canonical knowledge by itself` red.
+
+**`test_warc_ingest.py` — 50 tests** on retrospective recovery, including the
+warcio cross-check (reported as a skip when warcio is absent). Verified to
+fail honestly, by sabotaging the pipeline one rule at a time and watching:
+
+- removing the scope check admits the out-of-scope record and turns seven
+  checks red, `DR-0071 — an out-of-scope URL appears nowhere in the store`
+  among them;
+- recording our own time instead of the archive's capture time turns the §28
+  and DR-0074 ordering checks red;
+- skipping digest verification turns the DR-0075 checks red — the corrupt
+  record reaches the archive;
+- preserving only the payload instead of the complete record turns the
+  CDR-P3-35 checks red.

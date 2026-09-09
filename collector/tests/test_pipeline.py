@@ -246,6 +246,22 @@ def run() -> int:
                   "WHERE event_type = 'ingestion' AND outcome = 'success'"
               ).fetchone()[0] == 1)
 
+        # -- §28: a live fetch says so ---------------------------------------
+
+        check("PRES-007", "a live fetch is recorded as such, with no acquisition source",
+              conn.execute(
+                  "SELECT count(*) FROM acquisition_attempt WHERE collector_run_id = %s "
+                  "AND acquisition_route = 'live-fetch' AND acquisition_source IS NULL",
+                  (run_id,)).fetchone()[0] == 5)
+
+        # -- DR-0074: the capture joins its locator's series -----------------
+
+        member = conn.execute(
+            "SELECT locator, captured_at FROM capture_series_member "
+            "WHERE holding_id = %s", (holding[0],)).fetchone()
+        check("DR-0074", "an admitted live capture joins its locator's capture series",
+              member is not None and member[0] == "https://example.invalid/reg-269")
+
         # -- Principle 11 / DR-0066: nothing crosses Gate 2 automatically ----
 
         check("DR-0066", "collection creates no canonical knowledge by itself",
