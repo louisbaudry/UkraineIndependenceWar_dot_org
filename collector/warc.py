@@ -29,10 +29,11 @@ import base64
 import binascii
 import gzip
 import hashlib
+import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import BinaryIO, Iterator
+from typing import BinaryIO, Iterable, Iterator
 from urllib.parse import urlsplit
 
 
@@ -230,6 +231,66 @@ def _parse_date(value: str | None) -> datetime | None:
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone.utc)
+
+
+# -- writing -----------------------------------------------------------------------
+
+HOP_BY_HOP_UNDONE = ("transfer-encoding",)
+
+
+def digest_header(data: bytes, algorithm: str = "sha1") -> str:
+    """`algo:BASE32` as WARC tools write it (sha1, upper-case base32, no padding)."""
+    return f"{algorithm}:" + base64.b32encode(hashlib.new(algorithm, data).digest()).decode()
+
+
+def build_response_record(
+    target_uri: str,
+    status: int,
+    reason: str,
+    headers: Iterable[tuple[str, str]],
+    body: bytes,
+    captured_at: datetime,
+    http_version: str = "HTTP/1.1",
+    record_id: str | None = None,
+) -> bytes:
+    """A single WARC 1.1 response record wrapping one HTTP response.
+
+    Used by the live path so a source whose capture format is `warc`
+    (DR-0006) actually receives one: status line, headers and body preserved
+    together, with WARC-Date as the capture time and payload and block
+    digests declared. It is written by the same rules the reader reads, so
+    the two paths — live capture and recovery from an external archive —
+    produce byte-comparable holdings.
+
+    Honest limits: this wraps what an HTTP client library delivered, not the
+    wire. Chunked transfer-encoding has already been undone by the client, so
+    the Transfer-Encoding header is dropped to keep the recorded message
+    self-consistent; the request, and any redirect responses on the way, are
+    not recorded. A WARC-native capture tool for the high-value tier remains
+    DR-0006's plan; this is the lighter form, recorded as such (§26).
+    """
+    if captured_at.tzinfo is None:
+        raise ValueError("captured_at must be timezone-aware")
+    kept = [(k, v) for k, v in headers if k.lower() not in HOP_BY_HOP_UNDONE]
+    http_head = f"{http_version} {status} {reason}\r\n" + "".join(
+        f"{k}: {v}\r\n" for k, v in kept
+    )
+    block = http_head.encode("iso-8859-1") + b"\r\n" + body
+    rid = record_id or f"<urn:uuid:{uuid.uuid4()}>"
+    date = captured_at.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    warc_head = (
+        "WARC/1.1\r\n"
+        "WARC-Type: response\r\n"
+        f"WARC-Record-ID: {rid}\r\n"
+        f"WARC-Date: {date}\r\n"
+        f"WARC-Target-URI: {target_uri}\r\n"
+        "Content-Type: application/http; msgtype=response\r\n"
+        f"WARC-Payload-Digest: {digest_header(body)}\r\n"
+        f"WARC-Block-Digest: {digest_header(block)}\r\n"
+        f"Content-Length: {len(block)}\r\n"
+        "\r\n"
+    )
+    return warc_head.encode("utf-8") + block + b"\r\n\r\n"
 
 
 # -- the archive's own digest --------------------------------------------------

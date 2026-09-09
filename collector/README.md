@@ -82,6 +82,34 @@ the check being absent, and so an outcome is always recorded. A deployment
 substitutes a real scanner through the `scanner` argument; the gate logic
 does not change.
 
+## The registry's capture format is honoured (DR-0006, DR-0067)
+
+A source registered with `capture_format: warc` — as the EUR-Lex and NSDC
+candidates in `sources/candidates/` are — now receives WARC. `_collect_one`
+wraps a successful live response in a single WARC 1.1 response record
+(`warc.build_response_record`): status line, headers and body together,
+WARC-Date as the capture time, payload and block digests declared. The
+record is what enters quarantine and, at Gate 1, the OCFL object as
+`original.warc` with format `application/warc`. A source registered `http`
+still stores the body alone as `original.bin` — the lighter form, recorded
+as such (§26).
+
+The wrapping happens above the network seam, so every fetcher's response is
+wrapped by one rule, and the live and recovered paths produce byte-comparable
+holdings: a page captured live today and the same page recovered from an
+archive's 2015 crawl are two records in one capture series, read by one
+reader.
+
+Honest limits of wrapping what an HTTP client library delivered, rather than
+the wire: chunked transfer-encoding has already been undone, so the
+`Transfer-Encoding` header is dropped to keep the recorded message
+self-consistent; the request is not recorded; redirect responses on the way
+are not recorded (the final URL is the record's target). A WARC-native
+capture tool for the high-value tier remains DR-0006's plan and the WACZ
+evaluation is still owed; this is the honest interim form. A fetcher that
+cannot report an HTTP status cannot serve a `warc` source: the attempt is
+recorded as failed rather than wrapped with an invented status line.
+
 ## Retrospective recovery from WARC (WP 3.4 §4, CDR-P3-35 — **candidate**)
 
 `Collector.ingest_warc(source_id, warc_path, acquisition_source, configuration)`
@@ -158,16 +186,19 @@ path. Expect the first real file to teach the reader something.
 
 Two suites, each test naming the requirement or Decision Record it verifies.
 
-**`test_pipeline.py` — 31 tests** on the live path. Verified to fail honestly:
+**`test_pipeline.py` — 40 tests** on the live path. Verified to fail honestly:
 
 - bypassing the security check turns `SEC-002` red, along with the coverage
   counts that no longer add up;
 - making collection create an assertion automatically turns
-  `DR-0066 — collection creates no canonical knowledge by itself` red.
+  `DR-0066 — collection creates no canonical knowledge by itself` red;
+- ignoring the registry's capture format turns seven `DR-0006` checks red —
+  the `warc` source gets a bare body.
 
-**`test_warc_ingest.py` — 50 tests** on retrospective recovery, including the
-warcio cross-check (reported as a skip when warcio is absent). Verified to
-fail honestly, by sabotaging the pipeline one rule at a time and watching:
+**`test_warc_ingest.py` — 57 tests** on the WARC reader and writer and on
+retrospective recovery, including the warcio cross-check in both directions
+(reported as a skip when warcio is absent). Verified to fail honestly, by
+sabotaging the pipeline one rule at a time and watching:
 
 - removing the scope check admits the out-of-scope record and turns seven
   checks red, `DR-0071 — an out-of-scope URL appears nowhere in the store`
@@ -177,4 +208,6 @@ fail honestly, by sabotaging the pipeline one rule at a time and watching:
 - skipping digest verification turns the DR-0075 checks red — the corrupt
   record reaches the archive;
 - preserving only the payload instead of the complete record turns the
-  CDR-P3-35 checks red.
+  CDR-P3-35 checks red;
+- keeping the undone `Transfer-Encoding` header in a wrapped record turns
+  the writer's envelope check red.

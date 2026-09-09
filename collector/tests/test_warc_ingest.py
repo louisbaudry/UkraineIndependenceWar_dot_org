@@ -34,7 +34,14 @@ import psycopg  # noqa: E402
 import test_pipeline as shared  # noqa: E402
 from ocfl import StorageRoot  # noqa: E402
 from pipeline import Collector, capture_series_id  # noqa: E402
-from warc import WarcFormatError, in_scope, iter_warc_records, verify_payload_digest  # noqa: E402
+from warc import (  # noqa: E402
+    WarcFormatError,
+    build_response_record,
+    in_scope,
+    iter_warc_records,
+    read_records,
+    verify_payload_digest,
+)
 
 shared.DB = "uiw_warc_test"
 check, rejects, PASSES, FAILURES = shared.check, shared.rejects, shared.PASSES, shared.FAILURES
@@ -175,6 +182,35 @@ def run() -> int:
           verify_payload_digest(parsed_plain[7])[0] == "mismatch")
     check("DR-0075", "an undeclared digest is reported as such, not as verified",
           verify_payload_digest(parsed_plain[-1])[0] == "undeclared")
+
+    # -- the project's own writer, read back by the project's own reader ------------
+
+    built = build_response_record(
+        "https://example.invalid/oj/built", 200, "OK",
+        [("Content-Type", "text/html; charset=utf-8"), ("Transfer-Encoding", "chunked"),
+         ("Content-Encoding", "identity")],
+        b"<html>built</html>", datetime(2026, 9, 9, 12, 0, 5, tzinfo=timezone.utc),
+    )
+    back = list(read_records(io.BufferedReader(io.BytesIO(built))))
+    check("DR-0006", "a record the project writes is one record the project reads",
+          len(back) == 1 and back[0].raw == built)
+    check("DR-0006", "the written record carries URI, type, and capture time",
+          back[0].record_type == "response"
+          and back[0].target_uri == "https://example.invalid/oj/built"
+          and back[0].date == datetime(2026, 9, 9, 12, 0, 5, tzinfo=timezone.utc))
+    check("DR-0006", "the written record's HTTP envelope survives, minus the undone hop-by-hop header",
+          back[0].http()[0] == 200
+          and back[0].http()[1].get("content-type") == "text/html; charset=utf-8"
+          and back[0].http()[1].get("content-encoding") == "identity"
+          and "transfer-encoding" not in back[0].http()[1])
+    check("DR-0075", "the written record declares a payload digest that verifies",
+          verify_payload_digest(back[0])[0] == "verified")
+    check("DR-0075", "the written record declares a block digest over the whole block",
+          back[0].headers.get("warc-block-digest") == sha1_b32(back[0].block))
+    def naive_time():
+        build_response_record("https://x.invalid/", 200, "OK", [], b"", datetime(2026, 1, 1))
+    rejects("DR-0006", "a capture time without a timezone is refused",
+            naive_time)
 
     truncated = fixtures / "truncated.warc"
     good = records[2] + records[3]
@@ -385,6 +421,13 @@ def run() -> int:
             check("DR-0006", "warcio agrees on our fixture's URIs and payloads",
                   seen[2] == ("response", "https://example.invalid/oj/reg-269", body_v1)
                   and seen[9][2] == body_chunked)
+            with io.BytesIO(built) as fh:
+                mine = [(r.rec_type, r.rec_headers.get_header("WARC-Target-URI"),
+                         r.http_headers.get_statuscode(), r.content_stream().read())
+                        for r in ArchiveIterator(fh)]
+            check("DR-0006", "warcio reads a record built by build_response_record",
+                  mine == [("response", "https://example.invalid/oj/built", "200",
+                            b"<html>built</html>")])
 
     finally:
         conn.close()

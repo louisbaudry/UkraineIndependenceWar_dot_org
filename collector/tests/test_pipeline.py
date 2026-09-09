@@ -29,6 +29,7 @@ import psycopg  # noqa: E402
 from fetch import FetchResult, FixtureFetcher  # noqa: E402
 from ocfl import StorageRoot  # noqa: E402
 from pipeline import Collector, PolicyViolation, find_orphaned_objects  # noqa: E402
+from warc import iter_warc_records, verify_payload_digest  # noqa: E402
 
 PASSES: list[str] = []
 FAILURES: list[str] = []
@@ -76,17 +77,18 @@ def seed_source(conn, **overrides) -> str:
         "rights_permission": "may-preserve",
         "lifecycle_state": "active",
         "expects_graphic_content": False,
+        "capture_format": "http",
     }
     values.update(overrides)
     conn.execute(
         """
         INSERT INTO source (id, source_type, name, locator, collection_method,
             default_retention_tier, default_access_tier, rights_permission,
-            lifecycle_state, expects_graphic_content)
+            lifecycle_state, expects_graphic_content, capture_format)
         VALUES (%(id)s, %(source_type)s, %(name)s, %(locator)s,
                 %(collection_method)s, %(default_retention_tier)s,
                 %(default_access_tier)s, %(rights_permission)s,
-                %(lifecycle_state)s, %(expects_graphic_content)s)
+                %(lifecycle_state)s, %(expects_graphic_content)s, %(capture_format)s)
         """,
         {"id": source_id, **values},
     )
@@ -296,6 +298,52 @@ def run() -> int:
               conn.execute(
                   "SELECT items_discovered FROM collector_run WHERE id = %s",
                   (meta_run,)).fetchone()[0] == 1)
+
+        # -- DR-0006 / DR-0067: a source registered for WARC capture gets it --
+
+        warc_source = seed_source(conn, name="WARC-format source", capture_format="warc")
+        warc_run = collector.run(warc_source, ["https://example.invalid/reg-269"],
+                                 configuration={})
+        warc_obj = conn.execute(
+            "SELECT p.ocfl_object_id, p.format_identifier, a.attempted_at, a.acquisition_route "
+            "FROM preserved_object p "
+            "JOIN holding_representation hr ON hr.object_id = p.id "
+            "JOIN holding h ON h.id = hr.holding_id "
+            "JOIN capture_series_member m ON m.holding_id = h.id "
+            "JOIN acquisition_attempt a ON a.collector_run_id = %s AND a.locator = m.locator "
+            "WHERE p.format_identifier = 'application/warc'", (warc_run,)).fetchone()
+        check("DR-0006", "a warc-format source's live capture is preserved as a WARC record",
+              warc_obj is not None)
+        live_records = []
+        if warc_obj is not None:
+            stored_warc = (roots["permanent"].object_path(warc_obj[0])
+                           / "v1" / "content" / "original.warc")
+            check("DR-0006", "the record lives as original.warc in the OCFL object",
+                  stored_warc.is_file())
+            try:
+                live_records = list(iter_warc_records(stored_warc))
+            except Exception:  # noqa: BLE001
+                live_records = []
+        else:
+            warc_obj = (None, None, None, None)
+        rec = live_records[0] if len(live_records) == 1 else None
+        check("DR-0006", "the record is one WARC response for the locator asked for",
+              rec is not None and rec.record_type == "response"
+              and rec.target_uri == "https://example.invalid/reg-269")
+        check("PRES-001", "the record's payload is exactly what was fetched",
+              rec is not None and rec.payload() == instrument.read_bytes())
+        check("DR-0006", "the record carries the HTTP status line and headers",
+              rec is not None and rec.http()[0] == 200
+              and rec.http()[1].get("content-type") == "application/octet-stream")
+        check("DR-0006", "WARC-Date is the acquisition attempt's time",
+              rec is not None and rec.date is not None
+              and abs((rec.date - warc_obj[2]).total_seconds()) < 1)
+        check("DR-0075", "the record's declared payload digest verifies",
+              rec is not None and verify_payload_digest(rec)[0] == "verified")
+        check("PRES-007", "a wrapped live capture is still a live fetch, not an archive recovery",
+              warc_obj[3] == "live-fetch")
+        check("DR-0006", "an http-format source still stores the body as original.bin (§26)",
+              (roots["permanent"].object_path(obj[1]) / "v1" / "content" / "original.bin").is_file())
 
         # -- Two-system integrity: orphan detection --------------------------
 

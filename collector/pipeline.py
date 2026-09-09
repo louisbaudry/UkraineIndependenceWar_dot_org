@@ -32,14 +32,21 @@ from __future__ import annotations
 
 import hashlib
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from pathlib import Path
 
 import psycopg
 
 from fetch import FetchResult, Fetcher
-from warc import WarcFormatError, WarcRecord, in_scope, iter_warc_records, verify_payload_digest
+from warc import (
+    WarcFormatError,
+    WarcRecord,
+    build_response_record,
+    in_scope,
+    iter_warc_records,
+    verify_payload_digest,
+)
 
 import sys
 
@@ -382,7 +389,29 @@ class Collector:
         self, source: Source, locator: str, run_id: str, totals: RunTotals
     ) -> None:
         result = self.fetcher.fetch(locator)
-        self._admit(source, locator, run_id, totals, result, Acquisition())
+        content_name = "original.bin"
+        if result.outcome == "success" and source.capture_format == "warc":
+            # The registry said WARC (DR-0006, DR-0067); honour it. The record
+            # is built here, above the network seam, so every fetcher's
+            # response is wrapped by one rule.
+            if result.http_status is None or result.http_reason is None:
+                raise ValueError(
+                    "source is registered for WARC capture but the fetcher "
+                    "reported no HTTP status; the response cannot be wrapped honestly"
+                )
+            record = build_response_record(
+                target_uri=result.final_locator or locator,
+                status=result.http_status,
+                reason=result.http_reason,
+                headers=result.response_headers.items(),
+                body=result.content or b"",
+                captured_at=result.attempted_at,
+                http_version=result.http_version,
+            )
+            result = replace(result, content=record, media_type="application/warc")
+            content_name = "original.warc"
+        self._admit(source, locator, run_id, totals, result, Acquisition(),
+                    content_name=content_name)
 
     def _admit(
         self, source: Source, locator: str, run_id: str, totals: RunTotals,
