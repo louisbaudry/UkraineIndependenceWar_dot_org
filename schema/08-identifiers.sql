@@ -137,17 +137,51 @@ COMMENT ON TABLE identifier_assignment IS
 -- ---------------------------------------------------------------------------
 
 CREATE TABLE disambiguation_record (
-    id              uuid PRIMARY KEY,
-    split_at        timestamptz NOT NULL,
-    decided_by      uuid NOT NULL REFERENCES pipeline_agent(id),
-    grounds         text NOT NULL,
+    id                uuid PRIMARY KEY,
+    split_at          timestamptz NOT NULL,
+    -- A snapshot of the deciding agent's public_title at the moment of the
+    -- split, computed by the same statement that inserts this row from
+    -- pipeline_agent — never a free-text value a caller supplies (DR-0092).
+    -- Null when the agent has no public title: the split stays fully
+    -- recorded (disambiguation_decision, below), and the public response
+    -- says the deciding agent is recorded without naming or describing
+    -- them. Fixed at insert: a title changed later does not rewrite what a
+    -- past decision's byline said (append-only, DR-0055's discipline
+    -- applied to a derived column).
+    decided_by_title  text,
+    grounds           text NOT NULL,
     CONSTRAINT grounds_are_stated CHECK (length(trim(grounds)) > 0)
 );
 
 COMMENT ON TABLE disambiguation_record IS
     'What a split identifier resolves to (DR-0064, DR-0089 §5): the split '
-    'date, the deciding agent, the successors (disambiguation_successor) and '
-    'the grounds — nothing more.';
+    'date, the successors (disambiguation_successor), the grounds, and a '
+    'public byline if the deciding agent chose one (DR-0092) — nothing '
+    'more. Public tier as a whole: no column here may ever be, or become, '
+    'an internal reference. The deciding agent''s identity is recorded '
+    'separately in disambiguation_decision (internal tier), precisely so '
+    'that a raw agent id can never sit in a table a disclosure dump '
+    'carries whole.';
+
+-- Kept apart from disambiguation_record on purpose (DR-0092). A preservation
+-- dump carries pipeline_agent (names included); a disclosure dump carries
+-- disambiguation_record (decided_by_title included) but never this table.
+-- Putting the raw agent id in disambiguation_record itself would let anyone
+-- holding both dumps join them and identify an agent who chose to stay
+-- unnamed — the one thing an opt-in byline is supposed to prevent.
+CREATE TABLE disambiguation_decision (
+    record_id   uuid PRIMARY KEY REFERENCES disambiguation_record(id),
+    decided_by  uuid NOT NULL REFERENCES pipeline_agent(id)
+);
+
+COMMENT ON TABLE disambiguation_decision IS
+    'Internal-tier link from a disambiguation record to the agent who '
+    'decided it (DR-0089 §5). Exists so the decision is traceable for '
+    'internal audit without the link ever reaching a public dump '
+    '(DR-0092) — see disambiguation_record''s comment.';
+
+-- Delete/update guards for this table are attached below, once
+-- forbid_delete() and forbid_update() are defined (§ Invariants).
 
 -- ---------------------------------------------------------------------------
 -- The register (DR-0089)
@@ -253,6 +287,30 @@ CREATE TRIGGER public_identifier_subject_never_deleted
 CREATE TRIGGER disambiguation_record_never_deleted
     BEFORE DELETE ON disambiguation_record
     FOR EACH ROW EXECUTE FUNCTION forbid_delete();
+CREATE TRIGGER disambiguation_decision_never_deleted
+    BEFORE DELETE ON disambiguation_decision
+    FOR EACH ROW EXECUTE FUNCTION forbid_delete();
+
+-- A disambiguation record, decided_by_title included, is fixed at the
+-- moment of the split (DR-0092): it is never edited afterwards, the same
+-- discipline DR-0055 applies to assertions. The same holds for the
+-- internal decision link — a decider does not change after the fact.
+CREATE FUNCTION forbid_update() RETURNS trigger
+LANGUAGE plpgsql AS $$
+BEGIN
+    RAISE EXCEPTION
+        'DR-0092: % rows are fixed at insert and never updated.',
+        TG_TABLE_NAME
+        USING ERRCODE = 'restrict_violation';
+END;
+$$;
+
+CREATE TRIGGER disambiguation_record_never_updated
+    BEFORE UPDATE ON disambiguation_record
+    FOR EACH ROW EXECUTE FUNCTION forbid_update();
+CREATE TRIGGER disambiguation_decision_never_updated
+    BEFORE UPDATE ON disambiguation_decision
+    FOR EACH ROW EXECUTE FUNCTION forbid_update();
 CREATE TRIGGER disambiguation_successor_never_deleted
     BEFORE DELETE ON disambiguation_successor
     FOR EACH ROW EXECUTE FUNCTION forbid_delete();

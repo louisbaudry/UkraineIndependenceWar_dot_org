@@ -1,20 +1,22 @@
 # SPEC-0007 — Public Identifiers and Resolution
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.3 | **Status:** Draft — Candidate (implemented)
+**Class:** SPEC (DR-0046 control) | **Version:** 0.4 | **Status:** Draft — Candidate (implemented)
 **Approval:** — | **Effective:** —
 **Supersedes:** — | **Superseded by:** —
-**Change history:** 0.1 drafted 2026-09-09 from the five rulings on WP 3.4 (DR-0087…0091). 0.2 the same day: the check-character rule (§2.3) confirmed against a published NOID port and the `?info` record format (§6.2) fixed as an ERC record, closing the first two open questions of 0.1. 0.3 the same day: implemented, and revised to describe what was built rather than what was proposed — §3's citable classes and §5's disambiguation records became tables, §6.1 gained a `400` for a failed check character, and §10's checks are now executable. §11 prerequisites 2–5 are met; the NAAN and the N2T record are not, so nothing can be minted outside the suite.
-**Governed by:** DR-0087 (ARK scheme), DR-0088 (minting as assignment events), DR-0089 (register and dispositions), DR-0090 (objects and `.vN` states), DR-0091 (ARK-derived URIs); DR-0012, DR-0055, DR-0064, DR-0077, DR-0080, DR-0086; record §15–16; DATA-009/010, PRES-009, ARCH-001.
-**Implemented by:** `schema/08-identifiers.sql` (the assignment family, the register, the forward-only trigger, `resolve_identifier()`); `identifiers/ark.py`, `identifiers/register.py`, `identifiers/resolver.py`; the minting hook in `publication/gate3.py`; tier rules in `export/tiers.py`. Verified by `identifiers/tests/test_identifiers.py` (64 checks) and `identifiers/tests/rebuild.py`.
+**Change history:** 0.1 drafted 2026-09-09 from the five rulings on WP 3.4 (DR-0087…0091). 0.2 the same day: the check-character rule (§2.3) confirmed against a published NOID port and the `?info` record format (§6.2) fixed as an ERC record, closing the first two open questions of 0.1. 0.3 the same day: implemented, and revised to describe what was built rather than what was proposed — §3's citable classes and §5's disambiguation records became tables, §6.1 gained a `400` for a failed check character, and §10's checks are now executable. §11 prerequisites 2–5 are met; the NAAN and the N2T record are not, so nothing can be minted outside the suite. 0.4 the same day: DR-0092 resolves §12 open question 2 — a split's deciding agent is shown as a public title, computed at insert and kept in its own internal-tier table (`disambiguation_decision`) so a preservation dump can never be joined against a disclosure dump to identify an untitled decider; §5 and §10 revised, 77 checks now pass including two negative controls confirming the new protections are load-bearing.
+**Governed by:** DR-0087 (ARK scheme), DR-0088 (minting as assignment events), DR-0089 (register and dispositions), DR-0090 (objects and `.vN` states), DR-0091 (ARK-derived URIs), DR-0092 (split byline as public title); DR-0012, DR-0055, DR-0064, DR-0077, DR-0080, DR-0086; record §15–16, §85; DATA-009/010, PRES-009, ARCH-001, SEC-001.
+**Implemented by:** `schema/08-identifiers.sql` (the assignment family, the register, the forward-only trigger, `resolve_identifier()`, the split-byline tables); `identifiers/ark.py`, `identifiers/register.py`, `identifiers/resolver.py`; the minting hook in `publication/gate3.py`; tier rules in `export/tiers.py`. Verified by `identifiers/tests/test_identifiers.py` (77 checks) and `identifiers/tests/rebuild.py`.
 
 ### AI provenance (record §80)
 
 Drafted 2026-09-09 by an AI assistant (Anthropic Claude Code agent session)
 at the founder's direction, immediately after the founder ruled on
-CDR-P3-31…35 one at a time, and revised at 0.3 to match the implementation
-written the same day. Candidate until approved. Where this document fixes
-something the ARK draft leaves open (the check-character algorithm, the
-`?info` record format), §2.3 and §6.2 say what it was checked against.
+CDR-P3-31…35 one at a time, revised at 0.3 to match the implementation
+written the same day, and again at 0.4 after the founder ruled directly on
+§12's remaining named-options question (DR-0092). Candidate until
+approved. Where this document fixes something the ARK draft leaves open
+(the check-character algorithm, the `?info` record format), §2.3 and §6.2
+say what it was checked against.
 
 ---
 
@@ -202,14 +204,39 @@ public_identifier_subject
 
 `identifier_dispositions` is a closed registry vocabulary (§8.1):
 `active`, `redirect`, `disambiguation`, `tombstone`, `restricted`. A split's
-successors and grounds live in `disambiguation_record` and
-`disambiguation_successor`, which are their own tables so that what a split
-identifier resolves to can be public while the subject mapping is not.
+successors, grounds and public byline live in `disambiguation_record` and
+`disambiguation_successor`; the link from that record to the *deciding
+agent* lives in a fourth table, `disambiguation_decision`, deliberately
+apart:
+
+```
+disambiguation_record
+    id                  uuid PRIMARY KEY
+    split_at            timestamptz NOT NULL
+    decided_by_title    text                    -- public byline, DR-0092
+    grounds             text NOT NULL
+
+disambiguation_decision
+    record_id           uuid PRIMARY KEY REFERENCES disambiguation_record(id)
+    decided_by          uuid NOT NULL REFERENCES pipeline_agent(id)
+```
+
+The split is deliberate (DR-0092, resolving §12 open question 2 below): a
+disclosure dump carries `disambiguation_record` whole (it is `public` tier),
+and a preservation dump separately carries `pipeline_agent` with names
+attached. If the raw agent id sat in `disambiguation_record` itself, anyone
+holding both dumps could join them and identify an agent who chose no public
+`title` — defeating the point of an opt-in byline. `decided_by_title` is
+computed by the same statement that inserts the record, from
+`pipeline_agent.public_title`, never passed in as free text; the record is
+made immutable after insert (the same discipline DR-0055 applies to
+assertions) so a title changed later does not rewrite what a past decision
+said.
 
 **Invariants, enforced by trigger and checked by test:**
 
 1. **No delete, ever.** The same append-only enforcement as DR-0055's
-   assertion tables.
+   assertion tables. Applies to `disambiguation_decision` too.
 2. **Forward only.** `active` → any other; `restricted` → `active` only by
    a recorded tier decision that lowers restriction; `tombstone` → `active`
    only by a recorded reversal of the redaction under §77 (DR-0089 §2);
@@ -220,19 +247,24 @@ identifier resolves to can be public while the subject mapping is not.
    chains are followed to the first non-`redirect` row at resolution
    (bounded; a cycle is a constraint violation).
 5. **A disambiguation record** contains exactly: the split event's date,
-   the deciding agent, the successor ARKs, and the grounds citation
-   (DR-0089 §5; closes SPEC-0002 §6 Q3).
+   the successor ARKs, the grounds citation, and a public byline if the
+   deciding agent chose one (DR-0089 §5, DR-0092; closes SPEC-0002 §6 Q3).
+   The agent's own identity is traceable only via `disambiguation_decision`.
+6. **Neither disambiguation table is ever updated after insert**, `title`
+   included — the same discipline as (1), extended to `UPDATE` (DR-0092).
 
 **Tier rules.** `public_identifier`, `disambiguation_record`,
 `disambiguation_successor` and `citable_class` are declared `public` in
 `export/tiers.py`: the existence of every minted identifier, and its
 disposition, is public information by construction (that is what
-`restricted` means). `public_identifier_subject` and `identifier_assignment` are declared
-`internal` — both carry the mapping to internal UUIDs, and assignment rows
-also attach external identifiers to world actors, which are internal
-(DR-0062).
-Adding either table without a rule makes every dump refuse (SPEC-0006 §9A,
-fail closed), which is the intended behaviour.
+`restricted` means). `public_identifier_subject`, `identifier_assignment`
+and `disambiguation_decision` are declared `internal` — the first two carry
+the mapping to internal UUIDs, and assignment rows also attach external
+identifiers to world actors, which are internal (DR-0062);
+`disambiguation_decision` carries the mapping this section's cross-dump
+argument turns on.
+Adding any of these tables without a rule makes every dump refuse
+(SPEC-0006 §9A, fail closed), which is the intended behaviour.
 
 **Change sets.** Every disposition change since the previous release ships
 in the release change set (DR-0048 §91 mappings), keyed by ARK.
@@ -374,6 +406,8 @@ never failed proves nothing.
 | The resolver can be rebuilt from a dump's register tables alone, with no project imports, and answers every identifier | Demonstration — `identifiers/tests/rebuild.py`, run in a subprocess with a bare environment (PRES-009). It reimplements §2.4 and §6.1 from this document, so it is also the only place the check-character rule as written and as coded are compared |
 | `?info` returns `200` in all five dispositions | Test |
 | A public dump carries the register but not the subject mapping | Test |
+| A split's byline is a computed title, never the deciding agent's own id — checked directly against the database and, separately, against the public dump | Test |
+| A preservation dump carries `disambiguation_decision`; a disclosure dump never does, and the disclosure dump's own records never carry the link either (DR-0092) | Test — this is the cross-dump join the design exists to prevent, checked by construction rather than assumed absent |
 
 **Negative controls, run and recorded:**
 
@@ -382,6 +416,8 @@ never failed proves nothing.
 | The forward-only disposition trigger | 6 checks fail |
 | Positional weighting in the check character, replaced by a constant | Transposition detection falls to 966/9,706; 4 checks fail, including the rebuild's disagreement |
 | The resolver's internal-UUID suppression | The §4.3 check fails |
+| `disambiguation_decision`'s tier rule, changed from `internal` to `public` | The cross-dump-join check fails |
+| The `UPDATE` guard on `disambiguation_decision` | The corresponding immutability check fails |
 
 The deletion guard is checked by a control inside the suite itself: it is
 dropped on a second connection, the delete is confirmed to succeed, and the
@@ -413,14 +449,14 @@ web server is deployment work.
 1. **Check character against the Perl reference** — §2.3 is confirmed
    against a port and against this document's own reimplementation; one
    fixture confirmed against `Noid.pm` closes this.
-2. **How the deciding agent of a split is rendered.** DR-0089 §5 requires
-   the disambiguation record to carry it, and it does. The resolver does
-   **not** put it in the response body: the stored value is an internal
-   agent id, which §4.3 keeps off public surfaces, and publishing an
-   editorial byline instead is a policy question — `pipeline_agent` is
-   `confidential` because it may include agents acting for confidential
-   sources (§11, SEC-001), while §85 wants editorial acts inspectable. A
-   founder ruling is needed; until then the body says the agent is recorded.
+2. *(resolved in 0.4 by DR-0092: the deciding agent of a split is shown as
+   a public role or title — `decided_by_title` on `disambiguation_record`,
+   computed at insert from `pipeline_agent.public_title` — never the
+   agent's own id, which was moved to a separate internal-tier table,
+   `disambiguation_decision`, specifically so a preservation dump's
+   `pipeline_agent` cannot be joined against a disclosure dump to identify
+   an agent who chose no title. §5 and §10 describe the design and its
+   tests.)*
 3. **NAAN timing** (WP 3.4 §8 Q1): request now or at first publication?
    Recommendation: now — it commits the project to nothing and unblocks
    §8.2.

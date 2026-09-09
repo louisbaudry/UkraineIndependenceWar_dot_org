@@ -228,18 +228,32 @@ class Register:
     ) -> str:
         """Split: this identifier resolves to a disambiguation record.
 
-        A split has no single successor, so it never redirects. The record
-        carries the date, the deciding agent, the successors and the
-        grounds — nothing more (DR-0089 §5).
+        A split has no single successor, so it never redirects. The public
+        record carries the date, the successors, the grounds, and a public
+        byline if the deciding agent has one (DR-0089 §5, DR-0092) — nothing
+        more. The agent's own id is written only to `disambiguation_decision`
+        (internal tier), never to `disambiguation_record` itself: putting a
+        raw agent id in the same table a disclosure dump carries whole would
+        let a preservation dump (which does carry `pipeline_agent`) be
+        joined against it to identify an agent who chose to stay unnamed.
+        The byline is computed from the agent's own row by this statement,
+        not passed in — this method takes no `public_title` argument, so
+        one cannot be supplied here by mistake.
         """
         if len(successors) < 2:
             raise MintError("a split has at least two successors")
         record_id = _uuid()
         with self.conn.transaction():
             self.conn.execute(
-                "INSERT INTO disambiguation_record "
-                "(id, split_at, decided_by, grounds) VALUES (%s, %s, %s, %s)",
+                "INSERT INTO disambiguation_record (id, split_at, "
+                "decided_by_title, grounds) VALUES "
+                "(%s, %s, (SELECT public_title FROM pipeline_agent "
+                "WHERE id = %s), %s)",
                 (record_id, split_at or "now()", decided_by, grounds),
+            )
+            self.conn.execute(
+                "INSERT INTO disambiguation_decision (record_id, decided_by) "
+                "VALUES (%s,%s)", (record_id, decided_by),
             )
             for successor in successors:
                 self.conn.execute(

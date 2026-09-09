@@ -129,8 +129,14 @@ def run() -> int:  # noqa: C901 — one linear scenario, read top to bottom
 
     try:
         editor = str(uuid.uuid4())
+        conn.execute(
+            "INSERT INTO pipeline_agent (id, kind, name, public_title) "
+            "VALUES (%s,'person','Principal editor','principal editor')",
+            (editor,))
+        # An agent with no chosen public title — DR-0092's fallback case.
+        untitled = str(uuid.uuid4())
         conn.execute("INSERT INTO pipeline_agent (id, kind, name) "
-                     "VALUES (%s,'person','Principal editor')", (editor,))
+                     "VALUES (%s,'person','Reviewer')", (untitled,))
 
         # Prerequisite 5: the project's own agent (SPEC-0007 §11).
         refuses("SPEC-0007 §11",
@@ -203,9 +209,20 @@ def run() -> int:  # noqa: C901 — one linear scenario, read top to bottom
                                      subject_id=actor())
         left = register.mint(subject_table="world_actor", subject_id=actor())
         right = register.mint(subject_table="world_actor", subject_id=actor())
-        register.split(
+        split_record = register.split(
             ark=split_source, successors=[left, right], decided_by=editor,
             grounds="Two officials of the same name conflated at import.")
+
+        # A second split, decided by an agent with no public title, to
+        # exercise DR-0092's fallback: recorded, not named.
+        untitled_split = register.mint(subject_table="world_actor",
+                                       subject_id=actor())
+        u_left = register.mint(subject_table="world_actor", subject_id=actor())
+        u_right = register.mint(subject_table="world_actor", subject_id=actor())
+        register.split(
+            ark=untitled_split, successors=[u_left, u_right],
+            decided_by=untitled,
+            grounds="A duplicate registration under a transliteration variant.")
 
         redacted = register.mint(subject_table="world_actor",
                                  subject_id=actor())
@@ -248,6 +265,44 @@ def run() -> int:  # noqa: C901 — one linear scenario, read top to bottom
                 lambda: register.redirect(ark=survivor,
                                           successor_ark=merged_away,
                                           basis=str(uuid.uuid4())))
+
+        # ---- DR-0092: the byline is computed, and the agent id never sits
+        #      in the same table a disclosure dump carries whole -----------
+
+        check("DR-0092",
+              "disambiguation_record has no column that names or identifies "
+              "the deciding agent",
+              conn.execute(
+                  "SELECT count(*) FROM information_schema.columns "
+                  "WHERE table_name = 'disambiguation_record' "
+                  "AND column_name IN ('decided_by', 'decided_by_id')"
+              ).fetchone()[0] == 0)
+        check("DR-0092",
+              "a titled agent's split carries the title, computed at insert",
+              conn.execute(
+                  "SELECT decided_by_title FROM disambiguation_record dr "
+                  "JOIN disambiguation_decision dd ON dd.record_id = dr.id "
+                  "WHERE dd.decided_by = %s", (editor,)).fetchone()[0]
+              == "principal editor")
+        check("DR-0092",
+              "an untitled agent's split carries no title",
+              conn.execute(
+                  "SELECT decided_by_title FROM disambiguation_record dr "
+                  "JOIN disambiguation_decision dd ON dd.record_id = dr.id "
+                  "WHERE dd.decided_by = %s", (untitled,)).fetchone()[0]
+              is None)
+        refuses("DR-0092", "a disambiguation record is never updated after insert",
+                lambda: conn.execute(
+                    "UPDATE disambiguation_record SET grounds = 'rewritten' "
+                    "WHERE id = %s", (split_record,)))
+        refuses("DR-0092", "the internal decision link is never updated either",
+                lambda: conn.execute(
+                    "UPDATE disambiguation_decision SET decided_by = %s "
+                    "WHERE record_id = %s", (untitled, split_record)))
+        refuses("DR-0092", "the internal decision link is never deleted",
+                lambda: conn.execute(
+                    "DELETE FROM disambiguation_decision WHERE record_id = %s",
+                    (split_record,)))
 
         # A restriction lifts; a redaction reversal is a recorded decision.
         register.reinstate(ark=withheld, basis=str(uuid.uuid4()))
@@ -306,6 +361,16 @@ def run() -> int:  # noqa: C901 — one linear scenario, read top to bottom
         check("DR-0064", "and gives the split's date and grounds",
               "conflated at import" in answers[split_source].body
               and "Split on 20" in answers[split_source].body)
+        check("DR-0092",
+              "a split decided by a titled agent shows the public title",
+              "Decided by principal editor." in answers[split_source].body)
+        check("DR-0092", "never the agent's own internal id",
+              str(editor) not in answers[split_source].body)
+        check("DR-0092",
+              "a split decided by an untitled agent falls back to 'recorded'",
+              "The deciding agent is recorded in the disambiguation record."
+              in answers[untitled_split].body
+              and "Decided by" not in answers[untitled_split].body)
         check("DR-0077", "a tombstone says removal happened, not what was there",
               "Removed under governed redaction" in answers[redacted].body)
         check("DR-0086", "a restricted identifier says the object exists",
@@ -474,7 +539,36 @@ def run() -> int:  # noqa: C901 — one linear scenario, read top to bottom
               and rows_in(public_dir, "identifier_assignment") == [])
         check("DR-0064",
               "and it carries what a split identifier resolves to",
-              len(rows_in(public_dir, "disambiguation_record")) == 1)
+              len(rows_in(public_dir, "disambiguation_record")) >= 2)
+        check("DR-0092",
+              "the public dump carries titled and untitled bylines alike",
+              {r.get("decided_by_title")
+               for r in rows_in(public_dir, "disambiguation_record")}
+              >= {"principal editor", None})
+        check("DR-0092",
+              "but never the link from a record to the deciding agent",
+              rows_in(public_dir, "disambiguation_decision") == []
+              and all("decided_by" not in r and "decided_by_id" not in r
+                      for r in rows_in(public_dir, "disambiguation_record")))
+
+        # The vulnerability DR-0092 exists to close: a preservation dump
+        # carries pipeline_agent (names included) and disambiguation_decision
+        # (the agent link). If the same table also carried that link, anyone
+        # holding both this preservation dump and the public one above could
+        # join them and identify an agent who chose to stay unnamed. Confirm
+        # the preservation dump has the link, so the *separation* — not an
+        # accidental absence of the data anywhere — is what protects the
+        # public surface.
+        check("DR-0092",
+              "the preservation dump does carry the link, for internal audit",
+              len(rows_in(dump_dir, "disambiguation_decision")) == 2)
+        preservation_link = {
+            (r["record_id"], r["decided_by"])
+            for r in rows_in(dump_dir, "disambiguation_decision")}
+        public_records = {r["id"] for r in rows_in(public_dir, "disambiguation_record")}
+        check("DR-0092",
+              "and its record_ids are exactly the ones the public dump also lists",
+              {rid for rid, _ in preservation_link} <= public_records)
 
         subprocess.run(["rm", "-rf", str(work)], check=False)
 

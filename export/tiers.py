@@ -440,12 +440,24 @@ TIER_RULES: dict[str, TierRule] = {
         "fixed", tier="public",
         rationale=(
             "What a split identifier resolves to (DR-0064). It must be "
-            "public for the identifier to keep resolving. `decided_by` is a "
-            "bare pipeline-agent id; the agent's own row stays confidential."
+            "public for the identifier to keep resolving. Carries only a "
+            "byline snapshot (DR-0092), never the deciding agent's own id — "
+            "that link lives in disambiguation_decision, deliberately kept "
+            "off this table so it cannot be joined against a preservation "
+            "dump's pipeline_agent to identify an untitled decider."
         ),
     ),
     "disambiguation_successor": TierRule(
         "fixed", tier="public", rationale="Follows its disambiguation record."),
+    "disambiguation_decision": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "The raw link from a disambiguation record to the deciding "
+            "pipeline_agent (DR-0092). Kept internal, and in its own table, "
+            "specifically so a disclosure dump of disambiguation_record "
+            "never carries anything joinable against pipeline_agent."
+        ),
+    ),
     "citable_class": TierRule(
         "fixed", tier="public",
         rationale="A documented contract, not data (SPEC-0007 §3).",

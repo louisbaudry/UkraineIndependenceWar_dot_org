@@ -108,6 +108,7 @@ security, legal, editorial.
 | [DR-0089](DR-0089-identifier-register-dispositions.md) | The identifier register and its five dispositions | architecture / preservation / security | Approved | 2026-09-09 |
 | [DR-0090](DR-0090-identifiers-name-objects-qualifiers-name-states.md) | Identifiers name objects; `.vN` qualifiers name states | architecture / preservation | Approved | 2026-09-09 |
 | [DR-0091](DR-0091-project-uris-derive-from-arks.md) | Project URIs derive from ARKs; the registry namespace is the registry's ARK | architecture | Approved | 2026-09-09 |
+| [DR-0092](DR-0092-split-byline-as-public-title.md) | A split's deciding agent is shown as a public title, snapshotted, never the agent row | architecture / editorial / security | Approved | 2026-09-09 |
 
 ## Provenance of decisions
 
@@ -232,3 +233,10 @@ five-disposition register including `restricted`, object identifiers with
 namespace. Together they resolve Q-12, discharge DR-0022's deferral, close
 SPEC-0002 §6 Q3 and SPEC-0005 §7 Q1, and authorise SPEC-0007 — Public
 Identifiers and Resolution.
+
+DR-0092 resolves SPEC-0007 v0.3 §12 open question 2, put to the founder
+directly rather than through a working paper: whether a split's deciding
+agent is named in the public response. The founder ruled for a public role
+or title, snapshotted onto the disambiguation record by trigger and never
+read from `pipeline_agent` at resolution time, over withholding it
+entirely or disclosing the agent's name.

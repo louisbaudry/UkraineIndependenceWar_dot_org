@@ -3,8 +3,9 @@
 Implements [SPEC-0007](../docs/specifications/SPEC-0007-public-identifiers-and-resolution.md)
 under DR-0087 (ARK as the scheme), DR-0088 (minting as assignment events at
 publication), DR-0089 (the register and its five dispositions), DR-0090
-(identifiers name objects, `.vN` names states) and DR-0091 (project URIs
-derive from ARKs).
+(identifiers name objects, `.vN` names states), DR-0091 (project URIs
+derive from ARKs) and DR-0092 (a split's deciding agent is shown as a
+public title, never the agent's own id).
 
 **Nothing can be minted yet, and that is correct.** The project holds no
 NAAN, so `from_registry()` returns `None` and a `Publisher` built from it
@@ -25,7 +26,7 @@ reserved for exactly this.
 
 The database half is [`schema/08-identifiers.sql`](../schema/08-identifiers.sql):
 the assignment family, the register, the forward-only disposition trigger,
-and `resolve_identifier()`.
+`resolve_identifier()`, and the split-byline tables (below).
 
 ## Running
 
@@ -59,9 +60,21 @@ exists. Only a name that was never issued is unknown — and a name whose
 check character fails is a `400`, so a reader can tell a mistyped citation
 from a withdrawn one.
 
+**A split's byline is a title, never the agent (DR-0092).** A disambiguation
+record can carry `decided_by_title` — a role an agent chose to have shown,
+computed at insert from `pipeline_agent.public_title` — but never the
+agent's own id. That link lives only in `disambiguation_decision`, a
+separate `internal`-tier table. The split matters because
+`disambiguation_record` is `public` tier and ships in every disclosure
+dump, while a *preservation* dump separately carries `pipeline_agent` with
+names attached: putting the raw id in the same table as the public byline
+would let anyone holding both dumps join them and identify an agent who
+chose to stay unnamed. Both disambiguation tables are made immutable after
+insert, so a title changed later never rewrites what a past decision said.
+
 ## Tests
 
-64 checks. The ones that carry weight, and how they were shown to be real:
+77 checks. The ones that carry weight, and how they were shown to be real:
 
 - **The check character catches every single-character substitution and
   every adjacent transposition** over 10,000 generated names. Replacing the
@@ -78,6 +91,14 @@ from a withdrawn one.
   are compared.
 - **No internal UUID reaches a resolver body.** Reintroducing one turns the
   suite red.
+- **A preservation dump and a disclosure dump can never be joined to
+  identify an untitled decider.** The suite checks the disclosure dump
+  directly for the absence of `disambiguation_decision` and of any
+  `decided_by`-shaped field on `disambiguation_record`, then checks the
+  preservation dump *does* carry the link — confirming the protection is a
+  deliberate separation, not an accidental absence of the data anywhere.
+  Misclassifying `disambiguation_decision`'s tier, or removing its `UPDATE`
+  guard, each turn a check red.
 
 Removing the forward-only disposition trigger fails six checks. That was
 verified, not assumed.

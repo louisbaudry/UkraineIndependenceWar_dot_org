@@ -123,19 +123,25 @@ class Resolver:
                 "WHERE record_id = %s ORDER BY successor_ark",
                 (record["disambiguation_id"],)).fetchall()
             row = self.register.conn.execute(
-                "SELECT split_at, grounds FROM disambiguation_record "
-                "WHERE id = %s", (record["disambiguation_id"],)).fetchone()
+                "SELECT split_at, grounds, decided_by_title "
+                "FROM disambiguation_record WHERE id = %s",
+                (record["disambiguation_id"],)).fetchone()
             listed = ", ".join(s[0] for s in successors)
-            # The record holds the deciding agent (DR-0089 §5) but the body
-            # does not name them: the stored value is an internal agent id,
-            # which §4.3 keeps off public surfaces, and whether an editorial
-            # byline is published is a policy question this resolver must
-            # not answer on its own (SPEC-0007 §12).
+            # The record holds the deciding agent's internal id (DR-0089
+            # §5), which never appears here: pipeline_agent is confidential
+            # tier (SEC-001, §11) because it may include agents acting for
+            # confidential sources. What can appear is a public role or
+            # title the agent chose to carry, snapshotted at the moment of
+            # the split by the database itself (DR-0092) — never supplied
+            # by this code, so it cannot publish a byline nobody chose.
+            byline = (f"Decided by {row[2]}." if row[2] else
+                      "The deciding agent is recorded in the "
+                      "disambiguation record.")
             return Response(
                 status,
                 f"Split on {row[0].date().isoformat()}: {row[1]}\n"
                 f"Successors: {listed}\n"
-                "The deciding agent is recorded in the disambiguation record.",
+                f"{byline}",
             )
 
         if disposition == "tombstone":
