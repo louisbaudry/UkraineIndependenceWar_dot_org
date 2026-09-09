@@ -29,7 +29,7 @@ sophisticated."
 | 7 | ✅ Likelihood-band scale — [WP 3.2](working-papers/wp-3.2-likelihood-band-scale.md); DR-0065 enacted 2026-08-16, ICD 203 canonical with PHIA mappings (Q-16 resolved, DR-0026 complete) | Q-16 |
 | 8 | ✅ Requirements enactment — [ten REQ documents effective 2026-08-16](../requirements/README.md); DR-0082 enacted (73 requirements with completed verification criteria) | — |
 | 9 | ✅ Personal data policy — [POL-0001 v1.0 effective 2026-08-16](../policies/POL-0001-personal-data.md); DR-0072 enacted (record §13, LEGAL-009, Q-35). **Collection-scope releases suspended pending external legal review** | Q-35 |
-| 10 | ✅ Identifier design — [WP 3.4](working-papers/wp-3.4-identifier-design.md); DR-0087…0091 enacted 2026-09-09 (Q-12 resolved; ARK scheme, minting at publication, five-disposition register, `.vN` qualifiers, ARK-derived namespace). **SPEC-0007 — Public Identifiers and Resolution** to be drafted; NAAN to be requested | Q-12; SPEC-0005 §7 Q1 |
+| 10 | ✅ Identifier design — [WP 3.4](working-papers/wp-3.4-identifier-design.md); DR-0087…0091 enacted 2026-09-09 (Q-12 resolved; ARK scheme, minting at publication, five-disposition register, `.vN` qualifiers, ARK-derived namespace). [SPEC-0007 v0.1](../specifications/SPEC-0007-public-identifiers-and-resolution.md) drafted 2026-09-09 as a candidate; NAAN to be requested; identifier-assignment DDL is a prerequisite | Q-12; SPEC-0005 §7 Q1 |
 
 ## Working conventions
 
