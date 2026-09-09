@@ -51,4 +51,4 @@ supersession never in-place (§77).
 | Deposited | 2026-09-08 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, after the founder chose a study before SPEC-0007 (2026-09-08); not an upload |
 | Inputs | Record §15–16, §77, §89; DATA-009/010, ARCH-001, PRES-009; DR-0012/0017/0018/0022/0045/0049/0055/0062/0064/0077/0080/0083/0086; SPEC-0001/0002/0005/0006; the current `schema/`, `registry/`, `storage/` and `publication/` identifier usage; ARK draft-43, RFC 9562/3650/8141/7089, two W3C URI notes, DataCite landing-page rules and the ARK Alliance comparison, verified by web retrieval (the DOI Handbook was unreachable — paper §7) |
-| Status | **Candidate** — five candidate DRs (CDR-P3-31…35) awaiting founder review, one at a time |
+| Status | Reviewed — its five candidate DRs (CDR-P3-31…35) approved by the founder 2026-09-09, each ruled on separately (the second question was re-put after an inadvertent skip), and enacted as DR-0087…0091 |
