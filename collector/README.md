@@ -16,17 +16,19 @@ events and coverage accounting — is exercised end to end by 29 tests against
 a real PostgreSQL database and real OCFL storage. Only the fetch is
 substituted.
 
-**`HttpFetcher` has completed live fetches once, in a rehearsal, and no
-real source has been collected.** On 2026-09-08 it fetched the EU
+**The first real collection was performed on 2026-09-09** (DR-0087,
+*Executed*): five files, 211 331 430 bytes, zero failures, on the archive
+server. Before that, `HttpFetcher` had completed live fetches only in a
+rehearsal.** On 2026-09-08 it fetched the EU
 Consolidated Financial Sanctions List (XML and CSV) and three OFAC exports
 (up to 127 MB, through a 302 to a presigned S3 URL) into a throwaway
 database and storage root, byte-identical to independent `curl` downloads,
 with the whole pipeline below it behaving as it does on fixtures. The
 record is
 [docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md).
-Everything from that rehearsal was destroyed; the project's archive is still
-empty, because no source is registered and the founder has not authorised a
-run ([DR-0087](../docs/decision-records/DR-0087-first-source-registrations.md), proposed).
+Everything from that rehearsal was destroyed. The archive now holds the
+2026-09-09 captures authorised by
+[DR-0087](../docs/decision-records/DR-0087-first-source-registrations.md).
 
 What the rehearsal did **not** exercise: behaviour under a slow or
 rate-limiting origin, conditional requests (none are made — an unchanged

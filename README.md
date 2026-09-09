@@ -22,7 +22,7 @@ The time horizon is measured in years and potentially decades.
 |---|---|
 | Phase I — Requirements Discovery | **Complete** — see the [discovery record](docs/discovery/phase-1-requirements-discovery-record.md) |
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
-| Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md); all nine planned studies delivered, SPEC-0001…0004 and ten REQ documents effective, all three pipeline gates built. Collection at scale stays suspended pending external legal review ([POL-0001](docs/policies/POL-0001-personal-data.md), DR-0072) |
+| Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md); all nine planned studies delivered, SPEC-0001…0004 and ten REQ documents effective, all three pipeline gates built. **First collection performed 2026-09-09** (two sanctions lists, [DR-0087](docs/decision-records/DR-0087-first-source-registrations.md)). Collection at scale stays suspended pending external legal review ([POL-0001](docs/policies/POL-0001-personal-data.md), DR-0072) |
 
 No permanent data model, ontology, API contract, or technical stack has been frozen.
 Per the Phase I record, none may be frozen before Phase II standards research.

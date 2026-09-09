@@ -1,8 +1,11 @@
 # Source registration
 
 Candidate sources for the first real collection, drafted against the DR-0067
-registry schema. **Nothing here is registered.** These are proposals for the
-founder to accept, amend, or reject — per source, not as a block.
+registry schema. **Two are registered** on the archive server as of
+2026-09-09 under DR-0087 (`eu-consolidated-list`, `ofac-sdn`); the other five
+remain proposals for the founder to accept, amend, or reject — per source,
+not as a block. Registration lives in the server's database, not in this
+file: the file is the candidate, the row is the registration.
 
 ```bash
 python3 sources/register.py --check                      # validate only

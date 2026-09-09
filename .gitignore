@@ -5,6 +5,11 @@ __pycache__/
 # Local PostgreSQL test clusters and scratch data
 *.pgdata/
 
+# The virtual environment setup/install.sh creates. Untracked, it made the
+# working tree "dirty" on the archive server and the release baseline refused
+# to pin the code commit (found on the first real run, 2026-09-09).
+.venv/
+
 # Note: registry/dist/ is deliberately NOT ignored. Those projections are
 # derived (SPEC-0005) but committed so a registry change shows both its
 # source diff and its projection diff in one review; compile.py --check

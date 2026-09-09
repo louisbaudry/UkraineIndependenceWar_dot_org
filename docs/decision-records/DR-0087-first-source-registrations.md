@@ -145,6 +145,39 @@ The website for testing plays no part in this. Collection writes to the
 archive server's database and OCFL roots only; the site is a projection
 (Principle 18) and sees nothing until Gate 2 and Gate 3 decisions exist.
 
+## Executed
+
+Performed by the founder on the archive server on **2026-09-09**, from
+branch `claude/next-steps-2ag83g` at commit `dda02fd`, as the person agent
+`442c1d13-a3e3-4e87-a856-f278e5063b47`:
+
+| Act | Record |
+| --- | --- |
+| Registration | `eu-consolidated-list` → source `633a0bd3-a040-4883-824f-165f38035961`; `ofac-sdn` → source `49706db8-66ac-4d4e-9924-73e9049d09cf` |
+| First run, OFAC | run `121adaf0-cb35-4449-9517-ebfc27d56c89`: discovered 3, acquired 3, failed 0, **160 398 618 bytes** in 20.5 s |
+| First run, EU | run `3ab09fb5-b169-4b2b-bfc2-71a28182e778`: discovered 2, acquired 2, failed 0, **50 932 812 bytes** in 15.9 s |
+| Canonical knowledge created | 0 documentary assertions (DR-0066) |
+
+**This is the project's first collection.** Two observations from it:
+
+- The OFAC files were **295 553 bytes larger** than at verification the day
+  before: OFAC published a new list between 2026-09-08 and 2026-09-09, so
+  the archive's first OFAC capture is not the one the verification record
+  digests. That is the capture series doing its job from its first day.
+  The EU files were byte-identical to verification, so the EU list was still
+  the 2026-08-05 publication, now 35 days old.
+- `release/baseline.py --check` afterwards reported four unpinned items.
+  `dataset_snapshot` is expected (no dump has been made). `code_commit` was
+  refused because the installer's `.venv` directory was untracked, which is
+  fixed by ignoring it. `collector_version` and `pipeline_version` are a
+  real tension between this record's §3 (a person as the run's agent of
+  record) and the baseline's expectation that a versioned software agent
+  ran (AI-002); resolved by a separate ruling, not here.
+
+Two installer defects were found and fixed on the way: it cloned only
+`main`, and as root it never switched to the postgres user, so the
+database role was never created. Both are on the branch.
+
 ## Consequences
 
 Findings from the verification, in the order they matter. None blocks the
