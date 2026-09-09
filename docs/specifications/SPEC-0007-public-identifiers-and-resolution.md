@@ -1,9 +1,9 @@
 # SPEC-0007 — Public Identifiers and Resolution
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.1 | **Status:** Draft — Candidate
+**Class:** SPEC (DR-0046 control) | **Version:** 0.2 | **Status:** Draft — Candidate
 **Approval:** — | **Effective:** —
 **Supersedes:** — | **Superseded by:** —
-**Change history:** 0.1 drafted 2026-09-09 from the five rulings on WP 3.4 (DR-0087…0091). Not yet implemented; §11 lists what must exist before anything is minted.
+**Change history:** 0.1 drafted 2026-09-09 from the five rulings on WP 3.4 (DR-0087…0091). 0.2 the same day: the check-character rule (§2.3) confirmed against a published NOID port and the `?info` record format (§6.2) fixed as an ERC record, closing the first two open questions of 0.1. Not yet implemented; §11 lists what must exist before anything is minted.
 **Governed by:** DR-0087 (ARK scheme), DR-0088 (minting as assignment events), DR-0089 (register and dispositions), DR-0090 (objects and `.vN` states), DR-0091 (ARK-derived URIs); DR-0012, DR-0055, DR-0064, DR-0077, DR-0080, DR-0086; record §15–16; DATA-009/010, PRES-009, ARCH-001.
 **Implemented by:** nothing yet. Intended home: `identifiers/` (minting, register, resolver), a new `schema/08-identifiers.sql`, and a tier rule in `export/tiers.py`.
 
@@ -13,7 +13,7 @@ Drafted 2026-09-09 by an AI assistant (Anthropic Claude Code agent session)
 at the founder's direction, immediately after the founder ruled on
 CDR-P3-31…35 one at a time. Candidate until approved. Where this document
 fixes something the ARK draft leaves open (the check-character algorithm,
-the `?info` field set), §12 marks it for confirmation before v1.0.
+the `?info` record format), §2.3 and §6.2 say what it was checked against.
 
 ---
 
@@ -67,15 +67,23 @@ The hostname is identity-inert: all three name the same object.
 
 ### 2.3 Check character
 
-The check character is computed by the NOID check-digit rule: over the
-string from the first character of the NAAN to the last character of NAME,
-inclusive of the `/`, each character's ordinal in the extended alphabet
-`0123456789bcdfghjkmnpqrstvwxz` (characters outside it count as zero) is
-multiplied by its one-based position; the sum modulo 29 indexes the
-alphabet to give CHECK. It is appended as the right-most character of the
-base name (the position the ARK draft calls conventional). The rule detects
-any single-character transcription error and any adjacent transposition.
-**Confirm against the reference NOID implementation before v1.0 (§12).**
+The check character is the NOID check digit: over the string from the
+first character of the NAAN to the last character of NAME, inclusive of
+the `/`, each character's ordinal in the extended alphabet
+`0123456789bcdfghjkmnpqrstvwxz` (characters outside it, such as `/`, count
+as zero) is multiplied by its one-based position; the sum modulo 29
+indexes the same alphabet to give CHECK. It is appended as the right-most
+character of the base name, the position the ARK draft calls
+conventional, and the draft's rule that the sum runs "back to the
+beginning of the NAAN" fixes the string it covers. The rule detects every
+single-character substitution and every adjacent transposition within
+the alphabet; §10 tests that claim rather than trusting it.
+
+Verified 2026-09-09 against the `checkdigit` method and `XDIGIT` alphabet
+of the Ruby NOID port (`microservices/noid`), which implements the rule
+above verbatim. The Perl reference module (`Noid.pm` on CPAN) was not
+reachable from this environment; the suite must include one identifier
+whose check character is confirmed against that reference before v1.0.
 
 ### 2.4 Normalisation
 
@@ -240,11 +248,19 @@ run against every row of the register.
 ### 6.2 Inflections
 
 - **`?info`** is mandatory (ARK draft). It returns `200 text/plain` in
-  every disposition, including `restricted` and `tombstone`, carrying:
-  `who` (the project), `what` (a type-neutral description or, for
-  restricted, `withheld`), `when` (minted date), `where` (the project URL),
-  `disposition`, `disposition-at`, and the **commitment statement** (§9).
-  The exact field syntax is confirmed before v1.0 (§12).
+  every disposition, including `restricted` and `tombstone`, as an **ERC
+  record in ANVL** (the format the ARK draft's `?info` inherits from
+  Kunze's ERC and ANVL Internet-Drafts, both expired and both stable
+  since 2005–2007): the record opens with `erc:`, carries the four kernel
+  elements `who` (the project), `what` (a type-neutral description),
+  `when` (minted date, ISO 8601), `where` (the project URL of the
+  identifier), then `disposition`, `disposition-at`, and a `support-erc`
+  block carrying the commitment statement (§9); a blank line ends it.
+  ERC's missing-value tokens are used as the standard defines them:
+  `(:unal)` (intentionally suppressed) for `what` on a `restricted`
+  identifier, mapping DR-0029's `withheld`; `(:unav)` for a redacted
+  `what` on a tombstone. Long values fold onto indented continuation
+  lines; encoding is UTF-8.
 - `?` and `??` are accepted as synonyms for `?info` (optional in the
   draft; cheap to honour).
 
@@ -340,11 +356,9 @@ Served by `?info` on every identifier. Draft wording for founder approval:
 
 ## 12. Open questions
 
-1. **Check-character algorithm** — §2.3 states the NOID rule from memory
-   of the tool; confirm against its reference implementation, or adopt a
-   different published rule, before v1.0.
-2. **`?info` field syntax** — the ARK draft describes the content; confirm
-   the record format (ERC/ANVL) it expects.
+1. **Check character against the Perl reference** — §2.3 is confirmed
+   against a port; one fixture confirmed against `Noid.pm` closes this.
+2. *(resolved in 0.2: `?info` is an ERC record in ANVL, §6.2)*
 3. **NAAN timing** (WP 3.4 §8 Q1): request now or at first publication?
    Recommendation: now — it commits the project to nothing and unblocks
    §8.2.
@@ -360,4 +374,4 @@ Served by `?info` on every identifier. Draft wording for founder approval:
 ## 13. Decision Record arising (candidate)
 
 **CDR-P3-36 — Adoption of SPEC-0007 v1.0**, to be put to the founder once
-§12 items 1–2 are confirmed and §11 items 2–5 are implemented and tested.
+§12 item 1 is closed and §11 items 2–5 are implemented and tested.
