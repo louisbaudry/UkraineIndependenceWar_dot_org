@@ -19,7 +19,7 @@ substituted.
 **The first real collection was performed on 2026-09-09** (DR-0087,
 *Executed*): five files, 211 331 430 bytes, zero failures, on the archive
 server. Before that, `HttpFetcher` had completed live fetches only in a
-rehearsal.** On 2026-09-08 it fetched the EU
+rehearsal. On 2026-09-08 it fetched the EU
 Consolidated Financial Sanctions List (XML and CSV) and three OFAC exports
 (up to 127 MB, through a 302 to a presigned S3 URL) into a throwaway
 database and storage root, byte-identical to independent `curl` downloads,
