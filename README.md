@@ -54,6 +54,7 @@ storage/              OCFL archival storage and fixity scheduling
 collector/            Gate 1 — acquisition, quarantine, preservation
 editorial/            Gate 2 — editorial acceptance
 publication/          Gate 3 — publication decision and page history
+identifiers/          Public identifiers (ARK), the register and the resolver
 export/               Durable export and access-tier policy
 release/              Release baselines
 ```

@@ -86,8 +86,25 @@ class Versions:
 class Publisher:
     """Gate 3 over one database connection."""
 
-    def __init__(self, conn):
+    def __init__(self, conn, register=None):
+        """`register` mints public identifiers as things are published.
+
+        Optional for one reason only, and it is not a design preference:
+        until the project holds a NAAN, nothing may be minted at all
+        (SPEC-0007 §11). `identifiers.register.from_registry()` returns None
+        in exactly that state, so a Publisher built from it publishes
+        without minting rather than minting under a number the project does
+        not hold. Once the NAAN is issued the register is never absent.
+        """
         self.conn = conn
+        self.register = register
+
+    def _mint(self, subject_table: str, subject_id: str, basis: dict) -> None:
+        """Mint at publication (DR-0088 §2). Idempotent; never at creation."""
+        if self.register is None or subject_id is None:
+            return
+        self.register.mint(subject_table=subject_table, subject_id=subject_id,
+                           basis=basis)
 
     # -- the decision --------------------------------------------------------
 
@@ -139,6 +156,14 @@ class Publisher:
             (decision_id, assertion_id, holding_id, person_id, access_tier,
              sensitivity, rights_basis, evidentiary_disclosure, rationale),
         )
+
+        # A publication decision is the moment the project takes public
+        # responsibility for the object, which is when it earns a public
+        # identifier — before any page carries it, so it can be cited
+        # directly (DR-0088 §2, trigger 2).
+        self._mint("project_assertion", assertion_id,
+                   {"publication_decision": decision_id})
+        self._mint("holding", holding_id, {"publication_decision": decision_id})
         return decision_id
 
     def withdraw(self, *, decision_id: str, ground: str) -> None:
@@ -242,6 +267,14 @@ class Publisher:
                 self.conn.execute(
                     "INSERT INTO revision_holding (revision_id, holding_id) "
                     "VALUES (%s,%s)", (revision_id, holding_id))
+
+            # The page and everything it renders (DR-0088 §2, trigger 1).
+            self._mint("published_page", page_id, {"page_revision": revision_id})
+            for assertion_id in assertions or []:
+                self._mint("project_assertion", assertion_id,
+                           {"page_revision": revision_id})
+            for holding_id in holdings or []:
+                self._mint("holding", holding_id, {"page_revision": revision_id})
         return revision_id
 
     def required_qualification(self, assertions: list[str]) -> str | None:

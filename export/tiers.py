@@ -398,6 +398,58 @@ TIER_RULES: dict[str, TierRule] = {
     "source_types": TierRule("fixed", tier="public", rationale="Registry vocabulary."),
     "classification_systems": TierRule("fixed", tier="public", rationale="Registry vocabulary."),
     "identifier_types": TierRule("fixed", tier="public", rationale="Registry vocabulary."),
+    "identifier_dispositions": TierRule(
+        "fixed", tier="public", rationale="Registry vocabulary."),
+
+    # -- public identifiers (SPEC-0007) ------------------------------------
+    #
+    # The register is public by construction and the mapping behind it is
+    # not. That split is the whole design: DATA-009 requires every published
+    # identifier to keep resolving, so the existence of an identifier and
+    # what became of it are public facts — including for an object nobody
+    # may read, which is what the `restricted` disposition says. The
+    # internal UUID it names is not a public fact (SPEC-0007 §4.3).
+
+    "public_identifier": TierRule(
+        "fixed", tier="public",
+        rationale=(
+            "Existence and disposition of every minted identifier. Public "
+            "by construction: a citation must resolve forever (DATA-009), "
+            "and a restricted object's identifier still says it exists."
+        ),
+    ),
+    "public_identifier_subject": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "Maps an ARK to the internal row it names. Internal UUIDs are "
+            "never a public surface (SPEC-0007 §4.3), and the mapping would "
+            "also disclose which internal objects exist behind restricted "
+            "identifiers."
+        ),
+    ),
+    "identifier_assignment": TierRule(
+        "fixed", tier="internal",
+        rationale=(
+            "Carries subject_table and subject_id, so it is the same "
+            "mapping as public_identifier_subject with provenance attached. "
+            "External identifier assignments here also attach to world "
+            "actors, which are internal (DR-0062)."
+        ),
+    ),
+    "disambiguation_record": TierRule(
+        "fixed", tier="public",
+        rationale=(
+            "What a split identifier resolves to (DR-0064). It must be "
+            "public for the identifier to keep resolving. `decided_by` is a "
+            "bare pipeline-agent id; the agent's own row stays confidential."
+        ),
+    ),
+    "disambiguation_successor": TierRule(
+        "fixed", tier="public", rationale="Follows its disambiguation record."),
+    "citable_class": TierRule(
+        "fixed", tier="public",
+        rationale="A documented contract, not data (SPEC-0007 §3).",
+    ),
     "assertion_core_columns": TierRule(
         "fixed", tier="public",
         rationale="A documented contract, not data (SPEC-0001 §2.1).",

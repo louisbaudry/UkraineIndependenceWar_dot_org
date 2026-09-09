@@ -1,19 +1,20 @@
 # SPEC-0007 — Public Identifiers and Resolution
 
-**Class:** SPEC (DR-0046 control) | **Version:** 0.2 | **Status:** Draft — Candidate
+**Class:** SPEC (DR-0046 control) | **Version:** 0.3 | **Status:** Draft — Candidate (implemented)
 **Approval:** — | **Effective:** —
 **Supersedes:** — | **Superseded by:** —
-**Change history:** 0.1 drafted 2026-09-09 from the five rulings on WP 3.4 (DR-0087…0091). 0.2 the same day: the check-character rule (§2.3) confirmed against a published NOID port and the `?info` record format (§6.2) fixed as an ERC record, closing the first two open questions of 0.1. Not yet implemented; §11 lists what must exist before anything is minted.
+**Change history:** 0.1 drafted 2026-09-09 from the five rulings on WP 3.4 (DR-0087…0091). 0.2 the same day: the check-character rule (§2.3) confirmed against a published NOID port and the `?info` record format (§6.2) fixed as an ERC record, closing the first two open questions of 0.1. 0.3 the same day: implemented, and revised to describe what was built rather than what was proposed — §3's citable classes and §5's disambiguation records became tables, §6.1 gained a `400` for a failed check character, and §10's checks are now executable. §11 prerequisites 2–5 are met; the NAAN and the N2T record are not, so nothing can be minted outside the suite.
 **Governed by:** DR-0087 (ARK scheme), DR-0088 (minting as assignment events), DR-0089 (register and dispositions), DR-0090 (objects and `.vN` states), DR-0091 (ARK-derived URIs); DR-0012, DR-0055, DR-0064, DR-0077, DR-0080, DR-0086; record §15–16; DATA-009/010, PRES-009, ARCH-001.
-**Implemented by:** nothing yet. Intended home: `identifiers/` (minting, register, resolver), a new `schema/08-identifiers.sql`, and a tier rule in `export/tiers.py`.
+**Implemented by:** `schema/08-identifiers.sql` (the assignment family, the register, the forward-only trigger, `resolve_identifier()`); `identifiers/ark.py`, `identifiers/register.py`, `identifiers/resolver.py`; the minting hook in `publication/gate3.py`; tier rules in `export/tiers.py`. Verified by `identifiers/tests/test_identifiers.py` (64 checks) and `identifiers/tests/rebuild.py`.
 
 ### AI provenance (record §80)
 
 Drafted 2026-09-09 by an AI assistant (Anthropic Claude Code agent session)
 at the founder's direction, immediately after the founder ruled on
-CDR-P3-31…35 one at a time. Candidate until approved. Where this document
-fixes something the ARK draft leaves open (the check-character algorithm,
-the `?info` record format), §2.3 and §6.2 say what it was checked against.
+CDR-P3-31…35 one at a time, and revised at 0.3 to match the implementation
+written the same day. Candidate until approved. Where this document fixes
+something the ARK draft leaves open (the check-character algorithm, the
+`?info` record format), §2.3 and §6.2 say what it was checked against.
 
 ---
 
@@ -111,12 +112,15 @@ DR-0088 §3 fixes the eligible classes. This table binds each to its store:
 | annotations | — (evidential targeting lives inside `documentary_assertion`; no Web Annotation table) | no table yet |
 | published pages | `published_page` | exists |
 
-A class without a table is bound by this document the day its table
-appears: adding the table without adding it to §3 and to the tier rules
-must fail the suite (§10). Internal-only tables — `pipeline_agent`,
-`collector_run`, `acquisition_attempt`, `quarantine_item`, `proposal`,
-`acceptance`, `review_record` and the rest — are **never** eligible; a
-minting attempt against them is an error.
+This table is `citable_class` in the DDL, seeded with the five rows above
+and carrying, per class, the record §15 class it realises and whether it
+takes a `.vN` qualifier (§7). A class without a table is bound the day its
+table appears: `identifier_assignment.subject_table` references
+`citable_class`, so minting for anything else fails on the foreign key, and
+a new table still needs a tier rule or every dump refuses (SPEC-0006 §9A).
+Internal-only tables — `pipeline_agent`, `collector_run`,
+`acquisition_attempt`, `quarantine_item`, `proposal`, `acceptance`,
+`review_record` and the rest — are **never** eligible.
 
 ## 4. Minting (DR-0088)
 
@@ -148,11 +152,15 @@ Minting writes, in one transaction:
   action that triggered it;
 - a **register row** (§5) with disposition `active`.
 
-**The `identifier_assignment` family does not exist in the DDL today**
-(SPEC-0001 §2.2 defines it; `schema/` has no assignment tables of any
-kind). §11 lists it as a prerequisite; its column contract is the §2.1
-core plus `subject_table`, `subject_id`, `identifier_type`
-(`identifier_types` reference) and `value`.
+The `identifier_assignment` family is the first assignment family in the
+DDL (SPEC-0001 §2.2 defines the pattern; nothing had instantiated it). Its
+columns are the §2.1 core plus `subject_table`, `subject_id`,
+`identifier_type` and `value`. It is append-only like every assertion
+family, carries no likelihood or confidence — an identifier assignment is
+not a judgment about identity, which is a match assertion (§16, §72) — and
+two partial unique indexes enforce one ARK per object and one object per
+ARK. External identifiers carry no such constraint: the same registry
+number may be claimed for several candidates until resolution (DR-0063).
 
 ### 4.3 What is never done
 
@@ -193,7 +201,10 @@ public_identifier_subject
 ```
 
 `identifier_dispositions` is a closed registry vocabulary (§8.1):
-`active`, `redirect`, `disambiguation`, `tombstone`, `restricted`.
+`active`, `redirect`, `disambiguation`, `tombstone`, `restricted`. A split's
+successors and grounds live in `disambiguation_record` and
+`disambiguation_successor`, which are their own tables so that what a split
+identifier resolves to can be public while the subject mapping is not.
 
 **Invariants, enforced by trigger and checked by test:**
 
@@ -212,10 +223,14 @@ public_identifier_subject
    the deciding agent, the successor ARKs, and the grounds citation
    (DR-0089 §5; closes SPEC-0002 §6 Q3).
 
-**Tier rules.** `public_identifier` is declared `public` in
+**Tier rules.** `public_identifier`, `disambiguation_record`,
+`disambiguation_successor` and `citable_class` are declared `public` in
 `export/tiers.py`: the existence of every minted identifier, and its
 disposition, is public information by construction (that is what
-`restricted` means). `public_identifier_subject` is declared `internal`.
+`restricted` means). `public_identifier_subject` and `identifier_assignment` are declared
+`internal` — both carry the mapping to internal UUIDs, and assignment rows
+also attach external identifiers to world actors, which are internal
+(DR-0062).
 Adding either table without a rule makes every dump refuse (SPEC-0006 §9A,
 fail closed), which is the intended behaviour.
 
@@ -241,9 +256,17 @@ disposition:
 | `tombstone` | `410 Gone` | The tombstone: fact, date, authority and grounds of removal, never the content (DR-0077) |
 | `restricted` | `403 Forbidden` | A notice that the object exists, its access tier, and the absence state `withheld` (DR-0029); nothing else |
 | never minted | `404 Not Found` | States that no such identifier was ever issued, so that a reader can tell a typo from a removal |
+| check character fails | `400 Bad Request` | The request cannot be an identifier this project issued. Distinguishing this from `404` is what makes a mistyped citation diagnosable rather than indistinguishable from a withdrawn one (§2.3) |
 
-**A minted identifier never returns `404`.** That is DATA-009's test,
-run against every row of the register.
+**A minted identifier never returns `404`.** That is DATA-009's test, run
+against every row of the register rather than on examples.
+
+Resolution itself is a SQL function, `resolve_identifier(text)`, which
+follows redirect chains to their terminal identifier and returns `NULL`
+only for a name that was never issued. Keeping it in the database rather
+than in application code is what lets a successor answer identifiers from a
+dump alone (PRES-009); `identifier_register_health` exposes the whole
+register as one query for the DATA-009 check.
 
 ### 6.2 Inflections
 
@@ -284,6 +307,9 @@ dump and updates the NAAN record. Nothing in the identifier changes.
 
 - The bare ARK resolves to the object's current state, with `Link`
   headers and page links to its history.
+- Which classes are versioned is declared in `citable_class.versioned`, and
+  a `.vN` on a class that declares no states is a `400`, not a `404`: the
+  identifier is fine, the qualifier is meaningless for it.
 - `.vN` names an explicit state: for `published_page`, `page_revision`
   number N; for `holding`, OCFL version `vN`. Other classes have no `.vN`
   until this document lists them.
@@ -332,6 +358,11 @@ Served by `?info` on every identifier. Draft wording for founder approval:
 
 ## 10. Verification
 
+All of these are implemented in `identifiers/tests/test_identifiers.py`
+unless noted. Three were verified by breaking the thing they check and
+watching the suite go red, which is recorded here because a check that has
+never failed proves nothing.
+
 | Check | Method |
 |---|---|
 | Check character detects every single-character substitution and adjacent transposition in a sample of 10,000 names | Test |
@@ -340,25 +371,56 @@ Served by `?info` on every identifier. Draft wording for founder approval:
 | Every register row resolves to a non-`404` status matching its disposition (DATA-009) | Test over the register |
 | No UUID pattern appears in any rendered page, resolver body or projection | Test |
 | A table added to `schema/` that is eligible under §3 but absent from tier rules makes the dump refuse | Test (SPEC-0006 §9A) |
-| The resolver can be rebuilt from a dump's register tables alone, with no project imports, and answers every identifier | Demonstration, in the style of `export/tests/reconstruct.py` (PRES-009) |
+| The resolver can be rebuilt from a dump's register tables alone, with no project imports, and answers every identifier | Demonstration — `identifiers/tests/rebuild.py`, run in a subprocess with a bare environment (PRES-009). It reimplements §2.4 and §6.1 from this document, so it is also the only place the check-character rule as written and as coded are compared |
 | `?info` returns `200` in all five dispositions | Test |
+| A public dump carries the register but not the subject mapping | Test |
+
+**Negative controls, run and recorded:**
+
+| Protection removed | Result |
+|---|---|
+| The forward-only disposition trigger | 6 checks fail |
+| Positional weighting in the check character, replaced by a constant | Transposition detection falls to 966/9,706; 4 checks fail, including the rebuild's disagreement |
+| The resolver's internal-UUID suppression | The §4.3 check fails |
+
+The deletion guard is checked by a control inside the suite itself: it is
+dropped on a second connection, the delete is confirmed to succeed, and the
+transaction is rolled back — so the passing case is known to be the
+trigger's doing.
 
 ## 11. Prerequisites before the first identifier is minted
 
-1. A NAAN issued to the project and a primordial shoulder chosen; both
-   recorded in `registry.yaml`. The shared **test NAAN `99999`** is used by
-   the suite until then, and never in a published identifier.
-2. The `identifier_assignment` assertion family in the DDL (§4.2).
-3. The two register tables and the `identifier_dispositions` vocabulary.
-4. Tier rules for both register tables.
-5. The project's own `pipeline_agent` row as asserter.
-6. The N2T NAAN record pointing at the project resolver.
+1. **Outstanding.** A NAAN issued to the project and a primordial shoulder
+   chosen; both recorded in `registry.yaml`, where the `identifiers` block
+   now exists with both unset. Until they are set,
+   `register.from_registry()` returns `None` and Gate 3 publishes without
+   minting: an identifier minted under a number the project does not hold
+   is one no resolver chain can honour. The shared **test NAAN `99999`** is
+   used by the suite, and never in a published identifier.
+2. ✅ The `identifier_assignment` assertion family in the DDL (§4.2).
+3. ✅ The register tables and the `identifier_dispositions` vocabulary.
+4. ✅ Tier rules for every new table.
+5. ✅ The project's own `pipeline_agent` row as asserter — a row of kind
+   `organization`; minting refuses with a named error when it is absent.
+6. **Outstanding.** The N2T NAAN record pointing at the project resolver.
+
+Also outstanding, and not a blocker for minting: the resolver is a library,
+not yet an HTTP service. `Resolver.get()` is the contract; binding it to a
+web server is deployment work.
 
 ## 12. Open questions
 
 1. **Check character against the Perl reference** — §2.3 is confirmed
-   against a port; one fixture confirmed against `Noid.pm` closes this.
-2. *(resolved in 0.2: `?info` is an ERC record in ANVL, §6.2)*
+   against a port and against this document's own reimplementation; one
+   fixture confirmed against `Noid.pm` closes this.
+2. **How the deciding agent of a split is rendered.** DR-0089 §5 requires
+   the disambiguation record to carry it, and it does. The resolver does
+   **not** put it in the response body: the stored value is an internal
+   agent id, which §4.3 keeps off public surfaces, and publishing an
+   editorial byline instead is a policy question — `pipeline_agent` is
+   `confidential` because it may include agents acting for confidential
+   sources (§11, SEC-001), while §85 wants editorial acts inspectable. A
+   founder ruling is needed; until then the body says the agent is recorded.
 3. **NAAN timing** (WP 3.4 §8 Q1): request now or at first publication?
    Recommendation: now — it commits the project to nothing and unblocks
    §8.2.

@@ -12,7 +12,7 @@ Status is document metadata, never inferred from Git.
 | [SPEC-0004](SPEC-0004-semantic-registry.md) | Semantic Registry Implementation | 1.0 | **Approved — Effective 2026-08-16** |
 | [SPEC-0005](SPEC-0005-registry-skos-mapping.md) | Registry Projection Mapping (JSON and SKOS/RDF) | 1.0 | **Approved — Effective 2026-08-20** |
 | [SPEC-0006](SPEC-0006-durable-export-format.md) | Durable Export Format | 1.0 | **Approved — Effective 2026-08-21** |
-| [SPEC-0007](SPEC-0007-public-identifiers-and-resolution.md) | Public Identifiers and Resolution | 0.2 | Draft — Candidate (DR-0087…0091 enacted; awaiting NAAN, DDL prerequisites and founder approval) |
+| [SPEC-0007](SPEC-0007-public-identifiers-and-resolution.md) | Public Identifiers and Resolution | 0.3 | Draft — Candidate, **implemented** (DR-0087…0091 enacted; awaiting a NAAN and founder approval) |
 
 ## Provenance
 
@@ -32,3 +32,4 @@ Status is document metadata, never inferred from Git.
 | SPEC-0006 v1.0 (approved) | `73bf141dc772e2923defa8808bc896982622baf8dfc56d948c85577bfcede3af` | 2026-08-21 | Approved by the founder on the condition that unfiltered dumps be blocked (DR-0084); §9 open question 3 resolved and replaced by §9A access-tier policy |
 | SPEC-0007 v0.1 (draft) | `6d3a29067ef74a006519621961a1cf60776e3dbf8e5722c5a86ba9edd3e8b13e` | 2026-09-09 | AI-drafted (Anthropic Claude Code agent session) from the founder's rulings on WP 3.4 (DR-0087…0091); not yet implemented |
 | SPEC-0007 v0.2 (draft) | `8ae663f193d724d11f6f12e337d959c0ef84fc83a328043852dfc765065cf88c` | 2026-09-09 | v0.1 with §2.3 confirmed against a published NOID port and §6.2 fixed as an ERC/ANVL record; open questions 1–2 of v0.1 closed or narrowed; still AI-drafted, still a candidate |
+| SPEC-0007 v0.3 (draft) | `50fab98a085de88dc0a72ac1b52a3484be36244d8bde09435062f35fa80b948f` | 2026-09-09 | v0.2 revised to describe the implementation written the same day: §3 and §5 tables as built, §6.1's 400 for a failed check character, §10's executable checks and negative controls, §11 prerequisites 2–5 met. Still AI-drafted, still a candidate |

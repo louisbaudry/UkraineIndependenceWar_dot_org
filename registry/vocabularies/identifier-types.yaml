@@ -70,3 +70,18 @@ members:
   - id: official-registry-id
     labels: {en: {prefLabel: other official registry identifier}}
     issuing_authority: Varies; recorded on the assignment
+  - id: uiw-ark
+    labels: {en: {prefLabel: project public identifier (ARK)}}
+    issuing_authority: The project, under its own NAAN (DR-0087)
+    scope_note: >
+      The project's own public identifier, minted as an assignment event at
+      first publication or explicit citation (DR-0088) and tracked in the
+      identifier register (DR-0089). Never assigned by matching; one per
+      object, never reissued.
+  - id: doi
+    labels: {en: {prefLabel: Digital Object Identifier (DOI)}}
+    issuing_authority: A DOI registration agency (DataCite for datasets)
+    scope_note: >
+      Minted for public dataset releases once release practice is mature
+      (DR-0049); an additional identifier whose landing page is the
+      release's ARK resolver page (DR-0091).
