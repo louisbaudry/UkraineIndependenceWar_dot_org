@@ -35,6 +35,15 @@ class FetchResult:
     media_type: str | None = None
     error_detail: str | None = None
     response_headers: dict[str, str] = field(default_factory=dict)
+    # The HTTP envelope, needed to wrap the response as a WARC record for
+    # sources whose capture format is `warc` (DR-0006). A fetcher that cannot
+    # report them cannot serve such a source.
+    http_status: int | None = None
+    http_reason: str | None = None
+    http_version: str = "HTTP/1.1"
+    # Where the bytes actually came from after redirects, when that differs
+    # from the locator asked for. The redirect chain itself is not captured.
+    final_locator: str | None = None
 
     def __post_init__(self) -> None:
         if self.outcome == "success" and self.content is None:
@@ -97,6 +106,9 @@ class FixtureFetcher:
             outcome="success",
             content=entry.read_bytes(),
             media_type="application/octet-stream",
+            response_headers={"Content-Type": "application/octet-stream"},
+            http_status=200,
+            http_reason="OK",
         )
 
 
@@ -126,6 +138,12 @@ class HttpFetcher:
         attempted_at = _now()
         try:
             with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                # http.client has already undone chunked transfer-encoding;
+                # the recorded headers are what it delivered, and a WARC
+                # wrapper drops the Transfer-Encoding header so the recorded
+                # message stays self-consistent (see warc.build_response_record).
+                version = {10: "HTTP/1.0", 11: "HTTP/1.1"}.get(response.version, "HTTP/1.1")
+                final = response.geturl()
                 return FetchResult(
                     locator=locator,
                     attempted_at=attempted_at,
@@ -133,6 +151,10 @@ class HttpFetcher:
                     content=response.read(),
                     media_type=response.headers.get_content_type(),
                     response_headers=dict(response.headers),
+                    http_status=response.status,
+                    http_reason=response.reason,
+                    http_version=version,
+                    final_locator=final if final != locator else None,
                 )
         except urllib.error.HTTPError as exc:
             return FetchResult(

@@ -331,6 +331,35 @@ SELECT t_rejects('PRES-007',
         '22222222-0000-0000-0000-000000000001', 'https://example.invalid',
         now(), 'failure')$$);
 
+SELECT t_rejects('PRES-007',
+    'an acquisition from an external archive must name the archive (§28)',
+    $$INSERT INTO acquisition_attempt (
+        id, source_id, locator, attempted_at, outcome, acquisition_route,
+        original_captured_at
+      ) VALUES (
+        '99999999-0000-0000-0000-000000000002',
+        '22222222-0000-0000-0000-000000000001', 'https://example.invalid',
+        now(), 'success', 'external-archive', now())$$);
+
+SELECT t_rejects('PRES-007',
+    'an archived capture must carry the archive''s capture time (§28)',
+    $$INSERT INTO acquisition_attempt (
+        id, source_id, locator, attempted_at, outcome, acquisition_route,
+        acquisition_source
+      ) VALUES (
+        '99999999-0000-0000-0000-000000000003',
+        '22222222-0000-0000-0000-000000000001', 'https://example.invalid',
+        now(), 'success', 'external-archive', 'test archive')$$);
+
+SELECT t_rejects('PRES-007',
+    'an acquisition route outside the declared set is refused',
+    $$INSERT INTO acquisition_attempt (
+        id, source_id, locator, attempted_at, outcome, acquisition_route
+      ) VALUES (
+        '99999999-0000-0000-0000-000000000004',
+        '22222222-0000-0000-0000-000000000001', 'https://example.invalid',
+        now(), 'success', 'teleported')$$);
+
 SELECT t_rejects('DR-0061',
     'a metadata-only holding cannot claim to hold an original',
     $$INSERT INTO holding (
