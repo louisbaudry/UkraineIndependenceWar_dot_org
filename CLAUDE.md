@@ -20,6 +20,37 @@ is registered, no live fetch has ever completed, and the external legal review
 POL-0001 §10 requires has not been commissioned.** Do not write anything, in
 code or prose, that implies otherwise.
 
+## Starting a session
+
+1. Read this file, then `README.md`, then the component README of whatever
+   you are about to touch. `collector/README.md` says what the pipeline does
+   and does not do today; `docs/phase-3/README.md` says where Phase III is.
+2. Start PostgreSQL and run the suites you will touch **before** editing
+   (see "Environment notes"), so you know green from green-because-broken.
+3. Check `git log --oneline -15` and the branch you are on. Work happens on
+   a fresh `claude/<topic>` branch from `main`; a merged branch is finished.
+4. If the founder's request touches collection scope, personal data, legal
+   posture or a document's status, re-read the "Standing rulings" below
+   before proposing anything.
+
+## Track A of WP 3.4 — what is done and what is not
+
+The acquisition strategy's preparatory track (WP 3.4 §4.1), which DR-0071
+permits now. Keep this list current when you finish or start an item.
+
+| Item | State | Note |
+|---|---|---|
+| A1 — register the seven sanctions sources and make the first live collection | **waiting on the founder and on network access** | `sources/register.py --commit` is the founder's act; `HttpFetcher` has never completed a live fetch |
+| A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | not started | must not live-fetch unregistered hosts |
+| A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
+| A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
+| A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |
+| A6 — legal-review brief (WP 3.4 §7) | not started | a brief, not a policy; not legal advice |
+| A7 — storage and bandwidth measurement | not started | needs A1 |
+
+Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
+POL-0001 §10 review.
+
 ## How to ask the founder a question
 
 **This is the standing instruction for every question, without exception.**
@@ -199,6 +230,8 @@ change could break:
 - `warcio` can be pip-installed for the WARC cross-check tests; it is not a
   project dependency and its absence is reported as a skip.
 - Use the session scratchpad for backups and throwaway files, never the repo.
+- `registry/validate.py` runs without arguments and must report
+  `0 error(s)` after any vocabulary change; regenerate the enum DDL after it.
 
 ## Git and pull requests
 

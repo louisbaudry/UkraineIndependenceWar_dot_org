@@ -65,6 +65,20 @@ Its Track A (permitted now under DR-0071) is under way: the WARC recovery path a
 live WARC wrapping are built and tested. Its Track B waits on the recorded review. Five
 candidate Decision Records (CDR-P3-31…35) await the founder.
 
+## Recent work
+
+| Date | What | Where |
+|---|---|---|
+| 2026-08-26 | Gate 3 built; DR-0086 enacted (tier restrictiveness declared, not derived); seven sanctions authorities drafted as candidate registrations | `publication/`, `sources/` |
+| 2026-09-08 | WP 3.4, the foundational corpus acquisition strategy, deposited as candidate with CDR-P3-31…35; founder rules that no collection scale-up precedes the POL-0001 §10 legal review | [`docs/phase-3/`](docs/phase-3/README.md) |
+| 2026-09-09 | WARC recovery path built: a registered source's captures can be recovered from an external archive's WARC file through quarantine and Gate 1, with the archive recorded as acquisition source distinct from the publisher (§28); live fetches of `warc`-format sources are wrapped as WARC records | [`collector/`](collector/README.md), `schema/03-pipeline.sql` |
+
+Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. A1, the
+first live collection of the seven sanctions sources, waits on the founder
+registering them and on an environment with network access. A2 (census tooling
+against indices), A4 (WACZ evaluation), A5 (registration classes), A6 (legal-review
+brief) and A7 (storage measurement) are not started. A3 is done.
+
 ## Repository layout
 
 ```
