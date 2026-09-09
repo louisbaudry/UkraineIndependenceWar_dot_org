@@ -56,6 +56,18 @@ else
 fi
 ok "Debian-family system"
 
+# Run a command as the postgres system user. As root there is no sudo prefix,
+# and "-u postgres psql" on its own is not a command — which is exactly how
+# the first install on a root shell failed (2026-09-09): the role was never
+# created and every later step was skipped.
+as_postgres() {
+  if [ -n "$SUDO" ]; then
+    $SUDO -u postgres "$@"
+  else
+    runuser -u postgres -- "$@"
+  fi
+}
+
 # Refuse to install anything into a directory a web server publishes. The
 # archive holds material at every access tier, including `confidential`, and a
 # document root is the one place on the machine where a file is public by
@@ -194,15 +206,15 @@ step "Creating the database"
 $SUDO systemctl enable --now postgresql >/dev/null 2>&1 || true
 
 DB_USER="$(id -un)"
-if ! $SUDO -u postgres psql -tAc \
+if ! as_postgres psql -tAc \
       "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER'" | grep -q 1; then
-  $SUDO -u postgres createuser --createdb "$DB_USER"
+  as_postgres createuser --createdb "$DB_USER"
   ok "database user $DB_USER created"
 else
   ok "database user $DB_USER exists"
 fi
 
-if $SUDO -u postgres psql -tAc \
+if as_postgres psql -tAc \
      "SELECT 1 FROM pg_database WHERE datname='$DB_NAME'" | grep -q 1; then
   warn "database '$DB_NAME' already exists — leaving it alone"
   warn "to start clean:  dropdb $DB_NAME  then re-run this script"
