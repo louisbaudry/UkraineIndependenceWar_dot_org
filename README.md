@@ -34,7 +34,8 @@ docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
   decision-records/   Unified Decision Record system (record §98); DR-0001…0086
-                      approved and in force
+                      approved and in force, DR-0087 proposed and pending
+                      founder review
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
   phase-3/            Phase III working area
