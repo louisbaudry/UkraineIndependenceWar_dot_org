@@ -840,6 +840,79 @@
       "type": "vocabulary",
       "usage_note": "Expansion or change only by Decision Record (DR-0025) — the record's own instruction that the vocabulary stay small and grow only when real cases require it.\n"
     },
+    "identifier-dispositions": {
+      "_source": "vocabularies/identifier-dispositions.yaml",
+      "authorised_by": [
+        "DR-0089"
+      ],
+      "closed": true,
+      "definition": "The current state of a public identifier in the identifier register (DR-0089). Every minted identifier has exactly one disposition, and a minted identifier never dead-ends: the disposition says what the resolver answers with.\n",
+      "depends_on_specs": [
+        "SPEC-0007"
+      ],
+      "effective": "2026-09-09",
+      "id": "identifier-dispositions",
+      "labels": {
+        "en": {
+          "prefLabel": "identifier disposition"
+        }
+      },
+      "layer": "pipeline",
+      "members": [
+        {
+          "definition": "Resolves to the object's current state, with links to its history.\n",
+          "id": "active",
+          "labels": {
+            "en": {
+              "prefLabel": "active"
+            }
+          }
+        },
+        {
+          "definition": "The object was merged into a successor (DR-0064); resolves to the successor identifier with a lineage note.\n",
+          "id": "redirect",
+          "labels": {
+            "en": {
+              "prefLabel": "redirect"
+            }
+          }
+        },
+        {
+          "definition": "The object was split (DR-0064); resolves to a disambiguation record naming the successors, the date, the deciding agent, and the grounds. No automatic redirect, because there is no single successor.\n",
+          "id": "disambiguation",
+          "labels": {
+            "en": {
+              "prefLabel": "disambiguation"
+            }
+          }
+        },
+        {
+          "definition": "The object was removed under governed redaction (DR-0077); resolves to the tombstone recording fact, date, authority and grounds, never the content.\n",
+          "id": "tombstone",
+          "labels": {
+            "en": {
+              "prefLabel": "tombstone"
+            }
+          }
+        },
+        {
+          "definition": "The object exists but sits at an access tier the requester may not see; resolves to a notice carrying the `withheld` absence state (DR-0029). Distinct from `tombstone`: nothing was removed.\n",
+          "id": "restricted",
+          "labels": {
+            "en": {
+              "prefLabel": "restricted"
+            }
+          }
+        }
+      ],
+      "satisfies_requirements": [
+        "DATA-009"
+      ],
+      "status": "effective",
+      "steward": "founder",
+      "type": "vocabulary",
+      "usage_note": "Dispositions move forward only. An `active` identifier may become any of the others; `restricted` returns to `active` only by a recorded tier decision; `tombstone` returns to `active` only by a recorded reversal of the redaction under record §77; `redirect` and `disambiguation` are terminal. No identifier is ever deleted or reissued.\n"
+    },
     "identifier-types": {
       "_source": "vocabularies/identifier-types.yaml",
       "authorised_by": [
@@ -963,6 +1036,26 @@
               "prefLabel": "other official registry identifier"
             }
           }
+        },
+        {
+          "id": "uiw-ark",
+          "issuing_authority": "The project, under its own NAAN (DR-0087)",
+          "labels": {
+            "en": {
+              "prefLabel": "project public identifier (ARK)"
+            }
+          },
+          "scope_note": "The project's own public identifier, minted as an assignment event at first publication or explicit citation (DR-0088) and tracked in the identifier register (DR-0089). Never assigned by matching; one per object, never reissued.\n"
+        },
+        {
+          "id": "doi",
+          "issuing_authority": "A DOI registration agency (DataCite for datasets)",
+          "labels": {
+            "en": {
+              "prefLabel": "Digital Object Identifier (DOI)"
+            }
+          },
+          "scope_note": "Minted for public dataset releases once release practice is mature (DR-0049); an additional identifier whose landing page is the release's ARK resolver page (DR-0091).\n"
         }
       ],
       "satisfies_requirements": [
@@ -2979,11 +3072,22 @@
         "project-conclusion"
       ]
     },
+    "identifier-dispositions": {
+      "closed": true,
+      "values": [
+        "active",
+        "disambiguation",
+        "redirect",
+        "restricted",
+        "tombstone"
+      ]
+    },
     "identifier-types": {
       "closed": false,
       "values": [
         "aircraft-registration",
         "company-registration-number",
+        "doi",
         "icao-24bit",
         "imo",
         "lei",
@@ -2992,6 +3096,7 @@
         "official-sanctions-id",
         "opensanctions",
         "tax-id",
+        "uiw-ark",
         "wikidata"
       ]
     },
@@ -3169,7 +3274,7 @@
     "id": "uiw-semantic-registry",
     "status": "effective",
     "title": "Ukraine's Second War of Independence — Semantic Registry",
-    "version": "0.1.2"
+    "version": "0.2.0"
   },
   "specification": "SPEC-0005"
 }

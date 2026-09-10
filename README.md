@@ -24,7 +24,7 @@ The time horizon is measured in years and potentially decades.
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
 | Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0006, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072). The founder ruled on 2026-09-08 that no collection scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0086 are approved and in force. No permanent API contract or technical stack
+DR-0001…0092 are approved and in force. No permanent API contract or technical stack
 beyond PostgreSQL, Python and OCFL has been frozen.
 
 ## Where things stand, plainly
@@ -72,6 +72,7 @@ candidate Decision Records (CDR-P3-31…35) await the founder.
 | 2026-08-26 | Gate 3 built; DR-0086 enacted (tier restrictiveness declared, not derived); seven sanctions authorities drafted as candidate registrations | `publication/`, `sources/` |
 | 2026-09-08 | WP 3.4, the foundational corpus acquisition strategy, deposited as candidate with CDR-P3-31…35; founder rules that no collection scale-up precedes the POL-0001 §10 legal review | [`docs/phase-3/`](docs/phase-3/README.md) |
 | 2026-09-09 | WARC recovery path built: a registered source's captures can be recovered from an external archive's WARC file through quarantine and Gate 1, with the archive recorded as acquisition source distinct from the publisher (§28); live fetches of `warc`-format sources are wrapped as WARC records | [`collector/`](collector/README.md), `schema/03-pipeline.sql` |
+| 2026-09-09/10 | Public identifiers designed and implemented: WP 3.5 resolves Q-12; DR-0087…0092 enacted (ARK scheme, minting at publication, a five-disposition register, `.vN` state qualifiers, ARK-derived URIs, a split's decider shown as a title never an id). SPEC-0007 drafted as a candidate and implemented against it, 77 checks | [`identifiers/`](identifiers/README.md), `schema/08-identifiers.sql` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. A1, the
 first live collection of the seven sanctions sources, waits on the founder
@@ -85,12 +86,12 @@ brief) and A7 (storage measurement) are not started. A3 is done.
 docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
-  decision-records/   Unified Decision Record system (record §98); DR-0001…0086
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0092
                       approved and in force; register in its README
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
   phase-3/            Phase III working area
-    working-papers/   WP 3.1–3.4 + PROVENANCE.md (SHA-256 at deposit)
+    working-papers/   WP 3.1–3.5 + PROVENANCE.md (SHA-256 at deposit)
   specifications/     SPEC-class controlled documents (DR-0046)
   policies/           POL-class controlled documents (DR-0046)
   requirements/       REQ-class controlled documents (DR-0046/0051)
@@ -109,6 +110,7 @@ collector/            Gate 1 — acquisition (live fetch and WARC recovery),
                       quarantine, preservation; the stdlib WARC reader/writer
 editorial/            Gate 2 — editorial acceptance
 publication/          Gate 3 — publication decision and page history
+identifiers/          Public identifiers (ARK), the register and the resolver
 export/               Durable export and access-tier policy
 release/              Release baselines
 setup/                install.sh — one-command install on Debian/Ubuntu

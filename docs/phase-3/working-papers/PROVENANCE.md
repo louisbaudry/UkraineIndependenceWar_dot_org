@@ -52,3 +52,16 @@ supersession never in-place (§77).
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, following the founder's 2026-09-08 ruling (option C: no collection scale-up before the POL-0001 §10 legal review is recorded); not an upload |
 | Inputs | Record §8–§9, §13–§14, §25–§28, §57, §78–§80; DR-0006, DR-0027, DR-0028, DR-0066…0072, DR-0074; SPEC-0003; POL-0001; REQ-AI/LEGAL/OPS; collector/, sources/ READMEs. **No external service, index, or tool was reached from the drafting environment**; model list prices from a reference cached 2026-06-24 |
 | Status | Candidate — five candidate DRs (CDR-P3-31…35) awaiting founder review |
+
+## wp-3.5-identifier-design.md
+
+| Field | Value |
+|---|---|
+| Title | Phase III / Study 5 — Identifier Design (Working Paper 3.5) |
+| Version | 3.5 |
+| SHA-256 at deposit | `41ba6e02fcbbf23bc9e254850c6c5aa69a8956267166c201d3c65558cc48c35e` |
+| Deposited | 2026-09-08, as "Study 4" / "Working Paper 3.4" |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, after the founder chose a study before SPEC-0007 (2026-09-08); not an upload |
+| Inputs | Record §15–16, §77, §89; DATA-009/010, ARCH-001, PRES-009; DR-0012/0017/0018/0022/0045/0049/0055/0062/0064/0077/0080/0083/0086; SPEC-0001/0002/0005/0006; the current `schema/`, `registry/`, `storage/` and `publication/` identifier usage; ARK draft-43, RFC 9562/3650/8141/7089, two W3C URI notes, DataCite landing-page rules and the ARK Alliance comparison, verified by web retrieval (the DOI Handbook was unreachable — paper §7) |
+| Status | Reviewed — its five candidate DRs (CDR-P3-36…40) approved by the founder 2026-09-09, each ruled on separately (the second question was re-put after an inadvertent skip), and enacted as DR-0087…0091 |
+| SHA-256 after renumbering | `709ec67938b629ede057b403dc4cfa29f9ca88856e20d15808a4ac322f60f594` (2026-09-10) — filed as "WP 3.4" and CDR-P3-31…35 on 2026-09-08/09, before merge, while `origin/main` independently deposited its own unrelated WP 3.4 (foundational corpus acquisition strategy) using the same CDR-P3-31…35 range. Renumbered to WP 3.5 / CDR-P3-36…40 to resolve the collision before this branch merged — title, version, filename and every cross-reference updated; no reasoning, comparison, or decision content changed. DR-0087…0091 keep their numbers: only what they cite as their origin (the CDR and WP numbers) changed. Both hashes retained per §77 |

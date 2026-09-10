@@ -12,6 +12,7 @@ Status is document metadata, never inferred from Git.
 | [SPEC-0004](SPEC-0004-semantic-registry.md) | Semantic Registry Implementation | 1.0 | **Approved — Effective 2026-08-16** |
 | [SPEC-0005](SPEC-0005-registry-skos-mapping.md) | Registry Projection Mapping (JSON and SKOS/RDF) | 1.0 | **Approved — Effective 2026-08-20** |
 | [SPEC-0006](SPEC-0006-durable-export-format.md) | Durable Export Format | 1.0 | **Approved — Effective 2026-08-21** |
+| [SPEC-0007](SPEC-0007-public-identifiers-and-resolution.md) | Public Identifiers and Resolution | 0.4 | Draft — Candidate, **implemented** (DR-0087…0092 enacted; awaiting a NAAN and founder approval) |
 
 ## Provenance
 
@@ -29,3 +30,7 @@ Status is document metadata, never inferred from Git.
 | SPEC-0005 v1.0 (approved) | `cccb4f2ce684889d9e60752e0b7f71c49abc606d3930574a4da6cf9817f16f9f` | 2026-08-20 | v0.1 approved by the founder (DR-0083); status block and §8 enactment note are the only changes |
 | SPEC-0006 v0.1 (draft) | `de47628f2c3e60d48b03e535cf5b90c118fda0e6230bedf22cae5dc4e94f5175` | 2026-08-21 | AI-drafted (Anthropic Claude Code agent session) alongside the implementation it specifies |
 | SPEC-0006 v1.0 (approved) | `73bf141dc772e2923defa8808bc896982622baf8dfc56d948c85577bfcede3af` | 2026-08-21 | Approved by the founder on the condition that unfiltered dumps be blocked (DR-0084); §9 open question 3 resolved and replaced by §9A access-tier policy |
+| SPEC-0007 v0.1 (draft) | `6d3a29067ef74a006519621961a1cf60776e3dbf8e5722c5a86ba9edd3e8b13e` | 2026-09-09 | AI-drafted (Anthropic Claude Code agent session) from the founder's rulings on WP 3.4 (DR-0087…0091); not yet implemented |
+| SPEC-0007 v0.2 (draft) | `8ae663f193d724d11f6f12e337d959c0ef84fc83a328043852dfc765065cf88c` | 2026-09-09 | v0.1 with §2.3 confirmed against a published NOID port and §6.2 fixed as an ERC/ANVL record; open questions 1–2 of v0.1 closed or narrowed; still AI-drafted, still a candidate |
+| SPEC-0007 v0.3 (draft) | `50fab98a085de88dc0a72ac1b52a3484be36244d8bde09435062f35fa80b948f` | 2026-09-09 | v0.2 revised to describe the implementation written the same day: §3 and §5 tables as built, §6.1's 400 for a failed check character, §10's executable checks and negative controls, §11 prerequisites 2–5 met. Still AI-drafted, still a candidate |
+| SPEC-0007 v0.4 (draft) | `5aca3d5f3d0ab1a0c4528dac298470d1116c7b900c312431b4bceedcadc75bcc` | 2026-09-09 | v0.3 revised for DR-0092, ruled directly by the founder: a split's deciding agent is shown as a computed public title, never the agent's own id, which moved to a new internal-tier table kept apart from every public-tier surface. 77 checks, two new negative controls. Still AI-drafted, still a candidate |

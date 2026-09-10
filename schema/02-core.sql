@@ -86,6 +86,13 @@ CREATE TABLE pipeline_agent (
     name            text NOT NULL,
     software_version text,          -- required for software agents (AI-002)
     model_identifier text,          -- provider/model for AI agents (§80)
+    -- A role or title an agent has chosen to have shown on a public
+    -- editorial act (DR-0092), e.g. "principal editor". Never the agent's
+    -- name: this table is confidential tier as a whole (SEC-001, §11),
+    -- because some agents act for confidential sources, and a title is
+    -- opt-in and separable from that. Null means no public byline — the
+    -- act stays inspectable in substance (§85) without naming anyone.
+    public_title    text,
     created_at      timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT software_agents_are_versioned
         CHECK (kind <> 'software' OR software_version IS NOT NULL)
