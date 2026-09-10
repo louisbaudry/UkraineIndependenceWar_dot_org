@@ -110,6 +110,7 @@ security, legal, editorial.
 | [DR-0091](DR-0091-project-uris-derive-from-arks.md) | Project URIs derive from ARKs; the registry namespace is the registry's ARK | architecture | Approved | 2026-09-09 |
 | [DR-0092](DR-0092-split-byline-as-public-title.md) | A split's deciding agent is shown as a public title, snapshotted, never the agent row | architecture / editorial / security | Approved | 2026-09-09 |
 | [DR-0093](DR-0093-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | Approved | 2026-09-08 |
+| [DR-0094](DR-0094-third-party-web-captures.md) | Third-party web captures (Common Crawl, Wayback Machine) as an acquisition channel | architecture / preservation | Proposed | — |
 
 ## Provenance of decisions
 
@@ -259,3 +260,11 @@ on a separate branch alongside the identifier-scheme work and assigned the
 next free number only when the two branches were reconciled on 2026-09-10.
 The register is ordered by number, not date, throughout; this is the one
 entry where the two diverge.
+
+DR-0094 is a second, independent instance of the same collision CLAUDE.md's
+onboarding notes now warn about: drafted on a branch cut before the
+identifier-scheme and DR-0093 branches were reconciled, and assigned
+DR-0087 at the time on the strength of its own branch's then-current
+register. It carried no other numbering dependency — nothing else in the
+DR set references it — so reconciliation was a rename to the next free
+number, DR-0094, with no reordering elsewhere in the register.
