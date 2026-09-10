@@ -8,6 +8,12 @@
 #
 #   bash setup/install.sh
 #
+# To install a branch other than main (fetch the script from that branch too,
+# so the two agree):
+#
+#   curl -fsSL https://raw.githubusercontent.com/louisbaudry/UkraineIndependenceWar_dot_org/<branch>/setup/install.sh \
+#     | BRANCH=<branch> bash
+#
 # Installs PostgreSQL and Python, creates the database and the OCFL storage
 # roots, loads the schema, and runs the test suite. It stops at the first
 # failure rather than continuing in a half-built state.
@@ -22,6 +28,7 @@
 set -euo pipefail
 
 REPO_URL="${REPO_URL:-https://github.com/louisbaudry/UkraineIndependenceWar_dot_org.git}"
+BRANCH="${BRANCH:-main}"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/uiw}"
 DB_NAME="${DB_NAME:-uiw}"
 ARCHIVE_ROOT="${ARCHIVE_ROOT:-$HOME/uiw-archive}"
@@ -48,6 +55,18 @@ else
   command -v sudo >/dev/null || die "sudo not found and not running as root"
 fi
 ok "Debian-family system"
+
+# Run a command as the postgres system user. As root there is no sudo prefix,
+# and "-u postgres psql" on its own is not a command — which is exactly how
+# the first install on a root shell failed (2026-09-09): the role was never
+# created and every later step was skipped.
+as_postgres() {
+  if [ -n "$SUDO" ]; then
+    $SUDO -u postgres "$@"
+  else
+    runuser -u postgres -- "$@"
+  fi
+}
 
 # Refuse to install anything into a directory a web server publishes. The
 # archive holds material at every access tier, including `confidential`, and a
@@ -155,16 +174,19 @@ ok "Python 3.$PY_MINOR"
 
 # ---------------------------------------------------------------------------
 
-step "Cloning the repository into $INSTALL_DIR"
+step "Cloning the repository into $INSTALL_DIR (branch $BRANCH)"
 
 if [ -d "$INSTALL_DIR/.git" ]; then
-  git -C "$INSTALL_DIR" pull --quiet
-  ok "already present, updated"
+  git -C "$INSTALL_DIR" fetch --quiet origin "$BRANCH"
+  git -C "$INSTALL_DIR" checkout --quiet "$BRANCH"
+  git -C "$INSTALL_DIR" pull --quiet origin "$BRANCH"
+  ok "already present, now at $BRANCH $(git -C "$INSTALL_DIR" rev-parse --short HEAD)"
 else
-  git clone --quiet "$REPO_URL" "$INSTALL_DIR"
-  ok "cloned"
+  git clone --quiet --branch "$BRANCH" "$REPO_URL" "$INSTALL_DIR"
+  ok "cloned at $BRANCH $(git -C "$INSTALL_DIR" rev-parse --short HEAD)"
 fi
 cd "$INSTALL_DIR"
+[ "$BRANCH" = main ] || warn "installed from branch '$BRANCH', not main"
 
 # ---------------------------------------------------------------------------
 
@@ -184,15 +206,15 @@ step "Creating the database"
 $SUDO systemctl enable --now postgresql >/dev/null 2>&1 || true
 
 DB_USER="$(id -un)"
-if ! $SUDO -u postgres psql -tAc \
+if ! as_postgres psql -tAc \
       "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER'" | grep -q 1; then
-  $SUDO -u postgres createuser --createdb "$DB_USER"
+  as_postgres createuser --createdb "$DB_USER"
   ok "database user $DB_USER created"
 else
   ok "database user $DB_USER exists"
 fi
 
-if $SUDO -u postgres psql -tAc \
+if as_postgres psql -tAc \
      "SELECT 1 FROM pg_database WHERE datname='$DB_NAME'" | grep -q 1; then
   warn "database '$DB_NAME' already exists — leaving it alone"
   warn "to start clean:  dropdb $DB_NAME  then re-run this script"
@@ -249,6 +271,7 @@ for suite in \
     storage/tests/test_ocfl.py \
     storage/tests/test_fixity_schedule.py \
     collector/tests/test_pipeline.py \
+    collector/tests/test_run.py \
     editorial/tests/test_gate2.py \
     publication/tests/test_gate3.py \
     export/tests/test_dump.py \
@@ -281,7 +304,7 @@ cat <<EOF
 
   The archive is installed and every test passes on this machine.
 
-    repository   $INSTALL_DIR
+    repository   $INSTALL_DIR  ($BRANCH @ $(git rev-parse --short HEAD))
     database     $DB_NAME
     storage      $ARCHIVE_ROOT
 

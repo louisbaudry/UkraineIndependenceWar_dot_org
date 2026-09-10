@@ -13,12 +13,17 @@
 # special-category personal data, so DR-0071's interim constraints barely bite
 # and POL-0001's structuring limits are straightforward to honour.
 #
-# UNVERIFIED: no locator below has been fetched. This environment's proxy
-# blocks general internet hosts, so every URL is drawn from documentation and
-# prior knowledge, not from a successful request. Treat each as a claim to be
-# checked on first run — `register.py --dry-run` reports exactly what would be
-# attempted, and a 404 on first collection is an expected outcome, not a
-# system failure (PRES-007: failed acquisitions are first-class).
+# VERIFICATION STATUS (2026-09-08). Two entries — `eu-consolidated-list` and
+# `ofac-sdn` — now carry `locator_verified`, `run_locators` and a
+# `verification_note`: their files were fetched, digested twice, and run
+# through the real collector into a throwaway database and storage root
+# (see docs/sources/verification-eu-consolidated-list-ofac-sdn.md). The
+# other five remain UNFETCHED beyond a reachability probe of their landing
+# pages: every URL there is drawn from documentation and prior knowledge, not
+# from a successful request for the files themselves. Treat each as a claim
+# to be checked on first run — `register.py --dry-run` reports exactly what
+# would be attempted, and a 404 on first collection is an expected outcome,
+# not a system failure (PRES-007: failed acquisitions are first-class).
 
 sources:
 
@@ -58,7 +63,23 @@ sources:
   - key: eu-consolidated-list
     source_type: sanctions-authority
     name: EU Consolidated Financial Sanctions List
-    locator: https://webgate.ec.europa.eu/fsd/fsf
+    # The FSF application root (https://webgate.ec.europa.eu/fsd/fsf) answers
+    # 401 without an EU Login session, so it is not usable as the source's
+    # address. The public full-list files are served without login from the
+    # URLs below; the `token` query value is the fixed public one the
+    # Commission publishes in its own download links, not a credential of
+    # this project. Verified 2026-09-08 — see verification_note.
+    locator: https://webgate.ec.europa.eu/fsd/fsf/public/files/xmlFullSanctionsList_1_1/content?token=dG9rZW4tMjAxNw
+    locator_verified: 2026-09-08
+    run_locators:
+      - https://webgate.ec.europa.eu/fsd/fsf/public/files/xmlFullSanctionsList_1_1/content?token=dG9rZW4tMjAxNw
+      - https://webgate.ec.europa.eu/fsd/fsf/public/files/csvFullSanctionsList_1_1/content?token=dG9rZW4tMjAxNw
+    verification_note: >
+      Both files fetched 2026-09-08, XML 25 766 640 bytes and CSV 25 166 172
+      bytes, digests stable across two fetches, and acquired end to end by
+      the real collector in a throwaway database. Server-side Last-Modified
+      was 2026-08-05 for both. Record in
+      docs/sources/verification-eu-consolidated-list-ofac-sdn.md.
     publisher: European Commission (DG FISMA)
     jurisdiction: EU
     primary_languages: [en]
@@ -95,7 +116,26 @@ sources:
   - key: ofac-sdn
     source_type: sanctions-authority
     name: OFAC Specially Designated Nationals list
+    # The Sanctions List Site is the current home (302 to /Home/index.html).
+    # Files come from the Sanctions List Service export API, which answers
+    # each request with a 302 to a presigned S3 URL (us-gov-west-1) valid for
+    # one hour; the legacy treasury.gov/ofac/downloads/sdn.xml address still
+    # resolves, via two redirects, to the same object. Register the service
+    # URLs, not the legacy one. The CSV exports (SDN.CSV, CONS_PRIM.CSV and
+    # companions) also work but are lossy relative to the XML and are not in
+    # the first run. Verified 2026-09-08 — see verification_note.
     locator: https://sanctionslist.ofac.treas.gov/
+    locator_verified: 2026-09-08
+    run_locators:
+      - https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML
+      - https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML
+      - https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/CONS_ADVANCED.XML
+    verification_note: >
+      All three XML exports fetched 2026-09-08 (28 978 335, 126 590 461 and
+      4 534 269 bytes; publication 969 of 2026-09-03, list date 2026-09-04),
+      SDN.XML digest stable across two fetches, and all three acquired end to
+      end by the real collector in a throwaway database. Record in
+      docs/sources/verification-eu-consolidated-list-ofac-sdn.md.
     publisher: US Treasury, Office of Foreign Assets Control
     jurisdiction: US
     primary_languages: [en]
@@ -108,6 +148,13 @@ sources:
     exclusions: >
       Interpretive guidance, FAQs and press releases — different evidentiary
       character, registered separately if wanted.
+    # Whole-file capture means the whole file: of 19 329 SDN entries observed
+    # on 2026-09-08, about a third sit under RUSSIA-EO14024 and the rest under
+    # programmes with no connection to this project (SDGT, SDNTK, CUBA and
+    # others), many naming individuals with dates and places of birth. The
+    # file is preserved unparsed (DR-0071(b)); structuring any of it is a
+    # Gate 2 act under POL-0001 §4. The breadth is a data-minimisation point
+    # for the POL-0001 §10 legal review, recorded here so it is not forgotten.
     capture_format: http
     default_retention_tier: permanent
     default_access_tier: public

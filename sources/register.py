@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import sys
 import uuid
+from datetime import date
 from pathlib import Path
 
 import yaml
@@ -47,6 +48,14 @@ POLICY_FIELDS = (
     "scope_rules", "exclusions", "default_retention_tier",
     "default_access_tier", "rights_permission", "rights_basis",
 )
+
+# Optional verification fields. None of these is stored in the registry;
+# they exist so the dry-run can say which locators have actually been
+# fetched and which are still claims. `run_locators` lists the exact URLs a
+# first collection run would pass to the collector; `locator_verified` is
+# the date those were last fetched successfully; `verification_note` says
+# where the record of that fetch lives.
+VERIFICATION_FIELDS = ("locator_verified", "run_locators", "verification_note")
 
 
 class RegistrationError(Exception):
@@ -108,6 +117,30 @@ def validate(sources: list[dict], dependence: list[dict]) -> list[str]:
                 f"{key}: scope reads as open-ended crawling, which DR-0071(a) "
                 "prohibits until POL-0001 §9's releases take effect")
 
+        # Verification fields are optional, but if present they must be
+        # what they claim to be: a date, and absolute https locators. A
+        # verification that cannot be read is not a verification.
+        verified = source.get("locator_verified")
+        if verified is not None and not isinstance(verified, date):
+            problems.append(
+                f"{key}: locator_verified must be an ISO date, got {verified!r}")
+        run_locators = source.get("run_locators")
+        if run_locators is not None:
+            if not isinstance(run_locators, list) or not run_locators:
+                problems.append(f"{key}: run_locators must be a non-empty list")
+            else:
+                for locator in run_locators:
+                    if not (isinstance(locator, str)
+                            and locator.startswith("https://")):
+                        problems.append(
+                            f"{key}: run locator {locator!r} is not an "
+                            "absolute https URL")
+        if run_locators and verified is None:
+            problems.append(
+                f"{key}: run_locators are listed but locator_verified is not "
+                "set; either record the date they were fetched or do not "
+                "claim them as run locators")
+
     for link in dependence:
         for end in ("from", "to"):
             if link.get(end) not in keys:
@@ -136,7 +169,13 @@ def describe(sources: list[dict], dependence: list[dict]) -> None:
         print(f"    retention {source['default_retention_tier']} · "
               f"access {source['default_access_tier']} · "
               f"rights {source['rights_permission']}")
-        print(f"    locator {source.get('locator','—')}  (UNFETCHED)")
+        verified = source.get("locator_verified")
+        status = f"verified {verified.isoformat()}" if verified else "UNFETCHED"
+        print(f"    locator {source.get('locator','—')}  ({status})")
+        for locator in source.get("run_locators") or []:
+            print(f"      run locator {locator}")
+        if source.get("verification_note"):
+            print(f"    verification: {source['verification_note']}")
         print()
 
     if dependence:
@@ -165,9 +204,17 @@ def describe(sources: list[dict], dependence: list[dict]) -> None:
     if unverified:
         print(f"  · resolving unverified rights positions for: "
               f"{', '.join(unverified)} (§14)")
-    print("  · a first collection run against locators none of which have "
-          "been fetched; 404s and format surprises are expected outcomes, "
-          "recorded as failed acquisitions (PRES-007), not system faults")
+    unfetched = [s["key"] for s in sources if not s.get("locator_verified")]
+    if unfetched:
+        print(f"  · a first collection run against locators that have not been "
+              f"fetched ({', '.join(unfetched)}); 404s and format surprises "
+              "are expected outcomes, recorded as failed acquisitions "
+              "(PRES-007), not system faults")
+    else:
+        print("  · a first collection run against locators that were fetched "
+              "successfully at verification time. A past fetch does not "
+              "guarantee the next one; a failure is still recorded as a "
+              "failed acquisition (PRES-007), not a system fault")
     print()
 
 

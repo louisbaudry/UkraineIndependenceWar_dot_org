@@ -16,21 +16,64 @@ events and coverage accounting — is exercised end to end by 29 tests against
 a real PostgreSQL database and real OCFL storage. Only the fetch is
 substituted.
 
-**`HttpFetcher` has never completed a live fetch.** The build environment's
-network policy denies general internet hosts — EUR-Lex, for instance, is
-refused at the proxy with a policy 403 — so no real source has been
-collected. The class is written to the same standard as the rest and is
-structurally simple, but *nothing has confirmed it works against a real
-server*: not its redirect handling, not its encoding behaviour, not its
-timeout semantics under a slow origin, not conditional requests, not how a
-real site's rate limiting responds to it.
+**The first real collection was performed on 2026-09-09** (DR-0093,
+*Executed*): five files, 211 331 430 bytes, zero failures, on the archive
+server. Before that, `HttpFetcher` had completed live fetches only in a
+rehearsal. On 2026-09-08 it fetched the EU
+Consolidated Financial Sanctions List (XML and CSV) and three OFAC exports
+(up to 127 MB, through a 302 to a presigned S3 URL) into a throwaway
+database and storage root, byte-identical to independent `curl` downloads,
+with the whole pipeline below it behaving as it does on fixtures. The
+record is
+[docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md).
+Everything from that rehearsal was destroyed. The archive now holds the
+2026-09-09 captures authorised by
+[DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md).
 
-Before anyone claims the project collects: run it against a live source in
-an environment with network access, and expect to find something.
+What the rehearsal did **not** exercise: behaviour under a slow or
+rate-limiting origin, conditional requests (none are made — an unchanged
+file is fetched and stored again), and the security check (the stand-in
+scanner ran, and recorded that it ran). It also showed two gaps in the
+pipeline that still stand: the response headers a publisher sends —
+`Last-Modified`, `ETag`, filenames, OFAC's publication metadata — are
+received by the fetcher and then discarded by the acquisition record; and
+quarantine copies are never removed after Gate 1 admits them, so the archive
+directory holds every capture twice. A third gap the rehearsal found —
+successive captures of one locator not linked through
+`capture_series_member` (DR-0074) — was independently fixed by the
+public-identifiers work merged the next day: `_admit()` now writes a series
+row for every admission, live fetch or WARC recovery alike, keyed
+deterministically by `(source_id, locator)`. **The two 2026-09-09 holdings
+predate that fix and have no series row of their own**; the next capture of
+either locator will start a new series that does not include them, until
+someone backfills one row per holding.
 
 This is the reason the fetch layer is the only place that touches the
 network. The seam is not for testing convenience; it is so the untested part
 is one small, replaceable class rather than a property of the whole pipeline.
+
+## Running a collection
+
+```bash
+python3 collector/run.py --source ofac-sdn --dbname uiw \
+        --agent <pipeline_agent uuid> --archive-root ~/uiw-archive [--dry-run]
+```
+
+`run.py` is the operator's entry point to `Collector.run()`. It takes the
+locators from the candidate entry's `run_locators` in `sources/candidates/`
+and refuses to proceed if the candidate is not registered (DR-0071(a)), has
+no verified run locators, is paused (DR-0067), if the agent is not a
+registered person (DR-0093 §3; `--allow-software-agent` exists for the day
+automation is decided), or if the archive root is a non-empty directory that
+is not an OCFL root. `--dry-run` performs every check and nothing else. The
+invocation — candidate key, locators, verification date, User-Agent, code
+commit — is recorded in the run's configuration (DR-0070), and a run with
+failed acquisitions exits 1 after recording them (PRES-007).
+
+18 tests in `collector/tests/test_run.py`. The registration refusal and the
+person-agent refusal were each removed in turn and the suite was seen to
+fail. The full sequence was also rehearsed live against both approved
+sources in a throwaway database on 2026-09-08 (verification record §7).
 
 ## The three gates
 
@@ -49,7 +92,8 @@ outcome of bulk collection (Principle 5).
 
 ## Policy enforcement
 
-- **DR-0071(a)** — collection from unregistered sources is refused outright.
+- **DR-0071(a)** — collection from unregistered sources is refused outright,
+  by `run.py` before any fetch and by `Collector.run()` again underneath it.
   Until POL-0001 §10's legal review is recorded, only registered sources with
   human-configured scope may be collected. An unregistered locator is not
   merely unknown; it is out of policy, and the code says so.

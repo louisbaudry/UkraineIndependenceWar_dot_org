@@ -109,6 +109,7 @@ security, legal, editorial.
 | [DR-0090](DR-0090-identifiers-name-objects-qualifiers-name-states.md) | Identifiers name objects; `.vN` qualifiers name states | architecture / preservation | Approved | 2026-09-09 |
 | [DR-0091](DR-0091-project-uris-derive-from-arks.md) | Project URIs derive from ARKs; the registry namespace is the registry's ARK | architecture | Approved | 2026-09-09 |
 | [DR-0092](DR-0092-split-byline-as-public-title.md) | A split's deciding agent is shown as a public title, snapshotted, never the agent row | architecture / editorial / security | Approved | 2026-09-09 |
+| [DR-0093](DR-0093-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | Approved | 2026-09-08 |
 
 ## Provenance of decisions
 
@@ -240,3 +241,21 @@ agent is named in the public response. The founder ruled for a public role
 or title, snapshotted onto the disambiguation record by trigger and never
 read from `pipeline_agent` at resolution time, over withholding it
 entirely or disclosing the agent's name.
+
+DR-0093 was drafted 2026-09-08 at the founder's direction, after the founder
+chose to begin collection with two of the seven sanctions-authority
+candidates, and **approved by the founder the same day for both sources**.
+Before drafting, every file a first run would collect was fetched, digested
+and run through the real collector into a throwaway database (record in
+[docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../sources/verification-eu-consolidated-list-ofac-sdn.md)).
+It authorises the two registrations and one manual first run against five
+verified locators, executed by the founder on the archive server with
+`collector/run.py` (built on approval); it does not automate the daily
+cadence, which waits on rulings the rehearsal surfaced (captures are not
+yet linked as a series; unchanged bytes are stored again; quarantine copies
+are never removed). **Numbered out of date order:** drafted and approved
+2026-09-08, before DR-0087…0092 (dated 2026-09-09), because it was developed
+on a separate branch alongside the identifier-scheme work and assigned the
+next free number only when the two branches were reconciled on 2026-09-10.
+The register is ordered by number, not date, throughout; this is the one
+entry where the two diverge.

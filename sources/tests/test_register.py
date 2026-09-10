@@ -110,6 +110,39 @@ def run() -> int:
               "relation": "cites", "note": "x"}],
             "unknown source")
 
+    # ---- verification claims must be readable, or not made -----------------
+
+    verified = [s for s in sources if s.get("locator_verified")]
+    check("PRES-007", "the two first-run candidates carry a verification date "
+          "and run locators",
+          {s["key"] for s in verified} >= {"eu-consolidated-list", "ofac-sdn"}
+          and all(s.get("run_locators") for s in verified))
+    check("PRES-007", "no candidate claims run locators without a "
+          "verification date",
+          all(s.get("locator_verified") for s in sources
+              if s.get("run_locators")))
+
+    undated = copy.deepcopy(sources)
+    for s in undated:
+        if s["key"] == "ofac-sdn":
+            s.pop("locator_verified")
+    rejects("PRES-007", "run locators without a verification date are refused",
+            undated, [], "locator_verified is not set")
+
+    badly_dated = copy.deepcopy(sources)
+    for s in badly_dated:
+        if s["key"] == "ofac-sdn":
+            s["locator_verified"] = "recently"
+    rejects("PRES-007", "a verification date that is not a date is refused",
+            badly_dated, [], "must be an ISO date")
+
+    insecure = copy.deepcopy(sources)
+    for s in insecure:
+        if s["key"] == "ofac-sdn":
+            s["run_locators"] = ["http://sanctionslistservice.ofac.treas.gov/x"]
+    rejects("SPEC-0003", "a run locator that is not absolute https is refused",
+            insecure, [], "not an absolute https URL")
+
     # ---- the declared dependence is not decorative ------------------------
 
     check("DR-0028", "the consolidated list is declared derived, not independent",

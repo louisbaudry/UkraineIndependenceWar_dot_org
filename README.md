@@ -22,9 +22,9 @@ The time horizon is measured in years and potentially decades.
 |---|---|
 | Phase I — Requirements Discovery | **Complete** — see the [discovery record](docs/discovery/phase-1-requirements-discovery-record.md) |
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
-| Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0006, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072). The founder ruled on 2026-09-08 that no collection scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
+| Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0007, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **First collection performed 2026-09-09** — two sanctions lists, registered and run on the archive server ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)). **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072); the founder ruled on 2026-09-08 that no scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0092 are approved and in force. No permanent API contract or technical stack
+DR-0001…0093 are approved and in force. No permanent API contract or technical stack
 beyond PostgreSQL, Python and OCFL has been frozen.
 
 ## Where things stand, plainly
@@ -34,21 +34,34 @@ data model, the registry, the three-gate pipeline, the storage layout and the
 personal-data policy are all decided and documented. The code implements them and is
 tested against a real database and real storage. But:
 
-- **Nothing has been collected.** No source is registered. The seven sanctions
-  authorities in [`sources/candidates/`](sources/README.md) are proposals awaiting the
-  founder's per-source decision; registering is the act that authorises collection.
-- **No live fetch has ever completed.** The build environments used so far cannot reach
-  general internet hosts, so `HttpFetcher` has never been exercised against a real
-  server, and no WARC file from Common Crawl or the Wayback Machine has ever been
-  parsed. [`collector/README.md`](collector/README.md) says exactly what is and is not
-  verified.
+- **Two sources are registered and collected; five are still proposals.** Of the
+  seven sanctions authorities in [`sources/candidates/`](sources/README.md), the
+  founder accepted `eu-consolidated-list` and `ofac-sdn` on 2026-09-08 and ran the
+  first collection on the archive server on 2026-09-09 — five files, ~211 MB, zero
+  failures ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)).
+  The other five remain candidates awaiting a per-source decision; registering is
+  the act that authorises collection (OPS-001).
+- **A live fetch has now completed, once, deliberately.** `HttpFetcher` acquired
+  the two sources above from a real server with an identified User-Agent. No WARC
+  file from Common Crawl or the Wayback Machine has been parsed against a live
+  archive yet — the WARC reader is exercised only against files the test suite
+  writes itself. [`collector/README.md`](collector/README.md) says exactly what is
+  and is not verified. The first run's rehearsal exposed two gaps that still
+  stand (unchanged bytes stored again, quarantine copies never removed) and
+  one that unrelated work fixed the next day (captures now join a capture
+  series on every admission) before the two branches were even aware of each
+  other — see [DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)
+  for the residual it left.
 - **The external legal review required by POL-0001 §10 has not been commissioned.**
   Until it is recorded, collection is bound to explicitly registered sources with
   human-configured scope (DR-0071): no open-ended crawling, no bulk social harvesting,
-  no automatic structuring of personal data.
+  no automatic structuring of personal data. This is why only two of seven
+  institutional, near-zero-personal-data sources were registered rather than all
+  seven or a broader crawl.
 - **Gate 2 and Gate 3 are human.** Bulk collection produces holdings and review queues,
   never canonical knowledge. That is the design (DR-0066, Principle 5), and it means the
-  knowledge graph grows at the pace of editorial review.
+  knowledge graph grows at the pace of editorial review. The first collection created
+  zero documentary assertions, as designed.
 
 ## The acquisition strategy (candidate)
 
@@ -62,23 +75,34 @@ or after the legal review, but by
 3. **registered live collection**, daily, through the pipeline.
 
 Its Track A (permitted now under DR-0071) is under way: the WARC recovery path and the
-live WARC wrapping are built and tested. Its Track B waits on the recorded review. Five
-candidate Decision Records (CDR-P3-31…35) await the founder.
+live WARC wrapping are built and tested, and A1 has produced a real first collection
+(above). Its Track B waits on the recorded review. Five candidate Decision Records
+(CDR-P3-31…35) await the founder.
 
 ## Recent work
 
 | Date | What | Where |
 |---|---|---|
 | 2026-08-26 | Gate 3 built; DR-0086 enacted (tier restrictiveness declared, not derived); seven sanctions authorities drafted as candidate registrations | `publication/`, `sources/` |
-| 2026-09-08 | WP 3.4, the foundational corpus acquisition strategy, deposited as candidate with CDR-P3-31…35; founder rules that no collection scale-up precedes the POL-0001 §10 legal review | [`docs/phase-3/`](docs/phase-3/README.md) |
-| 2026-09-09 | WARC recovery path built: a registered source's captures can be recovered from an external archive's WARC file through quarantine and Gate 1, with the archive recorded as acquisition source distinct from the publisher (§28); live fetches of `warc`-format sources are wrapped as WARC records | [`collector/`](collector/README.md), `schema/03-pipeline.sql` |
+| 2026-09-08 | WP 3.4, the foundational corpus acquisition strategy, deposited as candidate with CDR-P3-31…35; founder rules that no collection scale-up precedes the POL-0001 §10 legal review. Separately, two of the seven sanctions candidates verified against their live publishers and DR-0093 drafted and approved for both | [`docs/phase-3/`](docs/phase-3/README.md), [`docs/sources/`](docs/sources/verification-eu-consolidated-list-ofac-sdn.md) |
+| 2026-09-09 | WARC recovery path built: a registered source's captures can be recovered from an external archive's WARC file through quarantine and Gate 1, with the archive recorded as acquisition source distinct from the publisher (§28); live fetches of `warc`-format sources are wrapped as WARC records. Separately, `collector/run.py` built and the two DR-0093 sources registered and collected on the archive server — **the project's first collection** | [`collector/`](collector/README.md), `schema/03-pipeline.sql` |
 | 2026-09-09/10 | Public identifiers designed and implemented: WP 3.5 resolves Q-12; DR-0087…0092 enacted (ARK scheme, minting at publication, a five-disposition register, `.vN` state qualifiers, ARK-derived URIs, a split's decider shown as a title never an id). SPEC-0007 drafted as a candidate and implemented against it, 77 checks | [`identifiers/`](identifiers/README.md), `schema/08-identifiers.sql` |
+| 2026-09-10 | Two independently-developed branches reconciled: DR-0093 renumbered around DR-0087…0092 (both branches had drafted a "DR-0087" for different topics), and two `setup/install.sh` defects found on the founder's first real install (as-root Postgres role creation; branch-only clone) fixed | this file, `docs/decision-records/README.md`, `setup/install.sh` |
 
-Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. A1, the
-first live collection of the seven sanctions sources, waits on the founder
-registering them and on an environment with network access. A2 (census tooling
-against indices), A4 (WACZ evaluation), A5 (registration classes), A6 (legal-review
-brief) and A7 (storage measurement) are not started. A3 is done.
+Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
+under way**: 2 of the 7 sanctions sources are registered and have completed a
+first collection on the archive server (2026-09-09); the other 5 await the
+founder's per-source decision. A2 (census tooling against indices), A4 (WACZ
+evaluation), A5 (registration classes), A6 (legal-review brief) and A7 (storage
+measurement) are not started. A3 is done.
+
+## Picking up development
+
+The next open decision, raised but not yet ruled on, is how a collection run's
+software should be versioned for release baselines when a **person** is the
+run's agent of record (DR-0093 §3) rather than a software agent — see
+["Open decisions"](#open-decisions-for-the-next-session) below and
+[CLAUDE.md](CLAUDE.md) for the full session-start protocol.
 
 ## Repository layout
 
@@ -175,6 +199,37 @@ deliberate acts that follow it (OPS-001).
 5. [WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), the
    acquisition strategy, and [collector/README.md](collector/README.md) for what the
    code actually does today.
+
+## Open decisions for the next session
+
+Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
+propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
+wait for the answer before building against an assumption.
+
+1. **How is a collection run versioned when a person is its agent of record?**
+   `release/baseline.py --check` wants a versioned software agent named like
+   "collector" to have run, so it can pin `collector_version` and
+   `pipeline_version` (AI-002: software agents carry their version). DR-0093
+   §3 made the founder, a person, the run's agent of record instead, so after
+   the first real collection the baseline still shows both as `MISSING`. Three
+   options were put to the founder on 2026-09-09 and not yet answered:
+   record two agents per run (person as agent of record, a versioned software
+   agent on the preservation events); derive the pinned version from the run
+   configuration's recorded code commit instead of the agent registry; or make
+   the software agent the record of run and amend DR-0093 §3. See DR-0093's
+   *Executed* section for the full framing.
+2. **Registering the remaining five sanctions candidates**, or a different
+   next source. `sources/candidates/sanctions-authorities.yaml` has five more
+   ready; none has been fetched or verified the way the first two were.
+3. **The two-branch DR-numbering collision this merge just resolved**
+   (`DR-0093`, out of date order) is a one-off, but nothing in
+   [DR-0080](docs/decision-records/DR-0080-registry-lifecycle-and-change-classes.md)
+   or the DR README currently says how to allocate a number when two branches
+   draft one concurrently. Worth a light process note if it recurs.
+4. **WP 3.4's Track A items A2, A4, A5, A6, A7** (census tooling, WACZ
+   evaluation, registration classes, the legal-review brief, storage
+   measurement) are not started; A6 in particular blocks nothing today but
+   is the long pole before POL-0001 §10 can be commissioned.
 
 This README is an entry point, not the project's institutional memory (record §100).
 The authoritative statement of requirements, principles, and phase mandates is the

@@ -9,26 +9,45 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0086); the design
+every enacted decision since is a Decision Record (DR-0001…0093); the design
 lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
 the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
 `publication/`, `export/` and `release/` implements those documents and is
 tested against a real PostgreSQL database and real OCFL storage.
 
-Governance is far ahead of collection. **Nothing has been collected, no source
-is registered, no live fetch has ever completed, and the external legal review
-POL-0001 §10 requires has not been commissioned.** Do not write anything, in
-code or prose, that implies otherwise.
+Governance is still far ahead of collection, but collection is no longer
+theoretical. **As of 2026-09-09, two sources are registered
+(`eu-consolidated-list`, `ofac-sdn`) and the project's first real collection
+has run on the archive server** — five files, ~211 MB, zero failures, zero
+documentary assertions ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)).
+The other five sanctions-authority candidates remain unregistered, the
+external legal review POL-0001 §10 requires has not been commissioned, and
+collection **at scale** stays suspended until it is (DR-0072, DR-0093 §3).
+Do not write "nothing has been collected" or "no live fetch has ever
+completed" anywhere — both were true until 2026-09-09 and are not true now.
+Check the actual state (`sources/README.md`, `docs/decision-records/README.md`
+register, a live `psql` query if you have database access) before repeating
+any claim about what has or has not happened; this file is a starting point,
+not a substitute for checking.
 
 ## Starting a session
 
-1. Read this file, then `README.md`, then the component README of whatever
+1. Read this file, then `README.md` — in particular its **"Open decisions for
+   the next session"** section, which is the living list of what actually
+   needs a founder ruling right now — then the component README of whatever
    you are about to touch. `collector/README.md` says what the pipeline does
    and does not do today; `docs/phase-3/README.md` says where Phase III is.
 2. Start PostgreSQL and run the suites you will touch **before** editing
    (see "Environment notes"), so you know green from green-because-broken.
 3. Check `git log --oneline -15` and the branch you are on. Work happens on
    a fresh `claude/<topic>` branch from `main`; a merged branch is finished.
+   **Fetch `origin/main` and diff against it before assuming your branch's
+   view of decision-record numbers, `README.md`'s status claims, or the
+   collector/registry code is current** — two sessions working in parallel
+   on 2026-09-08…10 each drafted an unrelated "DR-0087", discovered only at
+   merge time (see DR-0093's numbering note in the DR register). Grep
+   `docs/decision-records/README.md` on `origin/main`, not just your branch,
+   for the next free DR number.
 4. If the founder's request touches collection scope, personal data, legal
    posture or a document's status, re-read the "Standing rulings" below
    before proposing anything.
@@ -40,13 +59,13 @@ permits now. Keep this list current when you finish or start an item.
 
 | Item | State | Note |
 |---|---|---|
-| A1 — register the seven sanctions sources and make the first live collection | **waiting on the founder and on network access** | `sources/register.py --commit` is the founder's act; `HttpFetcher` has never completed a live fetch |
+| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 done, 2026-09-09** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `HttpFetcher` has completed live fetches, twice (a throwaway-database rehearsal, then the real run). The other 5 candidates are unregistered and unverified against a live server |
 | A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | not started | must not live-fetch unregistered hosts |
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
 | A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |
 | A6 — legal-review brief (WP 3.4 §7) | not started | a brief, not a policy; not legal advice |
-| A7 — storage and bandwidth measurement | not started | needs A1 |
+| A7 — storage and bandwidth measurement | not started | needs A1's remaining 5 sources, or can start from the 2 done |
 
 Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
 POL-0001 §10 review.
@@ -97,8 +116,18 @@ commits to.
   now, POL-0001 §9(a) afterwards. The acquisition strategy is census,
   retrospective recovery from existing archives, registered live collection
   (WP 3.4, candidate). Do not propose a crawler.
-- **The seven sanctions authorities in `sources/candidates/` are candidates**,
-  not registered. Registering is the founder's act, per source.
+- **Two of the seven sanctions authorities in `sources/candidates/` are
+  registered** (`eu-consolidated-list`, `ofac-sdn`, DR-0093, 2026-09-08/09);
+  **five remain candidates**, not registered. Registering the rest is the
+  founder's act, per source, same as it was for the first two.
+- **A person, not software, is the agent of record for a collection run**
+  (DR-0093 §3) — deliberately, at the founder's direction, for the first
+  runs. This leaves `release/baseline.py --check` unable to pin
+  `collector_version`/`pipeline_version` from the agent registry. Three
+  resolutions were proposed to the founder on 2026-09-09 and not yet ruled
+  on; see README.md's "Open decisions for the next session". Do not resolve
+  this unilaterally by quietly switching the agent of record back to
+  software — that reverses a founder ruling.
 
 ## Governance context
 
@@ -213,9 +242,17 @@ change could break:
 
 ## Environment notes for agent sessions
 
-- **No general network access.** The proxy denies general internet hosts. No
-  external source, archive or tool can be verified from here; say so in every
-  document and README where it matters, as existing ones do.
+- **Network access varies by session — check, do not assume from this file.**
+  Some sessions' proxies deny general internet hosts entirely; the session
+  that authored most of this file had no such access. The session that
+  performed the 2026-09-08 verification and 2026-09-09 first collection
+  could reach the specific publishers it needed (`eur-lex.europa.eu`,
+  `webgate.ec.europa.eu`, `treas.gov` domains) but not others it tried
+  (`web.archive.org`, `kse.ua`, `rusi.org`). Test the actual locator with
+  `curl` before writing "cannot be verified from here" — and if you do write
+  it, name what you actually tried, per
+  [docs/sources/verification-eu-consolidated-list-ofac-sdn.md](docs/sources/verification-eu-consolidated-list-ofac-sdn.md)'s
+  style.
 - **PostgreSQL 16 is installed but the cluster is down** at session start:
 
   ```bash
