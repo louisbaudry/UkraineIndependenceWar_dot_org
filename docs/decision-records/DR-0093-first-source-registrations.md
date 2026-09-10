@@ -1,4 +1,4 @@
-# DR-0087 — First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN
+# DR-0093 — First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN
 
 **Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-08 by founder/principal editor
 **Origin:** founder's direction of 2026-09-08 ("draft the registration for the EU list and OFAC"), following the seven-candidate proposal in [`sources/README.md`](../../sources/README.md) | **Supersedes:** — | **Superseded by:** —
