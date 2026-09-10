@@ -222,8 +222,8 @@ changing an enumeration data depends on is a structural registry change
 (DR-0080). Its open item — whether the two lateral tiers should remain
 distinct at all — is a §12 vocabulary question, not a resolution one.
 
-DR-0087 through DR-0091 originate from CDR-P3-31…35 in
-[WP 3.4](../phase-3/working-papers/wp-3.4-identifier-design.md) (AI-drafted
+DR-0087 through DR-0091 originate from CDR-P3-36…40 in
+[WP 3.5](../phase-3/working-papers/wp-3.5-identifier-design.md) (AI-drafted
 identifier-design study), each put to the founder as a separate question
 with named options and a recommendation and **ruled one at a time** on
 2026-09-09: the scheme (ARK, own NAAN, own resolver), the minting rule

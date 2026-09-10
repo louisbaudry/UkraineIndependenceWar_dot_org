@@ -1,7 +1,7 @@
 # DR-0089 — The identifier register and its five dispositions
 
 **Category:** architecture / preservation / security | **Status:** Approved | **Decided:** 2026-09-09 by founder/principal editor
-**Origin:** CDR-P3-33, [WP 3.4](../phase-3/working-papers/wp-3.4-identifier-design.md) §3.2, §5 rule 3 | **Supersedes:** — | **Superseded by:** —
+**Origin:** CDR-P3-38, [WP 3.5](../phase-3/working-papers/wp-3.5-identifier-design.md) §3.2, §5 rule 3 | **Supersedes:** — | **Superseded by:** —
 
 ## Context
 

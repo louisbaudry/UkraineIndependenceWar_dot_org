@@ -1,7 +1,7 @@
 # DR-0087 — ARK as the public identifier scheme
 
 **Category:** architecture / preservation | **Status:** Approved | **Decided:** 2026-09-09 by founder/principal editor
-**Origin:** CDR-P3-31, [WP 3.4](../phase-3/working-papers/wp-3.4-identifier-design.md) §3.1–3.3, §5 rule 1 | **Supersedes:** — | **Superseded by:** —
+**Origin:** CDR-P3-36, [WP 3.5](../phase-3/working-papers/wp-3.5-identifier-design.md) §3.1–3.3, §5 rule 1 | **Supersedes:** — | **Superseded by:** —
 
 ## Context
 
@@ -9,7 +9,7 @@ Record §15 requires stable public project identifiers and permanent
 resolvable URLs for citable research objects, and forbids freezing a custom
 identifier syntax "without researching established patterns first".
 DR-0022 deferred identifier syntax and resolvers to "a separate, later
-decision". WP 3.4 is that research: it compared ARK, DOI, Handle, URN and
+decision". WP 3.5 is that research: it compared ARK, DOI, Handle, URN and
 UUID against §15, PRES-009 (the archive is reconstructible without the
 website), DATA-009 (every published identifier resolves forever) and the
 redirect, disambiguation and tombstone behaviours already required by
@@ -48,7 +48,7 @@ DR-0064 and DR-0077.
 - The project **operates its own resolver** on its domain and **registers
   it with N2T** so the ARK resolver chain can find it and a successor can
   take it over at hand-over.
-- §15's research-first obligation is recorded as met by WP 3.4 §2; the
+- §15's research-first obligation is recorded as met by WP 3.5 §2; the
   deferral in DR-0022 is discharged.
 
 ## Consequences
@@ -56,7 +56,7 @@ DR-0064 and DR-0077.
 - PRES-009 holds for identifiers: a citation outlives the domain and the
   website.
 - A NAAN must be requested before the first public identifier is minted
-  (WP 3.4 §8 Q1 — timing is operational).
+  (WP 3.5 §8 Q1 — timing is operational).
 - The name-generation algorithm, check-character rule and resolver HTTP
   contract are specified in **SPEC-0007 — Public Identifiers and
   Resolution**, which DR-0087…0091 authorise.

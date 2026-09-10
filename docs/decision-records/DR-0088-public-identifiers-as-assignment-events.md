@@ -1,7 +1,7 @@
 # DR-0088 — Public identifiers are minted as assignment events at publication
 
 **Category:** architecture / editorial | **Status:** Approved | **Decided:** 2026-09-09 by founder/principal editor
-**Origin:** CDR-P3-32, [WP 3.4](../phase-3/working-papers/wp-3.4-identifier-design.md) §3.4–3.6, §5 rule 2 | **Supersedes:** — | **Superseded by:** —
+**Origin:** CDR-P3-37, [WP 3.5](../phase-3/working-papers/wp-3.5-identifier-design.md) §3.4–3.6, §5 rule 2 | **Supersedes:** — | **Superseded by:** —
 
 ## Context
 
@@ -39,7 +39,7 @@ this date" — and Q-12 asked whether annotations are independently citable.
    legal records, dataset releases — **plus annotations and published
    pages**. Annotations are citable objects under the same scheme and the
    same rule; there is no separate annotation resolver. Serving them over
-   the Web Annotation Protocol is a later product decision (WP 3.4 §8 Q4).
+   the Web Annotation Protocol is a later product decision (WP 3.5 §8 Q4).
 4. **Internal UUIDs are never published as identifiers.**
 
 This resolves the annotation half of Q-12 (WP 0.4 §6 Q1).
@@ -52,4 +52,4 @@ This resolves the annotation half of Q-12 (WP 0.4 §6 Q1).
   the citation identifier its schema comment currently claims.
 - Unpublished material has no public identifier. Whether citation by a
   subscriber-tier product counts as publication for minting is open
-  (WP 3.4 §8 Q3).
+  (WP 3.5 §8 Q3).

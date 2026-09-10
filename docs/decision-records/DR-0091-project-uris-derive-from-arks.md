@@ -1,7 +1,7 @@
 # DR-0091 — Project URIs derive from ARKs; the registry namespace is the registry's ARK
 
 **Category:** architecture | **Status:** Approved | **Decided:** 2026-09-09 by founder/principal editor
-**Origin:** CDR-P3-35, [WP 3.4](../phase-3/working-papers/wp-3.4-identifier-design.md) §3.8, §5 rule 5 | **Supersedes:** — | **Superseded by:** —
+**Origin:** CDR-P3-40, [WP 3.5](../phase-3/working-papers/wp-3.5-identifier-design.md) §3.8, §5 rule 5 | **Supersedes:** — | **Superseded by:** —
 
 ## Context
 

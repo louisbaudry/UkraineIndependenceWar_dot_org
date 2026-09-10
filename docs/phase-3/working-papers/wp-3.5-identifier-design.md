@@ -1,9 +1,9 @@
-# Phase III / Study 4 — Identifier Design
-## Working Paper 3.4
+# Phase III / Study 5 — Identifier Design
+## Working Paper 3.5
 
 **Project:** Ukraine's Second War of Independence
 **Status:** CANDIDATE — AI-drafted, awaiting founder review.
-**Version:** 3.4
+**Version:** 3.5
 **Mandate:** Q-12 and record §15 — how citable research objects receive stable public identifiers and permanent resolvable URLs; whether annotations are independently citable, and through what resolver. DR-0022 left "identifier syntax and resolvers for citable project objects" as "a separate, later decision"; this is the study that decision requires.
 **Constraints inherited:** record §15–16 (immutable internal IDs, stable public identifiers, permanent resolvable URLs, typed external mappings; "do not freeze a custom identifier syntax without researching established patterns first"; internal objects do not automatically need public identifiers), §77 (corrections leave a trace), §89 (releases carry a persistent identifier where mature), Principle 18 and PRES-009 (the archive is reconstructible without the website), ARCH-001 (no shared identity between pipeline and world registries), DATA-009 (every published identifier resolves forever, including merged, split and redacted objects), DATA-010, DR-0012 (identifiers attach via assignment events), DR-0017/0018 (Web Annotation targeting; targets are preserved captures, version-pinned), DR-0045, DR-0049 (DataCite DOIs for releases at maturity), DR-0055/0077 (append-only; governed redaction leaves a tombstone), DR-0062/0064 (entity statuses; merge and split leave permanent redirects, a split's redirect resolves to a disambiguation record), DR-0080 (structural changes need a DR), DR-0083 (the RDF namespace is provisional), SPEC-0006 §9A and DR-0086 (access tiers; most-restrictive wins).
 
@@ -251,24 +251,24 @@ than the citation identifier the schema comment currently claims.
 
 ## 6. Candidate Decision Records
 
-- **CDR-P3-31 — ARK as the public identifier scheme.** §5 rule 1. Records
+- **CDR-P3-36 — ARK as the public identifier scheme.** §5 rule 1. Records
   that §15's research-first obligation has been met (this paper, §2) and
   resolves the scheme half of Q-12. Supersedes nothing; DR-0022's deferral
   is discharged.
-- **CDR-P3-32 — Public identifiers are minted as assignment events at
+- **CDR-P3-37 — Public identifiers are minted as assignment events at
   publication.** §5 rule 2. Extends DR-0012 to the project's own
   identifiers; fixes the eligible classes, including annotations (the
   other half of Q-12); satisfies §15's "not automatically" clause.
-- **CDR-P3-33 — The identifier register and its five dispositions.** §5
+- **CDR-P3-38 — The identifier register and its five dispositions.** §5
   rule 3. Gives DATA-009 its verification object, implements DR-0064's
   redirects and disambiguation records and DR-0077's tombstones on the
   public surface, and adds the `restricted` disposition required by
   SPEC-0006 §9A. Also fixes SPEC-0002 §6 Q3 (disambiguation-record content:
   the split event's date, deciding agent, successor identifiers, and the
   grounds citation — nothing more).
-- **CDR-P3-34 — Identifiers name objects; `.vN` qualifiers name states.**
+- **CDR-P3-39 — Identifiers name objects; `.vN` qualifiers name states.**
   §5 rule 4.
-- **CDR-P3-35 — Project URIs derive from ARKs; the registry namespace is
+- **CDR-P3-40 — Project URIs derive from ARKs; the registry namespace is
   the registry's ARK with hash fragments.** §5 rule 5. A structural change
   under DR-0080 to the provisional namespace, taken before any external
   consumer exists; closes SPEC-0005 §7 Q1 and DR-0083's open item.

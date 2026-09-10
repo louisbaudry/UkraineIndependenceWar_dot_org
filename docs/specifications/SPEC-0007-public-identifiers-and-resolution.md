@@ -3,7 +3,7 @@
 **Class:** SPEC (DR-0046 control) | **Version:** 0.4 | **Status:** Draft — Candidate (implemented)
 **Approval:** — | **Effective:** —
 **Supersedes:** — | **Superseded by:** —
-**Change history:** 0.1 drafted 2026-09-09 from the five rulings on WP 3.4 (DR-0087…0091). 0.2 the same day: the check-character rule (§2.3) confirmed against a published NOID port and the `?info` record format (§6.2) fixed as an ERC record, closing the first two open questions of 0.1. 0.3 the same day: implemented, and revised to describe what was built rather than what was proposed — §3's citable classes and §5's disambiguation records became tables, §6.1 gained a `400` for a failed check character, and §10's checks are now executable. §11 prerequisites 2–5 are met; the NAAN and the N2T record are not, so nothing can be minted outside the suite. 0.4 the same day: DR-0092 resolves §12 open question 2 — a split's deciding agent is shown as a public title, computed at insert and kept in its own internal-tier table (`disambiguation_decision`) so a preservation dump can never be joined against a disclosure dump to identify an untitled decider; §5 and §10 revised, 77 checks now pass including two negative controls confirming the new protections are load-bearing.
+**Change history:** 0.1 drafted 2026-09-09 from the five rulings on WP 3.5 (DR-0087…0091). 0.2 the same day: the check-character rule (§2.3) confirmed against a published NOID port and the `?info` record format (§6.2) fixed as an ERC record, closing the first two open questions of 0.1. 0.3 the same day: implemented, and revised to describe what was built rather than what was proposed — §3's citable classes and §5's disambiguation records became tables, §6.1 gained a `400` for a failed check character, and §10's checks are now executable. §11 prerequisites 2–5 are met; the NAAN and the N2T record are not, so nothing can be minted outside the suite. 0.4 the same day: DR-0092 resolves §12 open question 2 — a split's deciding agent is shown as a public title, computed at insert and kept in its own internal-tier table (`disambiguation_decision`) so a preservation dump can never be joined against a disclosure dump to identify an untitled decider; §5 and §10 revised, 77 checks now pass including two negative controls confirming the new protections are load-bearing.
 **Governed by:** DR-0087 (ARK scheme), DR-0088 (minting as assignment events), DR-0089 (register and dispositions), DR-0090 (objects and `.vN` states), DR-0091 (ARK-derived URIs), DR-0092 (split byline as public title); DR-0012, DR-0055, DR-0064, DR-0077, DR-0080, DR-0086; record §15–16, §85; DATA-009/010, PRES-009, ARCH-001, SEC-001.
 **Implemented by:** `schema/08-identifiers.sql` (the assignment family, the register, the forward-only trigger, `resolve_identifier()`, the split-byline tables); `identifiers/ark.py`, `identifiers/register.py`, `identifiers/resolver.py`; the minting hook in `publication/gate3.py`; tier rules in `export/tiers.py`. Verified by `identifiers/tests/test_identifiers.py` (77 checks) and `identifiers/tests/rebuild.py`.
 
@@ -11,7 +11,7 @@
 
 Drafted 2026-09-09 by an AI assistant (Anthropic Claude Code agent session)
 at the founder's direction, immediately after the founder ruled on
-CDR-P3-31…35 one at a time, revised at 0.3 to match the implementation
+CDR-P3-36…40 one at a time, revised at 0.3 to match the implementation
 written the same day, and again at 0.4 after the founder ruled directly on
 §12's remaining named-options question (DR-0092). Candidate until
 approved. Where this document fixes something the ARK draft leaves open
@@ -43,7 +43,7 @@ ark:/NAAN/SHOULDER NAME CHECK [.vN]
 |---|---|
 | `ark:/` | The label, always with the slash in the citation form. |
 | `NAAN` | The project's Name Assigning Authority Number, five betanumeric characters, issued by the ARK maintenance agency. **Not yet issued** (§11). |
-| `SHOULDER` | One primordial shoulder reserved for project minting: betanumeric consonants ending in the first digit (ARK draft convention). Chosen when the NAAN is issued and recorded in `registry.yaml`. A second shoulder is reserved, unused, for a successor institution (DR-0087; WP 3.4 §8 Q2). |
+| `SHOULDER` | One primordial shoulder reserved for project minting: betanumeric consonants ending in the first digit (ARK draft convention). Chosen when the NAAN is issued and recorded in `registry.yaml`. A second shoulder is reserved, unused, for a successor institution (DR-0087; WP 3.5 §8 Q2). |
 | `NAME` | Eight characters drawn uniformly at random from the betanumeric alphabet by a cryptographically secure generator. Random, not sequential: a sequence leaks minting order and counts (Cool URIs; §15 opacity). Collision is checked against the register before commit. |
 | `CHECK` | One check character (§2.3). |
 | `.vN` | Optional state qualifier (DR-0090; §7). |
@@ -457,10 +457,10 @@ web server is deployment work.
    `pipeline_agent` cannot be joined against a disclosure dump to identify
    an agent who chose no title. §5 and §10 describe the design and its
    tests.)*
-3. **NAAN timing** (WP 3.4 §8 Q1): request now or at first publication?
+3. **NAAN timing** (WP 3.5 §8 Q1): request now or at first publication?
    Recommendation: now — it commits the project to nothing and unblocks
    §8.2.
-4. **Minting for restricted-tier objects** (WP 3.4 §8 Q3): §4.1 trigger 2
+4. **Minting for restricted-tier objects** (WP 3.5 §8 Q3): §4.1 trigger 2
    mints on any `publication_decision`, including at subscriber tiers, so
    the `restricted` disposition is reachable; confirm this is intended.
 5. **Which classes get `.vN`** beyond pages and holdings.
@@ -471,5 +471,5 @@ web server is deployment work.
 
 ## 13. Decision Record arising (candidate)
 
-**CDR-P3-36 — Adoption of SPEC-0007 v1.0**, to be put to the founder once
+**CDR-P3-41 — Adoption of SPEC-0007 v1.0**, to be put to the founder once
 §12 item 1 is closed and §11 items 2–5 are implemented and tested.

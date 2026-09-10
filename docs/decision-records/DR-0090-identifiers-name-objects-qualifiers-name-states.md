@@ -1,7 +1,7 @@
 # DR-0090 — Identifiers name objects; `.vN` qualifiers name states
 
 **Category:** architecture / preservation | **Status:** Approved | **Decided:** 2026-09-09 by founder/principal editor
-**Origin:** CDR-P3-34, [WP 3.4](../phase-3/working-papers/wp-3.4-identifier-design.md) §3.7, §5 rule 4 | **Supersedes:** — | **Superseded by:** —
+**Origin:** CDR-P3-39, [WP 3.5](../phase-3/working-papers/wp-3.5-identifier-design.md) §3.7, §5 rule 4 | **Supersedes:** — | **Superseded by:** —
 
 ## Context
 
@@ -32,7 +32,7 @@ both need a citation that points at what the project said on a given date.
    project's resolver; they are not separate register entries.
 3. The resolver **may additionally offer Memento datetime negotiation**
    (RFC 7089) over `page_revision` and the bitemporal `asserted_at`
-   column. That is implementation, not identity (WP 3.4 §8 Q5).
+   column. That is implementation, not identity (WP 3.5 §8 Q5).
 
 ## Consequences
 
