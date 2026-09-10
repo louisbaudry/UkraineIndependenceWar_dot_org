@@ -3,7 +3,7 @@
 # DERIVED ARTIFACT — do not edit. The source of truth is the YAML
 # under registry/ (DR-0078). Regenerate with registry/compile.py.
 # Mapping and its documented export losses: SPEC-0005.
-# Registry version: 0.1.2
+# Registry version: 0.2.0
 
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -12,7 +12,7 @@
 uiw:uiw-semantic-registry
     a skos:ConceptScheme ;
     skos:prefLabel "Ukraine's Second War of Independence — Semantic Registry"@en ;
-    uiw:version "0.1.2" ;
+    uiw:version "0.2.0" ;
     uiw:status "effective" ;
     dcterms:issued "2026-08-16" .
 
@@ -597,6 +597,56 @@ uiw:epistemic-categories--project-conclusion
     skos:prefLabel "project conclusion"@en ;
     skos:definition "An editorially accountable assertion published in the project's own voice (§33), requiring human accountability (§79) and visible inference (DR-0032)."@en .
 
+uiw:identifier-dispositions
+    a skos:ConceptScheme ;
+    skos:prefLabel "identifier disposition"@en ;
+    skos:definition "The current state of a public identifier in the identifier register (DR-0089). Every minted identifier has exactly one disposition, and a minted identifier never dead-ends: the disposition says what the resolver answers with."@en ;
+    skos:note "Dispositions move forward only. An `active` identifier may become any of the others; `restricted` returns to `active` only by a recorded tier decision; `tombstone` returns to `active` only by a recorded reversal of the redaction under record §77; `redirect` and `disambiguation` are terminal. No identifier is ever deleted or reissued."@en ;
+    uiw:status "effective" ;
+    uiw:effective "2026-09-09" ;
+    uiw:closed "true"^^<http://www.w3.org/2001/XMLSchema#boolean> ;
+    uiw:steward "founder" ;
+    uiw:layer "pipeline" ;
+    uiw:type "vocabulary" ;
+    uiw:authorised_by "DR-0089" ;
+    uiw:satisfies_requirements "DATA-009" ;
+    uiw:depends_on_specs "SPEC-0007" .
+
+uiw:identifier-dispositions--active
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-dispositions ;
+    skos:topConceptOf uiw:identifier-dispositions ;
+    skos:prefLabel "active"@en ;
+    skos:definition "Resolves to the object's current state, with links to its history."@en .
+
+uiw:identifier-dispositions--redirect
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-dispositions ;
+    skos:topConceptOf uiw:identifier-dispositions ;
+    skos:prefLabel "redirect"@en ;
+    skos:definition "The object was merged into a successor (DR-0064); resolves to the successor identifier with a lineage note."@en .
+
+uiw:identifier-dispositions--disambiguation
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-dispositions ;
+    skos:topConceptOf uiw:identifier-dispositions ;
+    skos:prefLabel "disambiguation"@en ;
+    skos:definition "The object was split (DR-0064); resolves to a disambiguation record naming the successors, the date, the deciding agent, and the grounds. No automatic redirect, because there is no single successor."@en .
+
+uiw:identifier-dispositions--tombstone
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-dispositions ;
+    skos:topConceptOf uiw:identifier-dispositions ;
+    skos:prefLabel "tombstone"@en ;
+    skos:definition "The object was removed under governed redaction (DR-0077); resolves to the tombstone recording fact, date, authority and grounds, never the content."@en .
+
+uiw:identifier-dispositions--restricted
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-dispositions ;
+    skos:topConceptOf uiw:identifier-dispositions ;
+    skos:prefLabel "restricted"@en ;
+    skos:definition "The object exists but sits at an access tier the requester may not see; resolves to a notice carrying the `withheld` absence state (DR-0029). Distinct from `tombstone`: nothing was removed."@en .
+
 uiw:identifier-types
     a skos:ConceptScheme ;
     skos:prefLabel "identifier type"@en ;
@@ -693,6 +743,22 @@ uiw:identifier-types--official-registry-id
     skos:topConceptOf uiw:identifier-types ;
     skos:prefLabel "other official registry identifier"@en ;
     uiw:issuingAuthority "Varies; recorded on the assignment" .
+
+uiw:identifier-types--uiw-ark
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "project public identifier (ARK)"@en ;
+    skos:scopeNote "The project's own public identifier, minted as an assignment event at first publication or explicit citation (DR-0088) and tracked in the identifier register (DR-0089). Never assigned by matching; one per object, never reissued."@en ;
+    uiw:issuingAuthority "The project, under its own NAAN (DR-0087)" .
+
+uiw:identifier-types--doi
+    a skos:Concept ;
+    skos:inScheme uiw:identifier-types ;
+    skos:topConceptOf uiw:identifier-types ;
+    skos:prefLabel "Digital Object Identifier (DOI)"@en ;
+    skos:scopeNote "Minted for public dataset releases once release practice is mature (DR-0049); an additional identifier whose landing page is the release's ARK resolver page (DR-0091)."@en ;
+    uiw:issuingAuthority "A DOI registration agency (DataCite for datasets)" .
 
 uiw:interest-types
     a skos:ConceptScheme ;

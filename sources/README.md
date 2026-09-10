@@ -1,8 +1,11 @@
 # Source registration
 
 Candidate sources for the first real collection, drafted against the DR-0067
-registry schema. **Nothing here is registered.** These are proposals for the
-founder to accept, amend, or reject — per source, not as a block.
+registry schema. **Two are registered** on the archive server as of
+2026-09-09 under DR-0093 (`eu-consolidated-list`, `ofac-sdn`); the other five
+remain proposals for the founder to accept, amend, or reject — per source,
+not as a block. Registration lives in the server's database, not in this
+file: the file is the candidate, the row is the registration.
 
 ```bash
 python3 sources/register.py --check                      # validate only
@@ -16,10 +19,25 @@ Registering a source is **the act that authorises collecting from it**
 (OPS-001). It is not a configuration change, and the gap between "drafted"
 and "registered" exists so that authorising is deliberate.
 
+Collecting from a registered source is a further, separate act:
+
+```bash
+python3 collector/run.py --source ofac-sdn --dbname uiw \
+        --agent <your-pipeline_agent-uuid> --archive-root ~/uiw-archive
+```
+
+which takes the exact `run_locators` listed and verified in the candidate
+file and refuses an unregistered candidate. **DR-0093 (approved 2026-09-08)
+authorises this for `eu-consolidated-list` and `ofac-sdn`**; the other five
+remain proposals.
+
 ## What is proposed
 
 Seven sanctions and export-control authorities — the thematic area the
-founder chose. Institutional publishers, stable formats, near-zero
+founder chose. Two of them, `eu-consolidated-list` and `ofac-sdn`, are
+approved for registration and a first run by
+[DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md);
+the registration itself happens on the archive server. Institutional publishers, stable formats, near-zero
 special-category personal data, so DR-0071's interim constraints barely bite
 and POL-0001's structuring limits are straightforward to honour.
 
@@ -108,25 +126,46 @@ obligation rather than a formality.
   `ua-nsdc-sanctions` (§14).
 - **A first collection run against locators none of which have been fetched.**
 
-## Every locator here is unverified
+## Which locators are verified
 
-This environment's proxy blocks general internet hosts, so **no URL below has
-been fetched**. Each is drawn from documentation and prior knowledge, not from
-a successful request. Some are probably wrong: sanctions authorities move
-endpoints, and several of these publish through interfaces that have changed
-more than once since 2014.
+**Two are, five are not.** On 2026-09-08 the files behind
+`eu-consolidated-list` and `ofac-sdn` were fetched, digested twice, and
+acquired end to end by the real collector into a throwaway database; the
+record is
+[docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md)
+and the proposal to register them is
+[DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md).
+Those two entries carry three optional fields the registry does not store:
+
+| Field | Meaning |
+|---|---|
+| `locator_verified` | ISO date the run locators were last fetched successfully |
+| `run_locators` | the exact URLs a first run passes to the collector — refused without a `locator_verified` date, and refused unless absolute `https://` |
+| `verification_note` | where the record of that fetch lives |
+
+`--dry-run` prints `(verified <date>)` or `(UNFETCHED)` per source, and
+adjusts what it says the first run commits you to.
+
+**The other five remain claims.** Their landing pages answered a
+reachability probe (EUR-Lex with an empty 202 challenge page; BIS now
+redirects to `bis.gov`), but no file has been fetched from any of them. Each
+URL is drawn from documentation and prior knowledge, and some are probably
+wrong: sanctions authorities move endpoints, and several of these publish
+through interfaces that have changed more than once since 2014.
 
 That is expected and handled. A 404 on first collection is a **recorded failed
 acquisition** (PRES-007), not a system fault, and the coverage record will say
 plainly what was sought and not obtained (DR-0070, §57). Correcting a locator
-is a routine registry edit.
+is a routine registry edit. Treat the first run against an unverified source
+as locator verification; it is the cheapest way to find out which are right.
 
-Treat the first run as locator verification. It is the cheapest way to find
-out which of these are right.
+One correction already made on that basis: the EU consolidated list's locator
+was the FSF application root, which answers 401 without an EU Login session.
+It is now the public XML file URL.
 
 ## Verification
 
-22 tests. The refusals are the substance:
+27 tests. The refusals are the substance:
 
 - a candidate missing any policy field is refused rather than defaulted —
   DR-0067's point is that collection policy is *stated*, and a silent default
@@ -137,11 +176,16 @@ out which of these are right.
 - a graphic-content source defaulting to public is refused (PRES-012);
 - a dependence declaration with no reasoning is refused (DR-0028);
 - **registration collects nothing** — a full registry and an empty archive is
-  the correct state immediately afterwards.
+  the correct state immediately afterwards;
+- run locators with no verification date, a verification date that is not
+  a date, or a run locator that is not absolute `https://` are refused — a
+  verification that cannot be read is not a verification.
 
-The scope and rights checks were verified by sabotage: removing either lets
-the corresponding bad candidate through and the suite fails.
+The scope, rights and verification-date checks were verified by sabotage:
+removing any of them lets the corresponding bad candidate through and the
+suite fails.
 
-**Not verified:** that any of these sources exists at the address given, that
-the formats are as assumed, or that the rights positions are correct. Those
-are questions a network answers, and this environment cannot.
+**Not verified:** for the five unfetched candidates, that the source exists
+at the address given or that the formats are as assumed; for all seven, that
+the rights positions are correct — that is a legal question (POL-0001 §10),
+not a network one.

@@ -1,4 +1,4 @@
-# DR-0087 — Third-party web captures (Common Crawl, Wayback Machine) as an acquisition channel
+# DR-0094 — Third-party web captures (Common Crawl, Wayback Machine) as an acquisition channel
 
 **Category:** architecture / preservation | **Status:** Proposed | **Decided:** — | **Origin:** discussion on Common Crawl for source archiving | **Supersedes:** — | **Superseded by:** —
 
@@ -12,6 +12,14 @@ option each time. No source material beyond this repository's own records
 and general knowledge of Common Crawl and the Wayback Machine was used.
 Nothing here is enacted: this DR is a **candidate**, unapproved, until the
 founder marks it Approved (§80, DR-0046).
+
+**Numbered out of sequence.** Drafted on a branch cut before 2026-09-09 and
+assigned DR-0087 at the time, unaware that a separate, already-merged branch
+had taken DR-0087…0093 for the public-identifier scheme and the first source
+registrations the same day. Renumbered to the next free slot, DR-0094, only
+when this branch was reconciled against `origin/main` — the same collision
+CLAUDE.md's onboarding notes now warn every session to check for before
+drafting a DR.
 
 ## Context
 

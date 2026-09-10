@@ -6,7 +6,7 @@
 -- This file is where DR-0078's enforcement surface becomes enforcement: a
 -- value absent from the registry cannot enter the canonical store.
 --
--- Registry: uiw-semantic-registry version 0.1.0 (effective)
+-- Registry: uiw-semantic-registry version 0.2.0 (effective)
 --
 -- Closed vocabularies (DR-0080) become enum types: changing them requires a
 -- Decision Record, and a migration is the appropriate cost of that.
@@ -102,6 +102,15 @@ CREATE TYPE epistemic_categories AS ENUM (
     'hypothesis',
     'observation',
     'project-conclusion'
+);
+
+-- identifier-dispositions (authorised by DR-0089)
+CREATE TYPE identifier_dispositions AS ENUM (
+    'active',
+    'disambiguation',
+    'redirect',
+    'restricted',
+    'tombstone'
 );
 
 -- interest-types (authorised by DR-0040)
@@ -252,6 +261,7 @@ CREATE TABLE identifier_types (
 INSERT INTO identifier_types (id) VALUES
     ('aircraft-registration'),
     ('company-registration-number'),
+    ('doi'),
     ('icao-24bit'),
     ('imo'),
     ('lei'),
@@ -260,6 +270,7 @@ INSERT INTO identifier_types (id) VALUES
     ('official-sanctions-id'),
     ('opensanctions'),
     ('tax-id'),
+    ('uiw-ark'),
     ('wikidata');
 
 -- source-types (open vocabulary, authorised by DR-0067)

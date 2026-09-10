@@ -103,7 +103,14 @@ security, legal, editorial.
 | [DR-0084](DR-0084-durable-export-format-adoption.md) | Durable export format adopted; unfiltered dumps blocked | architecture / security | Approved | 2026-08-21 |
 | [DR-0085](DR-0085-evidentiary-method-adoption.md) | Adoption of the evidentiary method (METH-0001) | methodology / epistemology | Approved | 2026-08-26 |
 | [DR-0086](DR-0086-tier-restrictiveness-declared.md) | Access-tier restrictiveness is declared, never derived from an ordering | security / architecture | Approved | 2026-08-26 |
-| [DR-0087](DR-0087-third-party-web-captures.md) | Third-party web captures (Common Crawl, Wayback Machine) as an acquisition channel | architecture / preservation | Proposed | — |
+| [DR-0087](DR-0087-ark-public-identifier-scheme.md) | ARK as the public identifier scheme | architecture / preservation | Approved | 2026-09-09 |
+| [DR-0088](DR-0088-public-identifiers-as-assignment-events.md) | Public identifiers are minted as assignment events at publication | architecture / editorial | Approved | 2026-09-09 |
+| [DR-0089](DR-0089-identifier-register-dispositions.md) | The identifier register and its five dispositions | architecture / preservation / security | Approved | 2026-09-09 |
+| [DR-0090](DR-0090-identifiers-name-objects-qualifiers-name-states.md) | Identifiers name objects; `.vN` qualifiers name states | architecture / preservation | Approved | 2026-09-09 |
+| [DR-0091](DR-0091-project-uris-derive-from-arks.md) | Project URIs derive from ARKs; the registry namespace is the registry's ARK | architecture | Approved | 2026-09-09 |
+| [DR-0092](DR-0092-split-byline-as-public-title.md) | A split's deciding agent is shown as a public title, snapshotted, never the agent row | architecture / editorial / security | Approved | 2026-09-09 |
+| [DR-0093](DR-0093-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | Approved | 2026-09-08 |
+| [DR-0094](DR-0094-third-party-web-captures.md) | Third-party web captures (Common Crawl, Wayback Machine) as an acquisition channel | architecture / preservation | Proposed | — |
 
 ## Provenance of decisions
 
@@ -216,3 +223,48 @@ the suite checking the two agree. The alternative of reordering the
 changing an enumeration data depends on is a structural registry change
 (DR-0080). Its open item — whether the two lateral tiers should remain
 distinct at all — is a §12 vocabulary question, not a resolution one.
+
+DR-0087 through DR-0091 originate from CDR-P3-36…40 in
+[WP 3.5](../phase-3/working-papers/wp-3.5-identifier-design.md) (AI-drafted
+identifier-design study), each put to the founder as a separate question
+with named options and a recommendation and **ruled one at a time** on
+2026-09-09: the scheme (ARK, own NAAN, own resolver), the minting rule
+(assignment events at publication or citation, annotations included), the
+five-disposition register including `restricted`, object identifiers with
+`.vN` qualifiers for states, and ARK-derived URIs including the registry
+namespace. Together they resolve Q-12, discharge DR-0022's deferral, close
+SPEC-0002 §6 Q3 and SPEC-0005 §7 Q1, and authorise SPEC-0007 — Public
+Identifiers and Resolution.
+
+DR-0092 resolves SPEC-0007 v0.3 §12 open question 2, put to the founder
+directly rather than through a working paper: whether a split's deciding
+agent is named in the public response. The founder ruled for a public role
+or title, snapshotted onto the disambiguation record by trigger and never
+read from `pipeline_agent` at resolution time, over withholding it
+entirely or disclosing the agent's name.
+
+DR-0093 was drafted 2026-09-08 at the founder's direction, after the founder
+chose to begin collection with two of the seven sanctions-authority
+candidates, and **approved by the founder the same day for both sources**.
+Before drafting, every file a first run would collect was fetched, digested
+and run through the real collector into a throwaway database (record in
+[docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../sources/verification-eu-consolidated-list-ofac-sdn.md)).
+It authorises the two registrations and one manual first run against five
+verified locators, executed by the founder on the archive server with
+`collector/run.py` (built on approval); it does not automate the daily
+cadence, which waits on rulings the rehearsal surfaced (captures are not
+yet linked as a series; unchanged bytes are stored again; quarantine copies
+are never removed). **Numbered out of date order:** drafted and approved
+2026-09-08, before DR-0087…0092 (dated 2026-09-09), because it was developed
+on a separate branch alongside the identifier-scheme work and assigned the
+next free number only when the two branches were reconciled on 2026-09-10.
+The register is ordered by number, not date, throughout; this is the one
+entry where the two diverge.
+
+DR-0094 is a second, independent instance of the same collision CLAUDE.md's
+onboarding notes now warn about: drafted on a branch cut before the
+identifier-scheme and DR-0093 branches were reconciled, and assigned
+DR-0087 at the time on the strength of its own branch's then-current
+register. It carried no other numbering dependency — nothing else in the
+DR set references it — so reconciliation was a rename to the next free
+number, DR-0094, with no reordering elsewhere in the register.

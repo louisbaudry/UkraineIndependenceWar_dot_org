@@ -4,7 +4,7 @@
 registry:
   id: uiw-semantic-registry
   title: Ukraine's Second War of Independence — Semantic Registry
-  version: "0.1.2"
+  version: "0.2.0"
   version_regime: >
     Ontology/vocabulary regime per DR-0047: explicit versions with changelog,
     deprecations and replacement mappings. Not SemVer arithmetic.
@@ -28,7 +28,26 @@ namespaces:
     Decision Record (DR-0080) once anything external has consumed the
     projection.
 
+# Public identifier configuration (SPEC-0007 §2, §11). The NAAN and shoulder
+# are recorded here when issued; until then nothing may be minted except in
+# tests, which use the ARK Alliance's shared test NAAN.
+identifiers:
+  naan: null
+  shoulder: null
+  test_naan: "99999"
+  test_shoulder: "t1"
+
 changelog:
+  - version: "0.2.0"
+    date: 2026-09-09
+    summary: >
+      Additive change (DR-0080): new closed vocabulary identifier-dispositions
+      (five members, authorised by DR-0089) and two new members of
+      identifier-types, uiw-ark (DR-0087/0088) and doi (DR-0049/0091).
+    notes: >
+      The `identifiers` configuration block is added with the NAAN and
+      shoulder unset; the SKOS namespace stays provisional until the NAAN is
+      issued (DR-0091 §4). No existing member, range, or mapping changed.
   - version: "0.1.2"
     date: 2026-08-26
     summary: >

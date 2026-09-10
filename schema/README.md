@@ -18,6 +18,7 @@ data exists would be speculation, not design.
 | `02-core.sql` | `timespan`, `quantity`, agent registries, the assertion core, append-only enforcement |
 | `03-pipeline.sql` | Source registry, collector runs, acquisition attempts, quarantine, preserved objects, preservation events, holdings |
 | `04-epistemic.sql` | Propositions, documentary assertions, evidence relations, the cross-family view |
+| `08-identifiers.sql` | Public identifiers (SPEC-0007): the identifier-assignment family, the register and its dispositions, `resolve_identifier()` |
 | `gen_enums.py` | Generates `01-` from `registry/dist/registry.json` |
 | `tests/` | Test suite and runner |
 
@@ -70,7 +71,9 @@ The suite executes verification criteria from the REQ documents, naming the
 requirement each one verifies — closing the record §99 chain at its last link:
 requirement → verification criterion → executable test. 31 tests currently
 pass, covering DATA-001/008, ARCH-001, EVID-003/006/010/011/015, EDIT-002,
-LEGAL-001, PRES-007/012, SEC-002, and DR-0061/0065/0077.
+LEGAL-001, PRES-007/012, SEC-002, and DR-0061/0065/0077. The identifier
+tables added by `08-` are exercised by
+[`identifiers/tests/`](../identifiers/README.md), which covers DATA-009.
 
 The suite has been verified to fail when a protection is removed: deleting the
 append-only trigger turns the EVID-015 test red rather than leaving it

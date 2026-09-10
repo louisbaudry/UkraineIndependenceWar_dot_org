@@ -1,0 +1,56 @@
+id: identifier-dispositions
+type: vocabulary
+layer: pipeline
+status: effective
+effective: 2026-09-09
+closed: true
+steward: founder
+authorised_by: [DR-0089]
+depends_on_specs: [SPEC-0007]
+satisfies_requirements: [DATA-009]
+
+definition: >
+  The current state of a public identifier in the identifier register
+  (DR-0089). Every minted identifier has exactly one disposition, and a
+  minted identifier never dead-ends: the disposition says what the resolver
+  answers with.
+
+usage_note: >
+  Dispositions move forward only. An `active` identifier may become any of
+  the others; `restricted` returns to `active` only by a recorded tier
+  decision; `tombstone` returns to `active` only by a recorded reversal of
+  the redaction under record §77; `redirect` and `disambiguation` are
+  terminal. No identifier is ever deleted or reissued.
+
+labels:
+  en:
+    prefLabel: identifier disposition
+
+members:
+  - id: active
+    labels: {en: {prefLabel: active}}
+    definition: >
+      Resolves to the object's current state, with links to its history.
+  - id: redirect
+    labels: {en: {prefLabel: redirect}}
+    definition: >
+      The object was merged into a successor (DR-0064); resolves to the
+      successor identifier with a lineage note.
+  - id: disambiguation
+    labels: {en: {prefLabel: disambiguation}}
+    definition: >
+      The object was split (DR-0064); resolves to a disambiguation record
+      naming the successors, the date, the deciding agent, and the grounds.
+      No automatic redirect, because there is no single successor.
+  - id: tombstone
+    labels: {en: {prefLabel: tombstone}}
+    definition: >
+      The object was removed under governed redaction (DR-0077); resolves to
+      the tombstone recording fact, date, authority and grounds, never the
+      content.
+  - id: restricted
+    labels: {en: {prefLabel: restricted}}
+    definition: >
+      The object exists but sits at an access tier the requester may not
+      see; resolves to a notice carrying the `withheld` absence state
+      (DR-0029). Distinct from `tombstone`: nothing was removed.
