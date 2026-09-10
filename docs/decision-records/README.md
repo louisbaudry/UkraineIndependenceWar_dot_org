@@ -103,6 +103,7 @@ security, legal, editorial.
 | [DR-0084](DR-0084-durable-export-format-adoption.md) | Durable export format adopted; unfiltered dumps blocked | architecture / security | Approved | 2026-08-21 |
 | [DR-0085](DR-0085-evidentiary-method-adoption.md) | Adoption of the evidentiary method (METH-0001) | methodology / epistemology | Approved | 2026-08-26 |
 | [DR-0086](DR-0086-tier-restrictiveness-declared.md) | Access-tier restrictiveness is declared, never derived from an ordering | security / architecture | Approved | 2026-08-26 |
+| [DR-0087](DR-0087-third-party-web-captures.md) | Third-party web captures (Common Crawl, Wayback Machine) as an acquisition channel | architecture / preservation | Proposed | — |
 
 ## Provenance of decisions
 
