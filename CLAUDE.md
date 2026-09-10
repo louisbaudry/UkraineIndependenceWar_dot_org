@@ -9,11 +9,13 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0086); the design
-lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
-the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
-`publication/`, `export/` and `release/` implements those documents and is
-tested against a real PostgreSQL database and real OCFL storage.
+every enacted decision since is a Decision Record (DR-0001…0092 — check
+`docs/decision-records/README.md` for the current count, it moves fast); the
+design lives in SPEC, POL, REQ and METH documents under DR-0046 document
+control; the code under `schema/`, `registry/`, `storage/`, `collector/`,
+`editorial/`, `publication/`, `identifiers/`, `sources/`, `export/` and
+`release/` implements those documents and is tested against a real
+PostgreSQL database and real OCFL storage.
 
 Governance is far ahead of collection. **Nothing has been collected, no source
 is registered, no live fetch has ever completed, and the external legal review
@@ -210,6 +212,11 @@ change could break:
   (POL-0001 §1); access tiers are declared, never derived from an ordering
   (DR-0086); redaction is the sole immutability exception (DR-0077).
 - **Never claim legal chain of custody** (DR-0008, LEGAL-007).
+- **A split's byline is a public title, never an agent's id** (DR-0092).
+  `disambiguation_record` is `public` tier and ships in every disclosure
+  dump; the link to the deciding agent lives only in the `internal`-tier
+  `disambiguation_decision`. Never let a field that joins the two reach a
+  public-tier table (`identifiers/README.md` has the full reasoning).
 
 ## Environment notes for agent sessions
 
@@ -227,6 +234,28 @@ change could break:
 
   If `psql` refuses peer authentication, change `peer` to `trust` for local
   connections in `/etc/postgresql/16/main/pg_hba.conf` and reload.
+- **If no cluster exists at all** (`pg_ctlcluster` finds nothing to start —
+  this varies by session, unlike the case above), `initdb` one yourself, but
+  not under the session scratchpad: it is usually root-owned and the
+  `postgres` user cannot traverse into it, so `initdb`/`pg_ctl` fail with a
+  permission error even though the path looks writable. Use a directory
+  `postgres` owns instead, e.g.:
+
+  ```bash
+  D=/var/lib/postgresql/uiwtest
+  su postgres -c "/usr/lib/postgresql/16/bin/initdb -U postgres -A trust -D $D"
+  su postgres -c "/usr/lib/postgresql/16/bin/pg_ctl -D $D -l /var/lib/postgresql/pg.log \
+      -o '-p 5433 -c listen_addresses=127.0.0.1' -w start"
+  export PGHOST=127.0.0.1 PGPORT=5433 PGUSER=postgres
+  ```
+
+  Stop it (`pg_ctl -D $D -m immediate stop`) and remove `$D` before finishing
+  — this is a throwaway instance for the session, not part of the repo.
+- [`setup/install.sh`](setup/install.sh) is for provisioning a **fresh
+  server**: it clones its own copy of the repo into `$HOME/uiw` and creates
+  its own archive root. It is not the tool for standing up Postgres against
+  an already-checked-out working tree with local, uncommitted changes — use
+  the steps above for that instead.
 - `warcio` can be pip-installed for the WARC cross-check tests; it is not a
   project dependency and its absence is reported as a skip.
 - Use the session scratchpad for backups and throwaway files, never the repo.
