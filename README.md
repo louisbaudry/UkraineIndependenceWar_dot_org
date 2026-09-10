@@ -46,9 +46,12 @@ tested against a real database and real storage. But:
   file from Common Crawl or the Wayback Machine has been parsed against a live
   archive yet — the WARC reader is exercised only against files the test suite
   writes itself. [`collector/README.md`](collector/README.md) says exactly what is
-  and is not verified, including what the first run's rehearsal exposed (captures
-  not yet linked as a series, unchanged bytes stored again, quarantine copies
-  never removed).
+  and is not verified. The first run's rehearsal exposed two gaps that still
+  stand (unchanged bytes stored again, quarantine copies never removed) and
+  one that unrelated work fixed the next day (captures now join a capture
+  series on every admission) before the two branches were even aware of each
+  other — see [DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)
+  for the residual it left.
 - **The external legal review required by POL-0001 §10 has not been commissioned.**
   Until it is recorded, collection is bound to explicitly registered sources with
   human-configured scope (DR-0071): no open-ended crawling, no bulk social harvesting,

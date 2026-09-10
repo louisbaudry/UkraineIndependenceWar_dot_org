@@ -3,7 +3,7 @@
 **Status:** Verification record for two candidate registrations. Nothing here
 is registered, nothing is collected into the project's archive, and nothing
 is enacted by this document. The Decision Record that acts on it is
-[DR-0087](../decision-records/DR-0087-first-source-registrations.md),
+[DR-0093](../decision-records/DR-0093-first-source-registrations.md),
 approved by the founder on 2026-09-08; the registrations it authorises are
 executed on the archive server, not here.
 **Verified:** 2026-09-08, ~09:20–09:40 UTC, from this session's container.
@@ -172,12 +172,13 @@ events record that the gate ran, not that anything was scanned.
 Ordered by how much they matter to the first run. None blocks it; two
 (the first and the last) deserve a ruling before daily automation.
 
-1. **Successive captures are not linked.** DR-0074 makes each capture a
-   distinct holding, related by the capture-series relation. The schema has
-   `capture_series_member`; `collector/pipeline.py` never writes to it. The
-   rehearsal's repeat capture became an unrelated second holding. The first
-   run does not need the relation, but the series the candidates'
-   `scope_rules` promise does not exist until the collector records it.
+1. ~~Successive captures are not linked.~~ **Fixed independently the
+   following day** by unrelated work merged into `main` (the
+   public-identifiers/WARC-recovery branch): `collector/pipeline.py` now
+   writes `capture_series_member` on every admission. See
+   [DR-0093](../decision-records/DR-0093-first-source-registrations.md)'s
+   *Consequences* for the residual gap this leaves for the two holdings
+   collected before the fix existed.
 2. **Unchanged bytes are stored again.** There is no conditional request
    and no "digest unchanged, record the attempt, store nothing" rule. At the
    candidates' daily cadence, an unchanged day costs about 211 MB of
@@ -228,7 +229,7 @@ matters.
 
 ## 7. Second rehearsal, through `collector/run.py`
 
-After the founder approved DR-0087 and asked for the run script, the exact
+After the founder approved DR-0093 and asked for the run script, the exact
 sequence in the record's *How to execute* section was run in a fresh
 throwaway database and empty archive directory, at commit `e9910b6`:
 
@@ -241,7 +242,7 @@ throwaway database and empty archive directory, at commit `e9910b6`:
 | Digests | identical to §2–§4 for all five files (the publishers had not changed them) |
 | Run records | each carries the candidate key, run locators, verification date, User-Agent and code commit in its configuration |
 | Archive directory | `permanent/` and `medium-term/` initialised as OCFL roots; 5 objects; 0 documentary assertions |
-| Disk | **403 MB** for 211 MB of captures: the quarantine copies remain after admission — finding 8 in DR-0087 |
+| Disk | **403 MB** for 211 MB of captures: the quarantine copies remain after admission — finding 8 in DR-0093 |
 | Teardown | database dropped, directory deleted |
 
 ---

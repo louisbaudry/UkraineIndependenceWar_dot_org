@@ -184,11 +184,16 @@ Findings from the verification, in the order they matter. None blocks the
 first run. Items 1 and 2 need a ruling before the daily cadence is
 automated; each would be its own record.
 
-1. **Successive captures are not linked as a series.** DR-0074 relates
-   captures of the same locator through `capture_series_member`; the
-   collector never writes it. The repeat capture in the rehearsal became an
-   unrelated second holding. The series the candidates' `scope_rules`
-   promise does not exist until the collector records it.
+1. ~~Successive captures are not linked as a series.~~ **Fixed
+   independently, 2026-09-09/10:** the public-identifiers branch reworked
+   `Collector._admit()` to write a `capture_series_member` row (DR-0074) for
+   every admission, live or WARC-recovered, keyed deterministically by
+   `(source_id, locator)` — discovered only when the two branches were
+   reconciled on 2026-09-10 (see the DR register's provenance note on this
+   entry's number). **Residual gap:** the two holdings from the 2026-09-09
+   run predate the fix and were never given a series row; they need a
+   one-off backfill or they will be absent from their own series the next
+   time either locator is captured.
 2. **Unchanged bytes are stored again.** No conditional request is made and
    no digest comparison precedes admission, so an unchanged day at daily
    cadence stores about 211 MB of duplicates. The EU server sends

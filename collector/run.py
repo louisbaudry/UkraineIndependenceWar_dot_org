@@ -15,7 +15,7 @@ before it fetches anything, and refuses at the first one that fails:
    candidate is refused: registration is the authorisation (OPS-001,
    DR-0071(a)), and this script must not become a way around it.
 3. Checks that `--agent` is a registered pipeline agent, and a person unless
-   `--allow-software-agent` is given (DR-0087 §3: the first runs are manual
+   `--allow-software-agent` is given (DR-0093 §3: the first runs are manual
    acts with a person as the agent of record).
 4. Opens the OCFL storage roots under `--archive-root`, initialising an
    empty directory and refusing a non-empty one that is not an OCFL root.
@@ -112,7 +112,7 @@ def check_agent(conn: psycopg.Connection, agent_id: str,
     kind, name = row
     if kind != "person" and not allow_software:
         raise Refused(
-            f"agent {name!r} is a {kind} agent. DR-0087 §3 makes the first runs "
+            f"agent {name!r} is a {kind} agent. DR-0093 §3 makes the first runs "
             "manual acts with a person as the agent of record; pass "
             "--allow-software-agent only once automation has been decided")
     return kind, name

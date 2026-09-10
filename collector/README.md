@@ -33,13 +33,20 @@ Everything from that rehearsal was destroyed. The archive now holds the
 What the rehearsal did **not** exercise: behaviour under a slow or
 rate-limiting origin, conditional requests (none are made — an unchanged
 file is fetched and stored again), and the security check (the stand-in
-scanner ran, and recorded that it ran). It also showed three gaps in the
-pipeline itself: successive captures of one locator are not linked through
-`capture_series_member` (DR-0074); the response headers a publisher
-sends — `Last-Modified`, `ETag`, filenames, OFAC's publication metadata —
-are received by the fetcher and then discarded by the acquisition record;
-and quarantine copies are never removed after Gate 1 admits them, so the
-archive directory holds every capture twice.
+scanner ran, and recorded that it ran). It also showed two gaps in the
+pipeline that still stand: the response headers a publisher sends —
+`Last-Modified`, `ETag`, filenames, OFAC's publication metadata — are
+received by the fetcher and then discarded by the acquisition record; and
+quarantine copies are never removed after Gate 1 admits them, so the archive
+directory holds every capture twice. A third gap the rehearsal found —
+successive captures of one locator not linked through
+`capture_series_member` (DR-0074) — was independently fixed by the
+public-identifiers work merged the next day: `_admit()` now writes a series
+row for every admission, live fetch or WARC recovery alike, keyed
+deterministically by `(source_id, locator)`. **The two 2026-09-09 holdings
+predate that fix and have no series row of their own**; the next capture of
+either locator will start a new series that does not include them, until
+someone backfills one row per holding.
 
 This is the reason the fetch layer is the only place that touches the
 network. The seam is not for testing convenience; it is so the untested part

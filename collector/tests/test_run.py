@@ -104,7 +104,7 @@ def run() -> int:
         code, _, err = invoke(["--source", "ofac-sdn", "--dbname", DB,
                                "--agent", software, "--archive-root", str(archive),
                                "--dry-run"], fetcher)
-        check("DR-0087 §3", "a software agent is refused without "
+        check("DR-0093 §3", "a software agent is refused without "
               "--allow-software-agent",
               code == 2 and "person as the agent of record" in err)
 
@@ -146,7 +146,7 @@ def run() -> int:
         code, out, err = invoke(["--source", "ofac-sdn", *base,
                                  "--user-agent", "UIW-test/0"], fetcher)
         check("OPS-001", "an authorised run completes", code == 0, )
-        check("DR-0087 §2", "the run fetches exactly the listed run locators, "
+        check("DR-0093 §2", "the run fetches exactly the listed run locators, "
               "in order, and nothing else",
               fetcher.calls == list(ofac["run_locators"]))
 
@@ -162,7 +162,7 @@ def run() -> int:
               and row[0].get("run_locators") == list(ofac["run_locators"])
               and row[0].get("user_agent") == "UIW-test/0"
               and row[0].get("locator_verified") == ofac["locator_verified"].isoformat())
-        check("DR-0087 §3", "the agent of record is the person given",
+        check("DR-0093 §3", "the agent of record is the person given",
               row is not None and str(row[3]) == person)
         check("DR-0073", "an empty archive root was initialised as OCFL",
               (archive / "permanent" / "0=ocfl_1.1").exists()

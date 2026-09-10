@@ -2,7 +2,7 @@
 
 Candidate sources for the first real collection, drafted against the DR-0067
 registry schema. **Two are registered** on the archive server as of
-2026-09-09 under DR-0087 (`eu-consolidated-list`, `ofac-sdn`); the other five
+2026-09-09 under DR-0093 (`eu-consolidated-list`, `ofac-sdn`); the other five
 remain proposals for the founder to accept, amend, or reject — per source,
 not as a block. Registration lives in the server's database, not in this
 file: the file is the candidate, the row is the registration.
@@ -27,7 +27,7 @@ python3 collector/run.py --source ofac-sdn --dbname uiw \
 ```
 
 which takes the exact `run_locators` listed and verified in the candidate
-file and refuses an unregistered candidate. **DR-0087 (approved 2026-09-08)
+file and refuses an unregistered candidate. **DR-0093 (approved 2026-09-08)
 authorises this for `eu-consolidated-list` and `ofac-sdn`**; the other five
 remain proposals.
 
@@ -36,7 +36,7 @@ remain proposals.
 Seven sanctions and export-control authorities — the thematic area the
 founder chose. Two of them, `eu-consolidated-list` and `ofac-sdn`, are
 approved for registration and a first run by
-[DR-0087](../docs/decision-records/DR-0087-first-source-registrations.md);
+[DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md);
 the registration itself happens on the archive server. Institutional publishers, stable formats, near-zero
 special-category personal data, so DR-0071's interim constraints barely bite
 and POL-0001's structuring limits are straightforward to honour.
@@ -134,7 +134,7 @@ acquired end to end by the real collector into a throwaway database; the
 record is
 [docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md)
 and the proposal to register them is
-[DR-0087](../docs/decision-records/DR-0087-first-source-registrations.md).
+[DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md).
 Those two entries carry three optional fields the registry does not store:
 
 | Field | Meaning |
