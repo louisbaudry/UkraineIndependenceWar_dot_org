@@ -138,6 +138,9 @@ identifiers/          Public identifiers (ARK), the register and the resolver
 export/               Durable export and access-tier policy
 release/              Release baselines
 setup/                install.sh — one-command install on Debian/Ubuntu
+site/                 Public-facing progress briefing (not governance content,
+                      not the eventual archive website — see site/README.md);
+                      published via GitHub Pages from this folder only
 CLAUDE.md             Working instructions for AI-assisted sessions
 ```
 

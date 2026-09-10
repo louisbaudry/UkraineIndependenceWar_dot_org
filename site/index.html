@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ukraine's Second War of Independence — Project Briefing</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f6f3;
+    --fg: #1c1c1c;
+    --muted: #55524c;
+    --accent: #0057b8; /* Ukraine blue */
+    --accent-2: #ffd700; /* Ukraine yellow */
+    --card: #ffffff;
+    --border: #e2ddd2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a;
+      --fg: #ececec;
+      --muted: #b7b3a8;
+      --card: #1d2026;
+      --border: #2d313a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .bar { height: 6px; background: linear-gradient(90deg, var(--accent) 50%, var(--accent-2) 50%); }
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+  h1 {
+    font-size: 1.7rem;
+    line-height: 1.3;
+    margin: 0 0 0.25rem;
+  }
+  .subtitle {
+    color: var(--muted);
+    margin: 0 0 2rem;
+    font-size: 1rem;
+  }
+  .updated {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.2rem 0.75rem;
+    margin-bottom: 2rem;
+  }
+  section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  h2 {
+    font-size: 1.05rem;
+    margin: 0 0 0.6rem;
+    color: var(--accent);
+  }
+  ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+  li { margin-bottom: 0.4rem; }
+  p { margin: 0.4rem 0; }
+  footer {
+    margin-top: 2.5rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<main>
+  <h1>Ukraine's Second War of Independence — Project Briefing</h1>
+  <p class="subtitle">A plain-language progress update on the evidence archive project, kept current alongside development.</p>
+  <span class="updated">Last updated: 2026-09-10</span>
+
+  <section>
+    <h2>What this is</h2>
+    <p>We are building a long-term evidence archive — documents, sanctions data, and other
+    records connected to Russia's war against Ukraine and the networks that sustain it. The
+    goal is a record that holds up years or decades from now: to courts, investigators,
+    journalists, and historians, not just to us. This page is a plain-language progress
+    update, kept current as the work develops.</p>
+  </section>
+
+  <section>
+    <h2>Why the pace looks slow, on purpose</h2>
+    <p>An evidence archive is only as good as its discipline. Before collecting anything at
+    scale, we built and tested the rules for how evidence is captured, verified, and
+    preserved — so that every record can be trusted, traced back to its source, and never
+    quietly altered. That groundwork is now done and tested against a real database and
+    real storage.</p>
+  </section>
+
+  <section>
+    <h2>What has actually happened, as of today (2026-09-10)</h2>
+    <ul>
+      <li>Two sanctions lists — the EU's consolidated sanctions list and the US Treasury's
+      OFAC list — are formally registered as sources.</li>
+      <li>The first real, live collection ran on 2026-09-09: five files, about 211 MB,
+      pulled directly from the EU and US Treasury publishers, with zero failures.</li>
+      <li>Nothing was silently interpreted or asserted about anyone during that collection
+      — by design, collecting data does not yet draw conclusions from it. That's a
+      deliberate, later, human-reviewed step.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What's deliberately not done yet</h2>
+    <ul>
+      <li>Five more sanctions-list sources are identified and ready, but not yet turned on
+      — each one is switched on individually, by a named human decision, not
+      automatically.</li>
+      <li>Broader collection is paused until an external legal review of how we handle
+      personal data is complete. We chose to wait rather than move fast and risk
+      mishandling anyone's data.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What's next</h2>
+    <p>Registering the remaining sanctions sources, commissioning that legal review, and
+    continuing to expand what the archive can take in — always with the same rule: build
+    the discipline first, then use it.</p>
+  </section>
+
+  <footer>
+    <p>This page is an informal briefing, not a project decision record or evidentiary
+    publication. AI-assisted draft, reviewed before publication.</p>
+  </footer>
+</main>
+</body>
+</html>
