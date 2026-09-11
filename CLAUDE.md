@@ -60,7 +60,7 @@ permits now. Keep this list current when you finish or start an item.
 | Item | State | Note |
 |---|---|---|
 | A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 done, 2026-09-09** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `HttpFetcher` has completed live fetches, twice (a throwaway-database rehearsal, then the real run). The other 5 candidates are unregistered and unverified against a live server |
-| A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | not started | must not live-fetch unregistered hosts |
+| A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | not started | must not live-fetch unregistered hosts; DR-0094 (approved 2026-09-11) governs how a third-party capture is recorded once retrieved — read it before building the acquisition_attempt/FetchResult extension it requires |
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
 | A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |

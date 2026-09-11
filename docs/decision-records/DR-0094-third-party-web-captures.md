@@ -1,6 +1,6 @@
-# DR-0094 — Third-party web captures (Common Crawl, Wayback Machine) as an acquisition channel
+# DR-0094 — Third-party web captures (Common Crawl, Wayback Machine, and qualifying archives) as an acquisition channel
 
-**Category:** architecture / preservation | **Status:** Proposed | **Decided:** — | **Origin:** discussion on Common Crawl for source archiving | **Supersedes:** — | **Superseded by:** —
+**Category:** architecture / preservation | **Status:** Approved | **Decided:** 2026-09-11 by founder/principal editor | **Origin:** discussion on Common Crawl for source archiving | **Supersedes:** — | **Superseded by:** —
 
 ## AI provenance
 
@@ -10,8 +10,18 @@ require. Five choices were put to the founder in sequence, each with named
 options and a stated recommendation; the founder selected the recommended
 option each time. No source material beyond this repository's own records
 and general knowledge of Common Crawl and the Wayback Machine was used.
-Nothing here is enacted: this DR is a **candidate**, unapproved, until the
-founder marks it Approved (§80, DR-0046).
+
+**Approved 2026-09-11**, after a second round of four questions the drafted
+text had left open, put to the founder one at a time with named options and
+a recommendation each: whether a loss-triggered retrieval needs a per-instance
+human step (ruled: no, automatic is fine when scoped to the failed locator);
+whether a future archive needs its own DR or can qualify by stated criteria
+(ruled: criteria — against the drafting recommendation to name archives only);
+whether third-party retrieval should block on the DR-0006 WACZ evaluation
+(ruled: no, proceeds independently); and how to record all three in this
+document (ruled: amend the text itself and approve in the same step, rather
+than approving the original draft unchanged or leaving it Proposed). §§2, 1,
+and Consequences below, and this note, reflect those four rulings.
 
 **Numbered out of sequence.** Drafted on a branch cut before 2026-09-09 and
 assigned DR-0087 at the time, unaware that a separate, already-merged branch
@@ -69,15 +79,26 @@ DR-0028 requires source dependence to be declared, not assumed.
 
 ### 1. Third-party captures are an acquisition channel, not a source
 
-A retrieval from Common Crawl, the Wayback Machine, or a comparable
-third-party web archive is collection *from the registered source that
-published the original page*, using a channel other than a live fetch of
-that source's own site. DR-0071(a)'s registration requirement is satisfied
-by the origin source's registration; the archive itself is never separately
-registered as a source. The origin source's rights assessment, default
-access tier, and retention policy govern the recovered material, because
-the underlying content's copyright rests with the original publisher, not
-with the archive that copied it.
+A retrieval from Common Crawl, the Wayback Machine, or **any archive
+meeting the qualifying criteria below** is collection *from the registered
+source that published the original page*, using a channel other than a
+live fetch of that source's own site. DR-0071(a)'s registration requirement
+is satisfied by the origin source's registration; the archive itself is
+never separately registered as a source. The origin source's rights
+assessment, default access tier, and retention policy govern the recovered
+material, because the underlying content's copyright rests with the
+original publisher, not with the archive that copied it.
+
+**Qualifying criteria for a third-party archive**, decided directly rather
+than by naming archives one at a time: it (a) supplies a record of an
+original HTTP response — a WARC record or an equivalent capture of headers
+and payload as served, not a re-rendering or a summary; (b) requires no
+live crawling of new URLs by this project, only retrieval of records the
+archive already made; and (c) leaves rights with the original publisher
+rather than the archive itself. Common Crawl and the Wayback Machine both
+qualify on their face. A future archive that meets all three needs no new
+DR to use under this decision; one that fails any of them is out of scope
+here regardless of how similar it otherwise looks, and needs its own DR.
 
 ### 2. Retrieval is triggered by escalation or recorded loss, scoped per source
 
@@ -93,6 +114,21 @@ is out of scope for this decision. A registry entry may state a scope for
 backfill (date range, path prefix) at the point a human configures it, but
 retrieval is never a blanket default triggered by registration alone —
 consistent with §9's warning not to archive everything equally.
+
+**The loss-triggered case may run automatically, with no separate human
+step, because the failure itself fixes the scope.** DR-0071(a) requires
+collection to have human-configured scope; for a recorded failed
+acquisition, that scope is exactly the one locator that already failed —
+nothing wider is authorized, and nothing about which locator to try is left
+to the collector's judgment. This is decided directly, not left to whoever
+builds the `acquisition_attempt`/`FetchResult` extension: the collector may
+attempt third-party recovery for a failed locator on a registered source
+without a human approving that specific attempt. It may not attempt
+recovery for any locator that has not itself recorded a failure, and it may
+not widen the attempt beyond that locator. The recovered holding still goes
+through Gate 1 and, if admitted, ordinary Gate 2 review like any other
+acquisition — this decision concerns only whether the *attempt* needs
+prior human sign-off, not whether its output is trusted uncritically.
 
 ### 3. Same capture series, capturing agent recorded
 
@@ -163,14 +199,26 @@ on which any assertion relies.
 - No holding may ever read as though the project performed a capture it
   did not. Publication and API wording (DR-0008's constraint) must reflect
   the capturing agent on any third-party holding it surfaces.
-- This DR does not itself authorize retrieving from Common Crawl or the
-  Wayback Machine against any specific registered source; per-source
-  backfill scope remains a registry decision under DR-0067, taken by a
-  human, per source.
-- **Not addressed here:** the WACZ signing evaluation DR-0006 already
-  requires as a standing Phase II task, which may bear on how a
-  third-party WARC record is packaged once retrieved. That evaluation is
-  unaffected by this decision and proceeds on its own timeline.
+- **The two trigger cases are authorized differently, and this DR is explicit
+  about which.** Escalation-triggered backfill is *not* authorized by this DR
+  alone: it still needs a human to configure a backfill scope on the source's
+  registry entry under DR-0067, per source, before anything is retrieved.
+  Loss-triggered recovery for one already-failed locator *is* authorized by
+  this DR directly (§2), with no further per-instance human step, because the
+  failure itself is the scope. A reader must not assume either case's rule
+  applies to the other.
+- A future archive meeting §1's qualifying criteria may be used under this
+  DR without a new Decision Record; one that does not meet them needs its
+  own DR regardless of how similar it looks to Common Crawl or the Wayback
+  Machine. Whoever adds a third archive to the collector's configuration
+  checks the criteria, not just the archive's reputation.
+- **Third-party retrieval proceeds independently of DR-0006's WACZ signing
+  evaluation.** That evaluation remains a standing Phase II task with no
+  start date; it is not a precondition for using Common Crawl or the
+  Wayback Machine under this DR. WACZ packaging, if adopted, can be applied
+  to already-held WARC records later without redoing the retrieval — this
+  decision does not wait on it, and does not need revisiting when WACZ is
+  eventually evaluated.
 
 ## What has not been verified
 
