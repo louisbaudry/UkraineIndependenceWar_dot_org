@@ -24,11 +24,12 @@ The time horizon is measured in years and potentially decades.
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
 | Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0007, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **First collection performed 2026-09-09** — two sanctions lists, registered and run on the archive server ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)). **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072); the founder ruled on 2026-09-08 that no scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0093 are approved and in force. DR-0094 (third-party web captures —
-Common Crawl, the Wayback Machine — as an acquisition channel for registered
-sources) is drafted and proposed, pending founder review. No permanent API
-contract or technical stack beyond PostgreSQL, Python and OCFL has been
-frozen.
+DR-0001…0093 and DR-0095 are approved and in force. DR-0094 (third-party web
+captures — Common Crawl, the Wayback Machine — as an acquisition channel for
+registered sources) is drafted and proposed, pending founder review.
+DR-0095 governs how DRs are numbered going forward (drafted unnumbered,
+assigned at merge). No permanent API contract or technical stack beyond
+PostgreSQL, Python and OCFL has been frozen.
 
 ## Where things stand, plainly
 
@@ -92,6 +93,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-09/10 | Public identifiers designed and implemented: WP 3.5 resolves Q-12; DR-0087…0092 enacted (ARK scheme, minting at publication, a five-disposition register, `.vN` state qualifiers, ARK-derived URIs, a split's decider shown as a title never an id). SPEC-0007 drafted as a candidate and implemented against it, 77 checks | [`identifiers/`](identifiers/README.md), `schema/08-identifiers.sql` |
 | 2026-09-10 | Two independently-developed branches reconciled: DR-0093 renumbered around DR-0087…0092 (both branches had drafted a "DR-0087" for different topics), and two `setup/install.sh` defects found on the founder's first real install (as-root Postgres role creation; branch-only clone) fixed | this file, `docs/decision-records/README.md`, `setup/install.sh` |
 | 2026-09-10 | A third branch reconciled: DR-0094 drafted (as "DR-0087", the same collision as above) on how Common Crawl and the Wayback Machine's third-party web captures fit an already-registered source as an acquisition channel, not a source of their own — renumbered to the next free slot on merge. Proposed, pending founder review | `docs/decision-records/DR-0094-third-party-web-captures.md` |
+| 2026-09-11 | DR-0095 enacted: after the DR-0087 collision recurred a second time, Decision Records are now drafted unnumbered (`DR-pending-<slug>.md`) with the real number assigned exactly once, at merge — closing the gap DR-0093 and DR-0094 each hit ad hoc | `docs/decision-records/DR-0095-dr-numbering-placeholder-until-merge.md`, `CLAUDE.md`, `docs/decision-records/README.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
@@ -115,8 +117,8 @@ docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
   decision-records/   Unified Decision Record system (record §98); DR-0001…0093
-                      approved and in force, DR-0094 proposed and pending
-                      founder review; register in its README
+                      and DR-0095 approved and in force, DR-0094 proposed and
+                      pending founder review; register in its README
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
   phase-3/            Phase III working area
@@ -229,11 +231,12 @@ wait for the answer before building against an assumption.
 2. **Registering the remaining five sanctions candidates**, or a different
    next source. `sources/candidates/sanctions-authorities.yaml` has five more
    ready; none has been fetched or verified the way the first two were.
-3. **The two-branch DR-numbering collision this merge just resolved**
-   (`DR-0093`, out of date order) is a one-off, but nothing in
-   [DR-0080](docs/decision-records/DR-0080-registry-lifecycle-and-change-classes.md)
-   or the DR README currently says how to allocate a number when two branches
-   draft one concurrently. Worth a light process note if it recurs.
+3. ~~The two-branch DR-numbering collision~~ — **resolved 2026-09-11.** It
+   recurred once more (`DR-0094`, a second independent "DR-0087") before
+   being ruled on: Decision Records are now drafted unnumbered, as
+   `DR-pending-<slug>.md`, with the real number assigned exactly once, at
+   merge time ([DR-0095](docs/decision-records/DR-0095-dr-numbering-placeholder-until-merge.md)).
+   Nothing left to decide here.
 4. **WP 3.4's Track A items A2, A4, A5, A6, A7** (census tooling, WACZ
    evaluation, registration classes, the legal-review brief, storage
    measurement) are not started; A6 in particular blocks nothing today but

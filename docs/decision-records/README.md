@@ -13,6 +13,20 @@ security, legal, editorial.
 - **Superseded** — replaced by a later DR (both retained; supersession is explicit, per §77)
 - **Rejected** — considered and declined (retained as record)
 
+## Numbering (DR-0095)
+
+**No draft ever writes a number that might not be free.** A Decision Record
+in progress is named `DR-pending-<slug>.md`, titled `DR-pending-<slug>` in
+its own header and any self-reference, and left out of the numbered table
+below while pending. The real number is assigned exactly once, at the point
+of merging into `main`: grep this table on `origin/main` for the highest
+`DR-nnnn`, take the next integer, rename the file, fix its title and
+self-references, and add its row in the same commit that completes the
+merge. DR-0093 and DR-0094 were each renumbered after the fact because they
+guessed a number while drafting and collided with a concurrent branch;
+DR-0095 exists so a third collision is structurally impossible rather than
+merely another renumbering.
+
 ## Register
 
 | ID | Title | Category | Status | Decided |
@@ -111,6 +125,7 @@ security, legal, editorial.
 | [DR-0092](DR-0092-split-byline-as-public-title.md) | A split's deciding agent is shown as a public title, snapshotted, never the agent row | architecture / editorial / security | Approved | 2026-09-09 |
 | [DR-0093](DR-0093-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | Approved | 2026-09-08 |
 | [DR-0094](DR-0094-third-party-web-captures.md) | Third-party web captures (Common Crawl, Wayback Machine) as an acquisition channel | architecture / preservation | Proposed | — |
+| [DR-0095](DR-0095-dr-numbering-placeholder-until-merge.md) | Decision Records are drafted unnumbered; the number is assigned at merge | architecture / methodology | Approved | 2026-09-11 |
 
 ## Provenance of decisions
 
@@ -268,3 +283,12 @@ DR-0087 at the time on the strength of its own branch's then-current
 register. It carried no other numbering dependency — nothing else in the
 DR set references it — so reconciliation was a rename to the next free
 number, DR-0094, with no reordering elsewhere in the register.
+
+DR-0095 was raised by Claude immediately after reconciling DR-0094, put to
+the founder directly with three named options and a recommendation, and
+approved the same day: a Decision Record is now drafted under a
+`DR-pending-<slug>` placeholder name, with its real number written exactly
+once, at merge time, rather than guessed while drafting. It closes the gap
+DR-0093 and DR-0094 each hit, and CLAUDE.md's drafting instruction is
+updated in the same change to match (see "Numbering" below and CLAUDE.md's
+"Documents" section).

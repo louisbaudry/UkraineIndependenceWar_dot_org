@@ -147,9 +147,17 @@ commits to.
 
 **Decision Records** live in `docs/decision-records/DR-nnnn-slug.md` with the
 header block, Context, Alternatives considered, Decision, Consequences; the
-register in that directory's README lists every DR. Next free number: check
-the register, never assume. A DR is written only when the founder has decided;
-before that it is a **candidate DR** inside a working paper.
+register in that directory's README lists every DR. **Never write a number
+while drafting** (DR-0095) — two branches checking the register and drafting
+concurrently can both be right and still collide, as DR-0093 and DR-0094 each
+did. Draft and review it as `docs/decision-records/DR-pending-slug.md`,
+titled `DR-pending-slug` throughout (header and any self-reference); the
+real number is assigned exactly once, at merge time, by grepping
+`origin/main`'s register for the highest `DR-nnnn`, taking the next integer,
+renaming the file, fixing its title/self-references, and adding its register
+row in the same commit that completes the merge. A DR is written only when
+the founder has decided; before that it is a **candidate DR** inside a
+working paper.
 
 **Working papers** (`docs/phase-3/working-papers/wp-3.N-slug.md`) are how
 studies reach the founder. Follow WP 3.3 as the model: header block (Project,
