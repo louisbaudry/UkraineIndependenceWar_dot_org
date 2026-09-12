@@ -99,6 +99,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-11 | DR-0095 enacted: after the DR-0087 collision recurred a second time, Decision Records are now drafted unnumbered (`DR-pending-<slug>.md`) with the real number assigned exactly once, at merge — closing the gap DR-0093 and DR-0094 each hit ad hoc | `docs/decision-records/DR-0095-dr-numbering-placeholder-until-merge.md`, `CLAUDE.md`, `docs/decision-records/README.md` |
 | 2026-09-11 | DR-0094 approved after a second round of founder rulings on what the draft had left open: loss-triggered third-party recovery may run automatically once scoped to the failed locator; a future archive qualifies by stated criteria rather than needing its own DR; retrieval proceeds independently of the DR-0006 WACZ evaluation. Text amended to carry all four rulings (including how to record them) in the same step that approved it | `docs/decision-records/DR-0094-third-party-web-captures.md` |
 | 2026-09-12 | DR-0093 §3's collector_version/pipeline_version tension resolved (option 1 of 3): a run now carries two agents, the founder's existing agent-of-record ruling unchanged, plus a separate, self-registering, versioned software agent (`collector-pipeline`) recorded on the run's preservation events. `release/baseline.py --check` confirmed to pin both dimensions from a real `collector/run.py` invocation; three new checks (across `test_pipeline.py` and `test_run.py`) shown to fail under sabotage before being restored green | `collector/pipeline.py`, `collector/run.py`, `docs/decision-records/DR-pending-collection-run-two-agents.md` |
+| 2026-09-12 | WP 3.4 Track A item A2's index tooling built: `census.py` queries Common Crawl's index and the Wayback CDX index for candidate domains, evidence-only (capture counts, first/last seen), no fetch of any candidate host and no database writes — DR-0071(a) does not apply because nothing is collected. 28 tests pass with no network; two rules shown to fail under sabotage (the §28 "a failure explains itself" guard; the by-host deduplication key) and restored. Neither real client has completed a live query — both `index.commoncrawl.org` and `web.archive.org` failed every attempt from this session, tested with both `curl` and Python's own `urllib` | `sources/census.py`, `sources/tests/test_census.py`, `sources/README.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
@@ -137,7 +138,9 @@ docs/
 registry/             Semantic registry: vocabularies, argument schemes, compiler;
                       the source of truth for every enumeration (DR-0078)
 sources/              DR-0067 source registry — candidate registrations and the
-                      register.py tool; registering authorises collection
+                      register.py tool; registering authorises collection.
+                      census.py discovers new candidates from Common Crawl /
+                      Wayback indexes (WP 3.4 A2); collects nothing itself
 schema/               Canonical store DDL (PostgreSQL); enums generated from the
                       registry; schema test suite
 storage/              OCFL archival storage roots and fixity scheduling
@@ -226,13 +229,17 @@ list — see "Recent work" below for what changed and which DR governs it.
 1. **Registering the remaining five sanctions candidates**, or a different
    next source. `sources/candidates/sanctions-authorities.yaml` has five more
    ready; none has been fetched or verified the way the first two were.
-2. **WP 3.4's Track A items A2, A4, A5, A6, A7** (census tooling, WACZ
-   evaluation, registration classes, the legal-review brief, storage
-   measurement) are not started; A6 in particular blocks nothing today but
-   is the long pole before POL-0001 §10 can be commissioned. A2 is no
-   longer blocked on policy — DR-0094 governs how a third-party capture
-   from Common Crawl or the Wayback Machine gets recorded — only on being
-   built.
+2. **WP 3.4's Track A items A4, A5, A6, A7** (WACZ evaluation, registration
+   classes, the legal-review brief, storage measurement) are not started;
+   A6 in particular blocks nothing today but is the long pole before
+   POL-0001 §10 can be commissioned. **A2's index tooling is now built and
+   tested** (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
+   Wayback CDX index only, discovery of candidate domains with no fetch of
+   any candidate host; the other four A2 evidence sources WP 3.4 names
+   (Wikipedia citation graphs, sanctions-authority link graphs, OSINT
+   source lists, academic bibliographies) remain editorial research tasks,
+   not built as tooling. Neither client has completed a live query — both
+   indexes were unreachable from this session; see `sources/README.md`.
 
 This README is an entry point, not the project's institutional memory (record §100).
 The authoritative statement of requirements, principles, and phase mandates is the

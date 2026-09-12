@@ -189,3 +189,57 @@ suite fails.
 at the address given or that the formats are as assumed; for all seven, that
 the rights positions are correct — that is a legal question (POL-0001 §10),
 not a network one.
+
+## Census tooling (`census.py`, WP 3.4 §4.1 Track A item A2)
+
+A separate tool from registration, built for a separate purpose:
+`census.py` discovers *candidate* domains for a `docs/sources/` prose note
+to be written about, by querying Common Crawl's crawl index and the Wayback
+Machine's CDX index for what they have already captured under a domain
+pattern. It never fetches a page from a candidate domain — only from the
+index service itself — so DR-0071(a)'s registered-sources rule does not
+apply to it (nothing is collected), and it writes to no database.
+
+```bash
+python3 sources/census.py --domain example.gov.ua --index wayback
+python3 sources/census.py --domain example.gov.ua --index common-crawl \
+        --crawl-id CC-MAIN-2024-46   # current id: index.commoncrawl.org/collinfo.json
+```
+
+Output is a ranked, deduplicated markdown table of hosts, each with the
+capture count, first/last-seen dates, and which index reported it — WP
+3.4 §4.1's "ranked list of candidate domains with the evidence for each."
+Ranking by capture count is triage only (DR-0027's distinction, applied to
+domain discovery): more captures means better attested, never truer.
+
+Only the two evidence sources WP 3.4 §4.1 groups as "indices" are built.
+The other four it names for A2 — Wikipedia citation graphs of the war
+articles, sanctions-authority link graphs, published OSINT source lists,
+academic bibliographies — have no stable query API and are editorial
+research tasks, left for separate work.
+
+### What is verified, and what is not
+
+28 tests in `sources/tests/test_census.py`, no database needed. The
+aggregation/ranking logic (`census()`) is exercised through a fixture index
+client; the real Common Crawl and Wayback response parsers are exercised
+against hand-built payloads matching each service's documented shape — the
+same "test the parsing, not the network" split `test_warc_ingest.py` uses
+for WARC records. Verified by sabotage: removing the `IndexQueryResult`
+"a failure must explain itself" guard (§28) turns one check red; breaking
+the by-host deduplication key crashes the suite outright on a `KeyError`
+rather than passing quietly. Both were restored and re-verified green.
+
+**Not verified: `CommonCrawlIndexClient` and `WaybackCdxClient` have never
+completed a live query.** This session's egress proxy resets the connection
+to `index.commoncrawl.org` on every attempt (`collinfo.json` and a direct
+index query alike — `curl` and Python's own `urllib` both fail identically,
+`ECONNRESET`) and times out on `web.archive.org` outright, the same host
+prior sessions and DR-0094's drafting session found blocked. Both clients
+are written to each service's documented API shape, not exercised against a
+live response. This matches WP 3.4 §3's own framing: "sessions are for
+building and reviewing the pipeline, not for being the crawler" — real
+execution is meant to happen where a session has the network access this
+one does not, the same pattern `collector/fetch.py`'s `HttpFetcher` followed
+before the 2026-09-08 verification session confirmed it against real
+publishers.
