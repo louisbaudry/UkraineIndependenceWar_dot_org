@@ -180,7 +180,7 @@ drafted.
 
 ## Verification
 
-27 tests. The refusals are the substance:
+31 tests. The refusals are the substance:
 
 - a candidate missing any policy field is refused rather than defaulted —
   DR-0067's point is that collection policy is *stated*, and a silent default
@@ -200,10 +200,21 @@ The scope, rights and verification-date checks were verified by sabotage:
 removing any of them lets the corresponding bad candidate through and the
 suite fails.
 
-**Not verified:** for the five unfetched candidates, that the source exists
-at the address given or that the formats are as assumed; for all seven, that
-the rights positions are correct — that is a legal question (POL-0001 §10),
-not a network one.
+**Dependence on an already-registered source is recorded, not silently
+dropped** (fixed 2026-09-12,
+[DR-pending-second-source-registrations](../docs/decision-records/DR-pending-second-source-registrations.md)):
+`commit()` resolves a declared link's other end against the database by
+name when it is not in the current `--only` batch, and a link neither end
+of which resolves prints which end could not be found rather than
+vanishing. Verified by sabotage: reverting either half of the fix (the
+database lookup in `commit()`, or `validate()`'s `known_keys` parameter)
+turns one check red each.
+
+**Not verified:** for the three still-unfetched candidates
+(`eur-lex-sanctions`, `seco-sanctions`, `ua-nsdc-sanctions`), that the
+source exists at the address given or that the formats are as assumed;
+for all seven, that the rights positions are correct — that is a legal
+question (POL-0001 §10), not a network one.
 
 ## Census tooling (`census.py`, WP 3.4 §4.1 Track A item A2)
 

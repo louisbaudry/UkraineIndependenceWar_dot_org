@@ -9,6 +9,16 @@
 > Approval is what authorises the registrations described below; the
 > registrations themselves are executed on the archive server by the
 > founder, per *How to execute*, and have not been executed by this record.
+>
+> **The `register.py` dependence gap this record found was fixed the same
+> day**, at the founder's direction after this record's first draft named
+> it as a known issue: `commit()` and `validate()` in `sources/register.py`
+> were changed to resolve a dependence link's other end against the
+> database, not only the current call's own batch. Verified before and
+> after — the gap reproduced in a throwaway database seeded to match the
+> archive server's state, then confirmed closed in the same scenario —
+> and by test: `sources/tests/test_register.py` gained four checks, two of
+> which were shown to fail when each half of the fix was reverted in turn.
 
 ## Context
 
@@ -36,16 +46,17 @@ substituted, because it merges in OFAC's own data and would misattribute
 that to BIS while duplicating `ofac-sdn`'s own coverage with no declared
 dependence for it (DR-0028).
 
-**A gap found while preparing this record, not by DR-0093:** `register.py
---commit`'s dependence-recording only inserts a `source_dependence` row
-when *both* ends of a declared relation are being registered in the same
-`--only` call — it never checks the database for an end already
-registered by an earlier call. `uk-ofsi-consolidated`'s declared
-`common-evidentiary-origin` relation to `eu-consolidated-list` (already
-registered under DR-0093) will therefore be silently dropped when this
-record's registration runs, the same way DR-0093 §Consequences 4 found the
+**A gap found while preparing this record, and fixed the same day, not by
+DR-0093:** `register.py --commit`'s dependence-recording originally
+inserted a `source_dependence` row only when *both* ends of a declared
+relation were being registered in the same `--only` call — it never
+checked the database for an end already registered by an earlier call.
+`uk-ofsi-consolidated`'s declared `common-evidentiary-origin` relation to
+`eu-consolidated-list` (already registered under DR-0093) would therefore
+have been silently dropped, the same way DR-0093 §Consequences 4 found the
 EUR-Lex relation dropped for the opposite reason (the other end not yet
-registered at all). See Consequences.
+registered at all). Founder direction after this record's first draft:
+fix `register.py` now rather than leave it for later. See Consequences.
 
 ## Alternatives considered
 
@@ -80,11 +91,11 @@ On approval:
    extended. `register.py --dry-run` and any coverage reporting should
    make this visible, not imply full coverage of the name.
 3. **The declared dependence `uk-ofsi-consolidated →
-   common-evidentiary-origin→ eu-consolidated-list` is NOT recorded by
-   this registration**, for the mechanical reason in Context. This is
-   accepted rather than worked around here (see Consequences 1) — the
-   founder's direction was to register now, and a `register.py` fix is a
-   separate, small change that should not block it.
+   common-evidentiary-origin→ eu-consolidated-list` is recorded by this
+   registration**, now that `register.py` is fixed (Consequences 1): its
+   `commit()` resolves a dependence link's other end against the database
+   by name when it is not in the current `--only` batch, rather than only
+   against sources registered in the same call.
 4. **A first collection run against either source is a separate act**,
    not authorised by this record alone. DR-0093's pattern — `--dry-run`
    first, then a manual run with a person as agent of record — applies
@@ -107,23 +118,19 @@ rather than minting a second one for the same founder, unless a different
 person is registering this time.
 
 ```bash
-# 1. register — this is the authorisation, and it collects nothing
+# 1. register — this is the authorisation, and it collects nothing.
+#    the declared uk-ofsi-consolidated -> eu-consolidated-list dependence
+#    is now recorded automatically by this call (Consequences 1 fix) --
+#    no separate step or manual SQL is needed.
 python3 sources/register.py --check
 python3 sources/register.py --dry-run --only uk-ofsi-consolidated bis-entity-list
 python3 sources/register.py --commit --dbname uiw \
         --agent <the person agent id from DR-0093's step 1, or a new one> \
         --only uk-ofsi-consolidated bis-entity-list
 
-# 2. confirm the dependence gap named in Context, rather than assume it:
-psql -d uiw -c "SELECT dependent_id, depends_on_id, relation FROM source_dependence"
-# expect: no row linking uk-ofsi-consolidated to eu-consolidated-list.
-# If recording it now matters, insert it directly:
-psql -d uiw -c "INSERT INTO source_dependence (id, dependent_id, depends_on_id, relation, note, asserter_id)
-  SELECT gen_random_uuid(), a.id, b.id, 'common-evidentiary-origin',
-         'For pre-Brexit designations the UK list inherits EU designations wholesale. Post-2021 divergence is real and evidentially interesting; the shared origin before that is not.',
-         '<agent id>'
-  FROM source a, source b WHERE a.name = 'UK OFSI Consolidated List of Financial Sanctions Targets'
-    AND b.name = 'EU Consolidated Financial Sanctions List';"
+# 2. confirm the dependence was recorded (expected now, unlike before the fix):
+psql -d uiw -c "SELECT s1.name, s2.name, sd.relation FROM source_dependence sd \
+  JOIN source s1 ON s1.id=sd.dependent_id JOIN source s2 ON s2.id=sd.depends_on_id"
 
 # 3. a first run, when wanted — one source at a time, --dry-run first
 python3 collector/run.py --source uk-ofsi-consolidated --dbname uiw \
@@ -146,16 +153,23 @@ root (see the verification record), with the two-agent split
 preservation event named the software agent, never the person, checked
 directly against the rehearsal database.
 
-**Step 1's `--only` call and step 2's dependence gap were independently
-re-verified**, in a separate throwaway database seeded to match the
-archive server's actual state (`eu-consolidated-list`/`ofac-sdn`
-registered first, exactly as DR-0093 left them): `register.py --commit
---only uk-ofsi-consolidated bis-entity-list` registered both sources
-correctly, and confirmed zero rows in `source_dependence` afterward — the
-gap is real, not a guess. The step 2 SQL workaround above was then run
-against that same database and confirmed to insert the expected row
-(`UK OFSI Consolidated List of Financial Sanctions Targets` →
-`EU Consolidated Financial Sanctions List`, `common-evidentiary-origin`).
+**Step 1 and the dependence fix were both re-verified after the fix
+landed**, in a separate throwaway database seeded to match the archive
+server's actual state (`eu-consolidated-list`/`ofac-sdn` registered
+first, exactly as DR-0093 left them). Before the fix: `register.py
+--commit --only uk-ofsi-consolidated bis-entity-list` registered both
+sources correctly but left zero rows in `source_dependence` — the gap was
+real, not a guess. After the fix, in a fresh copy of the same database:
+the identical `--commit` call registered both sources *and* printed the
+dependence in `describe()`'s output *and* inserted exactly the expected
+row (`UK OFSI Consolidated List of Financial Sanctions Targets` →
+`EU Consolidated Financial Sanctions List`, `common-evidentiary-origin`)
+with no separate step. A second scenario — registering a source whose
+declared dependence points at something not registered anywhere yet
+(`eu-consolidated-list` alone, which depends on the unregistered
+`eur-lex-sanctions`) — was also tried: `register.py` prints "dependence
+not recorded yet" for each such link and inserts nothing, rather than
+crashing or asserting a link to a source that does not exist.
 
 ## Executed
 
@@ -166,17 +180,20 @@ findings, matching DR-0093's *Executed* section.
 
 ## Consequences
 
-1. **The `uk-ofsi-consolidated`→`eu-consolidated-list` dependence needs a
-   direct SQL insert or a `register.py` fix, not a plain `--commit` call,
-   to be recorded** (Context, *How to execute* step 2). The underlying gap
-   — `register.py` cannot declare dependence on a source registered by an
-   earlier call, only on one registered in the same call — will recur for
-   every future registration that depends on something already in the
-   registry, which by then will be the common case rather than the
-   exception DR-0093's EUR-Lex gap was. Worth its own small fix
-   (`commit()` could look up an existing source by name/key when the
-   other end of a link is not in the current batch) before the sixth and
-   seventh candidates are registered, but not blocking this one.
+1. **Fixed the same day, before execution.** `register.py`'s `commit()`
+   now resolves a dependence link's `from`/`to` against the current
+   `--only` batch first, then against an existing `source` row by name —
+   and `main()` no longer drops a dependence link merely because one end
+   is outside `--only`; it drops one only when *neither* end is in the
+   batch and *no* database row resolves it, printing which end could not
+   be resolved rather than silently discarding the link. `validate()`
+   gained an optional `known_keys` parameter so a `--only` call's
+   dependence-existence check can be told about candidates outside the
+   filtered batch without a database. Four new tests in
+   `sources/tests/test_register.py` (31 total, up from 27), two of which
+   were shown to fail when each half of the fix was reverted in turn.
+   This closes the gap for every future registration that depends on
+   something already in the registry, not only this one.
 2. **`bis-entity-list`'s registered name overstates its coverage** until
    the Entity List gets its own locator (Decision 2). Anyone reading the
    registry by name alone, without checking `run_locators`, would assume

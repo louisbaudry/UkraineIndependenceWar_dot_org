@@ -75,10 +75,22 @@ def load_candidates() -> tuple[list[dict], list[dict]]:
     return sources, dependence
 
 
-def validate(sources: list[dict], dependence: list[dict]) -> list[str]:
-    """Everything checkable without a database or a network."""
+def validate(
+    sources: list[dict], dependence: list[dict],
+    known_keys: set[str] | None = None,
+) -> list[str]:
+    """Everything checkable without a database or a network.
+
+    `known_keys`, if given, is used only for the dependence-existence check
+    below, in place of `sources`' own keys: a `--only` call validates a
+    filtered `sources`, but a dependence link may legitimately name a
+    candidate outside that filter — one already registered by an earlier
+    call, or one meant to be registered later (DR-pending-second-source-
+    registrations). Every other check still scopes to `sources` as given.
+    """
     problems: list[str] = []
     keys = [s.get("key") for s in sources]
+    dependence_keys = known_keys if known_keys is not None else set(keys)
 
     for key in {k for k in keys if keys.count(k) > 1}:
         problems.append(f"duplicate source key: {key!r}")
@@ -143,7 +155,7 @@ def validate(sources: list[dict], dependence: list[dict]) -> list[str]:
 
     for link in dependence:
         for end in ("from", "to"):
-            if link.get(end) not in keys:
+            if link.get(end) not in dependence_keys:
                 problems.append(
                     f"dependence references unknown source {link.get(end)!r}")
         if not link.get("note"):
@@ -219,13 +231,24 @@ def describe(sources: list[dict], dependence: list[dict]) -> None:
 
 
 def commit(conn, sources: list[dict], dependence: list[dict],
-           asserter_id: str) -> dict[str, str]:
+           asserter_id: str, all_sources_by_key: dict[str, dict] | None = None
+           ) -> dict[str, str]:
     """Insert the sources and their declared dependence.
 
     `asserter_id` is a person: declaring that two sources are dependent is an
     analytic judgment about them (DR-0028), not a configuration value, and it
     carries an asserter like any other assertion.
+
+    `all_sources_by_key`, if given, lets a dependence link's other end
+    resolve against a source registered by an *earlier* call, not only this
+    one: a name lookup in the database, when the key is not in this call's
+    own batch. Without it, a dependence link is recorded only when both
+    ends are registered in the same `--commit` call — the gap
+    DR-pending-second-source-registrations found, where
+    `uk-ofsi-consolidated`'s declared dependence on the already-registered
+    `eu-consolidated-list` was silently dropped.
     """
+    all_sources_by_key = all_sources_by_key or {}
     ids: dict[str, str] = {}
     with conn.transaction():
         for source in sources:
@@ -260,15 +283,36 @@ def commit(conn, sources: list[dict], dependence: list[dict],
                  source.get("grade_item_credibility")),
             )
 
+        def resolve(key: str) -> str | None:
+            """This call's own batch first; otherwise an existing source
+            already in the database, by name. Never asserts a link to a
+            source that does not exist as a real registered row yet."""
+            if key in ids:
+                return ids[key]
+            candidate = all_sources_by_key.get(key)
+            if candidate is None:
+                return None
+            row = conn.execute(
+                "SELECT id FROM source WHERE name = %s", (candidate["name"],)
+            ).fetchone()
+            return str(row[0]) if row else None
+
         for link in dependence:
-            if link["from"] in ids and link["to"] in ids:
+            dependent_id = resolve(link["from"])
+            depends_on_id = resolve(link["to"])
+            if dependent_id and depends_on_id:
                 conn.execute(
                     "INSERT INTO source_dependence (id, dependent_id, "
                     "depends_on_id, relation, note, asserter_id) "
                     "VALUES (%s,%s,%s,%s,%s,%s)",
-                    (str(uuid.uuid4()), ids[link["from"]], ids[link["to"]],
+                    (str(uuid.uuid4()), dependent_id, depends_on_id,
                      link["relation"], link["note"], asserter_id),
                 )
+            else:
+                unresolved = link["from"] if not dependent_id else link["to"]
+                print(f"  dependence not recorded yet: {link['from']} -> "
+                      f"{link['to']} ({unresolved!r} is not a registered "
+                      "source)")
     return ids
 
 
@@ -289,17 +333,25 @@ def main() -> int:
                              "(DR-0028)")
     args = parser.parse_args()
 
-    sources, dependence = load_candidates()
+    all_sources, dependence = load_candidates()
+    sources = all_sources
+    known_keys = None
     if args.only:
         unknown = set(args.only) - {s["key"] for s in sources}
         if unknown:
             print(f"unknown source key(s): {', '.join(sorted(unknown))}")
             return 1
         sources = [s for s in sources if s["key"] in args.only]
+        # Keep a link if either end is in this batch: the other end may
+        # already be registered from an earlier call, or may get registered
+        # right now. commit() resolves whichever is the case; a plain
+        # "both ends in this batch" filter silently dropped a dependence on
+        # an already-registered source (DR-pending-second-source-registrations).
         dependence = [d for d in dependence
-                      if d["from"] in args.only and d["to"] in args.only]
+                      if d["from"] in args.only or d["to"] in args.only]
+        known_keys = {s["key"] for s in all_sources}
 
-    problems = validate(sources, dependence)
+    problems = validate(sources, dependence, known_keys=known_keys)
     if problems:
         print("Candidates cannot be registered as they stand:\n")
         for problem in problems:
@@ -329,7 +381,8 @@ def main() -> int:
 
     import psycopg
     with psycopg.connect(dbname=args.dbname, autocommit=True) as conn:
-        ids = commit(conn, sources, dependence, args.agent)
+        ids = commit(conn, sources, dependence, args.agent,
+                    all_sources_by_key={s["key"]: s for s in all_sources})
     for key, source_id in ids.items():
         print(f"  registered  {key}  {source_id}")
     print(f"\n{len(ids)} source(s) registered. Collection is now authorised "
