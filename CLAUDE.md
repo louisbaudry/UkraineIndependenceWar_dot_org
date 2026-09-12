@@ -9,7 +9,7 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0093); the design
+every enacted decision since is a Decision Record (DR-0001…0095); the design
 lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
 the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
 `publication/`, `export/` and `release/` implements those documents and is
