@@ -59,7 +59,7 @@ permits now. Keep this list current when you finish or start an item.
 
 | Item | State | Note |
 |---|---|---|
-| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 registered (2026-09-09), 2 more verified but not registered (2026-09-12)** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `uk-ofsi-consolidated` (fully) and `bis-entity-list` (Denied Persons List half only) now have verified locators and passed a throwaway-database rehearsal with the real collector, but registering them is still the founder's act, not done here (`sources/README.md`, `docs/sources/verification-bis-dpl-ofsi-consolidated.md`). `eur-lex-sanctions`, `seco-sanctions`, `ua-nsdc-sanctions` remain unverified. Since 2026-09-12, `collector/run.py` also records a versioned software agent on preservation events (`DR-pending-collection-run-two-agents`) — exercised against two live sources in today's rehearsal, not yet on the archive server |
+| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 registered (2026-09-09), 2 more approved for registration but not yet executed (2026-09-12)** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `uk-ofsi-consolidated` (fully) and `bis-entity-list` (Denied Persons List half only) are verified and the founder approved registering both (`DR-pending-second-source-registrations`); execution is on the archive server, per that record's *How to execute*, and has not happened yet. That record also flags a real gap: `register.py --commit`'s dependence-recording only links sources registered in the same call, so `uk-ofsi-consolidated`'s declared dependence on the already-registered `eu-consolidated-list` needs a direct SQL insert or a `register.py` fix, not a plain `--commit`. `eur-lex-sanctions`, `seco-sanctions`, `ua-nsdc-sanctions` remain unverified. Since 2026-09-12, `collector/run.py` also records a versioned software agent on preservation events (`DR-pending-collection-run-two-agents`) — exercised against two live sources in today's rehearsal, not yet on the archive server |
 | A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | **in progress: index tooling built and tested 2026-09-12** | `sources/census.py` queries Common Crawl's index and Wayback's CDX index for candidate domains, no fetch of any candidate host, no database writes. 28 tests, no live query (both indexes unreachable this session; see `sources/README.md`). The other four A2 evidence sources (Wikipedia citation graphs, sanctions link graphs, OSINT lists, bibliographies) are not built — editorial research tasks, not tooling. DR-0094 (approved 2026-09-11) still governs how a *retrieved* third-party capture gets recorded — that's the separate acquisition_attempt/FetchResult extension, not started |
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
@@ -117,14 +117,20 @@ commits to.
   retrospective recovery from existing archives, registered live collection
   (WP 3.4, candidate). Do not propose a crawler.
 - **Two of the seven sanctions authorities in `sources/candidates/` are
-  registered** (`eu-consolidated-list`, `ofac-sdn`, DR-0093, 2026-09-08/09);
-  **five remain candidates**, not registered. As of 2026-09-12, two more of
-  those five now have a verified, fetched locator
-  (`uk-ofsi-consolidated` fully, `bis-entity-list` partially — its Denied
-  Persons List half only; see `sources/README.md`) but are **still not
-  registered**. Registering any of the five, verified or not, is the
-  founder's act, per source, same as it was for the first two — do not run
-  `register.py --commit` on any of them without that being asked for.
+  registered** (`eu-consolidated-list`, `ofac-sdn`, DR-0093, 2026-09-08/09).
+  **Two more are approved for registration but not yet executed**
+  (`uk-ofsi-consolidated` fully verified, `bis-entity-list` partially —
+  Denied Persons List only; the founder approved registering both,
+  2026-09-12, `DR-pending-second-source-registrations`). Execution is on
+  the archive server, per that record's *How to execute* — this is not a
+  session-side task, and running `register.py --commit` in an interactive
+  session's own throwaway database is not the same thing as executing it.
+  **Three remain candidates**, unverified (`eur-lex-sanctions`,
+  `seco-sanctions`, `ua-nsdc-sanctions`). Registering any of these three,
+  or re-verifying/re-registering the first four, is still the founder's
+  act, per source — do not run `register.py --commit` against the real
+  archive database without that being asked for, and do not treat approval
+  of *this* pair as blanket authorization for the other three.
 - **A person, not software, is the agent of record for a collection run**
   (DR-0093 §3) — deliberately, at the founder's direction, for the first
   runs. Unchanged. As of 2026-09-12
