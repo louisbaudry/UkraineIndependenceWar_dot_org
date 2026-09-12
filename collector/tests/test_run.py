@@ -164,6 +164,26 @@ def run() -> int:
               and row[0].get("locator_verified") == ofac["locator_verified"].isoformat())
         check("DR-0093 §3", "the agent of record is the person given",
               row is not None and str(row[3]) == person)
+
+        software_agent_id = row[0].get("software_agent_id") if row else None
+        check("DR-pending-collection-run-two-agents",
+              "the run's configuration names the software agent used",
+              software_agent_id is not None)
+        check("DR-pending-collection-run-two-agents",
+              "the software agent is a versioned software pipeline_agent, "
+              "not the person given as --agent",
+              software_agent_id is not None and software_agent_id != person
+              and conn.execute(
+                  "SELECT kind, software_version FROM pipeline_agent WHERE id = %s",
+                  (software_agent_id,)).fetchone() == ("software", "0.1.0"))
+        check("DR-pending-collection-run-two-agents",
+              "the run's preservation events are attributed to the software "
+              "agent, never to the person",
+              conn.execute(
+                  "SELECT count(*) FROM preservation_event WHERE agent_id != %s",
+                  (software_agent_id,)).fetchone()[0] == 0
+              and conn.execute(
+                  "SELECT count(*) FROM preservation_event").fetchone()[0] > 0)
         check("DR-0073", "an empty archive root was initialised as OCFL",
               (archive / "permanent" / "0=ocfl_1.1").exists()
               and (archive / "medium-term" / "0=ocfl_1.1").exists())

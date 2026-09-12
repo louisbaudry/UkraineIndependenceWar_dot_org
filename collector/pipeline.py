@@ -129,6 +129,47 @@ def capture_series_id(source_id: str, locator: str) -> str:
     return str(uuid.uuid5(uuid.NAMESPACE_URL, f"{source_id}|{locator}"))
 
 
+# This module implements both what release/baseline.py calls the "collector"
+# and the "pipeline" (DR-0047's separate versioning dimensions) -- there is
+# no code split between them here, so pinning them to one version is honest
+# rather than inventing a distinction the code does not have. Bump this when
+# a change to this file would matter to a reader of a past run's preservation
+# events (DR-pending-collection-run-two-agents).
+SOFTWARE_AGENT_NAME = "collector-pipeline"
+SOFTWARE_AGENT_VERSION = "0.1.0"
+
+
+def ensure_software_agent(
+    connection: psycopg.Connection, name: str = SOFTWARE_AGENT_NAME,
+    version: str = SOFTWARE_AGENT_VERSION,
+) -> str:
+    """Returns the `pipeline_agent` id for a versioned software agent,
+    inserting it the first time this exact (name, version) pair is seen.
+
+    DR-pending-collection-run-two-agents: unlike a person agent (DR-0093 §3,
+    registered deliberately by a human), a software agent's identity is
+    fully determined by its own declared version -- there is nothing for a
+    human to decide, so this self-registers rather than requiring the
+    `pipeline_agent` insert `run.py`'s `check_agent` spells out for a person.
+    A (name, version) pair already in the table is reused, never duplicated,
+    so every run of the same code names the same agent row.
+    """
+    row = connection.execute(
+        "SELECT id FROM pipeline_agent WHERE kind = 'software' "
+        "AND name = %s AND software_version = %s",
+        (name, version),
+    ).fetchone()
+    if row is not None:
+        return str(row[0])
+    agent_id = str(uuid.uuid4())
+    connection.execute(
+        "INSERT INTO pipeline_agent (id, kind, name, software_version) "
+        "VALUES (%s, 'software', %s, %s)",
+        (agent_id, name, version),
+    )
+    return agent_id
+
+
 class Collector:
     """Runs one source's collection cycle."""
 
@@ -139,6 +180,7 @@ class Collector:
         quarantine_dir: Path,
         storage_roots: dict[str, StorageRoot],
         collector_agent_id: str,
+        software_agent_id: str,
         scanner=None,
     ):
         self.conn = connection
@@ -146,7 +188,15 @@ class Collector:
         self.quarantine_dir = Path(quarantine_dir)
         self.quarantine_dir.mkdir(parents=True, exist_ok=True)
         self.roots = storage_roots
+        # DR-pending-collection-run-two-agents: two agents per run,
+        # deliberately distinct. `agent_id` is the run's agent of record
+        # (DR-0093 §3 -- a person, for now) and governs collector_run and
+        # the Gate 1 admission decision. `software_agent_id` is the
+        # versioned software that mechanically performed the run (AI-002)
+        # and is what preservation events name -- a person initiating a
+        # run is not who computed a digest.
         self.agent_id = collector_agent_id
+        self.software_agent_id = software_agent_id
         # Injected so the security check is testable, and so a real scanner
         # can be swapped in without touching the gate logic.
         self.scan = scanner or self._default_scan
@@ -591,6 +641,10 @@ class Collector:
         self, event_type: str, object_id: str | None,
         quarantine_id: str | None, outcome: str, detail: str,
     ) -> None:
+        # DR-pending-collection-run-two-agents: a preservation event names
+        # the software that mechanically performed it, not the run's agent
+        # of record -- a digest calculation was not "decided" by whoever
+        # started the run.
         self.conn.execute(
             """
             INSERT INTO preservation_event
@@ -598,7 +652,7 @@ class Collector:
                  occurred_at, outcome, outcome_detail)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """,
-            (_uuid(), event_type, object_id, quarantine_id, self.agent_id,
+            (_uuid(), event_type, object_id, quarantine_id, self.software_agent_id,
              _now(), outcome, detail),
         )
 

@@ -59,7 +59,7 @@ permits now. Keep this list current when you finish or start an item.
 
 | Item | State | Note |
 |---|---|---|
-| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 done, 2026-09-09** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `HttpFetcher` has completed live fetches, twice (a throwaway-database rehearsal, then the real run). The other 5 candidates are unregistered and unverified against a live server |
+| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 done, 2026-09-09** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `HttpFetcher` has completed live fetches, twice (a throwaway-database rehearsal, then the real run). The other 5 candidates are unregistered and unverified against a live server. Since 2026-09-12, `collector/run.py` also records a versioned software agent on preservation events (`DR-pending-collection-run-two-agents`) — not yet exercised by a real run on the archive server, only by tests |
 | A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | not started | must not live-fetch unregistered hosts; DR-0094 (approved 2026-09-11) governs how a third-party capture is recorded once retrieved — read it before building the acquisition_attempt/FetchResult extension it requires |
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
@@ -122,12 +122,16 @@ commits to.
   founder's act, per source, same as it was for the first two.
 - **A person, not software, is the agent of record for a collection run**
   (DR-0093 §3) — deliberately, at the founder's direction, for the first
-  runs. This leaves `release/baseline.py --check` unable to pin
-  `collector_version`/`pipeline_version` from the agent registry. Three
-  resolutions were proposed to the founder on 2026-09-09 and not yet ruled
-  on; see README.md's "Open decisions for the next session". Do not resolve
-  this unilaterally by quietly switching the agent of record back to
-  software — that reverses a founder ruling.
+  runs. Unchanged. As of 2026-09-12
+  (`DR-pending-collection-run-two-agents`, awaiting its number), a *second*,
+  separate, self-registering software agent named `collector-pipeline` is
+  recorded on the run's preservation events instead, which resolved
+  `release/baseline.py --check`'s inability to pin `collector_version`/
+  `pipeline_version` without touching `collector_run.collector_agent_id` or
+  the Gate 1 decision. Do not resolve the *agent-of-record* question
+  unilaterally by quietly switching it back to software — that would
+  reverse a founder ruling, and is a different question from which agent a
+  preservation event names.
 
 ## Governance context
 

@@ -228,7 +228,10 @@ def run() -> int:
             "VALUES (%s, 'software', 'test-warc-ingester', '0.1.0')", (agent_id,))
         source_id = shared.seed_source(conn, locator="https://example.invalid/oj/",
                                        collection_method="warc-import")
-        collector = Collector(conn, None, work / "quarantine", roots, agent_id)
+        # Not testing the agent-of-record/software-agent split here, so the
+        # same software agent serves both roles.
+        collector = Collector(conn, None, work / "quarantine", roots,
+                              agent_id, agent_id)
 
         run_id = collector.ingest_warc(source_id, compressed, "test-archive",
                                        configuration={"test": True})

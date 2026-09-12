@@ -29,8 +29,10 @@ Common Crawl, the Wayback Machine, and qualifying archives — as an
 acquisition channel for registered sources) was approved 2026-09-11 after a
 second round of founder rulings on points the draft had left open. DR-0095
 governs how DRs are numbered going forward (drafted unnumbered, assigned at
-merge). No permanent API contract or technical stack beyond PostgreSQL,
-Python and OCFL has been frozen.
+merge) — and, per that rule, one further decision is approved but not yet
+numbered: `DR-pending-collection-run-two-agents` (2026-09-12), resolving
+DR-0093 §3's collector/pipeline-version tension. No permanent API contract
+or technical stack beyond PostgreSQL, Python and OCFL has been frozen.
 
 ## Where things stand, plainly
 
@@ -96,6 +98,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-10 | A third branch reconciled: DR-0094 drafted (as "DR-0087", the same collision as above) on how Common Crawl and the Wayback Machine's third-party web captures fit an already-registered source as an acquisition channel, not a source of their own — renumbered to the next free slot on merge. Proposed, pending founder review | `docs/decision-records/DR-0094-third-party-web-captures.md` |
 | 2026-09-11 | DR-0095 enacted: after the DR-0087 collision recurred a second time, Decision Records are now drafted unnumbered (`DR-pending-<slug>.md`) with the real number assigned exactly once, at merge — closing the gap DR-0093 and DR-0094 each hit ad hoc | `docs/decision-records/DR-0095-dr-numbering-placeholder-until-merge.md`, `CLAUDE.md`, `docs/decision-records/README.md` |
 | 2026-09-11 | DR-0094 approved after a second round of founder rulings on what the draft had left open: loss-triggered third-party recovery may run automatically once scoped to the failed locator; a future archive qualifies by stated criteria rather than needing its own DR; retrieval proceeds independently of the DR-0006 WACZ evaluation. Text amended to carry all four rulings (including how to record them) in the same step that approved it | `docs/decision-records/DR-0094-third-party-web-captures.md` |
+| 2026-09-12 | DR-0093 §3's collector_version/pipeline_version tension resolved (option 1 of 3): a run now carries two agents, the founder's existing agent-of-record ruling unchanged, plus a separate, self-registering, versioned software agent (`collector-pipeline`) recorded on the run's preservation events. `release/baseline.py --check` confirmed to pin both dimensions from a real `collector/run.py` invocation; three new checks (across `test_pipeline.py` and `test_run.py`) shown to fail under sabotage before being restored green | `collector/pipeline.py`, `collector/run.py`, `docs/decision-records/DR-pending-collection-run-two-agents.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
@@ -217,18 +220,14 @@ Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
 propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
 wait for the answer before building against an assumption.
 
-1. **How is a collection run versioned when a person is its agent of record?**
-   `release/baseline.py --check` wants a versioned software agent named like
-   "collector" to have run, so it can pin `collector_version` and
-   `pipeline_version` (AI-002: software agents carry their version). DR-0093
-   §3 made the founder, a person, the run's agent of record instead, so after
-   the first real collection the baseline still shows both as `MISSING`. Three
-   options were put to the founder on 2026-09-09 and not yet answered:
-   record two agents per run (person as agent of record, a versioned software
-   agent on the preservation events); derive the pinned version from the run
-   configuration's recorded code commit instead of the agent registry; or make
-   the software agent the record of run and amend DR-0093 §3. See DR-0093's
-   *Executed* section for the full framing.
+1. ~~How is a collection run versioned when a person is its agent of
+   record?~~ — **resolved 2026-09-12.** A run now carries two agents: the
+   founder's DR-0093 §3 ruling stands unchanged for `collector_run` and the
+   Gate 1 decision, while a separate, self-registered, versioned software
+   agent (`collector-pipeline`) is recorded on the run's preservation
+   events, resolving what `release/baseline.py --check` needed
+   (`DR-pending-collection-run-two-agents`, awaiting its number at merge
+   per DR-0095). Nothing left to decide here.
 2. **Registering the remaining five sanctions candidates**, or a different
    next source. `sources/candidates/sanctions-authorities.yaml` has five more
    ready; none has been fetched or verified the way the first two were.

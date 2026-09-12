@@ -22,6 +22,14 @@ before it fetches anything, and refuses at the first one that fails:
 
 `--dry-run` does all four and stops, printing what a run would attempt.
 
+For a real run, it also ensures a versioned **software** `pipeline_agent`
+exists (self-registered by name and version, no human step) and passes it
+to `Collector` separately from `--agent`: the software agent names every
+preservation event this run produces, while `--agent` stays the run's
+human agent of record (DR-0093 §3), unchanged
+(DR-pending-collection-run-two-agents). This is not a fifth refusal check —
+it never blocks a run — so `--dry-run` does not perform it.
+
 What it does NOT do: parse anything it fetches, create canonical knowledge,
 or decide whether a capture is worth keeping. A completed run with zero
 documentary assertions is the expected result (DR-0066).
@@ -43,7 +51,10 @@ sys.path.insert(0, str(ROOT / "sources"))
 
 from fetch import Fetcher, HttpFetcher  # noqa: E402
 from ocfl import OcflError, StorageRoot  # noqa: E402
-from pipeline import Collector, PolicyViolation  # noqa: E402
+from pipeline import (  # noqa: E402
+    Collector, PolicyViolation, SOFTWARE_AGENT_NAME, SOFTWARE_AGENT_VERSION,
+    ensure_software_agent,
+)
 from register import load_candidates, validate  # noqa: E402
 
 DEFAULT_USER_AGENT = (
@@ -192,6 +203,14 @@ def main(argv: list[str] | None = None, fetcher: Fetcher | None = None) -> int:
                 return 0
 
             roots, quarantine = open_roots(args.archive_root)
+            # DR-pending-collection-run-two-agents: --agent stays the run's
+            # agent of record (DR-0093 §3); the preservation events this run
+            # produces name a separate, versioned software agent instead --
+            # self-registered, since a software agent's identity is its own
+            # declared version, not a human decision (unlike --agent).
+            software_agent_id = ensure_software_agent(conn)
+            print(f"software   {SOFTWARE_AGENT_NAME}  {SOFTWARE_AGENT_VERSION}  "
+                  f"{software_agent_id}")
             configuration = {
                 "invoked_by": "collector/run.py",
                 "candidate_key": args.source,
@@ -201,10 +220,11 @@ def main(argv: list[str] | None = None, fetcher: Fetcher | None = None) -> int:
                 "user_agent": args.user_agent,
                 "timeout_seconds": args.timeout,
                 "code_commit": git_commit(),
+                "software_agent_id": software_agent_id,
             }
             collector = Collector(
                 conn, fetcher or HttpFetcher(args.user_agent, timeout=args.timeout),
-                quarantine, roots, args.agent,
+                quarantine, roots, args.agent, software_agent_id,
             )
             run_id = collector.run(source_id, locators, configuration)
 

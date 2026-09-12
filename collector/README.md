@@ -12,7 +12,7 @@ PGHOST=… PGPORT=… PGUSER=… python3 collector/tests/test_pipeline.py
 
 The pipeline below the network — quarantine, the security check, Gate 1,
 retention-tier handling, OCFL writing, canonical-store rows, preservation
-events and coverage accounting — is exercised end to end by 29 tests against
+events and coverage accounting — is exercised end to end by 44 tests against
 a real PostgreSQL database and real OCFL storage. Only the fetch is
 substituted.
 
@@ -70,10 +70,37 @@ invocation — candidate key, locators, verification date, User-Agent, code
 commit — is recorded in the run's configuration (DR-0070), and a run with
 failed acquisitions exits 1 after recording them (PRES-007).
 
-18 tests in `collector/tests/test_run.py`. The registration refusal and the
+21 tests in `collector/tests/test_run.py`. The registration refusal and the
 person-agent refusal were each removed in turn and the suite was seen to
 fail. The full sequence was also rehearsed live against both approved
 sources in a throwaway database on 2026-09-08 (verification record §7).
+
+## Two agents per run
+
+DR-0093 §3 made a person the agent of record for the first runs (a
+deliberate, human-accountable choice), which left `collector_run` unable to
+satisfy AI-002's expectation that a versioned software agent had run — the
+open item README.md's "Open decisions" tracked as unresolved. Resolved by
+the founder (**DR-pending-collection-run-two-agents**, pending its number):
+the run keeps its human agent of record (`collector_run.collector_agent_id`
+and the Gate 1 admission decision, unchanged), while every
+`preservation_event` this run produces — a fixity check, a virus check, an
+ingestion, a digest calculation — names a separate, versioned **software**
+`pipeline_agent` instead, because a person starting a run did not personally
+compute a digest. `ensure_software_agent()` in `collector/pipeline.py`
+self-registers that agent by `(name, version)`, idempotently, with no human
+step: unlike a person agent, a software agent's identity is just its own
+declared version. `collector/run.py` calls it automatically and prints the
+software agent alongside the person agent it already printed; a dry run
+does neither, since it writes nothing. `release/baseline.py --check` was
+already querying `pipeline_agent` for a software agent named like
+"collector"/"pipeline" — it had no software agent to find until now, not a
+design gap of its own.
+
+Verified by sabotage: reverting `_record_event` to name the run's human
+agent of record turns three checks red, two in `test_pipeline.py` and one
+in `test_run.py`, each asserting that a preservation event is never
+attributed to the person given as `--agent`.
 
 ## The three gates
 
