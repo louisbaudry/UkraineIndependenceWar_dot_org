@@ -218,29 +218,21 @@ deliberate acts that follow it (OPS-001).
 
 Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
 propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
-wait for the answer before building against an assumption.
+wait for the answer before building against an assumption. Two items that
+stood here through 2026-09-11/12 (a DR-numbering collision; how a run is
+versioned under a human agent of record) are resolved and dropped from this
+list — see "Recent work" below for what changed and which DR governs it.
 
-1. ~~How is a collection run versioned when a person is its agent of
-   record?~~ — **resolved 2026-09-12.** A run now carries two agents: the
-   founder's DR-0093 §3 ruling stands unchanged for `collector_run` and the
-   Gate 1 decision, while a separate, self-registered, versioned software
-   agent (`collector-pipeline`) is recorded on the run's preservation
-   events, resolving what `release/baseline.py --check` needed
-   (`DR-pending-collection-run-two-agents`, awaiting its number at merge
-   per DR-0095). Nothing left to decide here.
-2. **Registering the remaining five sanctions candidates**, or a different
+1. **Registering the remaining five sanctions candidates**, or a different
    next source. `sources/candidates/sanctions-authorities.yaml` has five more
    ready; none has been fetched or verified the way the first two were.
-3. ~~The two-branch DR-numbering collision~~ — **resolved 2026-09-11.** It
-   recurred once more (`DR-0094`, a second independent "DR-0087") before
-   being ruled on: Decision Records are now drafted unnumbered, as
-   `DR-pending-<slug>.md`, with the real number assigned exactly once, at
-   merge time ([DR-0095](docs/decision-records/DR-0095-dr-numbering-placeholder-until-merge.md)).
-   Nothing left to decide here.
-4. **WP 3.4's Track A items A2, A4, A5, A6, A7** (census tooling, WACZ
+2. **WP 3.4's Track A items A2, A4, A5, A6, A7** (census tooling, WACZ
    evaluation, registration classes, the legal-review brief, storage
    measurement) are not started; A6 in particular blocks nothing today but
-   is the long pole before POL-0001 §10 can be commissioned.
+   is the long pole before POL-0001 §10 can be commissioned. A2 is no
+   longer blocked on policy — DR-0094 governs how a third-party capture
+   from Common Crawl or the Wayback Machine gets recorded — only on being
+   built.
 
 This README is an entry point, not the project's institutional memory (record §100).
 The authoritative statement of requirements, principles, and phase mandates is the
