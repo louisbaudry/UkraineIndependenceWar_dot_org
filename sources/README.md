@@ -124,18 +124,29 @@ obligation rather than a formality.
   on a 180-day cadence (DR-0005).
 - **Resolving the unverified rights positions** for `seco-sanctions` and
   `ua-nsdc-sanctions` (§14).
-- **A first collection run against locators none of which have been fetched.**
+- **A first collection run.** Four of seven now have a verified, fetched
+  locator (one, `bis-entity-list`, only partially); the other three would be
+  a first collection run against locators nobody has yet fetched — see
+  "Which locators are verified" below for which is which.
 
 ## Which locators are verified
 
-**Two are, five are not.** On 2026-09-08 the files behind
+**Four are (one partially), three are not.** On 2026-09-08 the files behind
 `eu-consolidated-list` and `ofac-sdn` were fetched, digested twice, and
-acquired end to end by the real collector into a throwaway database; the
-record is
-[docs/sources/verification-eu-consolidated-list-ofac-sdn.md](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md)
-and the proposal to register them is
-[DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md).
-Those two entries carry three optional fields the registry does not store:
+acquired end to end by the real collector into a throwaway database
+([verification record](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md),
+proposal [DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md)).
+On 2026-09-12 `uk-ofsi-consolidated` was verified the same way, fully, and
+`bis-entity-list` partially — only its Denied Persons List half has a
+verified locator; the Entity List half does not, because BIS publishes it
+as CFR text, not a standalone file, and the one working alternative found
+(Commerce's Consolidated Screening List) merges in OFAC's own data and was
+deliberately not substituted
+([verification record](../docs/sources/verification-bis-dpl-ofsi-consolidated.md)).
+None of these four is registered — registering, like it was for the first
+two, is the founder's act, per source.
+
+These entries carry three optional fields the registry does not store:
 
 | Field | Meaning |
 |---|---|
@@ -146,9 +157,11 @@ Those two entries carry three optional fields the registry does not store:
 `--dry-run` prints `(verified <date>)` or `(UNFETCHED)` per source, and
 adjusts what it says the first run commits you to.
 
-**The other five remain claims.** Their landing pages answered a
-reachability probe (EUR-Lex with an empty 202 challenge page; BIS now
-redirects to `bis.gov`), but no file has been fetched from any of them. Each
+**The other three remain claims.** `eur-lex-sanctions`, `seco-sanctions`
+and `ua-nsdc-sanctions` answered a landing-page reachability probe but no
+file has been fetched from any of them — each needs identifying a specific
+instrument set or decision listing (EUR-Lex, NSDC) or better site
+navigation (SECO) than a plain fetch gives, not just a URL to find. Each
 URL is drawn from documentation and prior knowledge, and some are probably
 wrong: sanctions authorities move endpoints, and several of these publish
 through interfaces that have changed more than once since 2014.
@@ -159,9 +172,11 @@ plainly what was sought and not obtained (DR-0070, §57). Correcting a locator
 is a routine registry edit. Treat the first run against an unverified source
 as locator verification; it is the cheapest way to find out which are right.
 
-One correction already made on that basis: the EU consolidated list's locator
-was the FSF application root, which answers 401 without an EU Login session.
-It is now the public XML file URL.
+Two corrections already made on that basis: the EU consolidated list's
+locator was the FSF application root, which answers 401 without an EU
+Login session, and is now the public XML file URL; BIS's landing locator
+now redirects to `bis.gov`, a domain migration since the candidate was
+drafted.
 
 ## Verification
 

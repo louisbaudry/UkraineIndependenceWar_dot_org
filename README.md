@@ -100,6 +100,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-11 | DR-0094 approved after a second round of founder rulings on what the draft had left open: loss-triggered third-party recovery may run automatically once scoped to the failed locator; a future archive qualifies by stated criteria rather than needing its own DR; retrieval proceeds independently of the DR-0006 WACZ evaluation. Text amended to carry all four rulings (including how to record them) in the same step that approved it | `docs/decision-records/DR-0094-third-party-web-captures.md` |
 | 2026-09-12 | DR-0093 §3's collector_version/pipeline_version tension resolved (option 1 of 3): a run now carries two agents, the founder's existing agent-of-record ruling unchanged, plus a separate, self-registering, versioned software agent (`collector-pipeline`) recorded on the run's preservation events. `release/baseline.py --check` confirmed to pin both dimensions from a real `collector/run.py` invocation; three new checks (across `test_pipeline.py` and `test_run.py`) shown to fail under sabotage before being restored green | `collector/pipeline.py`, `collector/run.py`, `docs/decision-records/DR-pending-collection-run-two-agents.md` |
 | 2026-09-12 | WP 3.4 Track A item A2's index tooling built: `census.py` queries Common Crawl's index and the Wayback CDX index for candidate domains, evidence-only (capture counts, first/last seen), no fetch of any candidate host and no database writes — DR-0071(a) does not apply because nothing is collected. 28 tests pass with no network; two rules shown to fail under sabotage (the §28 "a failure explains itself" guard; the by-host deduplication key) and restored. Neither real client has completed a live query — both `index.commoncrawl.org` and `web.archive.org` failed every attempt from this session, tested with both `curl` and Python's own `urllib` | `sources/census.py`, `sources/tests/test_census.py`, `sources/README.md` |
+| 2026-09-12 | Two more sanctions-candidate locators verified, live, real rehearsal through the actual collector (throwaway database): `uk-ofsi-consolidated` fully (CSV + XML, OFSI's own blob storage, not the gov.uk publication page); `bis-entity-list` partially — its Denied Persons List CSV found and verified, its Entity List half deliberately left unverified rather than substituting Commerce's Consolidated Screening List, which would misattribute OFAC's own data to BIS. Zero documentary assertions; the two-agent split (DR-pending-collection-run-two-agents) held correctly against real, live sources for the first time. Neither is registered — that stays the founder's act, per source | `sources/candidates/sanctions-authorities.yaml`, `docs/sources/verification-bis-dpl-ofsi-consolidated.md`, `sources/README.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
@@ -226,9 +227,19 @@ stood here through 2026-09-11/12 (a DR-numbering collision; how a run is
 versioned under a human agent of record) are resolved and dropped from this
 list — see "Recent work" below for what changed and which DR governs it.
 
-1. **Registering the remaining five sanctions candidates**, or a different
-   next source. `sources/candidates/sanctions-authorities.yaml` has five more
-   ready; none has been fetched or verified the way the first two were.
+1. **Registering `uk-ofsi-consolidated` and/or `bis-entity-list`.** Both now
+   have a verified locator and a real, live rehearsal through the actual
+   collector, same rigor as `eu-consolidated-list`/`ofac-sdn` before DR-0093
+   —
+   [verification record](docs/sources/verification-bis-dpl-ofsi-consolidated.md).
+   `bis-entity-list` is partial: only its Denied Persons List half is
+   verified; the Entity List half has no clean file locator yet (BIS
+   publishes it as CFR text). Register both now as-is, register OFSI only
+   and leave BIS for its Entity List locator, or hold both — the founder's
+   call, per source, same as the first two. `eur-lex-sanctions`,
+   `seco-sanctions`, `ua-nsdc-sanctions` remain unverified; each needs
+   identifying a specific instrument/decision set (EUR-Lex, NSDC) or better
+   site navigation (SECO), not just a URL to find.
 2. **WP 3.4's Track A items A4, A5, A6, A7** (WACZ evaluation, registration
    classes, the legal-review brief, storage measurement) are not started;
    A6 in particular blocks nothing today but is the long pole before

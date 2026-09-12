@@ -13,17 +13,25 @@
 # special-category personal data, so DR-0071's interim constraints barely bite
 # and POL-0001's structuring limits are straightforward to honour.
 #
-# VERIFICATION STATUS (2026-09-08). Two entries — `eu-consolidated-list` and
-# `ofac-sdn` — now carry `locator_verified`, `run_locators` and a
-# `verification_note`: their files were fetched, digested twice, and run
-# through the real collector into a throwaway database and storage root
-# (see docs/sources/verification-eu-consolidated-list-ofac-sdn.md). The
-# other five remain UNFETCHED beyond a reachability probe of their landing
-# pages: every URL there is drawn from documentation and prior knowledge, not
-# from a successful request for the files themselves. Treat each as a claim
-# to be checked on first run — `register.py --dry-run` reports exactly what
-# would be attempted, and a 404 on first collection is an expected outcome,
-# not a system failure (PRES-007: failed acquisitions are first-class).
+# VERIFICATION STATUS (updated 2026-09-12). Four entries now carry
+# `locator_verified`, `run_locators` and a `verification_note`: their files
+# were fetched, digested twice, and run through the real collector into a
+# throwaway database and storage root.
+#   - `eu-consolidated-list`, `ofac-sdn` — 2026-09-08, fully verified
+#     (docs/sources/verification-eu-consolidated-list-ofac-sdn.md).
+#   - `uk-ofsi-consolidated` — 2026-09-12, fully verified.
+#   - `bis-entity-list` — 2026-09-12, PARTIALLY verified: only the Denied
+#     Persons List has a verified locator; the Entity List half of this
+#     candidate's name does not yet (see its verification_note).
+#   (docs/sources/verification-bis-dpl-ofsi-consolidated.md for both.)
+# The remaining three (`eur-lex-sanctions`, `seco-sanctions`,
+# `ua-nsdc-sanctions`) remain UNFETCHED beyond a reachability probe of their
+# landing pages: every URL there is drawn from documentation and prior
+# knowledge, not from a successful request for the files themselves. Treat
+# each as a claim to be checked on first run — `register.py --dry-run`
+# reports exactly what would be attempted, and a 404 on first collection is
+# an expected outcome, not a system failure (PRES-007: failed acquisitions
+# are first-class).
 
 sources:
 
@@ -169,7 +177,25 @@ sources:
   - key: bis-entity-list
     source_type: sanctions-authority
     name: BIS Entity List and Denied Persons List
-    locator: https://www.bis.doc.gov/
+    # bis.doc.gov now redirects to bis.gov (a domain migration since this
+    # candidate was drafted). Verified 2026-09-12 — see verification_note.
+    # PARTIAL: only the Denied Persons List has a verified locator; the
+    # Entity List (Supplement No. 4 to Part 744, published as CFR text, not
+    # a standalone file) does not yet. See the verification record.
+    locator: https://www.bis.gov/
+    locator_verified: 2026-09-12
+    run_locators:
+      - https://media.bis.gov/sites/default/files/dpl_04142026.csv
+    verification_note: >
+      Denied Persons List CSV fetched twice 2026-09-12, 110 427 bytes,
+      digest stable, and acquired end to end by the real collector in a
+      throwaway database. The Entity List half of this candidate's name has
+      no verified locator yet — BIS's own site links to the regulation text
+      (EAR §744.16), not a data file, and the Commerce Department's
+      Consolidated Screening List (a real, working file) was deliberately
+      not substituted because it merges in OFAC's own lists and would
+      misattribute them to BIS. Record in
+      docs/sources/verification-bis-dpl-ofsi-consolidated.md.
     publisher: US Department of Commerce, Bureau of Industry and Security
     jurisdiction: US
     primary_languages: [en]
@@ -198,7 +224,22 @@ sources:
   - key: uk-ofsi-consolidated
     source_type: sanctions-authority
     name: UK OFSI Consolidated List of Financial Sanctions Targets
+    # The gov.uk page is a publication page, not a file; the actual files
+    # are hosted on OFSI's own blob storage, linked from a sub-page.
+    # Verified 2026-09-12 — see verification_note.
     locator: https://www.gov.uk/government/publications/financial-sanctions-consolidated-list-of-targets
+    locator_verified: 2026-09-12
+    run_locators:
+      - https://ofsistorage.blob.core.windows.net/publishlive/2022format/ConList.csv
+      - https://ofsistorage.blob.core.windows.net/publishlive/2022format/ConList.xml
+    verification_note: >
+      Both files fetched twice 2026-09-12 (CSV 16 641 139 bytes, XML
+      54 098 673 bytes), digests stable across both fetches, and both
+      acquired end to end by the real collector in a throwaway database.
+      Server-side Last-Modified was 2026-06-03 for both. The TXT variant
+      also linked from the same page was not fetched — redundant with the
+      CSV for this project's purposes. Record in
+      docs/sources/verification-bis-dpl-ofsi-consolidated.md.
     publisher: HM Treasury, Office of Financial Sanctions Implementation
     jurisdiction: GB
     primary_languages: [en]
