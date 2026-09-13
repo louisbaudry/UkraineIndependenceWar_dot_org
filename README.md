@@ -104,6 +104,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-12 | Founder approved registering both: OFSI in full, BIS with its Denied Persons List locator only (DR-pending-second-source-registrations). Drafting it surfaced a real gap in `register.py`: dependence-recording only linked sources registered in the same `--only` call, so `uk-ofsi-consolidated`'s declared dependence on the already-registered `eu-consolidated-list` would be silently dropped by a plain `--commit`. Registration itself is not yet executed — that happens on the archive server, not in this session | `docs/decision-records/DR-pending-second-source-registrations.md` |
 | 2026-09-12 | The `register.py` dependence gap fixed, at the founder's direction: `commit()` now resolves a dependence link's other end against the database by name when it is outside the current `--only` batch, and `validate()` gained a `known_keys` parameter so the existence check does not flag it as unknown. Verified before and after — the gap reproduced in a throwaway database seeded to match the archive server's state, then confirmed closed in the same scenario, plus a second scenario (a dependence on nothing registered anywhere) confirmed to print a note and insert nothing rather than crash. `sources/tests/test_register.py` gained 4 checks (27 → 31 total), two shown to fail when each half of the fix was reverted in turn | `sources/register.py`, `sources/tests/test_register.py`, `sources/README.md`, `docs/decision-records/DR-pending-second-source-registrations.md` |
 | 2026-09-13 | `seco-sanctions` verified, fully, on a second attempt: the previous session's six blind URL guesses had all missed that the real file lives on a different host (`sesam.search.admin.ch`) than the main site, only found this time by fetching the actual homepage and following its real navigation to the "Gesamtliste" download. 42 300 406 bytes, digest stable across two fetches and identical across all four `lang=` variants, 17 312 `<target>` elements, acquired end to end by the real collector (1 discovered, 1 acquired, 0 failed, 0 documentary assertions). No registration decision made yet | `sources/candidates/sanctions-authorities.yaml`, `docs/sources/verification-seco-sanctions.md`, `sources/README.md` |
+| 2026-09-14 | Founder approved registering `seco-sanctions` — a separate decision from the OFSI/BIS pair, not linked to it, executable in either order (`DR-pending-seco-sanctions-registration`). Re-verified the 2026-09-12 `register.py` dependence fix on a single-source `--only` call rather than a pair (its first test on that shape): `--commit --only seco-sanctions` alone, in a throwaway database seeded to match the real archive server's actual state, correctly recorded the declared dependence on the already-registered `eu-consolidated-list` with no companion source and no manual SQL. Three of seven sanctions authorities now approved for registration, none yet executed on the archive server | `docs/decision-records/DR-pending-seco-sanctions-registration.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
@@ -225,37 +226,21 @@ deliberate acts that follow it (OPS-001).
 
 Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
 propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
-wait for the answer before building against an assumption. Two items that
-stood here through 2026-09-11/12 (a DR-numbering collision; how a run is
-versioned under a human agent of record) are resolved and dropped from this
-list — see "Recent work" below for what changed and which DR governs it.
+wait for the answer before building against an assumption. Four items that
+stood here through 2026-09-11/14 (a DR-numbering collision; how a run is
+versioned under a human agent of record; registering `uk-ofsi-consolidated`/
+`bis-entity-list`; registering `seco-sanctions`) are resolved and dropped
+from this list — see "Recent work" below for what changed and which DR
+governs each. **None of the three approved registrations has been executed
+on the archive server yet** — that remains outstanding, but it is no longer
+an open *decision*, just outstanding *execution*.
 
-1. ~~Registering `uk-ofsi-consolidated` and/or `bis-entity-list`~~ —
-   **decided 2026-09-12: register both, as verified.** The founder chose
-   to register both now — OFSI in full, BIS with its Denied Persons List
-   locator only — rather than hold either for the Entity List or wait on
-   the other three
-   ([DR-pending-second-source-registrations](docs/decision-records/DR-pending-second-source-registrations.md)).
-   **Not yet executed**: registration happens on the archive server, per
-   that record's *How to execute*. Drafting it found a real gap —
-   `register.py --commit`'s dependence-recording only linked sources
-   registered in the *same* call — and the founder chose to fix it the
-   same day rather than leave it: `commit()`/`validate()` now resolve a
-   dependence link's other end against the database, so the declared
-   `uk-ofsi-consolidated → eu-consolidated-list` relation is recorded by
-   a plain `--commit`, no manual SQL needed
-   (`sources/tests/test_register.py`, 31 tests, up from 27).
-2. **Registering `seco-sanctions`.** Verified 2026-09-13, fully, on a
-   second attempt — the real file lives on a different host
-   (`sesam.search.admin.ch`) than the main site, found this time by
-   following actual site navigation instead of guessing a URL pattern
-   ([verification record](docs/sources/verification-seco-sanctions.md)).
-   No registration decision has been put to the founder yet; this is a
-   separate item from the OFSI/BIS approval above, not covered by it.
-   `eur-lex-sanctions` and `ua-nsdc-sanctions` remain unverified; each
-   needs identifying a specific instrument/decision set, which is legal
-   or editorial judgment, not a URL to find.
-3. **WP 3.4's Track A items A4, A5, A6, A7** (WACZ evaluation, registration
+1. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
+   verified; each needs identifying a specific legal instrument or
+   decision set, which is legal or editorial judgment, not a URL to find
+   — closer to founder-guided work than something a session should
+   attempt alone.
+2. **WP 3.4's Track A items A4, A5, A6, A7** (WACZ evaluation, registration
    classes, the legal-review brief, storage measurement) are not started;
    A6 in particular blocks nothing today but is the long pole before
    POL-0001 §10 can be commissioned. **A2's index tooling is now built and
