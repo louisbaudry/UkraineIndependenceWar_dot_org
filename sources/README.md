@@ -131,7 +131,7 @@ obligation rather than a formality.
 
 ## Which locators are verified
 
-**Four are (one partially), three are not.** On 2026-09-08 the files behind
+**Five are (one partially), two are not.** On 2026-09-08 the files behind
 `eu-consolidated-list` and `ofac-sdn` were fetched, digested twice, and
 acquired end to end by the real collector into a throwaway database
 ([verification record](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md),
@@ -143,7 +143,12 @@ as CFR text, not a standalone file, and the one working alternative found
 (Commerce's Consolidated Screening List) merges in OFAC's own data and was
 deliberately not substituted
 ([verification record](../docs/sources/verification-bis-dpl-ofsi-consolidated.md)).
-None of these four is registered — registering, like it was for the first
+On 2026-09-13 `seco-sanctions` was verified the same way, fully, on a
+second attempt — the earlier session's six URL guesses had missed that the
+real file lives on a separate host (`sesam.search.admin.ch`, not
+`seco.admin.ch`), found only by following the site's own navigation
+([verification record](../docs/sources/verification-seco-sanctions.md)).
+None of these five is registered — registering, like it was for the first
 two, is the founder's act, per source.
 
 These entries carry three optional fields the registry does not store:
@@ -157,14 +162,14 @@ These entries carry three optional fields the registry does not store:
 `--dry-run` prints `(verified <date>)` or `(UNFETCHED)` per source, and
 adjusts what it says the first run commits you to.
 
-**The other three remain claims.** `eur-lex-sanctions`, `seco-sanctions`
-and `ua-nsdc-sanctions` answered a landing-page reachability probe but no
-file has been fetched from any of them — each needs identifying a specific
-instrument set or decision listing (EUR-Lex, NSDC) or better site
-navigation (SECO) than a plain fetch gives, not just a URL to find. Each
-URL is drawn from documentation and prior knowledge, and some are probably
-wrong: sanctions authorities move endpoints, and several of these publish
-through interfaces that have changed more than once since 2014.
+**The other two remain claims.** `eur-lex-sanctions` and
+`ua-nsdc-sanctions` answered a landing-page reachability probe but no file
+has been fetched from either — each needs identifying a specific
+instrument set or decision listing, which is legal/editorial judgment, not
+a URL to find. Each URL is drawn from documentation and prior knowledge,
+and some are probably wrong: sanctions authorities move endpoints, and
+several of these publish through interfaces that have changed more than
+once since 2014.
 
 That is expected and handled. A 404 on first collection is a **recorded failed
 acquisition** (PRES-007), not a system fault, and the coverage record will say
@@ -172,11 +177,13 @@ plainly what was sought and not obtained (DR-0070, §57). Correcting a locator
 is a routine registry edit. Treat the first run against an unverified source
 as locator verification; it is the cheapest way to find out which are right.
 
-Two corrections already made on that basis: the EU consolidated list's
+Corrections already made on that basis: the EU consolidated list's
 locator was the FSF application root, which answers 401 without an EU
 Login session, and is now the public XML file URL; BIS's landing locator
 now redirects to `bis.gov`, a domain migration since the candidate was
-drafted.
+drafted; SECO's landing page never had a direct file link at all, and
+the real download lives on a different host entirely
+(`sesam.search.admin.ch`), found by navigating rather than guessing.
 
 ## Verification
 
