@@ -24,11 +24,15 @@ The time horizon is measured in years and potentially decades.
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
 | Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0007, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **First collection performed 2026-09-09** — two sanctions lists, registered and run on the archive server ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)). **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072); the founder ruled on 2026-09-08 that no scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0093 are approved and in force. DR-0094 (third-party web captures —
-Common Crawl, the Wayback Machine — as an acquisition channel for registered
-sources) is drafted and proposed, pending founder review. No permanent API
-contract or technical stack beyond PostgreSQL, Python and OCFL has been
-frozen.
+DR-0001…0095 are approved and in force. DR-0094 (third-party web captures —
+Common Crawl, the Wayback Machine, and qualifying archives — as an
+acquisition channel for registered sources) was approved 2026-09-11 after a
+second round of founder rulings on points the draft had left open. DR-0095
+governs how DRs are numbered going forward (drafted unnumbered, assigned at
+merge) — and, per that rule, one further decision is approved but not yet
+numbered: `DR-pending-collection-run-two-agents` (2026-09-12), resolving
+DR-0093 §3's collector/pipeline-version tension. No permanent API contract
+or technical stack beyond PostgreSQL, Python and OCFL has been frozen.
 
 ## Where things stand, plainly
 
@@ -92,6 +96,15 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-09/10 | Public identifiers designed and implemented: WP 3.5 resolves Q-12; DR-0087…0092 enacted (ARK scheme, minting at publication, a five-disposition register, `.vN` state qualifiers, ARK-derived URIs, a split's decider shown as a title never an id). SPEC-0007 drafted as a candidate and implemented against it, 77 checks | [`identifiers/`](identifiers/README.md), `schema/08-identifiers.sql` |
 | 2026-09-10 | Two independently-developed branches reconciled: DR-0093 renumbered around DR-0087…0092 (both branches had drafted a "DR-0087" for different topics), and two `setup/install.sh` defects found on the founder's first real install (as-root Postgres role creation; branch-only clone) fixed | this file, `docs/decision-records/README.md`, `setup/install.sh` |
 | 2026-09-10 | A third branch reconciled: DR-0094 drafted (as "DR-0087", the same collision as above) on how Common Crawl and the Wayback Machine's third-party web captures fit an already-registered source as an acquisition channel, not a source of their own — renumbered to the next free slot on merge. Proposed, pending founder review | `docs/decision-records/DR-0094-third-party-web-captures.md` |
+| 2026-09-11 | DR-0095 enacted: after the DR-0087 collision recurred a second time, Decision Records are now drafted unnumbered (`DR-pending-<slug>.md`) with the real number assigned exactly once, at merge — closing the gap DR-0093 and DR-0094 each hit ad hoc | `docs/decision-records/DR-0095-dr-numbering-placeholder-until-merge.md`, `CLAUDE.md`, `docs/decision-records/README.md` |
+| 2026-09-11 | DR-0094 approved after a second round of founder rulings on what the draft had left open: loss-triggered third-party recovery may run automatically once scoped to the failed locator; a future archive qualifies by stated criteria rather than needing its own DR; retrieval proceeds independently of the DR-0006 WACZ evaluation. Text amended to carry all four rulings (including how to record them) in the same step that approved it | `docs/decision-records/DR-0094-third-party-web-captures.md` |
+| 2026-09-12 | DR-0093 §3's collector_version/pipeline_version tension resolved (option 1 of 3): a run now carries two agents, the founder's existing agent-of-record ruling unchanged, plus a separate, self-registering, versioned software agent (`collector-pipeline`) recorded on the run's preservation events. `release/baseline.py --check` confirmed to pin both dimensions from a real `collector/run.py` invocation; three new checks (across `test_pipeline.py` and `test_run.py`) shown to fail under sabotage before being restored green | `collector/pipeline.py`, `collector/run.py`, `docs/decision-records/DR-pending-collection-run-two-agents.md` |
+| 2026-09-12 | WP 3.4 Track A item A2's index tooling built: `census.py` queries Common Crawl's index and the Wayback CDX index for candidate domains, evidence-only (capture counts, first/last seen), no fetch of any candidate host and no database writes — DR-0071(a) does not apply because nothing is collected. 28 tests pass with no network; two rules shown to fail under sabotage (the §28 "a failure explains itself" guard; the by-host deduplication key) and restored. Neither real client has completed a live query — both `index.commoncrawl.org` and `web.archive.org` failed every attempt from this session, tested with both `curl` and Python's own `urllib` | `sources/census.py`, `sources/tests/test_census.py`, `sources/README.md` |
+| 2026-09-12 | Two more sanctions-candidate locators verified, live, real rehearsal through the actual collector (throwaway database): `uk-ofsi-consolidated` fully (CSV + XML, OFSI's own blob storage, not the gov.uk publication page); `bis-entity-list` partially — its Denied Persons List CSV found and verified, its Entity List half deliberately left unverified rather than substituting Commerce's Consolidated Screening List, which would misattribute OFAC's own data to BIS. Zero documentary assertions; the two-agent split (DR-pending-collection-run-two-agents) held correctly against real, live sources for the first time. Neither is registered — that stays the founder's act, per source | `sources/candidates/sanctions-authorities.yaml`, `docs/sources/verification-bis-dpl-ofsi-consolidated.md`, `sources/README.md` |
+| 2026-09-12 | Founder approved registering both: OFSI in full, BIS with its Denied Persons List locator only (DR-pending-second-source-registrations). Drafting it surfaced a real gap in `register.py`: dependence-recording only linked sources registered in the same `--only` call, so `uk-ofsi-consolidated`'s declared dependence on the already-registered `eu-consolidated-list` would be silently dropped by a plain `--commit`. Registration itself is not yet executed — that happens on the archive server, not in this session | `docs/decision-records/DR-pending-second-source-registrations.md` |
+| 2026-09-12 | The `register.py` dependence gap fixed, at the founder's direction: `commit()` now resolves a dependence link's other end against the database by name when it is outside the current `--only` batch, and `validate()` gained a `known_keys` parameter so the existence check does not flag it as unknown. Verified before and after — the gap reproduced in a throwaway database seeded to match the archive server's state, then confirmed closed in the same scenario, plus a second scenario (a dependence on nothing registered anywhere) confirmed to print a note and insert nothing rather than crash. `sources/tests/test_register.py` gained 4 checks (27 → 31 total), two shown to fail when each half of the fix was reverted in turn | `sources/register.py`, `sources/tests/test_register.py`, `sources/README.md`, `docs/decision-records/DR-pending-second-source-registrations.md` |
+| 2026-09-13 | `seco-sanctions` verified, fully, on a second attempt: the previous session's six blind URL guesses had all missed that the real file lives on a different host (`sesam.search.admin.ch`) than the main site, only found this time by fetching the actual homepage and following its real navigation to the "Gesamtliste" download. 42 300 406 bytes, digest stable across two fetches and identical across all four `lang=` variants, 17 312 `<target>` elements, acquired end to end by the real collector (1 discovered, 1 acquired, 0 failed, 0 documentary assertions). No registration decision made yet | `sources/candidates/sanctions-authorities.yaml`, `docs/sources/verification-seco-sanctions.md`, `sources/README.md` |
+| 2026-09-14 | Founder approved registering `seco-sanctions` — a separate decision from the OFSI/BIS pair, not linked to it, executable in either order (`DR-pending-seco-sanctions-registration`). Re-verified the 2026-09-12 `register.py` dependence fix on a single-source `--only` call rather than a pair (its first test on that shape): `--commit --only seco-sanctions` alone, in a throwaway database seeded to match the real archive server's actual state, correctly recorded the declared dependence on the already-registered `eu-consolidated-list` with no companion source and no manual SQL. Three of seven sanctions authorities now approved for registration, none yet executed on the archive server | `docs/decision-records/DR-pending-seco-sanctions-registration.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
@@ -114,9 +127,8 @@ run's agent of record (DR-0093 §3) rather than a software agent — see
 docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
-  decision-records/   Unified Decision Record system (record §98); DR-0001…0093
-                      approved and in force, DR-0094 proposed and pending
-                      founder review; register in its README
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0095
+                      approved and in force; register in its README
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
   phase-3/            Phase III working area
@@ -131,7 +143,9 @@ docs/
 registry/             Semantic registry: vocabularies, argument schemes, compiler;
                       the source of truth for every enumeration (DR-0078)
 sources/              DR-0067 source registry — candidate registrations and the
-                      register.py tool; registering authorises collection
+                      register.py tool; registering authorises collection.
+                      census.py discovers new candidates from Common Crawl /
+                      Wayback indexes (WP 3.4 A2); collects nothing itself
 schema/               Canonical store DDL (PostgreSQL); enums generated from the
                       registry; schema test suite
 storage/              OCFL archival storage roots and fixity scheduling
@@ -212,32 +226,31 @@ deliberate acts that follow it (OPS-001).
 
 Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
 propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
-wait for the answer before building against an assumption.
+wait for the answer before building against an assumption. Four items that
+stood here through 2026-09-11/14 (a DR-numbering collision; how a run is
+versioned under a human agent of record; registering `uk-ofsi-consolidated`/
+`bis-entity-list`; registering `seco-sanctions`) are resolved and dropped
+from this list — see "Recent work" below for what changed and which DR
+governs each. **None of the three approved registrations has been executed
+on the archive server yet** — that remains outstanding, but it is no longer
+an open *decision*, just outstanding *execution*.
 
-1. **How is a collection run versioned when a person is its agent of record?**
-   `release/baseline.py --check` wants a versioned software agent named like
-   "collector" to have run, so it can pin `collector_version` and
-   `pipeline_version` (AI-002: software agents carry their version). DR-0093
-   §3 made the founder, a person, the run's agent of record instead, so after
-   the first real collection the baseline still shows both as `MISSING`. Three
-   options were put to the founder on 2026-09-09 and not yet answered:
-   record two agents per run (person as agent of record, a versioned software
-   agent on the preservation events); derive the pinned version from the run
-   configuration's recorded code commit instead of the agent registry; or make
-   the software agent the record of run and amend DR-0093 §3. See DR-0093's
-   *Executed* section for the full framing.
-2. **Registering the remaining five sanctions candidates**, or a different
-   next source. `sources/candidates/sanctions-authorities.yaml` has five more
-   ready; none has been fetched or verified the way the first two were.
-3. **The two-branch DR-numbering collision this merge just resolved**
-   (`DR-0093`, out of date order) is a one-off, but nothing in
-   [DR-0080](docs/decision-records/DR-0080-registry-lifecycle-and-change-classes.md)
-   or the DR README currently says how to allocate a number when two branches
-   draft one concurrently. Worth a light process note if it recurs.
-4. **WP 3.4's Track A items A2, A4, A5, A6, A7** (census tooling, WACZ
-   evaluation, registration classes, the legal-review brief, storage
-   measurement) are not started; A6 in particular blocks nothing today but
-   is the long pole before POL-0001 §10 can be commissioned.
+1. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
+   verified; each needs identifying a specific legal instrument or
+   decision set, which is legal or editorial judgment, not a URL to find
+   — closer to founder-guided work than something a session should
+   attempt alone.
+2. **WP 3.4's Track A items A4, A5, A6, A7** (WACZ evaluation, registration
+   classes, the legal-review brief, storage measurement) are not started;
+   A6 in particular blocks nothing today but is the long pole before
+   POL-0001 §10 can be commissioned. **A2's index tooling is now built and
+   tested** (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
+   Wayback CDX index only, discovery of candidate domains with no fetch of
+   any candidate host; the other four A2 evidence sources WP 3.4 names
+   (Wikipedia citation graphs, sanctions-authority link graphs, OSINT
+   source lists, academic bibliographies) remain editorial research tasks,
+   not built as tooling. Neither client has completed a live query — both
+   indexes were unreachable from this session; see `sources/README.md`.
 
 This README is an entry point, not the project's institutional memory (record §100).
 The authoritative statement of requirements, principles, and phase mandates is the

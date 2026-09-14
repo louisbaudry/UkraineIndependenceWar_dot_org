@@ -9,7 +9,7 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0093); the design
+every enacted decision since is a Decision Record (DR-0001…0095); the design
 lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
 the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
 `publication/`, `export/` and `release/` implements those documents and is
@@ -59,8 +59,8 @@ permits now. Keep this list current when you finish or start an item.
 
 | Item | State | Note |
 |---|---|---|
-| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 done, 2026-09-09** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `HttpFetcher` has completed live fetches, twice (a throwaway-database rehearsal, then the real run). The other 5 candidates are unregistered and unverified against a live server |
-| A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | not started | must not live-fetch unregistered hosts |
+| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 registered (2026-09-09), 3 more approved for registration but not yet executed (2026-09-12/14)** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `uk-ofsi-consolidated` (fully) and `bis-entity-list` (Denied Persons List half only) approved 2026-09-12 (`DR-pending-second-source-registrations`); `seco-sanctions` (fully verified, found 2026-09-13 on a second attempt — the real file lives on `sesam.search.admin.ch`, a different host than the main site) approved 2026-09-14 (`DR-pending-seco-sanctions-registration`), a **separate decision** from the OFSI/BIS pair. The OFSI/BIS-pair record's drafting found a `register.py` gap (dependence on an already-registered source silently dropped when using `--only`) — **fixed 2026-09-12**: `commit()`/`validate()` now resolve a link's other end against the database, not only the current call's batch; `sources/tests/test_register.py` now 31 tests, up from 27. Re-verified 2026-09-14 for `seco-sanctions` specifically — a single-source `--only` call, not a pair — confirming the fix works there too. `eur-lex-sanctions` and `ua-nsdc-sanctions` remain unverified — each needs identifying a specific instrument/decision set, which is legal/editorial judgment, not a URL to find. Since 2026-09-12, `collector/run.py` also records a versioned software agent on preservation events (`DR-pending-collection-run-two-agents`) — exercised against three live sources across two rehearsals, not yet on the archive server |
+| A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | **in progress: index tooling built and tested 2026-09-12** | `sources/census.py` queries Common Crawl's index and Wayback's CDX index for candidate domains, no fetch of any candidate host, no database writes. 28 tests, no live query (both indexes unreachable this session; see `sources/README.md`). The other four A2 evidence sources (Wikipedia citation graphs, sanctions link graphs, OSINT lists, bibliographies) are not built — editorial research tasks, not tooling. DR-0094 (approved 2026-09-11) still governs how a *retrieved* third-party capture gets recorded — that's the separate acquisition_attempt/FetchResult extension, not started |
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
 | A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |
@@ -117,17 +117,36 @@ commits to.
   retrospective recovery from existing archives, registered live collection
   (WP 3.4, candidate). Do not propose a crawler.
 - **Two of the seven sanctions authorities in `sources/candidates/` are
-  registered** (`eu-consolidated-list`, `ofac-sdn`, DR-0093, 2026-09-08/09);
-  **five remain candidates**, not registered. Registering the rest is the
-  founder's act, per source, same as it was for the first two.
+  registered** (`eu-consolidated-list`, `ofac-sdn`, DR-0093, 2026-09-08/09).
+  **Three more are approved for registration but not yet executed**:
+  `uk-ofsi-consolidated` fully verified, `bis-entity-list` partially —
+  Denied Persons List only — approved 2026-09-12
+  (`DR-pending-second-source-registrations`); `seco-sanctions` fully
+  verified, approved 2026-09-14
+  (`DR-pending-seco-sanctions-registration`) — **a separate decision from
+  the OFSI/BIS pair, not linked to it**, may be executed in either order
+  or on either day. Execution is on the archive server, per each record's
+  *How to execute* — this is not a session-side task, and running
+  `register.py --commit` in an interactive session's own throwaway
+  database is not the same thing as executing it.
+  **Two remain candidates**, unverified (`eur-lex-sanctions`,
+  `ua-nsdc-sanctions`). Registering either of these two, or
+  re-verifying/re-registering the first five, is still the founder's act,
+  per source — do not run `register.py --commit` against the real archive
+  database without that being asked for, and do not treat approval of one
+  pending registration as authorization for any other source.
 - **A person, not software, is the agent of record for a collection run**
   (DR-0093 §3) — deliberately, at the founder's direction, for the first
-  runs. This leaves `release/baseline.py --check` unable to pin
-  `collector_version`/`pipeline_version` from the agent registry. Three
-  resolutions were proposed to the founder on 2026-09-09 and not yet ruled
-  on; see README.md's "Open decisions for the next session". Do not resolve
-  this unilaterally by quietly switching the agent of record back to
-  software — that reverses a founder ruling.
+  runs. Unchanged. As of 2026-09-12
+  (`DR-pending-collection-run-two-agents`, awaiting its number), a *second*,
+  separate, self-registering software agent named `collector-pipeline` is
+  recorded on the run's preservation events instead, which resolved
+  `release/baseline.py --check`'s inability to pin `collector_version`/
+  `pipeline_version` without touching `collector_run.collector_agent_id` or
+  the Gate 1 decision. Do not resolve the *agent-of-record* question
+  unilaterally by quietly switching it back to software — that would
+  reverse a founder ruling, and is a different question from which agent a
+  preservation event names.
 
 ## Governance context
 
@@ -147,9 +166,17 @@ commits to.
 
 **Decision Records** live in `docs/decision-records/DR-nnnn-slug.md` with the
 header block, Context, Alternatives considered, Decision, Consequences; the
-register in that directory's README lists every DR. Next free number: check
-the register, never assume. A DR is written only when the founder has decided;
-before that it is a **candidate DR** inside a working paper.
+register in that directory's README lists every DR. **Never write a number
+while drafting** (DR-0095) — two branches checking the register and drafting
+concurrently can both be right and still collide, as DR-0093 and DR-0094 each
+did. Draft and review it as `docs/decision-records/DR-pending-slug.md`,
+titled `DR-pending-slug` throughout (header and any self-reference); the
+real number is assigned exactly once, at merge time, by grepping
+`origin/main`'s register for the highest `DR-nnnn`, taking the next integer,
+renaming the file, fixing its title/self-references, and adding its register
+row in the same commit that completes the merge. A DR is written only when
+the founder has decided; before that it is a **candidate DR** inside a
+working paper.
 
 **Working papers** (`docs/phase-3/working-papers/wp-3.N-slug.md`) are how
 studies reach the founder. Follow WP 3.3 as the model: header block (Project,

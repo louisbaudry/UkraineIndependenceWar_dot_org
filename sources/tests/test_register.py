@@ -110,6 +110,23 @@ def run() -> int:
               "relation": "cites", "note": "x"}],
             "unknown source")
 
+    # ---- a --only batch's dependence-existence check (DR-pending-second-
+    #      source-registrations): the other end may be outside this batch
+    #      without being unknown ------------------------------------------
+
+    ofsi_only = [s for s in sources if s["key"] == "uk-ofsi-consolidated"]
+    ofsi_dep = [d for d in dependence if d["from"] == "uk-ofsi-consolidated"]
+    all_keys = {s["key"] for s in sources}
+    check("DR-pending-second-source-registrations",
+          "a dependence naming a source outside a --only batch validates "
+          "when known_keys includes it",
+          ofsi_dep and validate(ofsi_only, ofsi_dep, known_keys=all_keys) == [])
+    check("DR-pending-second-source-registrations",
+          "the same dependence is refused as unknown without known_keys, "
+          "i.e. validate()'s old behaviour is unchanged by default",
+          any("unknown source" in p
+              for p in validate(ofsi_only, ofsi_dep)))
+
     # ---- verification claims must be readable, or not made -----------------
 
     verified = [s for s in sources if s.get("locator_verified")]
@@ -205,6 +222,41 @@ def run() -> int:
         check("§78", "a single source can be registered on its own",
               len(ids) == 1
               and conn.execute("SELECT count(*) FROM source").fetchone()[0] == 1)
+
+        # -- DR-pending-second-source-registrations: a dependence on a
+        #    source registered by an *earlier*, separate commit() call is
+        #    still recorded, not silently dropped ------------------------
+
+        conn.execute("DELETE FROM source_dependence")
+        conn.execute("DELETE FROM source")
+        by_key = {s["key"]: s for s in sources}
+        eu = [s for s in sources if s["key"] == "eu-consolidated-list"]
+        ofsi = [s for s in sources if s["key"] == "uk-ofsi-consolidated"]
+        commit(conn, eu, [], agent, all_sources_by_key=by_key)
+        commit(conn, ofsi, ofsi_dep, agent, all_sources_by_key=by_key)
+        check("DR-pending-second-source-registrations",
+              "a dependence on a source registered by an earlier, separate "
+              "call is recorded when the later call supplies "
+              "all_sources_by_key",
+              conn.execute(
+                  "SELECT count(*) FROM source_dependence sd "
+                  "JOIN source s ON s.id = sd.dependent_id "
+                  "WHERE s.name = %s", (ofsi[0]["name"],)
+              ).fetchone()[0] == len(ofsi_dep))
+
+        # -- and the reverse: nothing is inserted, and nothing crashes, when
+        #    the other end is not registered anywhere at all --------------
+
+        conn.execute("DELETE FROM source_dependence")
+        conn.execute("DELETE FROM source")
+        seco = [s for s in sources if s["key"] == "seco-sanctions"]
+        seco_dep = [d for d in dependence if d["from"] == "seco-sanctions"]
+        ids_seco = commit(conn, seco, seco_dep, agent, all_sources_by_key=by_key)
+        check("DR-pending-second-source-registrations",
+              "a dependence whose other end is not registered anywhere is "
+              "not recorded, and commit() does not crash",
+              len(ids_seco) == 1 and conn.execute(
+                  "SELECT count(*) FROM source_dependence").fetchone()[0] == 0)
     finally:
         conn.close()
 

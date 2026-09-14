@@ -13,17 +13,29 @@
 # special-category personal data, so DR-0071's interim constraints barely bite
 # and POL-0001's structuring limits are straightforward to honour.
 #
-# VERIFICATION STATUS (2026-09-08). Two entries — `eu-consolidated-list` and
-# `ofac-sdn` — now carry `locator_verified`, `run_locators` and a
-# `verification_note`: their files were fetched, digested twice, and run
-# through the real collector into a throwaway database and storage root
-# (see docs/sources/verification-eu-consolidated-list-ofac-sdn.md). The
-# other five remain UNFETCHED beyond a reachability probe of their landing
-# pages: every URL there is drawn from documentation and prior knowledge, not
-# from a successful request for the files themselves. Treat each as a claim
-# to be checked on first run — `register.py --dry-run` reports exactly what
-# would be attempted, and a 404 on first collection is an expected outcome,
-# not a system failure (PRES-007: failed acquisitions are first-class).
+# VERIFICATION STATUS (updated 2026-09-13). Five entries now carry
+# `locator_verified`, `run_locators` and a `verification_note`: their files
+# were fetched, digested twice, and run through the real collector into a
+# throwaway database and storage root.
+#   - `eu-consolidated-list`, `ofac-sdn` — 2026-09-08, fully verified
+#     (docs/sources/verification-eu-consolidated-list-ofac-sdn.md).
+#   - `uk-ofsi-consolidated` — 2026-09-12, fully verified.
+#   - `bis-entity-list` — 2026-09-12, PARTIALLY verified: only the Denied
+#     Persons List has a verified locator; the Entity List half of this
+#     candidate's name does not yet (see its verification_note).
+#   (docs/sources/verification-bis-dpl-ofsi-consolidated.md for both.)
+#   - `seco-sanctions` — 2026-09-13, fully verified, on a second attempt:
+#     the file lives on a different host (sesam.search.admin.ch) than the
+#     main site, found by following real site navigation rather than
+#     guessing a URL pattern (docs/sources/verification-seco-sanctions.md).
+# The remaining two (`eur-lex-sanctions`, `ua-nsdc-sanctions`) remain
+# UNFETCHED beyond a reachability probe of their landing pages: every URL
+# there is drawn from documentation and prior knowledge, not from a
+# successful request for the files themselves. Treat each as a claim to be
+# checked on first run — `register.py --dry-run`
+# reports exactly what would be attempted, and a 404 on first collection is
+# an expected outcome, not a system failure (PRES-007: failed acquisitions
+# are first-class).
 
 sources:
 
@@ -169,7 +181,25 @@ sources:
   - key: bis-entity-list
     source_type: sanctions-authority
     name: BIS Entity List and Denied Persons List
-    locator: https://www.bis.doc.gov/
+    # bis.doc.gov now redirects to bis.gov (a domain migration since this
+    # candidate was drafted). Verified 2026-09-12 — see verification_note.
+    # PARTIAL: only the Denied Persons List has a verified locator; the
+    # Entity List (Supplement No. 4 to Part 744, published as CFR text, not
+    # a standalone file) does not yet. See the verification record.
+    locator: https://www.bis.gov/
+    locator_verified: 2026-09-12
+    run_locators:
+      - https://media.bis.gov/sites/default/files/dpl_04142026.csv
+    verification_note: >
+      Denied Persons List CSV fetched twice 2026-09-12, 110 427 bytes,
+      digest stable, and acquired end to end by the real collector in a
+      throwaway database. The Entity List half of this candidate's name has
+      no verified locator yet — BIS's own site links to the regulation text
+      (EAR §744.16), not a data file, and the Commerce Department's
+      Consolidated Screening List (a real, working file) was deliberately
+      not substituted because it merges in OFAC's own lists and would
+      misattribute them to BIS. Record in
+      docs/sources/verification-bis-dpl-ofsi-consolidated.md.
     publisher: US Department of Commerce, Bureau of Industry and Security
     jurisdiction: US
     primary_languages: [en]
@@ -198,7 +228,22 @@ sources:
   - key: uk-ofsi-consolidated
     source_type: sanctions-authority
     name: UK OFSI Consolidated List of Financial Sanctions Targets
+    # The gov.uk page is a publication page, not a file; the actual files
+    # are hosted on OFSI's own blob storage, linked from a sub-page.
+    # Verified 2026-09-12 — see verification_note.
     locator: https://www.gov.uk/government/publications/financial-sanctions-consolidated-list-of-targets
+    locator_verified: 2026-09-12
+    run_locators:
+      - https://ofsistorage.blob.core.windows.net/publishlive/2022format/ConList.csv
+      - https://ofsistorage.blob.core.windows.net/publishlive/2022format/ConList.xml
+    verification_note: >
+      Both files fetched twice 2026-09-12 (CSV 16 641 139 bytes, XML
+      54 098 673 bytes), digests stable across both fetches, and both
+      acquired end to end by the real collector in a throwaway database.
+      Server-side Last-Modified was 2026-06-03 for both. The TXT variant
+      also linked from the same page was not fetched — redundant with the
+      CSV for this project's purposes. Record in
+      docs/sources/verification-bis-dpl-ofsi-consolidated.md.
     publisher: HM Treasury, Office of Financial Sanctions Implementation
     jurisdiction: GB
     primary_languages: [en]
@@ -221,7 +266,26 @@ sources:
   - key: seco-sanctions
     source_type: sanctions-authority
     name: SECO sanctions list (Switzerland)
+    # The landing page has no direct file link; the real download lives on
+    # a separate host reached by following the site's own navigation
+    # (Sanctions section -> "Searching for subjects (SECO sanctions
+    # list)" -> the Gesamtliste/overall-list download). Verified
+    # 2026-09-13 — see verification_note.
     locator: https://www.seco.admin.ch/
+    locator_verified: 2026-09-13
+    run_locators:
+      - https://www.sesam.search.admin.ch/sesam-search-web/pages/downloadXmlGesamtliste.xhtml?lang=en&action=downloadXmlGesamtlisteAction
+    verification_note: >
+      Found by following the site's real navigation (seco.admin.ch ->
+      /en/sanctions-en -> /en/searching-for-subjects-sanctions -> the
+      Gesamtliste XML download on sesam.search.admin.ch), not by guessing
+      a URL pattern. Fetched twice 2026-09-13, 42 300 406 bytes, digest
+      stable. Content is identical across the de/en/fr/it lang= variants
+      (same digest); en is registered as the canonical run locator.
+      17 312 <target> elements, dated 2026-09-04 in the file itself.
+      Acquired end to end by the real collector in a throwaway database:
+      1 discovered, 1 acquired, 0 failed, 0 documentary assertions.
+      Record in docs/sources/verification-seco-sanctions.md.
     publisher: State Secretariat for Economic Affairs
     jurisdiction: CH
     primary_languages: [de, fr, it, en]

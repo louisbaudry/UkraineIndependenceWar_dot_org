@@ -28,7 +28,9 @@ import psycopg  # noqa: E402
 
 from fetch import FetchResult, FixtureFetcher  # noqa: E402
 from ocfl import StorageRoot  # noqa: E402
-from pipeline import Collector, PolicyViolation, find_orphaned_objects  # noqa: E402
+from pipeline import (  # noqa: E402
+    Collector, PolicyViolation, ensure_software_agent, find_orphaned_objects,
+)
 from warc import iter_warc_records, verify_payload_digest  # noqa: E402
 
 PASSES: list[str] = []
@@ -117,12 +119,20 @@ def run() -> int:
 
     conn = psycopg.connect(dbname=DB, autocommit=True)
     try:
-        agent_id = str(uuid.uuid4())
+        # DR-pending-collection-run-two-agents: the run's agent of record is
+        # a person (DR-0093 §3's rule, exercised here even though nothing
+        # about it is being tested); preservation events go to a distinct,
+        # self-registered software agent.
+        person_agent_id = str(uuid.uuid4())
         conn.execute(
-            "INSERT INTO pipeline_agent (id, kind, name, software_version) "
-            "VALUES (%s, 'software', 'test-collector', '0.1.0')",
-            (agent_id,),
+            "INSERT INTO pipeline_agent (id, kind, name) "
+            "VALUES (%s, 'person', 'test operator')",
+            (person_agent_id,),
         )
+        software_agent_id = ensure_software_agent(conn, "test-collector", "0.1.0")
+        check("DR-pending-collection-run-two-agents",
+              "the same (name, version) resolves to the same software agent, not a new row",
+              ensure_software_agent(conn, "test-collector", "0.1.0") == software_agent_id)
         source_id = seed_source(conn)
 
         fetcher = FixtureFetcher({
@@ -138,7 +148,8 @@ def run() -> int:
         })
 
         collector = Collector(
-            conn, fetcher, work / "quarantine", roots, agent_id
+            conn, fetcher, work / "quarantine", roots,
+            person_agent_id, software_agent_id,
         )
 
         run_id = collector.run(
@@ -247,6 +258,23 @@ def run() -> int:
                   "SELECT count(*) FROM preservation_event "
                   "WHERE event_type = 'ingestion' AND outcome = 'success'"
               ).fetchone()[0] == 1)
+
+        # -- DR-pending-collection-run-two-agents: the two agents land where
+        # each is supposed to, and never swap ------------------------------
+
+        check("DR-pending-collection-run-two-agents",
+              "the run's agent of record is the person given",
+              conn.execute(
+                  "SELECT collector_agent_id FROM collector_run WHERE id = %s",
+                  (run_id,)).fetchone()[0] == uuid.UUID(person_agent_id))
+        event_agents = {row[0] for row in conn.execute(
+            "SELECT DISTINCT agent_id FROM preservation_event").fetchall()}
+        check("DR-pending-collection-run-two-agents",
+              "every preservation event names the software agent",
+              event_agents == {uuid.UUID(software_agent_id)})
+        check("DR-pending-collection-run-two-agents",
+              "no preservation event is ever attributed to the person",
+              uuid.UUID(person_agent_id) not in event_agents)
 
         # -- §28: a live fetch says so ---------------------------------------
 
