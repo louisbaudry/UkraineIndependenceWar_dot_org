@@ -4,7 +4,7 @@
 advice, and not itself a request for legal advice — this is the document
 the founder hands to external counsel to make the review possible, not the
 review itself.
-**Version:** 0.1 | **Deposited:** 2026-09-14
+**Version:** 0.2 | **Deposited:** 2026-09-14 | **Updated:** 2026-09-14
 **Origin:** WP 3.4 §7 (the brief was named as a deliverable, not written);
 Track A item A6, put to the founder 2026-09-14 as one of three live options
 and chosen.
@@ -18,7 +18,10 @@ actually raises" (WP 3.4 §7's own framing).
 > anywhere in this document — it organizes what the project already knows
 > it needs answered, in the form a reviewer can act on, and flags what is
 > not yet known well enough to send. The drafter is not a lawyer. Candidate
-> until the founder approves it as ready to send.
+> until the founder approves it as ready to send. **v0.2** (2026-09-14,
+> same day): updated after the founder named France as the interim
+> establishment jurisdiction (`DR-pending-establishment-jurisdiction`,
+> POL-0001 §10 v1.1) — §2, §4 and §6 below revised accordingly.
 
 ## 1. What this document is for
 
@@ -39,6 +42,22 @@ consistent pattern of leaving the review itself outside AI-drafted work.
 
 A reviewer with no prior context needs, at minimum:
 
+- **Establishment jurisdiction: France, interim** (named 2026-09-14,
+  `DR-pending-establishment-jurisdiction`). No separate legal entity has
+  been formed — the project is currently run by the founder/principal
+  editor personally, and France is used as the establishment jurisdiction
+  on that basis, not because an association, nonprofit, or company has
+  been incorporated there. **This is itself worth putting to the
+  reviewer as a preliminary question**: GDPR's establishment concept
+  (Art. 4(16)) ordinarily presumes an organized controller with some
+  stable arrangement, not only an individual; the reviewer may need to
+  address whether the project should form an entity (and if so, before or
+  after the substantive review) rather than assume one exists. Absent
+  that formation, France is the directly-applicable jurisdiction (GDPR
+  applies without a cross-border transfer question), the CNIL is the
+  relevant supervisory authority, and France's *Loi Informatique et
+  Libertés* is the implementing statute for the Art. 85 provisions §3.1
+  and POL-0001 §8.3 already invoke.
 - **What the project is** (record §1): a durable historical evidence and
   knowledge repository about Ukraine's Second War of Independence — an
   archive first, a public website only secondarily. Not a news
@@ -79,9 +98,10 @@ legal issue-spot.
 
 **The question:** Does copying third-party web material into a **non-public
 archive** (POL-0001 §14 "may preserve" without "may display") fall within
-the establishment jurisdiction's archiving/research exceptions and text-
-and-data-mining or research carve-outs, and does the **EU sui generis
-database right** (Directive 96/9/EC Art. 7) attach where an entire list or
+France's archiving/research exceptions and text-and-data-mining or research
+carve-outs (*Loi Informatique et Libertés*, French intellectual-property
+code), and does the **EU sui generis database right** (Directive 96/9/EC
+Art. 7, implemented in French law) attach where an entire list or
 dataset (a sanctions list, a court docket) is copied whole — and if so,
 what extraction/re-utilization defense applies to an archival copy that is
 never redistributed in bulk?
@@ -121,11 +141,13 @@ interfaces are built for?
 **The question:** Beyond the technical convention CDR-P3-34 already commits
 to (honour `robots.txt` by default for live collection, per-source override
 with a stated rationale in the registry, per-source rate limits as registry
-policy), does the establishment jurisdiction attach **legal** consequence
-to a robots.txt override or a documented rate-limit decision — e.g., as
-evidence of good or bad faith in a computer-misuse or contract claim, or
-under any implemented Computer Fraud and Abuse Act-equivalent — and does
-the archival-crawler convention (follow robots.txt; identify the collector)
+policy), does French law attach **legal** consequence to a robots.txt
+override or a documented rate-limit decision — e.g., under France's
+unauthorized-access-to-data-systems criminal provisions (the French
+counterpart to the US CFAA; exact article numbers are for the reviewer to
+cite, not asserted here — no legal research was performed for this brief),
+or as evidence of good or bad faith in a contract claim — and does the
+archival-crawler convention (follow robots.txt; identify the collector)
 versus the search-engine convention carry different legal weight?
 
 **What bears on it:**
@@ -177,21 +199,22 @@ data?
 
 ## 4. What blocks commissioning the review today
 
-1. **The establishment jurisdiction is not yet named anywhere in this
-   project's documents.** POL-0001 §10 and this brief both say "the
-   establishment jurisdiction" as if it were settled; a search of every
-   controlled document as of this brief's drafting finds no country, no
-   legal-entity name, and no stated place of establishment. **This is the
-   single blocking gap** — a reviewer cannot be engaged, and the questions
-   above cannot be answered, without knowing which jurisdiction's law and
-   which country's counsel apply. This is a founder decision (a real-world
-   organizational fact, not a research question this session can resolve),
-   and it should be the first thing settled, ahead of sending this brief
-   anywhere.
-2. **No named reviewer or firm has been identified.** A brief this precise
-   travels well to specialist data-protection or media-law counsel; a
-   generalist may need more framing than §2 above provides.
-3. **Platform terms of service (§3.4) have not been read by anyone on this
+1. **~~The establishment jurisdiction is not yet named~~ — resolved
+   2026-09-14.** France, interim (`DR-pending-establishment-jurisdiction`,
+   POL-0001 §10 v1.1) — see §2 above for what "interim" means here and why
+   it's worth raising with the reviewer directly rather than treated as
+   settled.
+2. **Whether the project should form a legal entity before, or as part of,
+   commissioning the review.** Surfaced by naming France without an
+   existing entity (§2): GDPR's establishment concept ordinarily presumes
+   an organized controller. This is now the practical blocker — engaging a
+   reviewer productively may depend on knowing whether they are advising an
+   individual running a project or an entity yet to be formed. A founder
+   decision, not resolved by this brief.
+3. **No named reviewer or firm has been identified.** A brief this precise
+   travels well to specialist data-protection or media-law counsel in
+   France; a generalist may need more framing than §2 above provides.
+4. **Platform terms of service (§3.4) have not been read by anyone on this
    project for any named platform.** A reviewer will likely ask for this as
    an input rather than research it themselves; someone should read
    Telegram's (and any other named platform's) current terms before the
@@ -216,12 +239,14 @@ data?
 
 ## 6. Open questions raised
 
-1. **What is the project's establishment jurisdiction?** Blocks
-   commissioning the review entirely (§4.1). Needs a founder answer before
-   any further legal-review work is useful.
-2. **Who reviews it** — a named firm or individual, and in what
-   jurisdiction once §4.1 is answered.
-3. **Should platform terms of service (§3.4) be read and summarized by a
+1. **~~What is the project's establishment jurisdiction?~~** Answered
+   2026-09-14: France, interim (§2, §4.1).
+2. **Should the project form a legal entity before commissioning the
+   review, or ask the reviewer to address that as part of it?** (§4.2)
+   The more consequential open question now — it changes who the reviewer
+   is advising, not just which country's law applies.
+3. **Who reviews it** — a named firm or individual in France (§4.3).
+4. **Should platform terms of service (§3.4) be read and summarized by a
    future session before the review is sent**, the way CDR-P3-34 was
    already prepared for §3.3? Recommended, but not this brief's job to do
    without being asked, since it means fetching and reading each named
@@ -230,15 +255,16 @@ data?
 
 ## 7. Candidate Decision Records arising
 
-None. This brief proposes no new project rule and changes no existing one
-— it organizes questions POL-0001 §10 and WP 3.4 §7 already posed. Nothing
-here is enacted by this document's deposit.
+None from this brief directly. `DR-pending-establishment-jurisdiction`
+(approved 2026-09-14) arose from the question this brief's first version
+raised, not from this update itself — this brief organizes questions,
+enacts nothing on its own.
 
 ## 8. Sources
 
 - Record §1, §13, §78–§80
-- POL-0001 (all sections, especially §8.3, §9, §10)
-- DR-0071, DR-0072, DR-0067
+- POL-0001 v1.1 (all sections, especially §8.3, §9, §10)
+- DR-0071, DR-0072, DR-0067, `DR-pending-establishment-jurisdiction`
 - WP 3.4 §§4, 7, 8 (CDR-P3-31, 33, 34, 35)
 - REQ-SEC (SEC-001, for the confidential-identity boundary POL-0001 §5.6
   and §9(c) depend on, referenced but not itself a §10 question)

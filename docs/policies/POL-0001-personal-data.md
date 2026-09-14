@@ -1,10 +1,10 @@
 # POL-0001 — Personal Data Policy
 
-**Class:** POL (DR-0046 control) | **Version:** 1.0 | **Status:** Approved — Effective
-**Approval:** founder/principal editor, 2026-08-16 (rulings at §8 taken individually) | **Effective:** 2026-08-16
+**Class:** POL (DR-0046 control) | **Version:** 1.1 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-16 (rulings at §8 taken individually); v1.1 amendment approved 2026-09-14 | **Effective:** 2026-08-16
 **Operative limit:** the §9 releases of the DR-0071 interim constraints are **suspended** until the §10 external legal review is recorded. The policy otherwise binds from its effective date.
 **Supersedes:** — | **Superseded by:** —
-**Change history:** 0.1 drafted 2026-08-16; approved as 1.0 the same day with the §8 rulings settled and §2, §5.4, §5.5 aligned to them
+**Change history:** 0.1 drafted 2026-08-16; approved as 1.0 the same day with the §8 rulings settled and §2, §5.4, §5.5 aligned to them; 1.1 amended 2026-09-14 to name France as the project's interim establishment jurisdiction in §10 (`DR-pending-establishment-jurisdiction`) — no other substantive change
 **Fulfils:** record §13, LEGAL-009, Q-35; releases the interim constraints of DR-0071 on the terms in §9 below.
 **Governed by:** DR-0055 (append-only, governed redaction), DR-0066 (three gates), DR-0069 (quarantine), SEC-001/003, §10 (graphic material), §12 (access tiers), §14 (rights).
 
@@ -13,7 +13,10 @@
 Drafted 2026-08-16 by an AI assistant (Anthropic Claude Code agent session)
 at the founder's direction. **This is not legal advice.** The drafter is not
 a lawyer; §10 makes external legal review a condition of the policy's
-operation at scale. Candidate until approved.
+operation at scale. Candidate until approved. **v1.1** (2026-09-14) named
+France as the interim establishment jurisdiction in §10, from the founder's
+direct answer to a question raised while drafting the A6 legal-review brief
+— see `DR-pending-establishment-jurisdiction`.
 
 ---
 
@@ -261,12 +264,18 @@ On this policy taking effect, the DR-0071 constraints lift as follows:
 
 This policy is drafted by a non-lawyer. Before collection at scale touching
 living private individuals, the project obtains **external legal review** in
-its establishment jurisdiction covering: lawful basis and Art. 89
-safeguards; Art. 9/10 handling; the applicable member-state Art. 85
-provisions; data-subject request procedure; retention; and any DPIA
-obligation. The review's outcome is recorded, and this policy is revised to
-match it. **Until that review is recorded, §9's releases do not take
-effect** — the DR-0071 constraints continue to bind.
+its establishment jurisdiction — **France**, interim (`DR-pending-
+establishment-jurisdiction`, 2026-09-14): no separate legal entity has been
+formed, and the founder's own personal jurisdiction is used as the interim
+basis for identifying applicable law and counsel until one is. Whether
+entity formation should itself be a preliminary question for the review is
+open, not resolved by this section — covering: lawful basis and Art. 89
+safeguards; Art. 9/10 handling; the applicable French Art. 85 provisions
+(Loi Informatique et Libertés and its research/archiving exceptions);
+data-subject request procedure; retention; and any DPIA obligation. The
+review's outcome is recorded, and this policy is revised to match it.
+**Until that review is recorded, §9's releases do not take effect** — the
+DR-0071 constraints continue to bind.
 
 ## 11. Review
 
@@ -279,3 +288,7 @@ under DR-0046/DR-0047.
 **DR-0072** — adoption of this policy, approved by the founder on
 2026-08-16 together with the three §8 rulings, with the §9 releases
 suspended pending the §10 legal review.
+
+**`DR-pending-establishment-jurisdiction`** — the v1.1 amendment naming
+France as the interim establishment jurisdiction in §10, approved by the
+founder 2026-09-14.

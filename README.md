@@ -107,22 +107,23 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-14 | Founder approved registering `seco-sanctions` — a separate decision from the OFSI/BIS pair, not linked to it, executable in either order (`DR-pending-seco-sanctions-registration`). Re-verified the 2026-09-12 `register.py` dependence fix on a single-source `--only` call rather than a pair (its first test on that shape): `--commit --only seco-sanctions` alone, in a throwaway database seeded to match the real archive server's actual state, correctly recorded the declared dependence on the already-registered `eu-consolidated-list` with no companion source and no manual SQL. Three of seven sanctions authorities now approved for registration, none yet executed on the archive server | `docs/decision-records/DR-pending-seco-sanctions-registration.md` |
 | 2026-09-14 | Branch `claude/common-crawl-fk1bw8` merged (PR #26): DR-0095, DR-0094's approval, the two-agent collection-run split, the `register.py` dependence fix, census tooling, and the OFSI/BIS/SECO verification-and-approval work above all landed on `main` in one pull request | PR #26 |
 | 2026-09-14 | WP 3.4 Track A item A6 drafted: a legal-review brief expanding §7's five questions with the specific project facts a reviewer needs, and what to hand them. Found, rather than resolved, a real blocking gap: **no controlled document names the project's establishment jurisdiction**, which POL-0001 §10 and WP 3.4 §7 both assume is already settled — commissioning the review needs that answered first. Proposes no new project rule; not sent to anyone by this deposit | `docs/legal/legal-review-brief.md`, `docs/policies/README.md` |
+| 2026-09-14 | Founder answered directly: the project's interim establishment jurisdiction is **France**, the founder's own personal jurisdiction — no separate legal entity exists yet. POL-0001 amended to v1.1 (§10 names France; no other substantive change), `DR-pending-establishment-jurisdiction` records the ruling, and the legal-review brief updated to reflect it — which surfaced a narrower open question in its place: whether the project should form a legal entity before or as part of commissioning the §10 review, since GDPR's establishment concept ordinarily presumes an organized controller | `docs/policies/POL-0001-personal-data.md`, `docs/decision-records/DR-pending-establishment-jurisdiction.md`, `docs/legal/legal-review-brief.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
 first collection on the archive server (2026-09-09); 3 more are approved but
 not yet executed; the other 2 await verification. **A2's index tooling is
 built** (2026-09-12), no live query yet. **A6's legal-review brief is drafted**
-(2026-09-14) and has surfaced one founder decision that blocks commissioning
-the review (the establishment jurisdiction gap, see "Open decisions" above).
-A4 (WACZ evaluation), A5 (registration classes) and A7 (storage measurement)
-are not started. A3 is done.
+(2026-09-14, updated same day) — its establishment-jurisdiction gap is
+resolved (France, interim, see "Open decisions" above for the narrower
+question that resolving it surfaced). A4 (WACZ evaluation), A5 (registration
+classes) and A7 (storage measurement) are not started. A3 is done.
 
 ## Picking up development
 
-The next open decision, raised but not yet ruled on, is the project's
-**establishment jurisdiction** — undocumented anywhere, and blocking the
-POL-0001 §10 legal review from being commissioned at all — see
+The next open decision, raised but not yet ruled on, is whether the project
+should **form a legal entity** before, or as part of, commissioning the
+POL-0001 §10 review — see
 ["Open decisions"](#open-decisions-for-the-next-session) below and
 [CLAUDE.md](CLAUDE.md) for the full session-start protocol.
 
@@ -233,24 +234,25 @@ deliberate acts that follow it (OPS-001).
 
 Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
 propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
-wait for the answer before building against an assumption. Four items that
+wait for the answer before building against an assumption. Five items that
 stood here through 2026-09-11/14 (a DR-numbering collision; how a run is
 versioned under a human agent of record; registering `uk-ofsi-consolidated`/
-`bis-entity-list`; registering `seco-sanctions`) are resolved and dropped
-from this list — see "Recent work" below for what changed and which DR
-governs each. **None of the three approved registrations has been executed
-on the archive server yet** — that remains outstanding, but it is no longer
-an open *decision*, just outstanding *execution*.
+`bis-entity-list`; registering `seco-sanctions`; the project's establishment
+jurisdiction) are resolved and dropped from this list — see "Recent work"
+below for what changed and which DR governs each. **None of the three
+approved registrations has been executed on the archive server yet** — that
+remains outstanding, but it is no longer an open *decision*, just
+outstanding *execution*.
 
-1. **The project's establishment jurisdiction is not named in any
-   controlled document.** Surfaced 2026-09-14 while drafting the A6 legal-
-   review brief: POL-0001 §10 and WP 3.4 §7 both say "the establishment
-   jurisdiction" as if it were already settled, and no document states a
-   country or legal-entity name. This blocks commissioning the POL-0001
-   §10 review at all — a reviewer and the applicable law cannot be
-   identified without it. **This is a real-world organizational fact, not
-   a research question** — it needs a founder answer, not a session
-   proposing options.
+1. **Whether the project should form a legal entity before, or as part of,
+   commissioning the POL-0001 §10 review.** Surfaced 2026-09-14 while
+   naming France as the interim establishment jurisdiction
+   (`DR-pending-establishment-jurisdiction`): no separate legal entity
+   exists, and GDPR's establishment concept ordinarily presumes an
+   organized controller. Engaging a reviewer productively may depend on
+   knowing whether they are advising an individual running a project or an
+   entity yet to be formed. A founder decision — see
+   `docs/legal/legal-review-brief.md` §2/§4.
 2. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
    verified; each needs identifying a specific legal instrument or
    decision set, which is legal or editorial judgment, not a URL to find
@@ -260,9 +262,10 @@ an open *decision*, just outstanding *execution*.
    classes, storage measurement) are not started. **A6, the legal-review
    brief, is now drafted** (`docs/legal/legal-review-brief.md`,
    2026-09-14) — it expands WP 3.4 §7's five questions with the specific
-   facts a reviewer needs and names item 1 above as the blocking gap it
-   found; it is not sent to anyone and does not itself commission the
-   review. **A2's index tooling is built and tested**
+   facts a reviewer needs; the establishment-jurisdiction gap it originally
+   found is resolved (item 1 above is the narrower question that
+   resolving it surfaced). It is not sent to anyone and does not itself
+   commission the review. **A2's index tooling is built and tested**
    (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
    Wayback CDX index only, discovery of candidate domains with no fetch of
    any candidate host; the other four A2 evidence sources WP 3.4 names

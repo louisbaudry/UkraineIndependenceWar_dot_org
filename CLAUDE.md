@@ -64,7 +64,7 @@ permits now. Keep this list current when you finish or start an item.
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
 | A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |
-| A6 — legal-review brief (WP 3.4 §7) | **drafted 2026-09-14** | [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md): expands WP 3.4 §7's five questions with the specific project facts a reviewer needs, and lists what to hand them. Not legal advice, not the review itself, not sent to anyone by this deposit. Names one blocking gap the brief cannot resolve: **the project's establishment jurisdiction appears nowhere in any controlled document** — commissioning the review needs that settled first, a founder decision |
+| A6 — legal-review brief (WP 3.4 §7) | **drafted 2026-09-14** | [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md): expands WP 3.4 §7's five questions with the specific project facts a reviewer needs, and lists what to hand them. Not legal advice, not the review itself, not sent to anyone by this deposit. The establishment-jurisdiction gap it found is **resolved 2026-09-14**: France, interim (`DR-pending-establishment-jurisdiction`, POL-0001 §10 v1.1) — no legal entity exists yet, so the founder's own personal jurisdiction is used until one is formed. That in turn surfaced a narrower open question: whether entity formation should itself be a preliminary question for the review (§2/§4 of the brief) |
 | A7 — storage and bandwidth measurement | not started | needs A1's remaining 5 sources, or can start from the 2 done |
 
 Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
@@ -108,6 +108,16 @@ commits to.
 
 ### Standing rulings to remember
 
+- **2026-09-14 — the project's interim establishment jurisdiction is
+  France**, the founder's own personal jurisdiction, in the absence of a
+  separate incorporated or registered legal entity
+  (`DR-pending-establishment-jurisdiction`, POL-0001 §10 amended to v1.1).
+  Explicitly interim: it names where the project is presently established
+  for the purpose of identifying applicable law and counsel, not a claim
+  that a formal entity exists. Whether the project should form a legal
+  entity before or as part of commissioning the POL-0001 §10 review is a
+  separate, still-open question — do not treat naming France as having
+  answered it.
 - **2026-09-08 — no collection scale-up before the POL-0001 §10 legal review
   is recorded** (option C of three put to the founder; see WP 3.4 §1.3).
   Preparatory work that collects nothing, or collects only from registered
