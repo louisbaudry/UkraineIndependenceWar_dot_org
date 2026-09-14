@@ -105,19 +105,24 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-12 | The `register.py` dependence gap fixed, at the founder's direction: `commit()` now resolves a dependence link's other end against the database by name when it is outside the current `--only` batch, and `validate()` gained a `known_keys` parameter so the existence check does not flag it as unknown. Verified before and after — the gap reproduced in a throwaway database seeded to match the archive server's state, then confirmed closed in the same scenario, plus a second scenario (a dependence on nothing registered anywhere) confirmed to print a note and insert nothing rather than crash. `sources/tests/test_register.py` gained 4 checks (27 → 31 total), two shown to fail when each half of the fix was reverted in turn | `sources/register.py`, `sources/tests/test_register.py`, `sources/README.md`, `docs/decision-records/DR-pending-second-source-registrations.md` |
 | 2026-09-13 | `seco-sanctions` verified, fully, on a second attempt: the previous session's six blind URL guesses had all missed that the real file lives on a different host (`sesam.search.admin.ch`) than the main site, only found this time by fetching the actual homepage and following its real navigation to the "Gesamtliste" download. 42 300 406 bytes, digest stable across two fetches and identical across all four `lang=` variants, 17 312 `<target>` elements, acquired end to end by the real collector (1 discovered, 1 acquired, 0 failed, 0 documentary assertions). No registration decision made yet | `sources/candidates/sanctions-authorities.yaml`, `docs/sources/verification-seco-sanctions.md`, `sources/README.md` |
 | 2026-09-14 | Founder approved registering `seco-sanctions` — a separate decision from the OFSI/BIS pair, not linked to it, executable in either order (`DR-pending-seco-sanctions-registration`). Re-verified the 2026-09-12 `register.py` dependence fix on a single-source `--only` call rather than a pair (its first test on that shape): `--commit --only seco-sanctions` alone, in a throwaway database seeded to match the real archive server's actual state, correctly recorded the declared dependence on the already-registered `eu-consolidated-list` with no companion source and no manual SQL. Three of seven sanctions authorities now approved for registration, none yet executed on the archive server | `docs/decision-records/DR-pending-seco-sanctions-registration.md` |
+| 2026-09-14 | Branch `claude/common-crawl-fk1bw8` merged (PR #26): DR-0095, DR-0094's approval, the two-agent collection-run split, the `register.py` dependence fix, census tooling, and the OFSI/BIS/SECO verification-and-approval work above all landed on `main` in one pull request | PR #26 |
+| 2026-09-14 | WP 3.4 Track A item A6 drafted: a legal-review brief expanding §7's five questions with the specific project facts a reviewer needs, and what to hand them. Found, rather than resolved, a real blocking gap: **no controlled document names the project's establishment jurisdiction**, which POL-0001 §10 and WP 3.4 §7 both assume is already settled — commissioning the review needs that answered first. Proposes no new project rule; not sent to anyone by this deposit | `docs/legal/legal-review-brief.md`, `docs/policies/README.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
-first collection on the archive server (2026-09-09); the other 5 await the
-founder's per-source decision. A2 (census tooling against indices), A4 (WACZ
-evaluation), A5 (registration classes), A6 (legal-review brief) and A7 (storage
-measurement) are not started. A3 is done.
+first collection on the archive server (2026-09-09); 3 more are approved but
+not yet executed; the other 2 await verification. **A2's index tooling is
+built** (2026-09-12), no live query yet. **A6's legal-review brief is drafted**
+(2026-09-14) and has surfaced one founder decision that blocks commissioning
+the review (the establishment jurisdiction gap, see "Open decisions" above).
+A4 (WACZ evaluation), A5 (registration classes) and A7 (storage measurement)
+are not started. A3 is done.
 
 ## Picking up development
 
-The next open decision, raised but not yet ruled on, is how a collection run's
-software should be versioned for release baselines when a **person** is the
-run's agent of record (DR-0093 §3) rather than a software agent — see
+The next open decision, raised but not yet ruled on, is the project's
+**establishment jurisdiction** — undocumented anywhere, and blocking the
+POL-0001 §10 legal review from being commissioned at all — see
 ["Open decisions"](#open-decisions-for-the-next-session) below and
 [CLAUDE.md](CLAUDE.md) for the full session-start protocol.
 
@@ -139,6 +144,8 @@ docs/
   methodology/        METH-class controlled documents (DR-0046, record §97)
   sources/            Informal prose notes on possible sources, written before
                       any registration is drafted (distinct from sources/ below)
+  legal/              Legal-review brief for POL-0001 §10 (WP 3.4 A6) — not
+                      legal advice, not itself a Decision Record
 
 registry/             Semantic registry: vocabularies, argument schemes, compiler;
                       the source of truth for every enumeration (DR-0078)
@@ -235,16 +242,28 @@ governs each. **None of the three approved registrations has been executed
 on the archive server yet** — that remains outstanding, but it is no longer
 an open *decision*, just outstanding *execution*.
 
-1. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
+1. **The project's establishment jurisdiction is not named in any
+   controlled document.** Surfaced 2026-09-14 while drafting the A6 legal-
+   review brief: POL-0001 §10 and WP 3.4 §7 both say "the establishment
+   jurisdiction" as if it were already settled, and no document states a
+   country or legal-entity name. This blocks commissioning the POL-0001
+   §10 review at all — a reviewer and the applicable law cannot be
+   identified without it. **This is a real-world organizational fact, not
+   a research question** — it needs a founder answer, not a session
+   proposing options.
+2. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
    verified; each needs identifying a specific legal instrument or
    decision set, which is legal or editorial judgment, not a URL to find
    — closer to founder-guided work than something a session should
    attempt alone.
-2. **WP 3.4's Track A items A4, A5, A6, A7** (WACZ evaluation, registration
-   classes, the legal-review brief, storage measurement) are not started;
-   A6 in particular blocks nothing today but is the long pole before
-   POL-0001 §10 can be commissioned. **A2's index tooling is now built and
-   tested** (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
+3. **WP 3.4's Track A items A4, A5, A7** (WACZ evaluation, registration
+   classes, storage measurement) are not started. **A6, the legal-review
+   brief, is now drafted** (`docs/legal/legal-review-brief.md`,
+   2026-09-14) — it expands WP 3.4 §7's five questions with the specific
+   facts a reviewer needs and names item 1 above as the blocking gap it
+   found; it is not sent to anyone and does not itself commission the
+   review. **A2's index tooling is built and tested**
+   (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
    Wayback CDX index only, discovery of candidate domains with no fetch of
    any candidate host; the other four A2 evidence sources WP 3.4 names
    (Wikipedia citation graphs, sanctions-authority link graphs, OSINT

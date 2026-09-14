@@ -23,3 +23,9 @@ handling, applicable member-state Art. 85 provisions, data-subject request
 procedure, retention, and any DPIA obligation. Until its outcome is
 recorded, POL-0001 §9's releases are suspended and DR-0071's interim
 collection constraints continue to bind.
+
+The [legal review brief](../legal/legal-review-brief.md) (WP 3.4 Track A
+item A6, deposited 2026-09-14) organizes the specific questions the review
+should be asked; it does not commission the review, and it names the
+project's establishment jurisdiction as an undocumented, blocking gap that
+should be settled before the review is sent anywhere.

@@ -64,7 +64,7 @@ permits now. Keep this list current when you finish or start an item.
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
 | A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |
-| A6 — legal-review brief (WP 3.4 §7) | not started | a brief, not a policy; not legal advice |
+| A6 — legal-review brief (WP 3.4 §7) | **drafted 2026-09-14** | [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md): expands WP 3.4 §7's five questions with the specific project facts a reviewer needs, and lists what to hand them. Not legal advice, not the review itself, not sent to anyone by this deposit. Names one blocking gap the brief cannot resolve: **the project's establishment jurisdiction appears nowhere in any controlled document** — commissioning the review needs that settled first, a founder decision |
 | A7 — storage and bandwidth measurement | not started | needs A1's remaining 5 sources, or can start from the 2 done |
 
 Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
