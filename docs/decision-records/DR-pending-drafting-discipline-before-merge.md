@@ -1,8 +1,8 @@
-# DR-pending-drafting-collisions — Collision discipline: CDR numbers are assigned at merge, and unmerged branches are checked before starting
+# DR-pending-drafting-discipline-before-merge — Drafting discipline before merge: CDR numbers assigned at merge, unmerged branches checked before starting, and same-session revision of a record that has not merged
 
 **Category:** architecture / methodology | **Status:** **Approved**
-**Decided:** 2026-09-15 by founder/principal editor (option A of three)
-**Origin:** proposed in [DR-0100](DR-0100-jurisdiction-controller-and-hosting.md) Consequence 6, after the third collision of this kind | **Supersedes:** [DR-0095](DR-0095-dr-numbering-placeholder-until-merge.md) | **Superseded by:** —
+**Decided:** 2026-09-15 by founder/principal editor — Decisions 1–6 as option A of three; Decision 7 added the same day as option C of three, after the drafter flagged its own improvisation
+**Origin:** Decisions 1–6 proposed in [DR-0100](DR-0100-jurisdiction-controller-and-hosting.md) Consequence 6, after the third collision of this kind; Decision 7 arises from DR-0100's own same-day revision | **Supersedes:** [DR-0095](DR-0095-dr-numbering-placeholder-until-merge.md) | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted 2026-09-15 by an AI assistant (Anthropic
 > Claude Code agent session) at the founder's direction, and approved the
@@ -37,7 +37,22 @@ WP 3.6 and the A6 brief did again.
 The rule was right; the carve-out was reasoned from a misreading of the
 convention it was carving out.
 
-### 1.3 The check that would have caught the third one does not exist
+### 1.3 A record was revised in place, and the rule for that did not exist either
+
+[DR-0100](DR-0100-jurisdiction-controller-and-hosting.md) was approved on
+2026-09-15 and its Decision 5 was reversed by the founder hours later, on the
+same day, before the record had ever reached `main`. The drafter revised the
+clause in place, quoted the original in full, and recorded why — then flagged
+that it had set aside §77 and DR-0046's supersession discipline on its own
+reasoning, with "it had not merged yet" as the ground.
+
+That ground is uncomfortably close to the thing DR-0046 forbids: **status is
+document metadata, never inferred from Git state**. The founder's answer was
+not to undo the revision but to bound it, so the outcome stands as an enacted
+rule with conditions rather than as a precedent resting on one drafter's
+judgment in a commit message. Decision 7 is that rule.
+
+### 1.4 The check that would have caught the third one does not exist
 
 CLAUDE.md's session-start step 3 says to fetch `origin/main` and diff against
 it. That is the right instruction and it was followed. It cannot catch a
@@ -51,6 +66,8 @@ two approved records for one decision, and a founder asked the same question
 twice.
 
 ## Alternatives considered
+
+### For Decisions 1–6 (the collisions)
 
 1. **Leave it.** Three collisions in five weeks, each caught before harm.
    Rejected: the third was caught by the founder's question, not by any
@@ -73,10 +90,27 @@ twice.
    nothing at all about the duplicated *document*, which was the real cost
    here.
 
+### For Decision 7 (the in-place revision)
+
+Three were put to the founder after the drafter flagged that it had revised
+DR-0100's Decision 5 on its own reasoning.
+
+1. **Keep the revision as a one-off judgment**, defended in the record and
+   the commit message. Rejected: it leaves a precedent resting on a drafter's
+   reasoning, which is how an absolute rule quietly becomes a soft one.
+2. **Convert it to a superseding record** — DR-0100 reverts, and a third
+   record carries the reversal. Rejected: a three-record chain about one
+   decision, in which a reader walks DR-0099 → DR-0100 → DR-0102 to learn one
+   fact, is a worse record than the revision it would replace.
+3. **Keep the revision and bound it as an enacted rule** (**chosen**). Same
+   outcome, no improvisation, and four conditions the next session cannot
+   stretch.
+
 ## Decision
 
-**Nothing is numbered while it is being drafted, and no session starts work
-without looking at what is already in flight.**
+**Nothing is numbered while it is being drafted, no session starts work
+without looking at what is already in flight, and an approved record changes
+by supersession unless four narrow conditions all hold.**
 
 1. **Decision Records — DR-0095's rule, carried forward unchanged.** The file
    is `docs/decision-records/DR-pending-<slug>.md`, titled `# DR-pending-<slug>
@@ -128,6 +162,31 @@ without looking at what is already in flight.**
    **renumbers nothing already assigned**. CDR-P3-42 stays with WP 3.6;
    CDR-P3-43…45 stay with the A6 brief.
 
+7. **A Decision Record that has not reached `main` may be revised in place,
+   within four conditions, all of which must hold.** Otherwise — and in every
+   case not meeting all four — an approved record changes only by
+   supersession (§77, DR-0046).
+
+   1. **Same session.** The record was approved and revised in the same
+      working session. A record approved on an earlier day is superseded, not
+      revised, however small the change.
+   2. **Never merged.** It has not reached `main`, so nothing downstream has
+      relied on the text being replaced.
+   3. **The founder ruled the change.** A drafter never revises an approved
+      record on its own judgment; it proposes, and supersession is the
+      default if the founder does not rule otherwise.
+   4. **The original survives, in the record.** A **Revision note** section
+      quotes the replaced text in full, dates the revision, and states who
+      ruled it and why. The revised clause carries a visible marker pointing
+      at that note.
+
+   **Condition 2 is a bound, not the reason.** "Not merged yet" does not make
+   a record editable — conditions 1, 3 and 4 do the work, and condition 2
+   only limits the blast radius to text nothing has relied on. **No session
+   may reason from Git state alone that a record is open to revision**; that
+   is exactly the inference DR-0046 forbids, and it remains forbidden.
+   DR-0100's Decision 5 and its Revision note are the worked example.
+
 ## Consequences
 
 1. **CLAUDE.md is amended in the same commit** — session-start step 3 gains
@@ -151,11 +210,20 @@ without looking at what is already in flight.**
    found this way and cost a reconciliation merge that would not have been
    needed had the check existed.
 
-5. **This record does not fix the underlying cause**, which is that parallel
+5. **Decision 7 narrows an existing discipline rather than loosening it.**
+   Before it, the position was absolute — approved records change by
+   supersession — and an exception was taken anyway, once, on a drafter's
+   reasoning. An absolute rule that gets quietly excepted is weaker than a
+   bounded one that is followed, which is why the founder chose to bound it.
+   The cost is that the exception now exists on paper and can be invoked; the
+   four conditions, and condition 3 in particular, are what keep it from
+   widening.
+
+6. **This record does not fix the underlying cause**, which is that parallel
    sessions cannot see each other's work in progress at all. It makes the
    collision visible early instead of at merge. If parallel sessions become
    routine rather than occasional, a real coordination mechanism is a
    separate question — raised here, not answered.
 
-6. **Nothing about collection changes.** LEGAL-009 stays "partially
+7. **Nothing about collection changes.** LEGAL-009 stays "partially
    satisfied", DR-0071 still binds, Track B does not start.

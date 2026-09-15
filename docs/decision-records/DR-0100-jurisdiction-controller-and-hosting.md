@@ -131,15 +131,20 @@ following the supersession chain to find them. Decision 5 above replaces it.
 
 **Why this is a revision and not a supersession.** The project's discipline is
 that approved records change by supersession, never in-place edit (§77,
-DR-0046) — and that discipline is right. It is set aside here, deliberately
-and visibly, on narrow grounds: this record was approved in the same session,
-hours earlier, and has never reached `main`, so nothing downstream has ever
-relied on the original Decision 5; and a superseding record whose entire
-content is the reversal of one clause would obscure rather than clarify the
-decision. The original text is quoted above in full so nothing is lost. **If
-the founder prefers this handled as a superseding record instead, say so and
-it will be done** — the change is small and the discipline is worth more than
-the convenience.
+DR-0046). This revision was made before any rule permitted it, on the
+drafter's own reasoning, and the drafter said so; the founder's answer was to
+bound the exception rather than undo it. It is now governed by
+[`DR-pending-drafting-discipline-before-merge`](DR-pending-drafting-discipline-before-merge.md)
+Decision 7, whose four conditions this satisfies: **same session** (approved
+and revised on 2026-09-15, hours apart); **never merged** (the record had not
+reached `main`, so nothing downstream relied on the original Decision 5);
+**the founder ruled the change** (it was not the drafter's call); and **the
+original survives** (quoted in full above).
+
+That record's Decision 7 is explicit that "not merged yet" is a bound rather
+than the reason — the other three conditions do the work — and that no
+session may infer from Git state alone that a record is open to revision.
+This is the worked example it names.
 
 ## Consequences
 
