@@ -248,18 +248,21 @@ governs each. **None of the three approved registrations has been executed
 on the archive server yet** — that remains outstanding, but it is no longer
 an open *decision*, just outstanding *execution*.
 
-1. **The establishment jurisdiction and the archive server's hosting
-   location — two facts, not a fork.** The *decision* here is made:
-   on 2026-09-15 the founder ruled (option B of three) that the jurisdiction
-   and hosting location are recorded now, the controller is the founder as a
-   natural person, and later incorporation is a material change under
-   POL-0001 §11. That ruling is
-   [`DR-pending-establishment-jurisdiction`](docs/decision-records/DR-pending-establishment-jurisdiction.md).
-   **What is missing is the two values**, which only the founder knows and
-   which no session may infer — not from the repository, not from an email
-   domain, not from a timezone. Until they are written in, that record is not
-   approvable, the A6 brief is not sendable, five of its eleven questions
-   have no law to be answered in, and no counsel can be selected.
+1. **Whether POL-0001 §8.3's legal posture survives French law.** Not a
+   question for a session to settle — but the A6 brief's drafting put it on
+   the table and the founder should know it is there. With the jurisdiction
+   now recorded as **France**
+   ([`DR-pending-establishment-jurisdiction`](docs/decision-records/DR-pending-establishment-jurisdiction.md),
+   approved 2026-09-15), the LIL's **Article 46** limits processing of
+   criminal-offence data to a closed list of actors that a private
+   documentation archive does not obviously sit in, while **Article 80**
+   disapplies Article 46 for university/artistic/literary expression and for
+   professional journalism. POL-0001 §8.3 ruled archiving and research
+   *primary* and expression *secondary*; French law may invert that. The
+   brief puts it to counsel at Q2 and Q3 and answers nothing — the drafter is
+   not a lawyer and the texts were read from the CNIL's consolidated version,
+   not Légifrance. **Nothing changes in POL-0001 until the review is
+   recorded**; this is here so the ruling is not assumed safe in the interval.
 2. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
    verified; each needs identifying a specific legal instrument or
    decision set, which is legal or editorial judgment, not a URL to find

@@ -1,17 +1,18 @@
 # DR-pending-establishment-jurisdiction — Establishment jurisdiction, controller identity, and archive hosting location
 
-**Category:** legal / operations | **Status:** **Draft — shape ruled by the founder 2026-09-15 (option B of three); two facts outstanding, see *What is still missing* below. Not approved, and not approvable until those two facts are supplied.**
-**Decided:** shape 2026-09-15 by founder/principal editor; content incomplete
+**Category:** legal / operations | **Status:** **Approved**
+**Decided:** 2026-09-15 by founder/principal editor — shape (option B of three) and both facts supplied the same day
 **Origin:** [CDR-P3-42](../legal/legal-review-brief.md), raised while drafting the WP 3.4 Track A item A6 legal-review brief | **Supersedes:** — | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted 2026-09-15 by an AI assistant (Anthropic
 > Claude Code agent session) at the founder's direction, immediately after
 > the founder chose option B from the three put to them the same day. The
-> founder's ruling settles the *form* of this record — what gets recorded
-> now, what waits, and on what terms. It does **not** supply the two facts
-> at Decision 1 and Decision 3, which only the founder knows and which this
-> session has deliberately left blank rather than inferred. Nothing here is
-> legal advice.
+> founder's ruling settled the *form* of this record — what gets recorded
+> now, what waits, and on what terms — and the founder supplied the two
+> facts at Decision 1 and Decision 3 later the same day, in a second
+> exchange. Neither was inferred. Nothing here is legal advice; the drafter
+> is not a lawyer, and Consequence 8 in particular states a question for
+> counsel, not an answer.
 
 ## Context
 
@@ -77,18 +78,23 @@ Three were put to the founder on 2026-09-15.
 
 ## Decision
 
-1. **The project's establishment jurisdiction is `[TO BE SUPPLIED BY THE
-   FOUNDER]`.** This is the jurisdiction in which the external legal review
-   POL-0001 §10 requires is obtained, and the law against which POL-0001 is
-   tested.
+1. **The project's establishment jurisdiction is FRANCE.** This is the
+   jurisdiction in which the external legal review POL-0001 §10 requires is
+   obtained, and the law against which POL-0001 is tested: the GDPR as
+   applied in France, together with the **Loi n° 78-17 du 6 janvier 1978
+   relative à l'informatique, aux fichiers et aux libertés** ("Loi
+   Informatique et Libertés", LIL) as amended. The competent supervisory
+   authority is the **CNIL**.
 
 2. **The controller, for data-protection purposes, is the founder/principal
    editor as a natural person.** No legal entity exists for the project, and
    none is assumed. This is a statement of what is true as at 2026-09-15, not
    a commitment to remain unincorporated.
 
-3. **The archive server is hosted `[TO BE SUPPLIED BY THE FOUNDER — provider
-   and country]`.**
+3. **The archive server is hosted with IONOS, in SPAIN.** IONOS is a
+   processor acting on the project's instructions; the project is the
+   controller (Decision 2). Both the controller's establishment and the
+   hosting location are inside the EEA.
 
 4. **Incorporation, or a change of either the establishment jurisdiction or
    the archive server's hosting country, is a material change under
@@ -103,32 +109,26 @@ Three were put to the founder on 2026-09-15.
    decided. Any later correction happens by superseding this record, never by
    editing the brief.
 
-## What is still missing
+## Facts as supplied
 
-**Decisions 1 and 3 are blank.** The founder's ruling of 2026-09-15 chose
-what this record should say and on what terms; it did not supply the country
-in Decision 1 or the provider and country in Decision 3, both of which only
-the founder knows.
-
-This record is **not approved and cannot be approved** until both are filled
-in. Nothing downstream of it should proceed on an assumed value, and no
-session should infer either fact from the founder's email domain, the
-repository's contents, timezone, language, or any other indirect signal. When
-the two facts are supplied, they are written in, the status block becomes
-`Approved` with the approval date, and the record is numbered at merge per
-DR-0095.
+Both blanks were closed by the founder on 2026-09-15, in a second exchange
+after the shape was ruled: **France**, and **IONOS, Spain**. Neither was
+inferred by this session, and the record deliberately carried them as blanks
+in the interval rather than guessing. This record is the source of both; a
+later correction happens by superseding it.
 
 ## Consequences
 
-1. **A6's §9.1–9.3 blanks close when Decisions 1 and 3 are filled.** §9.4
+1. **A6's §9.1–9.3 blanks are closed.** §9.4
    (whether counsel is asked about the project as it is or as it intends to
    be) and §9.5 (one engagement or two, given that Part B is copyright and
    platform-terms work a data-protection practice may decline) remain open
    founder decisions and are untouched by this record.
 
-2. **Counsel can be selected** once Decision 1 is filled. Selecting counsel
-   is not commissioning; commissioning the review is a separate founder act,
-   and this record authorises neither.
+2. **Counsel can be selected** — a French practice, advising on the GDPR as
+   applied in France and on the LIL. Selecting counsel is not commissioning;
+   commissioning the review is a separate founder act, and this record
+   authorises neither.
 
 3. **Q6 becomes answerable but not simpler.** A natural-person controller
    does not avoid the DPIA question, and may make the DPO and Art. 27
@@ -156,3 +156,43 @@ DR-0095.
 7. **Nothing about collection changes.** No source becomes registrable, no
    run becomes authorised, and Track B does not start. This record fixes
    facts about the project, not about its archive.
+
+8. **Naming France makes one of POL-0001's own rulings a live question, not
+   a formality.** The LIL's **Article 46** restricts processing of data
+   relating to criminal convictions, offences and connected security
+   measures to a closed list of actors — courts and public authorities,
+   bodies managing a public service, private-law bodies collaborating with
+   the public justice service per a Conseil d'État decree, auxiliaires de
+   justice, persons preparing or pursuing legal action as victim or accused,
+   certain collective rights-management bodies, and re-users of public
+   information in court decisions who do not re-identify. Its **Article 78**
+   frames the archiving-in-the-public-interest derogation from GDPR Arts. 15,
+   16 and 18–21 around **services publics d'archives** under the Code du
+   patrimoine. Its **Article 80** disapplies Article 46, among others, for
+   university, artistic or literary expression and for professional
+   journalism, where necessary to reconcile data protection with freedom of
+   expression and information.
+
+   This project is a private archive, not a public archive service, and its
+   material is squarely criminal-offence-adjacent. Whether it can rely on the
+   archiving/research route at all in France, and whether the expression
+   route is the one that actually unlocks Article 46 for it, is **exactly the
+   question POL-0001 §8.3's ruling (archiving/research primary, expression
+   secondary) presumes an answer to.** This record does not answer it and
+   must not be read as doing so — the drafter is not a lawyer, these are
+   statutory texts read from the CNIL's consolidated version, and their
+   interaction is what counsel is being engaged to resolve. The A6 brief's
+   Q1–Q3 are rewritten to put it to them directly.
+
+9. **Hosting in Spain raises no Chapter V transfer question** on these facts:
+   France and Spain are both in the EEA, so the controller's establishment
+   and the processing location are both inside it. Two things do follow, and
+   are noted here so they are not mistaken for counsel's work:
+   **(a)** IONOS is a processor, so GDPR Art. 28 requires a written
+   processor contract with the prescribed terms — the project should
+   establish whether one is in place, which IONOS contracting entity it is
+   with, and what it says about sub-processors and support access from
+   outside the EEA. That is an administrative check, not a legal opinion.
+   **(b)** The project holds no establishment in Spain merely by renting
+   servers there, so the CNIL is expected to be the competent authority —
+   stated as an expectation to be confirmed, not a conclusion.
