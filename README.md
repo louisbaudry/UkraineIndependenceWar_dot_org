@@ -139,6 +139,9 @@ docs/
   methodology/        METH-class controlled documents (DR-0046, record §97)
   sources/            Informal prose notes on possible sources, written before
                       any registration is drafted (distinct from sources/ below)
+  runbooks/           Operator runbooks for executing already-authorised
+                      tooling on the archive server — not Decision Records,
+                      not controlled documents, no policy proposed
 
 registry/             Semantic registry: vocabularies, argument schemes, compiler;
                       the source of truth for every enumeration (DR-0078)
@@ -260,7 +263,10 @@ an open *decision*, just outstanding *execution*.
    real numbers are still outstanding, and it deliberately does not perform
    A7's "one retrospective pull" clause (new acquisition, for
    `collector/run.py` on the archive server) or extrapolate the two
-   registered sources' size onto the five unregistered candidates.
+   registered sources' size onto the five unregistered candidates. A
+   runbook for executing both halves of A7 on the archive server —
+   [`docs/runbooks/A7-storage-bandwidth-measurement.md`](docs/runbooks/A7-storage-bandwidth-measurement.md)
+   — is written and unexecuted.
 
 This README is an entry point, not the project's institutional memory (record §100).
 The authoritative statement of requirements, principles, and phase mandates is the
