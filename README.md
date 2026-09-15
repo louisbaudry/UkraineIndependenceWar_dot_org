@@ -32,7 +32,8 @@ step DR-0095 prescribes; the register is brought current rather than left to
 drift. **DR-0099 and DR-0100 are two records of one decision**, both kept:
 parallel sessions each found the establishment-jurisdiction gap and the
 founder answered both, so DR-0099 names France as *interim* (and amends
-POL-0001 to v1.1) and DR-0100 confirms it while adding the controller and
+POL-0001 to v1.1; the policy is now at **v1.2**, whose §10 names DR-0100 and
+restates its facts) and DR-0100 confirms it while adding the controller and
 hosting facts. See the [register](docs/decision-records/README.md) for the
 full account. No permanent API contract or technical stack beyond PostgreSQL,
 Python and OCFL has been frozen.

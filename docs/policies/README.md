@@ -6,7 +6,7 @@ Status is document metadata, never inferred from Git.
 
 | ID | Title | Version | Status |
 |---|---|---|---|
-| [POL-0001](POL-0001-personal-data.md) | Personal Data Policy | 1.1 | **Approved — Effective 2026-08-16** (§9 releases suspended pending §10 legal review) |
+| [POL-0001](POL-0001-personal-data.md) | Personal Data Policy | 1.2 | **Approved — Effective 2026-08-16** (§9 releases suspended pending §10 legal review) |
 
 ## Provenance
 
@@ -15,6 +15,7 @@ Status is document metadata, never inferred from Git.
 | POL-0001 v0.1 (draft) | `ed2104838dfc02b0626dda6c22bf64f12d14358ecac2c09e14b24121ed6d5675` | 2026-08-16 | AI-drafted (Anthropic Claude Code agent session) at the founder's direction. **Drafted by a non-lawyer**; POL-0001 §10 makes external legal review a condition of its collection-scope releases |
 | POL-0001 v1.0 (approved) | `d439da848824f446908f631aee1791ac936d1d7b04c7dd8ae680055e761aa751` | 2026-08-16 | v0.1 approved by the founder with the three §8 rulings taken individually (DR-0072); §2, §5.4, §5.5 aligned to the rulings |
 | POL-0001 v1.1 (amended) | `792b4ae6319a2b48e4499f3411427db8029295f1831d9feb57eb59aff989cc0b` | 2026-09-14 | §10 amended to name **France** as the interim establishment jurisdiction — no separate legal entity exists yet, so the founder's own personal jurisdiction is used until one is formed — from the founder's direct answer to a question raised while drafting the A6 legal-review brief (`DR-0099`). No other substantive change |
+| POL-0001 v1.2 (amended) | `30016e12e65b4b61ac0add7d1ae171063360220daf679bbe44c5000e5abe09c9` | 2026-09-15 | §10 now names [DR-0100](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md) as the operative record and restates its facts in the policy itself — establishment jurisdiction (France, **interim**), controller (the founder as a natural person), archive hosting (IONOS, Spain), and the §11 trigger when any of them changes — so a reader of §10 need not follow the supersession chain. Ruled by the founder on the objection that v1.1 left §10 citing the superseded DR-0099. **No change to any §8 ruling, to §9's suspension, or to what the review must cover** |
 
 ## Outstanding real-world action
 

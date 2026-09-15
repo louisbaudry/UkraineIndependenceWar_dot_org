@@ -1,10 +1,10 @@
 # POL-0001 — Personal Data Policy
 
-**Class:** POL (DR-0046 control) | **Version:** 1.1 | **Status:** Approved — Effective
-**Approval:** founder/principal editor, 2026-08-16 (rulings at §8 taken individually); v1.1 amendment approved 2026-09-14 | **Effective:** 2026-08-16
+**Class:** POL (DR-0046 control) | **Version:** 1.2 | **Status:** Approved — Effective
+**Approval:** founder/principal editor, 2026-08-16 (rulings at §8 taken individually); v1.1 amendment approved 2026-09-14; v1.2 amendment approved 2026-09-15 | **Effective:** 2026-08-16
 **Operative limit:** the §9 releases of the DR-0071 interim constraints are **suspended** until the §10 external legal review is recorded. The policy otherwise binds from its effective date.
 **Supersedes:** — | **Superseded by:** —
-**Change history:** 0.1 drafted 2026-08-16; approved as 1.0 the same day with the §8 rulings settled and §2, §5.4, §5.5 aligned to them; 1.1 amended 2026-09-14 to name France as the project's interim establishment jurisdiction in §10 (`DR-0099`) — no other substantive change; that record's placeholder citation was resolved to its assigned number at merge (DR-0095), a reference correction carrying no substantive change and so no version bump
+**Change history:** 0.1 drafted 2026-08-16; approved as 1.0 the same day with the §8 rulings settled and §2, §5.4, §5.5 aligned to them; 1.1 amended 2026-09-14 to name France as the project's interim establishment jurisdiction in §10 (`DR-0099`) — no other substantive change; that record's placeholder citation was resolved to its assigned number at merge (DR-0095), a reference correction carrying no substantive change and so no version bump; 1.2 amended 2026-09-15 so §10 names [DR-0100](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md) as the operative record and states the controller and the archive hosting location in the policy itself, rather than leaving a reader of §10 to follow the supersession chain to find them — no change to any §8 ruling, to §9's suspension, or to what the review must cover
 **Fulfils:** record §13, LEGAL-009, Q-35; releases the interim constraints of DR-0071 on the terms in §9 below.
 **Governed by:** DR-0055 (append-only, governed redaction), DR-0066 (three gates), DR-0069 (quarantine), SEC-001/003, §10 (graphic material), §12 (access tiers), §14 (rights).
 
@@ -19,6 +19,9 @@ direct answer to a question raised while drafting the A6 legal-review brief
 — see [DR-0099](../decision-records/DR-0099-establishment-jurisdiction.md),
 confirmed and extended by
 [DR-0100](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md).
+**v1.2** (2026-09-15) brought DR-0100's facts into §10 itself at the
+founder's direction, so the policy states the controller and the hosting
+location without a reader having to follow the supersession chain.
 
 ---
 
@@ -266,17 +269,34 @@ On this policy taking effect, the DR-0071 constraints lift as follows:
 
 This policy is drafted by a non-lawyer. Before collection at scale touching
 living private individuals, the project obtains **external legal review** in
-its establishment jurisdiction — **France**, interim
-([DR-0099](../decision-records/DR-0099-establishment-jurisdiction.md),
-2026-09-14): no separate legal entity has been
-formed, and the founder's own personal jurisdiction is used as the interim
-basis for identifying applicable law and counsel until one is. Whether
-entity formation should itself be a preliminary question for the review is
-open, not resolved by this section — covering: lawful basis and Art. 89
-safeguards; Art. 9/10 handling; the applicable French Art. 85 provisions
-(Loi Informatique et Libertés and its research/archiving exceptions);
-data-subject request procedure; retention; and any DPIA obligation. The
-review's outcome is recorded, and this policy is revised to match it.
+its establishment jurisdiction. That jurisdiction, the controller's identity
+and the archive's hosting location are recorded in
+[DR-0099](../decision-records/DR-0099-establishment-jurisdiction.md)
+(2026-09-14) and
+[DR-0100](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md)
+(2026-09-15, the operative record), and are restated here so this section
+stands on its own:
+
+- **Establishment jurisdiction: France** — **interim**. No separate legal
+  entity has been formed, and the founder's own personal jurisdiction is used
+  as the interim basis for identifying applicable law and counsel until one
+  is. **Whether entity formation should itself be a preliminary question for
+  the review is open, and is not resolved by this section.**
+- **Controller: the founder/principal editor as a natural person.** This
+  states what is true as at 2026-09-15; it is not a commitment to remain
+  unincorporated.
+- **Archive hosting: IONOS, in Spain.** Controller establishment and
+  processing location are both inside the EEA.
+- **Incorporation, or a change of the establishment jurisdiction or the
+  hosting country, is a material change under §11** and triggers a recorded
+  review — including a reassessment of this section's review if it has by
+  then been obtained.
+
+The review covers: lawful basis and Art. 89 safeguards; Art. 9/10 handling;
+the applicable French Art. 85 provisions (Loi Informatique et Libertés and
+its research/archiving exceptions); data-subject request procedure;
+retention; and any DPIA obligation. The review's outcome is recorded, and
+this policy is revised to match it.
 **Until that review is recorded, §9's releases do not take effect** — the
 DR-0071 constraints continue to bind.
 
@@ -292,6 +312,11 @@ under DR-0046/DR-0047.
 2026-08-16 together with the three §8 rulings, with the §9 releases
 suspended pending the §10 legal review.
 
-**`DR-0099`** — the v1.1 amendment naming
-France as the interim establishment jurisdiction in §10, approved by the
-founder 2026-09-14.
+**[DR-0099](../decision-records/DR-0099-establishment-jurisdiction.md)** —
+the v1.1 amendment naming France as the interim establishment jurisdiction in
+§10, approved by the founder 2026-09-14. Superseded by DR-0100.
+
+**[DR-0100](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md)**
+— confirming that jurisdiction and its interim framing, and recording the
+controller's identity and the archive's hosting location, approved by the
+founder 2026-09-15. The v1.2 amendment brings its facts into §10.

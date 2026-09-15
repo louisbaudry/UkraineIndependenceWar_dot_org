@@ -103,15 +103,43 @@ Three were put to the founder on 2026-09-15, before the facts were supplied.
    reassessed as part of that review, and the reassessment is recorded
    whether or not it changes anything.
 
-5. **POL-0001 stays at v1.1.** Its §10 text as amended on 2026-09-14 —
-   France, interim, no entity formed, entity formation an open question —
-   remains accurate after this record, so no further amendment is made. A
-   controlled document is not re-versioned to restate facts it already
-   states correctly.
+5. **POL-0001 is carried to v1.2, so §10 names this record and states its
+   facts.** *(Revised 2026-09-15, the same day, by founder ruling — see the
+   revision note below.)* §10 now names DR-0100 as the operative record and
+   restates the establishment jurisdiction, the controller's identity, the
+   hosting location and the §11 trigger in the policy itself, so a reader of
+   §10 is not left to follow the supersession chain to find them. No §8
+   ruling changes, §9's suspension is untouched, and what the review must
+   cover is unchanged.
 
 6. **This record is the source of the controller and hosting facts**, and
    the brief is filled from it. A later correction happens by superseding
    this record, never by editing the brief.
+
+## Revision note (2026-09-15, same day)
+
+**Decision 5 originally read:** *"POL-0001 stays at v1.1. Its §10 text as
+amended on 2026-09-14 — France, interim, no entity formed, entity formation
+an open question — remains accurate after this record, so no further
+amendment is made. A controlled document is not re-versioned to restate facts
+it already states correctly."*
+
+The founder ruled otherwise the same day, on the objection that §10 would go
+on citing DR-0099 while DR-0100 was the operative record, leaving a reader of
+the policy alone without the controller and hosting facts and dependent on
+following the supersession chain to find them. Decision 5 above replaces it.
+
+**Why this is a revision and not a supersession.** The project's discipline is
+that approved records change by supersession, never in-place edit (§77,
+DR-0046) — and that discipline is right. It is set aside here, deliberately
+and visibly, on narrow grounds: this record was approved in the same session,
+hours earlier, and has never reached `main`, so nothing downstream has ever
+relied on the original Decision 5; and a superseding record whose entire
+content is the reversal of one clause would obscure rather than clarify the
+decision. The original text is quoted above in full so nothing is lost. **If
+the founder prefers this handled as a superseding record instead, say so and
+it will be done** — the change is small and the discipline is worth more than
+the convenience.
 
 ## Consequences
 
@@ -138,8 +166,9 @@ Three were put to the founder on 2026-09-15, before the facts were supplied.
 5. **The superseded record keeps its place.** It is not deleted, edited or
    folded in: it recorded a real founder ruling on a real date, and §77's
    supersession discipline applies to decision records as much as to the
-   Phase I record. POL-0001 v1.1's §10 cites it, correctly, as the record
-   that named France.
+   Phase I record. POL-0001 v1.1's §10 cited it as the record that named
+   France, which remains correct history; v1.2 names this record as the
+   operative one (Decision 5).
 
 6. **CDR numbering is an open gap.** Both sessions numbered candidate DRs
    from the same starting point: the other branch's WP 3.6 used CDR-P3-42,

@@ -263,8 +263,11 @@ DR-0099 named France as the **interim** jurisdiction and amended POL-0001 to
 v1.1; DR-0100 confirms that ruling and its *interim* framing unchanged and
 adds the controller's identity, the archive hosting location, and a POL-0001
 §11 trigger for changes to either. DR-0099 is superseded, not withdrawn:
-§77's discipline applies to decision records, and POL-0001 v1.1 cites it
-correctly as the record that named France. The same collision took
+§77's discipline applies to decision records. POL-0001 reached **v1.2** on
+2026-09-15 so its §10 names DR-0100 as the operative record and restates the
+jurisdiction, controller and hosting facts in the policy itself, rather than
+leaving a reader to follow the supersession chain; v1.1's citation of DR-0099
+remains correct history. The same collision took
 **CDR-P3-42** twice; WP 3.6's claim is the older and stands, and the A6
 brief's candidates renumbered to CDR-P3-43…45. DR-0095 closes this for DR
 numbers and does not reach CDR numbers or duplicated documents — see

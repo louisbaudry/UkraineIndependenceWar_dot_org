@@ -162,7 +162,9 @@ commits to.
   the ruling is explicitly INTERIM.** Named 2026-09-14 as the founder's own
   personal jurisdiction in the absence of any incorporated or registered
   legal entity (`DR-0099`, which amended
-  POL-0001 to v1.1 so §10 names it); **confirmed and extended 2026-09-15**
+  POL-0001 to v1.1 so §10 names it; **POL-0001 is now at v1.2**, whose §10
+  names DR-0100 and restates the jurisdiction, controller and hosting facts
+  in the policy itself); **confirmed and extended 2026-09-15**
   by `DR-0100`, which keeps the
   interim framing and adds that **the controller is the founder/principal
   editor as a natural person** and **the archive server is hosted with IONOS
