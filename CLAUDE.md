@@ -51,6 +51,26 @@ not a substitute for checking.
    merge time (see DR-0093's numbering note in the DR register). Grep
    `docs/decision-records/README.md` on `origin/main`, not just your branch,
    for the next free DR number.
+
+   **Then look at the branches that are *not* merged.** `origin/main` only
+   shows you finished work, so this check is the one that catches another
+   session working the same item right now — which `origin/main` cannot, by
+   construction:
+
+   ```bash
+   git fetch origin -q
+   comm -13 <(git branch -r --merged origin/main | sed 's/^ *//' | sort)             <(git branch -r | sed 's/^ *//' | sort)      # unmerged branches
+   git diff --stat origin/main...<branch>                # what each is doing
+   ```
+
+   Do this **before starting**, not before merging. On 2026-09-14/15 two
+   sessions each drafted the WP 3.4 Track A6 legal-review brief at the same
+   path, each obtained the same founder ruling, and each took CDR-P3-42 —
+   discovered only because the founder asked whether anything was in flight
+   (DR-0099/DR-0100, and the DR register's provenance note). If an unmerged
+   branch already holds the file you are about to create, the working paper
+   you are about to deposit, or the Track A item you are about to start,
+   **say so and ask before duplicating it**.
 4. If the founder's request touches collection scope, personal data, legal
    posture or a document's status, re-read the "Standing rulings" below
    before proposing anything.
@@ -178,7 +198,7 @@ commits to.
 - **A person, not software, is the agent of record for a collection run**
   (DR-0093 §3) — deliberately, at the founder's direction, for the first
   runs. Unchanged. As of 2026-09-12
-  (`DR-0097`, awaiting its number), a *second*,
+  (`DR-0097`), a *second*,
   separate, self-registering software agent named `collector-pipeline` is
   recorded on the run's preservation events instead, which resolved
   `release/baseline.py --check`'s inability to pin `collector_version`/
@@ -207,9 +227,9 @@ commits to.
 **Decision Records** live in `docs/decision-records/DR-nnnn-slug.md` with the
 header block, Context, Alternatives considered, Decision, Consequences; the
 register in that directory's README lists every DR. **Never write a number
-while drafting** (DR-0095) — two branches checking the register and drafting
-concurrently can both be right and still collide, as DR-0093 and DR-0094 each
-did. Draft and review it as `docs/decision-records/DR-pending-slug.md`,
+while drafting** (DR-0095, extended by `DR-pending-drafting-collisions`) —
+two branches checking the register and drafting concurrently can both be
+right and still collide, as DR-0093 and DR-0094 each did. Draft and review it as `docs/decision-records/DR-pending-slug.md`,
 titled `DR-pending-slug` throughout (header and any self-reference); the
 real number is assigned exactly once, at merge time, by grepping
 `origin/main`'s register for the highest `DR-nnnn`, taking the next integer,
@@ -222,11 +242,22 @@ working paper.
 studies reach the founder. Follow WP 3.3 as the model: header block (Project,
 Status `CANDIDATE — AI-drafted, awaiting founder review`, Version, Mandate,
 Constraints inherited), an **AI provenance** block stating what was and was
-not verified, numbered sections, a "Candidate Decision Records" section
-numbered **CDR-P3-nn** continuing from the last one used anywhere in `docs/`
-(grep for it), "Open questions raised", "Sources". On deposit:
+not verified, numbered sections, a "Candidate Decision Records" section, "Open questions
+raised", "Sources".
 
-1. compute `sha256sum` of the file and add an entry to
+**Candidate DRs are drafted unnumbered, like Decision Records**
+(`DR-pending-drafting-collisions`, superseding DR-0095): write
+**`CDR-pending-<slug>`** throughout the paper and in anything on the same
+branch that cites it. **The real `CDR-P3-nn` is assigned at merge**, by
+grepping `docs/` on `origin/main` for the highest one and taking the next
+integers in the order the paper lists them. CDR numbers are a **single global
+sequence**, not scoped per paper — two papers drafted the same week collide by
+construction, as WP 3.4/WP 3.5 did and WP 3.6 and the A6 brief did again.
+
+On deposit:
+
+1. compute `sha256sum` of the file **after its CDR numbers are assigned**, so
+   the hash covers the text as merged, and add an entry to
    `docs/phase-3/working-papers/PROVENANCE.md` (Title, Version, SHA-256 at
    deposit, Deposited, Origin, Inputs, Status);
 2. add a row to the table in `docs/phase-3/README.md`;
