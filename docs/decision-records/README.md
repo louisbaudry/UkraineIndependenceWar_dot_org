@@ -125,13 +125,14 @@ merely another renumbering.
 | [DR-0092](DR-0092-split-byline-as-public-title.md) | A split's deciding agent is shown as a public title, snapshotted, never the agent row | architecture / editorial / security | Approved | 2026-09-09 |
 | [DR-0093](DR-0093-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | Approved | 2026-09-08 |
 | [DR-0094](DR-0094-third-party-web-captures.md) | Third-party web captures (Common Crawl, Wayback Machine, qualifying archives) as an acquisition channel | architecture / preservation | Approved | 2026-09-11 |
-| [DR-0095](DR-0095-dr-numbering-placeholder-until-merge.md) | Decision Records are drafted unnumbered; the number is assigned at merge | architecture / methodology | Approved | 2026-09-11 |
+| [DR-0095](DR-0095-dr-numbering-placeholder-until-merge.md) | Decision Records are drafted unnumbered; the number is assigned at merge | architecture / methodology | Approved — superseded by DR-0102 | 2026-09-11 |
 | [DR-0096](DR-0096-second-source-registrations.md) | Second source registrations: UK OFSI Consolidated List and BIS Denied Persons List (DPL half only) | operations / preservation | Approved | 2026-09-12 |
 | [DR-0097](DR-0097-collection-run-two-agents.md) | A collection run carries two agents: a human agent of record and a versioned software agent on its preservation events | architecture / preservation | Approved | 2026-09-12 |
 | [DR-0098](DR-0098-seco-sanctions-registration.md) | Third source registration: SECO sanctions list (Switzerland) | operations / preservation | Approved | 2026-09-14 |
 | [DR-0099](DR-0099-establishment-jurisdiction.md) | Interim establishment jurisdiction: France; POL-0001 amended to v1.1 | legal / editorial | Approved — superseded by DR-0100 | 2026-09-14 |
 | [DR-0100](DR-0100-jurisdiction-controller-and-hosting.md) | Establishment jurisdiction confirmed; controller identity and archive hosting location | legal / operations | Approved | 2026-09-15 |
 | [DR-0101](DR-0101-recording-the-legal-review.md) | What "the review's outcome is recorded" means, for POL-0001 §10 | legal / methodology | Approved | 2026-09-15 |
+| [DR-0102](DR-0102-drafting-discipline-before-merge.md) | Drafting discipline before merge: CDR numbers assigned at merge, unmerged branches checked before starting, bounded in-place revision | architecture / methodology | Approved | 2026-09-15 |
 
 ## Provenance of decisions
 
@@ -253,6 +254,15 @@ which is the step DR-0095 prescribes and which was missed on each. The
 register is brought current here rather than left to drift further; the gap
 is recorded rather than tidied away, because an index that silently omits
 three enacted decisions is the failure mode the register exists to prevent.
+
+**DR-0102 supersedes DR-0095**, carrying its rule forward verbatim and
+withdrawing its clause 4, whose premise — that CDR numbers are scoped per
+working paper — is not how the convention works: CLAUDE.md numbers them
+"continuing from the last one used anywhere in `docs/`", a single global
+sequence. DR-0102 also adds a pre-start check of unmerged branches, and a
+bounded exception permitting in-place revision of a record that has not
+reached `main` under four conditions, of which the founder having ruled the
+change is the one that keeps it narrow.
 
 **DR-0099 and DR-0100 are two records of one decision**, and both are kept.
 Two agent sessions drafted the WP 3.4 Track A item A6 legal-review brief in

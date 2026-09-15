@@ -12,7 +12,7 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0101); the design
+every enacted decision since is a Decision Record (DR-0001…0102); the design
 lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
 the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
 `publication/`, `export/` and `release/` implements those documents and is
@@ -219,7 +219,7 @@ commits to.
   Drafts are proposed and marked as such; nothing is enacted unilaterally.
 - **An approved Decision Record changes by supersession, not by editing it**
   (§77, DR-0046). The one exception is narrow and enacted
-  (`DR-pending-drafting-discipline-before-merge` Decision 7): a record may be
+  (DR-0102 Decision 7): a record may be
   revised in place only when **all four** hold — approved and revised in the
   **same session**, **never merged to `main`**, **the founder ruled the
   change**, and a **Revision note quotes the replaced text in full** with its
@@ -239,7 +239,7 @@ commits to.
 **Decision Records** live in `docs/decision-records/DR-nnnn-slug.md` with the
 header block, Context, Alternatives considered, Decision, Consequences; the
 register in that directory's README lists every DR. **Never write a number
-while drafting** (DR-0095, extended by `DR-pending-drafting-discipline-before-merge`) —
+while drafting** (DR-0095, extended by DR-0102) —
 two branches checking the register and drafting concurrently can both be
 right and still collide, as DR-0093 and DR-0094 each did. Draft and review it as `docs/decision-records/DR-pending-slug.md`,
 titled `DR-pending-slug` throughout (header and any self-reference); the
@@ -258,7 +258,7 @@ not verified, numbered sections, a "Candidate Decision Records" section, "Open q
 raised", "Sources".
 
 **Candidate DRs are drafted unnumbered, like Decision Records**
-(`DR-pending-drafting-discipline-before-merge`, superseding DR-0095): write
+(DR-0102, superseding DR-0095): write
 **`CDR-pending-<slug>`** throughout the paper and in anything on the same
 branch that cites it. **The real `CDR-P3-nn` is assigned at merge**, by
 grepping `docs/` on `origin/main` for the highest one and taking the next

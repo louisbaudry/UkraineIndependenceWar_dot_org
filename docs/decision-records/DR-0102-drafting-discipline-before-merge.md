@@ -1,4 +1,4 @@
-# DR-pending-drafting-discipline-before-merge — Drafting discipline before merge: CDR numbers assigned at merge, unmerged branches checked before starting, and same-session revision of a record that has not merged
+# DR-0102 — Drafting discipline before merge: CDR numbers assigned at merge, unmerged branches checked before starting, and same-session revision of a record that has not merged
 
 **Category:** architecture / methodology | **Status:** **Approved**
 **Decided:** 2026-09-15 by founder/principal editor — Decisions 1–6 as option A of three; Decision 7 added the same day as option C of three, after the drafter flagged its own improvisation

@@ -134,7 +134,7 @@ that approved records change by supersession, never in-place edit (§77,
 DR-0046). This revision was made before any rule permitted it, on the
 drafter's own reasoning, and the drafter said so; the founder's answer was to
 bound the exception rather than undo it. It is now governed by
-[`DR-pending-drafting-discipline-before-merge`](DR-pending-drafting-discipline-before-merge.md)
+[DR-0102](DR-0102-drafting-discipline-before-merge.md)
 Decision 7, whose four conditions this satisfies: **same session** (approved
 and revised on 2026-09-15, hours apart); **never merged** (the record had not
 reached `main`, so nothing downstream relied on the original Decision 5);
