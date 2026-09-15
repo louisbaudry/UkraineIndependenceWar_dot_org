@@ -243,6 +243,12 @@ directory as `verification-eu-consolidated-list-ofac-sdn.md`), naming:
 - step 2's numbers, and the WARC-fetch timing from `/tmp/a7-pull-fetch-timing.txt`;
 - which archive (Common Crawl or Wayback) was actually reachable and used.
 
+[`docs/sources/TEMPLATE-a7-measurement-results.md`](../sources/TEMPLATE-a7-measurement-results.md)
+is a fill-in-the-blanks copy of exactly this shape — copy it to
+`docs/sources/a7-measurement-results-YYYY-MM-DD.md` and fill it in as each
+step's output comes back, rather than reconstructing numbers from memory
+afterward.
+
 Then update WP 3.4 §5.3 to cite the real numbers instead of "unknown until
 A7 measures them" (a **working-paper edit**, not a new version unless the
 founder wants one — see `docs/phase-3/README.md`'s PROVENANCE.md
