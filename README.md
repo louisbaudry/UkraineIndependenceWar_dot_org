@@ -105,13 +105,17 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-12 | The `register.py` dependence gap fixed, at the founder's direction: `commit()` now resolves a dependence link's other end against the database by name when it is outside the current `--only` batch, and `validate()` gained a `known_keys` parameter so the existence check does not flag it as unknown. Verified before and after — the gap reproduced in a throwaway database seeded to match the archive server's state, then confirmed closed in the same scenario, plus a second scenario (a dependence on nothing registered anywhere) confirmed to print a note and insert nothing rather than crash. `sources/tests/test_register.py` gained 4 checks (27 → 31 total), two shown to fail when each half of the fix was reverted in turn | `sources/register.py`, `sources/tests/test_register.py`, `sources/README.md`, `docs/decision-records/DR-pending-second-source-registrations.md` |
 | 2026-09-13 | `seco-sanctions` verified, fully, on a second attempt: the previous session's six blind URL guesses had all missed that the real file lives on a different host (`sesam.search.admin.ch`) than the main site, only found this time by fetching the actual homepage and following its real navigation to the "Gesamtliste" download. 42 300 406 bytes, digest stable across two fetches and identical across all four `lang=` variants, 17 312 `<target>` elements, acquired end to end by the real collector (1 discovered, 1 acquired, 0 failed, 0 documentary assertions). No registration decision made yet | `sources/candidates/sanctions-authorities.yaml`, `docs/sources/verification-seco-sanctions.md`, `sources/README.md` |
 | 2026-09-14 | Founder approved registering `seco-sanctions` — a separate decision from the OFSI/BIS pair, not linked to it, executable in either order (`DR-pending-seco-sanctions-registration`). Re-verified the 2026-09-12 `register.py` dependence fix on a single-source `--only` call rather than a pair (its first test on that shape): `--commit --only seco-sanctions` alone, in a throwaway database seeded to match the real archive server's actual state, correctly recorded the declared dependence on the already-registered `eu-consolidated-list` with no companion source and no manual SQL. Three of seven sanctions authorities now approved for registration, none yet executed on the archive server | `docs/decision-records/DR-pending-seco-sanctions-registration.md` |
+| 2026-09-15 | WP 3.4 Track A item A7's measurement tooling built and tested: `storage/measure.py` reads `collector_run` for recorded bytes/throughput and walks the OCFL roots and quarantine directory for real on-disk footprint, reporting a measured duplication ratio for the undischarged-quarantine-copy gap `collector/README.md` documents. 11 tests against a real local database and filesystem tree, one rule shown to fail under sabotage and restored. An archive-server runbook and a fill-in results template were then written for executing both halves of A7 (baseline measurement of the two A1 sources; one retrospective WARC pull for a registered domain, WP 3.4 §4/CDR-P3-35) — neither executed, since the retrospective pull is new acquisition needing a person as agent of record (DR-0093 §3) on the archive server. `docs/sources/README.md` gained a section documenting and linking the directory's verification/measurement records, a genre that existed but had gone undescribed since DR-0093's rehearsal note | `storage/measure.py`, `storage/tests/test_measure.py`, [`docs/runbooks/A7-storage-bandwidth-measurement.md`](docs/runbooks/A7-storage-bandwidth-measurement.md), [`docs/sources/TEMPLATE-a7-measurement-results.md`](docs/sources/TEMPLATE-a7-measurement-results.md) |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
 first collection on the archive server (2026-09-09); the other 5 await the
-founder's per-source decision. A2 (census tooling against indices), A4 (WACZ
-evaluation), A5 (registration classes), A6 (legal-review brief) and A7 (storage
-measurement) are not started. A3 is done.
+founder's per-source decision. **A2** (census tooling against indices) and
+**A7** (storage/bandwidth measurement) each have tooling built and tested but
+not yet run against anything live — see the Track A table in
+[CLAUDE.md](CLAUDE.md) for each item's exact state. A4 (WACZ evaluation), A5
+(registration classes) and A6 (legal-review brief) are not started. A3 is
+done.
 
 ## Picking up development
 
@@ -164,6 +168,8 @@ site/                 Public-facing progress briefing (not governance content,
                       not the eventual archive website — see site/README.md);
                       published via GitHub Pages from this folder only
 CLAUDE.md             Working instructions for AI-assisted sessions
+AGENTS.md             Pointer to CLAUDE.md, for tools that look for this
+                      filename specifically; no separate instructions
 ```
 
 ## Running the test suites

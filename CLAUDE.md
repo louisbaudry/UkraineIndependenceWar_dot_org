@@ -2,6 +2,9 @@
 
 This file governs every AI-assisted session in this repository. Read it whole
 before doing anything; it is short relative to what it prevents.
+[`AGENTS.md`](AGENTS.md) exists only as a pointer to this file, for tools
+that look for that filename specifically — there are no separate
+instructions there, and none should be added; a second copy would drift.
 
 ## What this repository is
 
