@@ -1,11 +1,11 @@
-# DR-pending-seco-sanctions-registration — Third source registration: SECO sanctions list (Switzerland)
+# DR-0098 — Third source registration: SECO sanctions list (Switzerland)
 
 **Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-14 by founder/principal editor
 **Origin:** founder's direction of 2026-09-14 ("register seco-sanctions"), following the 2026-09-13 verification record | **Supersedes:** — | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted by Claude (model: `claude-sonnet-5`) on
 > 2026-09-14 at the founder's direction, and **approved by the founder the
-> same day**, matching DR-0093 and DR-pending-second-source-registrations'
+> same day**, matching DR-0093 and DR-0096'
 > pattern. Approval is what authorises the registration described below;
 > the registration itself is executed on the archive server by the
 > founder, per *How to execute*, and has not been executed by this record.
@@ -19,7 +19,7 @@ main site every earlier guess had targeted
 rigor as every prior verification — fetched twice, digest stable, acquired
 end to end by the real collector into a throwaway database, zero
 documentary assertions. This is a **separate decision** from
-`DR-pending-second-source-registrations` (`uk-ofsi-consolidated`/
+`DR-0096` (`uk-ofsi-consolidated`/
 `bis-entity-list`, approved but not yet executed): `seco-sanctions` had no
 registration decision at all until the founder gave one today.
 
@@ -27,7 +27,7 @@ registration decision at all until the founder gave one today.
 `seco-sanctions --common-evidentiary-origin--> eu-consolidated-list`
 (`sources/candidates/sanctions-authorities.yaml`), on a source already
 registered under DR-0093. This is the exact case
-`DR-pending-second-source-registrations` found `register.py --commit`
+`DR-0096` found `register.py --commit`
 silently dropping and fixed the same day (2026-09-12): `commit()` now
 resolves a dependence link's other end against the database when it is
 not in the current `--only` batch. Re-verified for this record in a
@@ -59,7 +59,7 @@ plainly when run.
    NSDC each need legal or editorial instrument-selection work with no
    estimate for when it lands.
 3. Hold `seco-sanctions` until the OFSI/BIS pair
-   (`DR-pending-second-source-registrations`) is actually executed on the
+   (`DR-0096`) is actually executed on the
    archive server, so registrations happen in the order they were
    approved. Rejected: nothing links the two decisions technically —
    `seco-sanctions`' dependence resolves against `eu-consolidated-list`
@@ -91,7 +91,7 @@ On approval:
    resolution of the rights position under the POL-0001 §10 review
    (already `may-preserve`/`UNVERIFIED`, unchanged by this record).
 6. **This decision is independent of
-   `DR-pending-second-source-registrations`.** Executing either does not
+   `DR-0096`.** Executing either does not
    require, wait on, or depend on the other; they may be run in either
    order or on different days.
 

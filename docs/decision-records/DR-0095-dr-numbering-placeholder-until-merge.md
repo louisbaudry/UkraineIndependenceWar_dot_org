@@ -1,7 +1,7 @@
 # DR-0095 — Decision Records are drafted unnumbered; the number is assigned at merge
 
 **Category:** architecture / methodology | **Status:** Approved | **Decided:** 2026-09-11 by founder/principal editor
-**Origin:** raised by Claude after the second independent "DR-0087" collision (DR-0093, then DR-0094) surfaced only at merge time; put to the founder directly with three options and a recommendation | **Supersedes:** — | **Superseded by:** —
+**Origin:** raised by Claude after the second independent "DR-0087" collision (DR-0093, then DR-0094) surfaced only at merge time; put to the founder directly with three options and a recommendation | **Supersedes:** — | **Superseded by:** [DR-0102](DR-0102-drafting-discipline-before-merge.md) (2026-09-15) — which carries Decision 1 forward verbatim and withdraws clause 4's CDR carve-out, whose premise (that CDR numbers are scoped per working paper) is not how the convention works; it also adds a pre-start check of unmerged branches
 
 ## Context
 

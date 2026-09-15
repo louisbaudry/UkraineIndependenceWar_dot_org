@@ -1,4 +1,4 @@
-# DR-pending-second-source-registrations — Second source registrations: UK OFSI Consolidated List and BIS Denied Persons List
+# DR-0096 — Second source registrations: UK OFSI Consolidated List and BIS Denied Persons List
 
 **Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-12 by founder/principal editor
 **Origin:** founder's direction of 2026-09-12 ("register both now, as verified"), following the verification record for both candidates | **Supersedes:** — | **Superseded by:** —
@@ -149,7 +149,7 @@ python3 release/baseline.py --check --dbname uiw
 This exact sequence — registration and a live collector run against both
 locators — was rehearsed 2026-09-12 in a throwaway database and storage
 root (see the verification record), with the two-agent split
-(`DR-pending-collection-run-two-agents`) also exercised: every
+(`DR-0097`) also exercised: every
 preservation event named the software agent, never the person, checked
 directly against the rehearsal database.
 
@@ -210,6 +210,6 @@ findings, matching DR-0093's *Executed* section.
 4. **A first collection run against either source is still to happen.**
    This record authorises it; it does not perform it. `release/baseline.py
    --check`'s `collector_version`/`pipeline_version` pinning (resolved
-   2026-09-12 by `DR-pending-collection-run-two-agents`) will be exercised
+   2026-09-12 by `DR-0097`) will be exercised
    against these two sources for the first time on the archive server
    whenever that run happens.

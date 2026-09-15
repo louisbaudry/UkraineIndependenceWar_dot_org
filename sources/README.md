@@ -209,7 +209,7 @@ suite fails.
 
 **Dependence on an already-registered source is recorded, not silently
 dropped** (fixed 2026-09-12,
-[DR-pending-second-source-registrations](../docs/decision-records/DR-pending-second-source-registrations.md)):
+[DR-0096](../docs/decision-records/DR-0096-second-source-registrations.md)):
 `commit()` resolves a declared link's other end against the database by
 name when it is not in the current `--only` batch, and a link neither end
 of which resolves prints which end could not be found rather than

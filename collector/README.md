@@ -81,7 +81,7 @@ DR-0093 §3 made a person the agent of record for the first runs (a
 deliberate, human-accountable choice), which left `collector_run` unable to
 satisfy AI-002's expectation that a versioned software agent had run — the
 open item README.md's "Open decisions" tracked as unresolved. Resolved by
-the founder (**DR-pending-collection-run-two-agents**, pending its number):
+the founder (**DR-0097**, pending its number):
 the run keeps its human agent of record (`collector_run.collector_agent_id`
 and the Gate 1 admission decision, unchanged), while every
 `preservation_event` this run produces — a fixity check, a virus check, an

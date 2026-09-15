@@ -12,7 +12,7 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0095); the design
+every enacted decision since is a Decision Record (DR-0001…0102); the design
 lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
 the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
 `publication/`, `export/` and `release/` implements those documents and is
@@ -51,6 +51,26 @@ not a substitute for checking.
    merge time (see DR-0093's numbering note in the DR register). Grep
    `docs/decision-records/README.md` on `origin/main`, not just your branch,
    for the next free DR number.
+
+   **Then look at the branches that are *not* merged.** `origin/main` only
+   shows you finished work, so this check is the one that catches another
+   session working the same item right now — which `origin/main` cannot, by
+   construction:
+
+   ```bash
+   git fetch origin -q
+   comm -13 <(git branch -r --merged origin/main | sed 's/^ *//' | sort)             <(git branch -r | sed 's/^ *//' | sort)      # unmerged branches
+   git diff --stat origin/main...<branch>                # what each is doing
+   ```
+
+   Do this **before starting**, not before merging. On 2026-09-14/15 two
+   sessions each drafted the WP 3.4 Track A6 legal-review brief at the same
+   path, each obtained the same founder ruling, and each took CDR-P3-42 —
+   discovered only because the founder asked whether anything was in flight
+   (DR-0099/DR-0100, and the DR register's provenance note). If an unmerged
+   branch already holds the file you are about to create, the working paper
+   you are about to deposit, or the Track A item you are about to start,
+   **say so and ask before duplicating it**.
 4. If the founder's request touches collection scope, personal data, legal
    posture or a document's status, re-read the "Standing rulings" below
    before proposing anything.
@@ -62,12 +82,12 @@ permits now. Keep this list current when you finish or start an item.
 
 | Item | State | Note |
 |---|---|---|
-| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 registered (2026-09-09), 3 more approved for registration but not yet executed (2026-09-12/14)** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `uk-ofsi-consolidated` (fully) and `bis-entity-list` (Denied Persons List half only) approved 2026-09-12 (`DR-pending-second-source-registrations`); `seco-sanctions` (fully verified, found 2026-09-13 on a second attempt — the real file lives on `sesam.search.admin.ch`, a different host than the main site) approved 2026-09-14 (`DR-pending-seco-sanctions-registration`), a **separate decision** from the OFSI/BIS pair. The OFSI/BIS-pair record's drafting found a `register.py` gap (dependence on an already-registered source silently dropped when using `--only`) — **fixed 2026-09-12**: `commit()`/`validate()` now resolve a link's other end against the database, not only the current call's batch; `sources/tests/test_register.py` now 31 tests, up from 27. Re-verified 2026-09-14 for `seco-sanctions` specifically — a single-source `--only` call, not a pair — confirming the fix works there too. `eur-lex-sanctions` and `ua-nsdc-sanctions` remain unverified — each needs identifying a specific instrument/decision set, which is legal/editorial judgment, not a URL to find. Since 2026-09-12, `collector/run.py` also records a versioned software agent on preservation events (`DR-pending-collection-run-two-agents`) — exercised against three live sources across two rehearsals, not yet on the archive server |
+| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 registered (2026-09-09), 3 more approved for registration but not yet executed (2026-09-12/14)** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `uk-ofsi-consolidated` (fully) and `bis-entity-list` (Denied Persons List half only) approved 2026-09-12 (`DR-0096`); `seco-sanctions` (fully verified, found 2026-09-13 on a second attempt — the real file lives on `sesam.search.admin.ch`, a different host than the main site) approved 2026-09-14 (`DR-0098`), a **separate decision** from the OFSI/BIS pair. The OFSI/BIS-pair record's drafting found a `register.py` gap (dependence on an already-registered source silently dropped when using `--only`) — **fixed 2026-09-12**: `commit()`/`validate()` now resolve a link's other end against the database, not only the current call's batch; `sources/tests/test_register.py` now 31 tests, up from 27. Re-verified 2026-09-14 for `seco-sanctions` specifically — a single-source `--only` call, not a pair — confirming the fix works there too. `eur-lex-sanctions` and `ua-nsdc-sanctions` remain unverified — each needs identifying a specific instrument/decision set, which is legal/editorial judgment, not a URL to find. Since 2026-09-12, `collector/run.py` also records a versioned software agent on preservation events (`DR-0097`) — exercised against three live sources across two rehearsals, not yet on the archive server |
 | A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | **in progress: index tooling built and tested 2026-09-12** | `sources/census.py` queries Common Crawl's index and Wayback's CDX index for candidate domains, no fetch of any candidate host, no database writes. 28 tests, no live query (both indexes unreachable this session; see `sources/README.md`). The other four A2 evidence sources (Wikipedia citation graphs, sanctions link graphs, OSINT lists, bibliographies) are not built — editorial research tasks, not tooling. DR-0094 (approved 2026-09-11) still governs how a *retrieved* third-party capture gets recorded — that's the separate acquisition_attempt/FetchResult extension, not started |
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
-| A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
+| A4 — WACZ evaluation (DR-0006 standing task) | **evaluated 2026-09-15** | [WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md) (CDR-P3-42 candidate): the container spec is stable (v1.1.1) but its signing layer is a pre-1.0 working draft (v0.1.0), confirmed by live retrieval of both spec texts and PyPI release metadata for `wacz`/`authsign`/`wacz-signing`. Recommends **deferring** adoption of both, WARC via `collector/pipeline.py` unchanged, on two stated triggers; the "jurisdictionally meaningful" half of DR-0006's question is flagged as unanswerable from a spec alone, not resolved |
 | A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |
-| A6 — legal-review brief (WP 3.4 §7) | not started | a brief, not a policy; not legal advice |
+| A6 — legal-review brief (WP 3.4 §7) | **done 2026-09-15 — v0.4, all five founder decisions in its §9 closed; commissioning is a separate founder act** | [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md) — a brief, not a policy, not a DR-0046 controlled document, not legal advice. Part A = POL-0001 §10's six topics as Q1–Q6 (it does **not** narrow or reinterpret §10); Part B = WP 3.4 §7's five questions as Q7–Q11 plus Q12 on hosting. **Jurisdiction France; controller the founder as a natural person; host IONOS, Spain** (`DR-0100`, approved — CDR-P3-43 discharged). **CDR-P3-44 also discharged 2026-09-15**, into `DR-0101`; **CDR-P3-45 held** with a named trigger (the start of Gate 3 work), so the brief has no open proposals. Rulings of 2026-09-15: **two engagements** — Part A to French data-protection counsel now, Part B held for IP/media counsel, travelling with the sent brief as context not instructions (§9.5); and **counsel answers for both states in §3.5** — the project as it is and as it intends to be — **naming the deltas**, which CDR-P3-44 requires recorded as named POL-0001 §11 review triggers (§9.4, §8). Governance consequence of the split: **§10 is satisfied by Part A alone**, so Part A's advice supersedes DR-0072 and lifts §9's suspension, while Q8/Q9/Q10's acquisition steps stay unauthorised until Part B is answered **whatever Part A concludes** — a released §9 is not a licence to run all of Track B. **Outstanding, not a decision:** the brief quotes **LIL Arts. 46, 78, 79, 80** from the CNIL's consolidated text (fetched 2026-09-15); **Légifrance was 403 behind an anti-bot challenge, so every article must be checked against it before sending**. The drafting surfaced that Art. 46 limits criminal-offence processing to a closed list this project does not obviously sit in, while Art. 80 disapplies Art. 46 for university/literary expression and professional journalism — putting POL-0001 §8.3's "archiving primary, expression secondary" ruling genuinely in question. Flagged to counsel as a question, never answered here |
 | A7 — storage and bandwidth measurement | **in progress: measurement tooling built and tested 2026-09-15; a runbook for executing it, including the retrospective pull, is written and unexecuted** | `storage/measure.py` reads `collector_run` for recorded bytes/throughput and walks the OCFL roots and quarantine directory for actual on-disk footprint, including the duplication ratio from `collector/README.md`'s undischarged-quarantine-copy gap. 11 tests, against fixture data only — not yet run against the archive server's real database, so WP 3.4 §5.3's real numbers are still outstanding. [`docs/runbooks/A7-storage-bandwidth-measurement.md`](docs/runbooks/A7-storage-bandwidth-measurement.md) gives the archive-server steps for both halves of A7 (baseline measurement of the two A1 sources, and one retrospective WARC pull via `Collector.ingest_warc` for a registered domain, WP 3.4 §4/CDR-P3-35) — a session did not execute it, since the retrospective pull is new acquisition needing a person as agent of record (DR-0093 §3) on the archive server, not something decided unilaterally from here |
 
 Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
@@ -124,9 +144,9 @@ commits to.
   **Three more are approved for registration but not yet executed**:
   `uk-ofsi-consolidated` fully verified, `bis-entity-list` partially —
   Denied Persons List only — approved 2026-09-12
-  (`DR-pending-second-source-registrations`); `seco-sanctions` fully
+  (`DR-0096`); `seco-sanctions` fully
   verified, approved 2026-09-14
-  (`DR-pending-seco-sanctions-registration`) — **a separate decision from
+  (`DR-0098`) — **a separate decision from
   the OFSI/BIS pair, not linked to it**, may be executed in either order
   or on either day. Execution is on the archive server, per each record's
   *How to execute* — this is not a session-side task, and running
@@ -138,10 +158,49 @@ commits to.
   per source — do not run `register.py --commit` against the real archive
   database without that being asked for, and do not treat approval of one
   pending registration as authorization for any other source.
+- **2026-09-14/15 — the project's establishment jurisdiction is FRANCE, and
+  the ruling is explicitly INTERIM.** Named 2026-09-14 as the founder's own
+  personal jurisdiction in the absence of any incorporated or registered
+  legal entity (`DR-0099`, which amended
+  POL-0001 to v1.1 so §10 names it; **POL-0001 is now at v1.2**, whose §10
+  names DR-0100 and restates the jurisdiction, controller and hosting facts
+  in the policy itself); **confirmed and extended 2026-09-15**
+  by `DR-0100`, which keeps the
+  interim framing and adds that **the controller is the founder/principal
+  editor as a natural person** and **the archive server is hosted with IONOS
+  in SPAIN**. *Interim* means it identifies applicable law and counsel, not
+  that a formal entity exists. **Whether the project should form a legal
+  entity before or as part of commissioning the §10 review is a separate,
+  still-open question — do not treat naming France as having answered it.**
+  The applicable framework is the GDPR as applied in France plus the **Loi
+  n° 78-17 du 6 janvier 1978 (LIL)**; the expected supervisory authority is
+  the **CNIL**. Both ends are in the EEA, so no Chapter V transfer question
+  arises from the hosting; an **Art. 28 processor contract with IONOS** is an
+  outstanding administrative check, not a legal question. Later
+  incorporation, or a change of jurisdiction or hosting country, is a
+  **material change under POL-0001 §11** and triggers a recorded review,
+  including a reassessment of the §10 legal review if obtained by then.
+  **Caution for future sessions:** reading the LIL's Arts. 46/78/80 against
+  what this archive holds puts POL-0001 §8.3's "archiving primary, expression
+  secondary" ruling in genuine question. Do **not** resolve that here — it is
+  the central thing the §10 review is being commissioned to answer, and no
+  session should restate §8.3 as settled without flagging it.
+- **2026-09-15 — "recorded", in POL-0001 §10, means one specific act**
+  (`DR-0101`, approved). The review is recorded
+  **only** by a Decision Record superseding DR-0072 that carries POL-0001 to
+  v2.0 in the same act; **§9's releases take effect on that record's approval
+  and not before** — not on receipt of counsel's advice, not on the founder
+  reading it, not on a commit or a merge. **§10 is discharged by Part A of
+  the brief alone**; Part B's answers supersede nothing and move neither
+  DR-0072 nor LEGAL-009, while still gating Q8/Q9/Q10's acquisition steps
+  whatever Part A concludes. A **failed or partial** review is recorded too,
+  as a record that supersedes nothing — an unanswered review must not look
+  like one nobody commissioned. A session that receives the advice follows
+  that record; it does not re-decide what recording means.
 - **A person, not software, is the agent of record for a collection run**
   (DR-0093 §3) — deliberately, at the founder's direction, for the first
   runs. Unchanged. As of 2026-09-12
-  (`DR-pending-collection-run-two-agents`, awaiting its number), a *second*,
+  (`DR-0097`), a *second*,
   separate, self-registering software agent named `collector-pipeline` is
   recorded on the run's preservation events instead, which resolved
   `release/baseline.py --check`'s inability to pin `collector_version`/
@@ -158,6 +217,16 @@ commits to.
   edits (§77).
 - Every enacted decision is a [Decision Record](docs/decision-records/README.md).
   Drafts are proposed and marked as such; nothing is enacted unilaterally.
+- **An approved Decision Record changes by supersession, not by editing it**
+  (§77, DR-0046). The one exception is narrow and enacted
+  (DR-0102 Decision 7): a record may be
+  revised in place only when **all four** hold — approved and revised in the
+  **same session**, **never merged to `main`**, **the founder ruled the
+  change**, and a **Revision note quotes the replaced text in full** with its
+  date and reason. "Not merged yet" is a bound on the blast radius, **not the
+  reason**: never infer from Git state alone that a record is open to
+  revision, which is the same inference DR-0046 forbids for status. When in
+  doubt, supersede.
 - Controlled documents (DR, SPEC, POL, REQ, METH, PROC) carry explicit status
   under [DR-0046](docs/decision-records/DR-0046-unified-document-control.md).
   **Status is document metadata, never inferred from Git state** — a commit is
@@ -170,9 +239,9 @@ commits to.
 **Decision Records** live in `docs/decision-records/DR-nnnn-slug.md` with the
 header block, Context, Alternatives considered, Decision, Consequences; the
 register in that directory's README lists every DR. **Never write a number
-while drafting** (DR-0095) — two branches checking the register and drafting
-concurrently can both be right and still collide, as DR-0093 and DR-0094 each
-did. Draft and review it as `docs/decision-records/DR-pending-slug.md`,
+while drafting** (DR-0095, extended by DR-0102) —
+two branches checking the register and drafting concurrently can both be
+right and still collide, as DR-0093 and DR-0094 each did. Draft and review it as `docs/decision-records/DR-pending-slug.md`,
 titled `DR-pending-slug` throughout (header and any self-reference); the
 real number is assigned exactly once, at merge time, by grepping
 `origin/main`'s register for the highest `DR-nnnn`, taking the next integer,
@@ -185,11 +254,22 @@ working paper.
 studies reach the founder. Follow WP 3.3 as the model: header block (Project,
 Status `CANDIDATE — AI-drafted, awaiting founder review`, Version, Mandate,
 Constraints inherited), an **AI provenance** block stating what was and was
-not verified, numbered sections, a "Candidate Decision Records" section
-numbered **CDR-P3-nn** continuing from the last one used anywhere in `docs/`
-(grep for it), "Open questions raised", "Sources". On deposit:
+not verified, numbered sections, a "Candidate Decision Records" section, "Open questions
+raised", "Sources".
 
-1. compute `sha256sum` of the file and add an entry to
+**Candidate DRs are drafted unnumbered, like Decision Records**
+(DR-0102, superseding DR-0095): write
+**`CDR-pending-<slug>`** throughout the paper and in anything on the same
+branch that cites it. **The real `CDR-P3-nn` is assigned at merge**, by
+grepping `docs/` on `origin/main` for the highest one and taking the next
+integers in the order the paper lists them. CDR numbers are a **single global
+sequence**, not scoped per paper — two papers drafted the same week collide by
+construction, as WP 3.4/WP 3.5 did and WP 3.6 and the A6 brief did again.
+
+On deposit:
+
+1. compute `sha256sum` of the file **after its CDR numbers are assigned**, so
+   the hash covers the text as merged, and add an entry to
    `docs/phase-3/working-papers/PROVENANCE.md` (Title, Version, SHA-256 at
    deposit, Deposited, Origin, Inputs, Status);
 2. add a row to the table in `docs/phase-3/README.md`;
