@@ -56,10 +56,12 @@ Spain** as the host, all recorded in
 rather than decided here. The questions below are written against French law
 accordingly.
 
-**Two decisions remain open** before this is sent, and neither is a drafting
-gap: §9.4 (is counsel being asked about the project as it is, or as it
-intends to be) and §9.5 (one engagement or two — Part B is copyright and
-platform-terms work a data-protection practice may decline). **One caution**
+**One decision remains open** before this is sent, and it is not a drafting
+gap: §9.4 — is counsel being asked about the project as it is, or as it
+intends to be. §9.5 is now closed: **this brief goes to French
+data-protection counsel for Part A only**, and Part B (Q7–Q12) travels with
+it as context rather than instructions, bound for separate IP/media counsel
+later. **One caution**
 carries into the engagement itself: every French statutory text quoted here
 was read from the CNIL's consolidated version, not from Légifrance, which was
 unreachable on the drafting date — see the provenance note above.
@@ -433,7 +435,13 @@ POL-0001 §10 is about personal data. Q7–Q11 come from the acquisition plan in
 contemplated — the words *robots*, *terms of service* and *copyright* do not
 appear in it. Q12 arises from the hosting arrangement. These are asked here
 so each answer is obtained once rather than improvised per source.
-**Q7–Q10 in particular may need different counsel from Part A** (see §9.5).
+
+**Scope note for Part A's counsel (§9.5).** Q7–Q12 are **not part of this
+engagement.** They are set out here as context — they describe what the
+project intends to do, which bears on Q1 and Q5 — and are going to separate
+IP/media counsel later. Answer them only if something in them is obviously
+wrong or obviously relevant to Part A; the project does not expect it and is
+not asking to be charged for it.
 
 ### Q7 — Preservation-only copying, and the database right
 The project's rights vocabulary separates **may preserve** from **may
@@ -549,11 +557,12 @@ revised to match it**. That has two consequences for how counsel's advice is
 delivered.
 
 1. **The project needs a written answer it can quote and cite, question by
-   question.** An advice note structured against Q1–Q12 above — even where
-   the answer to one is "this does not arise" — is worth considerably more
-   to the project than a discursive memorandum, because the outcome is
-   entered into a permanent decision record and the reasoning has to survive
-   being read in ten years by someone who was not in the room.
+   question.** An advice note structured against **Q1–Q6** — even where the
+   answer to one is "this does not arise" — is worth considerably more to the
+   project than a discursive memorandum, because the outcome is entered into
+   a permanent decision record and the reasoning has to survive being read in
+   ten years by someone who was not in the room. (Q7–Q12 are out of scope for
+   this engagement; see §6's scope note and §9.5.)
 2. **Where counsel's conclusion differs from a position in §4, the project
    needs the divergence named as such**, so the superseding decision record
    can state what changed and why. A silently different framework cannot be
@@ -575,7 +584,7 @@ see Q12 in §12.
 
 ## 9. What the founder must settle before this is sent
 
-Five blanks. **Three are closed. Two remain.**
+Five blanks. **Four are closed. One remains (§9.4).**
 
 ### 9.1–9.3 Establishment jurisdiction, controller, hosting — **closed**
 **These three facts are not decided in this brief.** They are decided in
@@ -600,14 +609,22 @@ carrying project content exists. The founder should decide whether counsel is
 being asked about the project as it is or as it intends to be, and this brief
 assumes **as it intends to be** — stated here so it can be corrected.
 
-### 9.5 One engagement or two
-Part A is data-protection work. Part B (Q7–Q10 especially) is copyright,
-database-right and platform-terms work, which a data-protection practice may
-decline or answer thinly. The founder should decide whether to brief one firm
-across both, brief two, or send Part A now and hold Part B — noting that only
-Part A is what POL-0001 §10 makes a condition of the §9 releases, and that
-Part B governs acquisition steps the project cannot take until Part A is
-answered anyway.
+### 9.5 One engagement or two — **closed 2026-09-15: two**
+Ruled by the founder: **Part A goes to French data-protection counsel now.
+Part B is held**, to go to IP/media counsel later. The reasoning recorded
+with the ruling: POL-0001 §10 requires its six topics answered as one body of
+advice by one adviser, and splitting Part A would fragment the single record
+CDR-P3-43 needs; Part B is different expertise, and it governs acquisition
+steps the project cannot take until Part A is answered anyway.
+
+**What that means for what is sent.** The whole brief goes to Part A's
+counsel, Part B included, with Part B marked as **context rather than
+instructions** — it tells them what the project actually plans to do, which
+bears on Q1 and Q5, and a data-protection view on any of it is welcome
+without being expected or charged for. Part B is not withdrawn from the
+document; it is withdrawn from the retainer. §6's preamble says so in terms.
+If the founder prefers Part B excised from the sent copy instead, that is a
+one-line change here.
 
 ---
 
@@ -646,14 +663,29 @@ Numbering continues from CDR-P3-41, the highest used anywhere in `docs/`.
   it is not approvable until they are filled. Kept here, struck through,
   because the CDR number is spent and should not be reused.
 
-- **CDR-P3-43 — What "the review's outcome is recorded" means.** The review
-  is recorded by a decision record that supersedes DR-0072, states per
-  question what counsel concluded and with what degree of settledness, names
-  every divergence from the §4 positions, and carries POL-0001 to v2.0 in the
-  same act. **POL-0001 §9's releases take effect on that record's approval
-  and not before** — not on receipt of the advice, and not on the founder
-  reading it. LEGAL-009 moves from "partially satisfied" to satisfied in the
-  same commit, or the reason it does not is stated.
+- **CDR-P3-43 — What "the review's outcome is recorded" means.** *(Revised
+  2026-09-15 after the founder split the engagement, §9.5.)* The review is
+  recorded by a decision record that supersedes DR-0072, states per question
+  what counsel concluded and with what degree of settledness, names every
+  divergence from the §4 positions, and carries POL-0001 to v2.0 in the same
+  act. **POL-0001 §9's releases take effect on that record's approval and not
+  before** — not on receipt of the advice, and not on the founder reading it.
+  LEGAL-009 moves from "partially satisfied" to satisfied in the same commit,
+  or the reason it does not is stated.
+
+  **The split makes one boundary explicit, and it matters.** POL-0001 §10's
+  condition is satisfied by **Part A alone** — its six topics are the whole
+  of what §10 requires — so Part A's advice is what supersedes DR-0072,
+  carries POL-0001 to v2.0, and lifts §9's suspension. **Part B's answers,
+  whenever they arrive, are recorded separately and move none of that.** They
+  are not a second legal review for §10 purposes and do not touch LEGAL-009.
+  What they do govern is whether specific acquisition steps may proceed:
+  until Part B is answered, retrospective recovery from third-party archives
+  (Q8), any `robots.txt` override (Q9) and named-channel platform capture
+  (Q10) stay unauthorised **whatever Part A concludes** — a lifted §9 is not
+  a licence to take a step whose own question is still open. The successor
+  record says this in terms, so a future session cannot read "§9 released"
+  as "everything in WP 3.4 Track B may now run".
 
 - **CDR-P3-44 — A rights position marked unreviewed cannot reach Gate 3.**
   The source registry's `rights_basis` is free text, and the two registered

@@ -15,7 +15,7 @@ directory to say something new.
 
 | Document | What it is | Status |
 |---|---|---|
-| [`legal-review-brief.md`](legal-review-brief.md) | The brief for the external legal review that [POL-0001 §10](../policies/POL-0001-personal-data.md) makes a condition of collection at scale — WP 3.4 Track A item **A6** | **DRAFT v0.3**, AI-drafted 2026-09-15, awaiting founder review. Written against **French law** — jurisdiction, controller and host are recorded in [`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md), not decided here. Two founder decisions remain before it is sent (§9.4, §9.5), and every LIL article it quotes should be checked against Légifrance, which was unreachable when it was drafted |
+| [`legal-review-brief.md`](legal-review-brief.md) | The brief for the external legal review that [POL-0001 §10](../policies/POL-0001-personal-data.md) makes a condition of collection at scale — WP 3.4 Track A item **A6** | **DRAFT v0.3**, AI-drafted 2026-09-15, awaiting founder review. Written against **French law** — jurisdiction, controller and host are recorded in [`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md), not decided here. **Part A (Q1–Q6) goes to French data-protection counsel; Part B (Q7–Q12) is held for IP/media counsel later** (§9.5, ruled 2026-09-15). One founder decision remains before it is sent (§9.4), and every LIL article it quotes should be checked against Légifrance, which was unreachable when it was drafted |
 
 ## Why the brief exists
 
