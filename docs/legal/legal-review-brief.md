@@ -1,6 +1,6 @@
 # Brief for the POL-0001 §10 external legal review
 
-**Status:** DRAFT v0.1 — AI-drafted, awaiting founder review. **Not** a
+**Status:** DRAFT v0.2 — AI-drafted, awaiting founder review. **Not** a
 controlled document under [DR-0046](../decision-records/DR-0046-unified-document-control.md):
 it is not a DR, SPEC, POL, REQ, METH or PROC, it enacts nothing, and it
 changes no policy. It is the instruction sheet for an engagement the
@@ -20,7 +20,9 @@ position the project has adopted internally and is asking counsel to test.
 ### AI provenance (record §80)
 
 Drafted 2026-09-15 by an AI assistant (Anthropic Claude Code agent session)
-at the founder's direction. The drafter is not a lawyer. Every factual claim
+at the founder's direction; revised to v0.2 the same day, after the founder
+ruled on §9.1–9.3, to point those three at the decision record that now
+holds them. The drafter is not a lawyer. Every factual claim
 in §3 was taken from the repository as it stood on that date and is
 footnoted to its source there; no claim in §3 was verified against the
 archive server's live database, which this session cannot reach. No external
@@ -31,11 +33,18 @@ was contacted. Candidate until the founder approves it.
 
 ## 1. Read this first: the brief is not yet sendable
 
-Four facts an external adviser needs on the first page do not exist anywhere
-in the project's record, and this brief deliberately leaves them blank rather
-than guessing. **§9 lists them.** They are not drafting gaps; each is a
-founder decision, and the first of them decides which country's law the
-answer is written in.
+Facts an external adviser needs on the first page did not exist anywhere in
+the project's record when this brief was drafted, and it leaves them blank
+rather than guessing. **§9 lists them.** They are not drafting gaps; each is
+a founder decision.
+
+Since the first draft, the founder has ruled on how three of them are to be
+recorded, and they have moved into
+[`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md).
+**Two remain empty and still block the engagement:** the project's
+establishment jurisdiction — which decides which country's law five of the
+eleven questions are answered in, and which counsel can be instructed at all
+— and the archive server's provider and country.
 
 Note also that this file lives in a public Git repository. The engagement's
 particulars — the founder's identity and address, the counsel's name, fees,
@@ -405,26 +414,31 @@ see Q12 in §12.
 
 ## 9. What the founder must settle before this is sent
 
-Five blanks. The first governs the other four.
+Five blanks. **The first three are now governed by a decision record of
+their own** — see 9.1–9.3 below; two of them are still empty. The fourth and
+fifth remain open.
 
-### 9.1 The establishment jurisdiction — **blocking**
-POL-0001 §10 requires review "in its establishment jurisdiction". **The
-project's record nowhere states what that jurisdiction is.** POL-0001 §2 says
-only that the project is "European-based". Until this is fixed, Q1, Q3, Q5,
-Q7 and Q9 have no law to be answered in, and no counsel can be selected.
+### 9.1–9.3 Establishment jurisdiction, controller, hosting location
+**These three facts are not decided in this brief.** They are decided in
+[`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md),
+and this brief is filled *from* that record rather than the other way round.
 
-### 9.2 Who the controller is
-Is the controller the founder as a natural person, or an entity — existing or
-to be formed? The founding record contemplates an incorporated legal entity
-for the project's institutional continuity, but none is recorded as existing.
-This bears directly on Q6 (DPIA, DPO, Art. 27 representative) and on who
-signs the engagement.
+On 2026-09-15 the founder ruled how they should be recorded (option B of
+three): the jurisdiction and the hosting location are recorded now, the
+**controller is the founder/principal editor as a natural person** — no legal
+entity exists — and later incorporation, or a change of jurisdiction or
+hosting country, is a material change under POL-0001 §11 that triggers a
+recorded review. Counsel should be told that incorporation is contemplated,
+so the advice is not answering a question the project may stop asking.
 
-### 9.3 Where the archive server is
-The hosting location and provider of the archive server are recorded nowhere
-in the repository. Counsel will need them, for establishment and for transfer
-analysis, and they should be stated in the covering letter rather than
-guessed from this brief.
+**Still empty in that record, and blocking:** the establishment jurisdiction
+itself, and the archive server's provider and country. POL-0001 §10 requires
+review "in its establishment jurisdiction"; POL-0001 §2 says only that the
+project is "European-based". Until the jurisdiction is supplied, **Q1, Q3,
+Q5, Q7 and Q9 have no law to be answered in and no counsel can be
+selected**. The hosting location is needed for establishment and transfer
+analysis. Both go in the covering letter as well, and neither may be inferred
+— not from this brief, not from the repository.
 
 ### 9.4 Whether the project holds itself out as publishing
 Q3's Art. 85 analysis turns partly on this, and the honest current answer is
@@ -467,14 +481,15 @@ above `public` access tier.
 
 Numbering continues from CDR-P3-41, the highest used anywhere in `docs/`.
 
-- **CDR-P3-42 — The establishment jurisdiction and the controller's identity
-  are recorded before the review is commissioned.** A decision record fixes
-  (i) the jurisdiction in which the project is established, (ii) whether the
-  controller is the founder personally or a named entity, and (iii) the
-  archive server's hosting location, before any counsel is briefed. POL-0001
-  §10 presumes all three and the record states none of them; deciding them
-  as a by-product of an engagement letter would leave the project's most
-  load-bearing legal facts undocumented.
+- **CDR-P3-42 — ~~The establishment jurisdiction and the controller's
+  identity are recorded before the review is commissioned.~~ Discharged
+  2026-09-15.** The founder ruled the same day this brief was drafted, and
+  the proposal became
+  [`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md),
+  which is where these facts now live. That record is a **draft**: its shape
+  is ruled, its jurisdiction and hosting-location fields are still blank, and
+  it is not approvable until they are filled. Kept here, struck through,
+  because the CDR number is spent and should not be reused.
 
 - **CDR-P3-43 — What "the review's outcome is recorded" means.** The review
   is recorded by a decision record that supersedes DR-0072, states per

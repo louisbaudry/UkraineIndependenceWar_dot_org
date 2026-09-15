@@ -248,17 +248,18 @@ governs each. **None of the three approved registrations has been executed
 on the archive server yet** — that remains outstanding, but it is no longer
 an open *decision*, just outstanding *execution*.
 
-1. **The project's establishment jurisdiction, controller identity, and the
-   archive server's hosting location.** POL-0001 §10 requires external legal
-   review "in its establishment jurisdiction"; §2 of that policy says only
-   that the project is "European-based", and no document in the repository
-   states which country that is, whether the controller is the founder
-   personally or an entity, or where the archive server is hosted. Drafting
-   the A6 brief is what surfaced this: five of its eleven questions have no
-   law to be answered in until the first is fixed, and no counsel can be
-   selected. Proposed as `CDR-P3-42` in the brief's §11 — it is a founder
-   ruling, not something a session can infer, and it now blocks A6 rather
-   than the other way round.
+1. **The establishment jurisdiction and the archive server's hosting
+   location — two facts, not a fork.** The *decision* here is made:
+   on 2026-09-15 the founder ruled (option B of three) that the jurisdiction
+   and hosting location are recorded now, the controller is the founder as a
+   natural person, and later incorporation is a material change under
+   POL-0001 §11. That ruling is
+   [`DR-pending-establishment-jurisdiction`](docs/decision-records/DR-pending-establishment-jurisdiction.md).
+   **What is missing is the two values**, which only the founder knows and
+   which no session may infer — not from the repository, not from an email
+   domain, not from a timezone. Until they are written in, that record is not
+   approvable, the A6 brief is not sendable, five of its eleven questions
+   have no law to be answered in, and no counsel can be selected.
 2. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
    verified; each needs identifying a specific legal instrument or
    decision set, which is legal or editorial judgment, not a URL to find
@@ -270,8 +271,10 @@ an open *decision*, just outstanding *execution*.
    v0.1, 2026-09-15: Part A restates POL-0001 §10's six required topics as
    Q1–Q6, Part B restates WP 3.4 §7's acquisition questions as Q7–Q11, and
    §4 lists the six positions counsel is asked to *test* rather than
-   re-choose. Three candidate DRs arise (CDR-P3-42…44, continuing from 41),
-   the third being a real gap the drafting found: `rights_basis` is free
+   re-choose. Three candidate DRs arose (CDR-P3-42…44, continuing from 41);
+   **CDR-P3-42 was discharged the same day** into the pending decision record
+   at item 1 above. CDR-P3-43 fixes what "the review's outcome is recorded"
+   means. CDR-P3-44 is a real gap the drafting found: `rights_basis` is free
    text, the two registered sources carry `may-redistribute` on a basis
    whose own text says "NOT LEGALLY REVIEWED", and nothing in the schema or
    Gate 3 prevents a publication decision resting on it — not urgent,

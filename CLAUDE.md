@@ -67,7 +67,7 @@ permits now. Keep this list current when you finish or start an item.
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
 | A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |
-| A6 — legal-review brief (WP 3.4 §7) | **in progress: drafted 2026-09-15, not sendable** | [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md) v0.1 — a brief, not a policy, not a DR-0046 controlled document, not legal advice. Part A restates POL-0001 §10's six topics as Q1–Q6; Part B restates WP 3.4 §7's five acquisition questions as Q7–Q11. It does **not** narrow or reinterpret §10. Three CDRs raised (CDR-P3-42…44, continuing from 41). **It cannot be sent as it stands:** its §9 lists five things the founder must settle first, and the first of them — the project's **establishment jurisdiction**, which POL-0001 §10 presumes and the record nowhere states — decides which country's law five of the eleven questions are answered in. Do not fill that blank from this file or from inference; it is a founder ruling |
+| A6 — legal-review brief (WP 3.4 §7) | **in progress: drafted 2026-09-15, not sendable** | [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md) v0.1 — a brief, not a policy, not a DR-0046 controlled document, not legal advice. Part A restates POL-0001 §10's six topics as Q1–Q6; Part B restates WP 3.4 §7's five acquisition questions as Q7–Q11. It does **not** narrow or reinterpret §10. Three CDRs raised (CDR-P3-42…44, continuing from 41); **CDR-P3-42 discharged the same day** into `DR-pending-establishment-jurisdiction` after the founder ruled on it, CDR-P3-43 and 44 still candidates. **It cannot be sent as it stands**, and what blocks it is now two missing *values*, not an unmade decision: the project's **establishment jurisdiction** and the **archive server's provider and country**, both blank in that pending record. The jurisdiction decides which country's law five of the eleven questions are answered in and which counsel can be instructed at all. **Never infer either** — not from this file, the repository, an email domain, a timezone or a language; only the founder can supply them |
 | A7 — storage and bandwidth measurement | **in progress: measurement tooling built and tested 2026-09-15; a runbook for executing it, including the retrospective pull, is written and unexecuted** | `storage/measure.py` reads `collector_run` for recorded bytes/throughput and walks the OCFL roots and quarantine directory for actual on-disk footprint, including the duplication ratio from `collector/README.md`'s undischarged-quarantine-copy gap. 11 tests, against fixture data only — not yet run against the archive server's real database, so WP 3.4 §5.3's real numbers are still outstanding. [`docs/runbooks/A7-storage-bandwidth-measurement.md`](docs/runbooks/A7-storage-bandwidth-measurement.md) gives the archive-server steps for both halves of A7 (baseline measurement of the two A1 sources, and one retrospective WARC pull via `Collector.ingest_warc` for a registered domain, WP 3.4 §4/CDR-P3-35) — a session did not execute it, since the retrospective pull is new acquisition needing a person as agent of record (DR-0093 §3) on the archive server, not something decided unilaterally from here |
 
 Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
@@ -138,6 +138,17 @@ commits to.
   per source — do not run `register.py --commit` against the real archive
   database without that being asked for, and do not treat approval of one
   pending registration as authorization for any other source.
+- **2026-09-15 — the controller is the founder/principal editor as a
+  natural person**, no legal entity exists, and the establishment
+  jurisdiction plus the archive server's hosting location are recorded now
+  rather than deferred to counsel (option B of three;
+  `DR-pending-establishment-jurisdiction`). Later incorporation, or a change
+  of jurisdiction or hosting country, is a **material change under POL-0001
+  §11** and triggers a recorded review — including a reassessment of the §10
+  legal review if it has been obtained by then. The record's jurisdiction and
+  hosting fields are **still blank**: the founder ruled the shape, not the
+  values. Do not fill them in, and do not treat the record as approved until
+  they are supplied.
 - **A person, not software, is the agent of record for a collection run**
   (DR-0093 §3) — deliberately, at the founder's direction, for the first
   runs. Unchanged. As of 2026-09-12

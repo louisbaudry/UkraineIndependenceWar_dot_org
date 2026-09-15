@@ -15,7 +15,7 @@ directory to say something new.
 
 | Document | What it is | Status |
 |---|---|---|
-| [`legal-review-brief.md`](legal-review-brief.md) | The brief for the external legal review that [POL-0001 §10](../policies/POL-0001-personal-data.md) makes a condition of collection at scale — WP 3.4 Track A item **A6** | **DRAFT v0.1**, AI-drafted 2026-09-15, awaiting founder review. Not sendable as it stands: its §9 lists five things the founder must settle first, beginning with the project's establishment jurisdiction, which the record nowhere states |
+| [`legal-review-brief.md`](legal-review-brief.md) | The brief for the external legal review that [POL-0001 §10](../policies/POL-0001-personal-data.md) makes a condition of collection at scale — WP 3.4 Track A item **A6** | **DRAFT v0.2**, AI-drafted 2026-09-15, awaiting founder review. Still not sendable: §9.1–9.3 moved into [`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md) when the founder ruled on them the same day, and **two of those facts are still blank** — the establishment jurisdiction and the archive server's provider and country. §9.4 and §9.5 remain open |
 
 ## Why the brief exists
 
