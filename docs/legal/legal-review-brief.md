@@ -1,6 +1,6 @@
 # Brief for the POL-0001 §10 external legal review
 
-**Status:** DRAFT v0.3 — AI-drafted, awaiting founder review. **Not** a
+**Status:** DRAFT v0.4 — AI-drafted, awaiting founder review. **Not** a
 controlled document under [DR-0046](../decision-records/DR-0046-unified-document-control.md):
 it is not a DR, SPEC, POL, REQ, METH or PROC, it enacts nothing, and it
 changes no policy. It is the instruction sheet for an engagement the
@@ -26,6 +26,11 @@ that ruling left open — **France** as the establishment jurisdiction and
 **IONOS, Spain** as the archive host. v0.3 rewrites Q1–Q3, Q5, Q6, Q7 and Q9
 against French law instead of a placeholder, and adds Q12 on the hosting
 arrangement.
+
+v0.4 closes the last two of §9's blanks — the engagement is split (§9.5) and
+counsel answers for both states in §3.5 with the deltas named (§9.4) — adds
+§3.5, and rewrites §8 accordingly. **No decision in this brief is now
+outstanding.**
 
 **What was verified for v0.3, and how.** The French statutory texts quoted in
 Q1–Q3 and Q5 were read from the CNIL's own consolidated version of the Loi
@@ -56,12 +61,13 @@ Spain** as the host, all recorded in
 rather than decided here. The questions below are written against French law
 accordingly.
 
-**One decision remains open** before this is sent, and it is not a drafting
-gap: §9.4 — is counsel being asked about the project as it is, or as it
-intends to be. §9.5 is now closed: **this brief goes to French
-data-protection counsel for Part A only**, and Part B (Q7–Q12) travels with
-it as context rather than instructions, bound for separate IP/media counsel
-later. **One caution**
+**No decisions remain open.** All five of §9's blanks are closed: the brief
+goes to **French data-protection counsel for Part A (Q1–Q6) only**, with Part
+B (Q7–Q12) travelling as context rather than instructions for separate
+IP/media counsel later (§9.5), and counsel answers **for both the project as
+it is today and as it intends to be, naming the deltas** (§9.4, §3.5, §8).
+
+**One caution**
 carries into the engagement itself: every French statutory text quoted here
 was read from the CNIL's consolidated version, not from Légifrance, which was
 unreachable on the drafting date — see the provenance note above.
@@ -214,6 +220,32 @@ ranking, and apply at every layer including derived projections and search
 indexes. Witness identities, when the project ever holds any, are held in a
 separable confidential store under pseudonymous identifier and are by default
 never structured into the research graph.
+
+### 3.5 The two states counsel is asked to answer for
+
+Every question in Part A is asked twice, and §8 explains what the project
+needs back. The two states, so there is no ambiguity about which is which:
+
+**State 1 — as it is (2026-09-15).** Two registered sources; five files;
+~211 MB; whole-file capture with no parsing on ingest; **nothing structured,
+no assertions, nothing published, no public surface**; controller a natural
+person; one processor (IONOS, Spain); no staff beyond the founder. Everything
+in §3.1 and §3.2, and nothing beyond it.
+
+**State 2 — as intended.** The end state of the acquisition plan in §3.3:
+a census-derived set of registered sources collected on a recurring cadence;
+retrospective recovery of those sources' past pages from third-party
+archives; **Gate 2 structuring at volume, including the grounds of
+designations and the identities of investigative subjects**; publication at
+declared access tiers, including a genuinely public surface; plausibly an
+incorporated entity and a small trusted team. The material stays what §3.2
+describes — criminal-offence-adjacent, about living people, much of it
+concerning people in Russia and in occupied territory.
+
+The project is at State 1 and does not expect to reach State 2 for a long
+time. It is asking about both because the review exists to unblock the
+journey, and because a conclusion that holds at State 1 and fails at State 2
+is the most useful thing counsel could tell it.
 
 ---
 
@@ -553,8 +585,8 @@ mistaken for something it is not:
 ## 8. The form the answer has to take
 
 POL-0001 §10 says the review's outcome **is recorded, and the policy is
-revised to match it**. That has two consequences for how counsel's advice is
-delivered.
+revised to match it**. That has three consequences for how counsel's advice
+is delivered.
 
 1. **The project needs a written answer it can quote and cite, question by
    question.** An advice note structured against **Q1–Q6** — even where the
@@ -563,7 +595,20 @@ delivered.
    a permanent decision record and the reasoning has to survive being read in
    ten years by someone who was not in the room. (Q7–Q12 are out of scope for
    this engagement; see §6's scope note and §9.5.)
-2. **Where counsel's conclusion differs from a position in §4, the project
+2. **Each answer is asked to cover both states in §3.5, and to name the
+   deltas.** For each of Q1–Q6: what is the position for **State 1** (the
+   project as it is today), what is it for **State 2** (as intended), **which
+   conclusions differ**, and — where they differ — **on what trigger**, and
+   what would have to be true for the State 2 answer to hold. Where the
+   answer is the same for both, saying so plainly is a useful answer and the
+   project would rather have it than have the question left open.
+
+   This is not a request for two opinions. It is a request that the single
+   opinion be explicit about which of its conclusions are contingent on
+   facts that will change, because those triggers become the project's
+   POL-0001 §11 review triggers, and it would otherwise be guessing at them.
+
+3. **Where counsel's conclusion differs from a position in §4, the project
    needs the divergence named as such**, so the superseding decision record
    can state what changed and why. A silently different framework cannot be
    recorded.
@@ -578,13 +623,16 @@ Finally: the project will record **that** the review was obtained, from
 counsel qualified in the named jurisdiction, and what it concluded. Whether
 the advice itself is published, held at a restricted access tier, or held
 under privilege is a decision the founder makes on counsel's recommendation —
-see Q12 in §12.
+see §12, item 1.
 
 ---
 
 ## 9. What the founder must settle before this is sent
 
-Five blanks. **Four are closed. One remains (§9.4).**
+Five blanks. **All five are now closed.** Each is recorded below with the
+ruling and its date; none was decided by inference. What remains before the
+brief is sent is not a decision — see §1's caution on Légifrance, and the
+covering letter §1 describes.
 
 ### 9.1–9.3 Establishment jurisdiction, controller, hosting — **closed**
 **These three facts are not decided in this brief.** They are decided in
@@ -602,12 +650,21 @@ than the other way round:
 
 All three go in the covering letter as well as here.
 
-### 9.4 Whether the project holds itself out as publishing
-Q3's Art. 85 analysis turns partly on this, and the honest current answer is
-"not yet, and not for some time": nothing is published, and no public surface
-carrying project content exists. The founder should decide whether counsel is
-being asked about the project as it is or as it intends to be, and this brief
-assumes **as it intends to be** — stated here so it can be corrected.
+### 9.4 As it is, or as it intends to be — **closed 2026-09-15: both, staged**
+Ruled by the founder: counsel answers **for both states, and names the
+deltas** — which conclusions differ between them, on what trigger, and what
+would have to be true for the later answer to hold. The two states are
+defined at §3.5 and the requirement is carried into §8.
+
+The reasoning recorded with the ruling: counsel must understand the current
+state anyway in order to advise on the intended one, so the marginal cost is
+the mapping rather than the analysis; the deltas are exactly what POL-0001
+§11's "material change" trigger needs and the project would otherwise be
+guessing at them; and answers that fall along the preserve/structure/publish
+seams match how decisions actually reach the founder. Q2's Article 46
+question in particular is fragile as a single snapshot — whether the project
+publishes, and how it holds itself out, may be load-bearing for whether it
+can lawfully structure its core material at all.
 
 ### 9.5 One engagement or two — **closed 2026-09-15: two**
 Ruled by the founder: **Part A goes to French data-protection counsel now.
@@ -666,9 +723,10 @@ Numbering continues from CDR-P3-41, the highest used anywhere in `docs/`.
 - **CDR-P3-43 — What "the review's outcome is recorded" means.** *(Revised
   2026-09-15 after the founder split the engagement, §9.5.)* The review is
   recorded by a decision record that supersedes DR-0072, states per question
-  what counsel concluded and with what degree of settledness, names every
-  divergence from the §4 positions, and carries POL-0001 to v2.0 in the same
-  act. **POL-0001 §9's releases take effect on that record's approval and not
+  what counsel concluded and with what degree of settledness, **records the
+  §3.5 deltas as named POL-0001 §11 review triggers** rather than as prose,
+  names every divergence from the §4 positions, and carries POL-0001 to v2.0
+  in the same act. **POL-0001 §9's releases take effect on that record's approval and not
   before** — not on receipt of the advice, and not on the founder reading it.
   LEGAL-009 moves from "partially satisfied" to satisfied in the same commit,
   or the reason it does not is stated.
@@ -702,7 +760,7 @@ Numbering continues from CDR-P3-41, the highest used anywhere in `docs/`.
 
 ## 12. Open questions raised
 
-1. **Q12 — the status of counsel's advice itself.** Privileged, restricted,
+1. **The status of counsel's advice itself.** Privileged, restricted,
    or publishable? The project's instinct is that the *conclusions* must be
    publishable, since they will be cited in a decision record that is public,
    while the advice document may not be. Counsel should be asked which.

@@ -269,15 +269,22 @@ an open *decision*, just outstanding *execution*.
    — closer to founder-guided work than something a session should
    attempt alone.
 3. **WP 3.4's Track A items A4 and A5** (WACZ evaluation, registration
-   classes) are not started. **A6 is now drafted** —
+   classes) are not started. **A6 is done** —
    [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md)
-   v0.1, 2026-09-15: Part A restates POL-0001 §10's six required topics as
-   Q1–Q6, Part B restates WP 3.4 §7's acquisition questions as Q7–Q11, and
-   §4 lists the six positions counsel is asked to *test* rather than
-   re-choose. Three candidate DRs arose (CDR-P3-42…44, continuing from 41);
+   v0.4, 2026-09-15, with **all five founder decisions in its §9 closed**:
+   France, controller a natural person, IONOS/Spain (§9.1–9.3); Part A
+   (Q1–Q6) to French data-protection counsel with Part B (Q7–Q12) held for
+   IP/media counsel (§9.5); counsel answers for both the project as it is and
+   as it intends to be, naming the deltas, which become POL-0001 §11 review
+   triggers (§9.4, §3.5). **Not a decision but still outstanding:** every LIL
+   article the brief quotes must be checked against Légifrance, which was
+   403 behind an anti-bot challenge when it was drafted — CNIL's consolidated
+   text is what was read. Commissioning is a separate founder act. Three
+   candidate DRs arose (CDR-P3-42…44, continuing from 41);
    **CDR-P3-42 was discharged the same day** into the pending decision record
    at item 1 above. CDR-P3-43 fixes what "the review's outcome is recorded"
-   means. CDR-P3-44 is a real gap the drafting found: `rights_basis` is free
+   means — and now also requires the §3.5 deltas recorded as named §11
+   triggers. CDR-P3-44 is a real gap the drafting found: `rights_basis` is free
    text, the two registered sources carry `may-redistribute` on a basis
    whose own text says "NOT LEGALLY REVIEWED", and nothing in the schema or
    Gate 3 prevents a publication decision resting on it — not urgent,
