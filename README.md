@@ -64,7 +64,11 @@ tested against a real database and real storage. But:
   human-configured scope (DR-0071): no open-ended crawling, no bulk social harvesting,
   no automatic structuring of personal data. This is why only two of seven
   institutional, near-zero-personal-data sources were registered rather than all
-  seven or a broader crawl.
+  seven or a broader crawl. The **brief** for that review is now drafted —
+  [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md) v0.1,
+  2026-09-15, WP 3.4 Track A item A6 — and is **not sendable as it stands**: its §9
+  lists five things the founder must settle first, beginning with the project's
+  establishment jurisdiction, which POL-0001 §10 presumes and the record nowhere states.
 - **Gate 2 and Gate 3 are human.** Bulk collection produces holdings and review queues,
   never canonical knowledge. That is the design (DR-0066, Principle 5), and it means the
   knowledge graph grows at the pace of editorial review. The first collection created
@@ -244,15 +248,34 @@ governs each. **None of the three approved registrations has been executed
 on the archive server yet** — that remains outstanding, but it is no longer
 an open *decision*, just outstanding *execution*.
 
-1. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
+1. **The project's establishment jurisdiction, controller identity, and the
+   archive server's hosting location.** POL-0001 §10 requires external legal
+   review "in its establishment jurisdiction"; §2 of that policy says only
+   that the project is "European-based", and no document in the repository
+   states which country that is, whether the controller is the founder
+   personally or an entity, or where the archive server is hosted. Drafting
+   the A6 brief is what surfaced this: five of its eleven questions have no
+   law to be answered in until the first is fixed, and no counsel can be
+   selected. Proposed as `CDR-P3-42` in the brief's §11 — it is a founder
+   ruling, not something a session can infer, and it now blocks A6 rather
+   than the other way round.
+2. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
    verified; each needs identifying a specific legal instrument or
    decision set, which is legal or editorial judgment, not a URL to find
    — closer to founder-guided work than something a session should
    attempt alone.
-2. **WP 3.4's Track A items A4, A5, A6** (WACZ evaluation, registration
-   classes, the legal-review brief) are not started; A6 in particular
-   blocks nothing today but is the long pole before POL-0001 §10 can be
-   commissioned. **A2's index tooling is now built and tested**
+3. **WP 3.4's Track A items A4 and A5** (WACZ evaluation, registration
+   classes) are not started. **A6 is now drafted** —
+   [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md)
+   v0.1, 2026-09-15: Part A restates POL-0001 §10's six required topics as
+   Q1–Q6, Part B restates WP 3.4 §7's acquisition questions as Q7–Q11, and
+   §4 lists the six positions counsel is asked to *test* rather than
+   re-choose. Three candidate DRs arise (CDR-P3-42…44, continuing from 41),
+   the third being a real gap the drafting found: `rights_basis` is free
+   text, the two registered sources carry `may-redistribute` on a basis
+   whose own text says "NOT LEGALLY REVIEWED", and nothing in the schema or
+   Gate 3 prevents a publication decision resting on it — not urgent,
+   since nothing is published. **A2's index tooling is now built and tested**
    (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
    Wayback CDX index only, discovery of candidate domains with no fetch of
    any candidate host; the other four A2 evidence sources WP 3.4 names
