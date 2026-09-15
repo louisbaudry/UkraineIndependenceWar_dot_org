@@ -240,17 +240,27 @@ an open *decision*, just outstanding *execution*.
    decision set, which is legal or editorial judgment, not a URL to find
    — closer to founder-guided work than something a session should
    attempt alone.
-2. **WP 3.4's Track A items A4, A5, A6, A7** (WACZ evaluation, registration
-   classes, the legal-review brief, storage measurement) are not started;
-   A6 in particular blocks nothing today but is the long pole before
-   POL-0001 §10 can be commissioned. **A2's index tooling is now built and
-   tested** (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
+2. **WP 3.4's Track A items A4, A5, A6** (WACZ evaluation, registration
+   classes, the legal-review brief) are not started; A6 in particular
+   blocks nothing today but is the long pole before POL-0001 §10 can be
+   commissioned. **A2's index tooling is now built and tested**
+   (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
    Wayback CDX index only, discovery of candidate domains with no fetch of
    any candidate host; the other four A2 evidence sources WP 3.4 names
    (Wikipedia citation graphs, sanctions-authority link graphs, OSINT
    source lists, academic bibliographies) remain editorial research tasks,
    not built as tooling. Neither client has completed a live query — both
    indexes were unreachable from this session; see `sources/README.md`.
+   **A7's measurement tooling is now built and tested**
+   (`storage/measure.py`, 2026-09-15) — reads `collector_run` for recorded
+   bytes/throughput and walks the OCFL roots and quarantine directory for
+   real on-disk footprint, including a measured duplication ratio for the
+   undischarged-quarantine-copy gap `collector/README.md` documents; not
+   yet run against the archive server's real database, so WP 3.4 §5.3's
+   real numbers are still outstanding, and it deliberately does not perform
+   A7's "one retrospective pull" clause (new acquisition, for
+   `collector/run.py` on the archive server) or extrapolate the two
+   registered sources' size onto the five unregistered candidates.
 
 This README is an entry point, not the project's institutional memory (record §100).
 The authoritative statement of requirements, principles, and phase mandates is the

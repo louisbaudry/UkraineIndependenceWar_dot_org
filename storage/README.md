@@ -9,6 +9,43 @@ DR-0076 (tier-separated roots, hashed n-tuple layout).
 python3 storage/tests/test_ocfl.py    # 24 tests; exits non-zero on failure
 ```
 
+## Storage and bandwidth measurement (WP 3.4 A7)
+
+`measure.py` reads `collector_run` (DR-0070) for what the pipeline recorded
+as preserved and bandwidth per run, and walks the OCFL storage roots and the
+quarantine directory for what is actually on disk. It collects nothing
+itself — no fetch, no database write — the same posture as
+`find_orphaned_objects` in `collector/pipeline.py`, so building and testing
+it needs no scale-up authorisation (DR-0071 standing ruling, 2026-09-08).
+
+```bash
+PGHOST=… PGPORT=… PGUSER=… python3 storage/tests/test_measure.py   # 11 tests
+PGHOST=… PGPORT=… PGUSER=… python3 storage/measure.py \
+    --archive-root /path/to/archive [--source-id UUID] [--extrapolate N] [--json]
+```
+
+**Built and tested against local fixtures 2026-09-15; not yet run against
+the archive server's real database.** The two real collector runs (DR-0093,
+2026-09-09) live there, not in this session's throwaway database — running
+this tool against them, to get WP 3.4 §5.3's actual numbers rather than
+fixture ones, is the outstanding step, same pattern as `sources/census.py`'s
+untested-against-a-live-index status.
+
+It deliberately does not perform WP 3.4 A7's other clause, "one
+retrospective pull for a registered domain" — that is new acquisition and
+belongs to `collector/run.py` on the archive server, not to a measurement
+tool run from a session. It also does not extrapolate the two registered
+sources' size onto the five unregistered sanctions-authority candidates
+without being asked to (`--extrapolate` exists, but is a labelled
+projection, never folded into the measured total) — nothing about
+`eu-consolidated-list` or `ofac-sdn` predicts what `eur-lex-sanctions` or
+`ua-nsdc-sanctions` will need once identified.
+
+The measured duplication ratio (on-disk bytes ÷ `bytes_preserved`) gives a
+real number for the open gap `collector/README.md` documents — quarantine
+copies are never removed after Gate 1 admits them — instead of leaving it
+as an un-sized caveat.
+
 ## Library or direct implementation — WP 3.3 §8 Q1, resolved
 
 WP 3.3 left this open, to be decided at build time. It recorded the argument
