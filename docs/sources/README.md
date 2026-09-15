@@ -44,10 +44,10 @@ real output rather than preliminary assessment.
   — the 2026-09-08 rehearsal behind [DR-0093](../decision-records/DR-0093-first-source-registrations.md).
 - [`verification-bis-dpl-ofsi-consolidated.md`](verification-bis-dpl-ofsi-consolidated.md)
   — `uk-ofsi-consolidated` (full) and `bis-entity-list` (Denied Persons List
-  half only), behind `DR-pending-second-source-registrations`.
+  half only), behind `DR-0096`.
 - [`verification-seco-sanctions.md`](verification-seco-sanctions.md) —
   `seco-sanctions`, found on a second attempt on a different host, behind
-  `DR-pending-seco-sanctions-registration`.
+  `DR-0098`.
 - [`TEMPLATE-a7-measurement-results.md`](TEMPLATE-a7-measurement-results.md)
   — not a record itself but the fill-in shape for one: WP 3.4 Track A item
   A7's storage-and-bandwidth measurement, covering both the two A1 sources

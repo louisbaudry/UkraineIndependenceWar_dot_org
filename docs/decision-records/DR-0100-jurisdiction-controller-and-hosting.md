@@ -1,8 +1,8 @@
-# DR-pending-jurisdiction-controller-and-hosting — Establishment jurisdiction confirmed; controller identity and archive hosting location
+# DR-0100 — Establishment jurisdiction confirmed; controller identity and archive hosting location
 
 **Category:** legal / operations | **Status:** **Approved**
 **Decided:** 2026-09-15 by founder/principal editor — shape (option B of three) and both outstanding facts supplied the same day
-**Origin:** CDR-P3-43, [the A6 legal-review brief](../legal/legal-review-brief.md) §11 | **Supersedes:** [`DR-pending-establishment-jurisdiction`](DR-pending-establishment-jurisdiction.md) (2026-09-14) — extends it, does not contradict it | **Superseded by:** —
+**Origin:** CDR-P3-43, [the A6 legal-review brief](../legal/legal-review-brief.md) §11 | **Supersedes:** [`DR-0099`](DR-0099-establishment-jurisdiction.md) (2026-09-14) — extends it, does not contradict it | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted 2026-09-15 by an AI assistant (Anthropic
 > Claude Code agent session) at the founder's direction, and approved the
@@ -14,7 +14,7 @@
 
 ### What the 2026-09-14 record already decided
 
-[`DR-pending-establishment-jurisdiction`](DR-pending-establishment-jurisdiction.md)
+[`DR-0099`](DR-0099-establishment-jurisdiction.md)
 named France as the project's **interim** establishment jurisdiction — the
 founder's own personal jurisdiction, no separate legal entity existing — and
 amended POL-0001 to v1.1 so §10 names it. That ruling stands. This record

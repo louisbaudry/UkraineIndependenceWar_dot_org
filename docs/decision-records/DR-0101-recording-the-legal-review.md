@@ -1,4 +1,4 @@
-# DR-pending-recording-the-legal-review — What "the review's outcome is recorded" means
+# DR-0101 — What "the review's outcome is recorded" means
 
 **Category:** legal / methodology | **Status:** **Approved**
 **Decided:** 2026-09-15 by founder/principal editor (option C of three: rule on this now, hold CDR-P3-45 until Gate 3 work starts)
@@ -141,4 +141,4 @@ is not prose.
    review — never by amending the superseding record after the fact.
 
 7. **Numbering happens at merge**, per DR-0095: this file stays
-   `DR-pending-recording-the-legal-review` until then.
+   `DR-0101` until then.

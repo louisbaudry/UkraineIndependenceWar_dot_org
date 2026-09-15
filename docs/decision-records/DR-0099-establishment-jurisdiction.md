@@ -1,10 +1,10 @@
-# DR-pending-establishment-jurisdiction — Interim establishment jurisdiction: France
+# DR-0099 — Interim establishment jurisdiction: France
 
 **Category:** legal / editorial | **Status:** Approved | **Decided:** 2026-09-14 by founder/principal editor
 **Origin:** the A6 legal-review brief (WP 3.4 §7), drafted 2026-09-14, found that
 no controlled document named the project's establishment jurisdiction even
 though POL-0001 §10 and WP 3.4 §7 both refer to it as settled; put to the
-founder directly | **Supersedes:** — | **Superseded by:** [`DR-pending-jurisdiction-controller-and-hosting`](DR-pending-jurisdiction-controller-and-hosting.md) (2026-09-15) — which confirms this record's France ruling and its *interim* framing unchanged, and adds the controller's identity, the archive hosting location, and a POL-0001 §11 trigger for changes to either. Decision 3 below describes edits to a draft of the A6 brief that a parallel session replaced; the brief as it now stands carries those points in §2, §3.5 and §9.
+founder directly | **Supersedes:** — | **Superseded by:** [`DR-0100`](DR-0100-jurisdiction-controller-and-hosting.md) (2026-09-15) — which confirms this record's France ruling and its *interim* framing unchanged, and adds the controller's identity, the archive hosting location, and a POL-0001 §11 trigger for changes to either. Decision 3 below describes edits to a draft of the A6 brief that a parallel session replaced; the brief as it now stands carries those points in §2, §3.5 and §9.
 
 > **AI provenance (§80).** Drafted by Claude (model: `claude-sonnet-5`) on
 > 2026-09-14 from the founder's direct answer to a question this session

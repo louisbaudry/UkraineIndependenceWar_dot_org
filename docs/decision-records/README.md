@@ -126,6 +126,12 @@ merely another renumbering.
 | [DR-0093](DR-0093-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | Approved | 2026-09-08 |
 | [DR-0094](DR-0094-third-party-web-captures.md) | Third-party web captures (Common Crawl, Wayback Machine, qualifying archives) as an acquisition channel | architecture / preservation | Approved | 2026-09-11 |
 | [DR-0095](DR-0095-dr-numbering-placeholder-until-merge.md) | Decision Records are drafted unnumbered; the number is assigned at merge | architecture / methodology | Approved | 2026-09-11 |
+| [DR-0096](DR-0096-second-source-registrations.md) | Second source registrations: UK OFSI Consolidated List and BIS Denied Persons List (DPL half only) | operations / preservation | Approved | 2026-09-12 |
+| [DR-0097](DR-0097-collection-run-two-agents.md) | A collection run carries two agents: a human agent of record and a versioned software agent on its preservation events | architecture / preservation | Approved | 2026-09-12 |
+| [DR-0098](DR-0098-seco-sanctions-registration.md) | Third source registration: SECO sanctions list (Switzerland) | operations / preservation | Approved | 2026-09-14 |
+| [DR-0099](DR-0099-establishment-jurisdiction.md) | Interim establishment jurisdiction: France; POL-0001 amended to v1.1 | legal / editorial | Approved — superseded by DR-0100 | 2026-09-14 |
+| [DR-0100](DR-0100-jurisdiction-controller-and-hosting.md) | Establishment jurisdiction confirmed; controller identity and archive hosting location | legal / operations | Approved | 2026-09-15 |
+| [DR-0101](DR-0101-recording-the-legal-review.md) | What "the review's outcome is recorded" means, for POL-0001 §10 | legal / methodology | Approved | 2026-09-15 |
 
 ## Provenance of decisions
 
@@ -238,6 +244,32 @@ the suite checking the two agree. The alternative of reordering the
 changing an enumeration data depends on is a structural registry change
 (DR-0080). Its open item — whether the two lateral tiers should remain
 distinct at all — is a §12 vocabulary question, not a resolution one.
+
+DR-0096 through DR-0101 were **approved between 2026-09-12 and 2026-09-15 but
+numbered only on 2026-09-15**, in one commit, when the branch carrying the
+last of them was prepared for merge. Three of them (DR-0096, DR-0097,
+DR-0098) had already reached `main` unnumbered and without register rows,
+which is the step DR-0095 prescribes and which was missed on each. The
+register is brought current here rather than left to drift further; the gap
+is recorded rather than tidied away, because an index that silently omits
+three enacted decisions is the failure mode the register exists to prevent.
+
+**DR-0099 and DR-0100 are two records of one decision**, and both are kept.
+Two agent sessions drafted the WP 3.4 Track A item A6 legal-review brief in
+parallel on 2026-09-14 and 2026-09-15, neither aware of the other — one on an
+unmerged branch — and each independently found that POL-0001 §10 presumed an
+establishment jurisdiction no document named. The founder answered both.
+DR-0099 named France as the **interim** jurisdiction and amended POL-0001 to
+v1.1; DR-0100 confirms that ruling and its *interim* framing unchanged and
+adds the controller's identity, the archive hosting location, and a POL-0001
+§11 trigger for changes to either. DR-0099 is superseded, not withdrawn:
+§77's discipline applies to decision records, and POL-0001 v1.1 cites it
+correctly as the record that named France. The same collision took
+**CDR-P3-42** twice; WP 3.6's claim is the older and stands, and the A6
+brief's candidates renumbered to CDR-P3-43…45. DR-0095 closes this for DR
+numbers and does not reach CDR numbers or duplicated documents — see
+DR-0100's Consequence 6, where extending it is proposed and left to the
+founder.
 
 DR-0087 through DR-0091 originate from CDR-P3-36…40 in
 [WP 3.5](../phase-3/working-papers/wp-3.5-identifier-design.md) (AI-drafted

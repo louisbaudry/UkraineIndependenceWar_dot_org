@@ -4,7 +4,7 @@
 **Approval:** founder/principal editor, 2026-08-16 (rulings at §8 taken individually); v1.1 amendment approved 2026-09-14 | **Effective:** 2026-08-16
 **Operative limit:** the §9 releases of the DR-0071 interim constraints are **suspended** until the §10 external legal review is recorded. The policy otherwise binds from its effective date.
 **Supersedes:** — | **Superseded by:** —
-**Change history:** 0.1 drafted 2026-08-16; approved as 1.0 the same day with the §8 rulings settled and §2, §5.4, §5.5 aligned to them; 1.1 amended 2026-09-14 to name France as the project's interim establishment jurisdiction in §10 (`DR-pending-establishment-jurisdiction`) — no other substantive change
+**Change history:** 0.1 drafted 2026-08-16; approved as 1.0 the same day with the §8 rulings settled and §2, §5.4, §5.5 aligned to them; 1.1 amended 2026-09-14 to name France as the project's interim establishment jurisdiction in §10 (`DR-0099`) — no other substantive change; that record's placeholder citation was resolved to its assigned number at merge (DR-0095), a reference correction carrying no substantive change and so no version bump
 **Fulfils:** record §13, LEGAL-009, Q-35; releases the interim constraints of DR-0071 on the terms in §9 below.
 **Governed by:** DR-0055 (append-only, governed redaction), DR-0066 (three gates), DR-0069 (quarantine), SEC-001/003, §10 (graphic material), §12 (access tiers), §14 (rights).
 
@@ -16,7 +16,9 @@ a lawyer; §10 makes external legal review a condition of the policy's
 operation at scale. Candidate until approved. **v1.1** (2026-09-14) named
 France as the interim establishment jurisdiction in §10, from the founder's
 direct answer to a question raised while drafting the A6 legal-review brief
-— see `DR-pending-establishment-jurisdiction`.
+— see [DR-0099](../decision-records/DR-0099-establishment-jurisdiction.md),
+confirmed and extended by
+[DR-0100](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md).
 
 ---
 
@@ -264,8 +266,9 @@ On this policy taking effect, the DR-0071 constraints lift as follows:
 
 This policy is drafted by a non-lawyer. Before collection at scale touching
 living private individuals, the project obtains **external legal review** in
-its establishment jurisdiction — **France**, interim (`DR-pending-
-establishment-jurisdiction`, 2026-09-14): no separate legal entity has been
+its establishment jurisdiction — **France**, interim
+([DR-0099](../decision-records/DR-0099-establishment-jurisdiction.md),
+2026-09-14): no separate legal entity has been
 formed, and the founder's own personal jurisdiction is used as the interim
 basis for identifying applicable law and counsel until one is. Whether
 entity formation should itself be a preliminary question for the review is
@@ -289,6 +292,6 @@ under DR-0046/DR-0047.
 2026-08-16 together with the three §8 rulings, with the §9 releases
 suspended pending the §10 legal review.
 
-**`DR-pending-establishment-jurisdiction`** — the v1.1 amendment naming
+**`DR-0099`** — the v1.1 amendment naming
 France as the interim establishment jurisdiction in §10, approved by the
 founder 2026-09-14.

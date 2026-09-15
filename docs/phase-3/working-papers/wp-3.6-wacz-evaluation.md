@@ -154,7 +154,7 @@ evidence rules, digital-signature statutes, or admissibility standards; the
 question cannot be closed from the primary texts alone, at any level of
 scrutiny this study could apply. This connects to, but is distinct from,
 the A6 legal-review brief now naming France as the interim establishment
-jurisdiction (`DR-pending-establishment-jurisdiction`) — whether to add a
+jurisdiction (`DR-0099`) — whether to add a
 sixth question to that brief about digital-signature evidentiary weight is
 raised at §8 below, not decided here.
 

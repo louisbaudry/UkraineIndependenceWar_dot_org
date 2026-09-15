@@ -57,9 +57,9 @@ Facts an external adviser needs on the first page did not exist anywhere in
 the project's record when this brief was first drafted. They do now:
 **France**, the **founder as a natural person** as controller, and **IONOS in
 Spain** as the host, all recorded in
-[`DR-pending-jurisdiction-controller-and-hosting`](../decision-records/DR-pending-jurisdiction-controller-and-hosting.md)
+[`DR-0100`](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md)
 rather than decided here — which **confirms** the interim France ruling a
-parallel session recorded on 2026-09-14 (`DR-pending-establishment-jurisdiction`,
+parallel session recorded on 2026-09-14 (`DR-0099`,
 which amended POL-0001 to v1.1) and adds the controller and hosting facts to
 it. *Interim* is that record's word and is kept: no legal entity exists, and
 whether entity formation should itself be a preliminary question for this
@@ -641,7 +641,7 @@ covering letter §1 describes.
 
 ### 9.1–9.3 Establishment jurisdiction, controller, hosting — **closed**
 **These three facts are not decided in this brief.** They are decided in
-[`DR-pending-jurisdiction-controller-and-hosting`](../decision-records/DR-pending-jurisdiction-controller-and-hosting.md)
+[`DR-0100`](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md)
 (approved 2026-09-15), and this brief is filled *from* that record rather
 than the other way round:
 
@@ -726,7 +726,7 @@ with a named trigger rather than open-ended.
   identity are recorded before the review is commissioned.~~ Discharged
   2026-09-15.** The founder ruled the same day this brief was drafted, and
   the proposal became
-  [`DR-pending-jurisdiction-controller-and-hosting`](../decision-records/DR-pending-jurisdiction-controller-and-hosting.md),
+  [`DR-0100`](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md),
   which is where these facts now live. That record is a **draft**: its shape
   is ruled, its jurisdiction and hosting-location fields are still blank, and
   it is not approvable until they are filled. Kept here, struck through,
@@ -734,7 +734,7 @@ with a named trigger rather than open-ended.
 
 - **CDR-P3-44 — ~~What "the review's outcome is recorded" means.~~
   Discharged 2026-09-15.** Ruled the same day it was raised, and enacted as
-  [`DR-pending-recording-the-legal-review`](../decision-records/DR-pending-recording-the-legal-review.md),
+  [`DR-0101`](../decision-records/DR-0101-recording-the-legal-review.md),
   which is where it now lives. In short: the review is recorded by a Decision
   Record superseding DR-0072 that carries POL-0001 to v2.0 in the same act;
   **§9's releases take effect on that record's approval and not before**;

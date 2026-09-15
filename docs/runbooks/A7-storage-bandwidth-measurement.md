@@ -32,8 +32,8 @@ and what to do with the numbers — it does not re-explain the tool itself.
 
 - Run on the archive server, in the same `uiw` database and
   `~/uiw-archive` archive root every prior registration and run used
-  (DR-0093, `DR-pending-second-source-registrations`,
-  `DR-pending-seco-sanctions-registration`), unless the install used
+  (DR-0093, `DR-0096`,
+  `DR-0098`), unless the install used
   different names — check `setup/install.sh` and prior session notes if so.
 - `git pull` this branch (or `main`, once merged) so `storage/measure.py`
   and its tests are present.

@@ -1,4 +1,4 @@
-# DR-pending-collection-run-two-agents — A collection run carries two agents: a human agent of record and a versioned software agent on its preservation events
+# DR-0097 — A collection run carries two agents: a human agent of record and a versioned software agent on its preservation events
 
 **Category:** architecture / preservation | **Status:** Approved | **Decided:** 2026-09-12 by founder/principal editor | **Origin:** DR-0093 §3's open tension, raised as three named options with a recommendation | **Supersedes:** — | **Superseded by:** —
 

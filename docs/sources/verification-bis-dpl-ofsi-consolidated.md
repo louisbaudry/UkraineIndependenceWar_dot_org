@@ -39,7 +39,7 @@ CLAUDE.md's "Environment notes" already says.
    from the EU/OFAC rehearsal's use of the real `register.commit()`, noted
    here rather than left implicit). The real `Collector`
    (`collector/pipeline.py`, with the two-agent split
-   `DR-pending-collection-run-two-agents` added 2026-09-12) was run with the
+   `DR-0097` added 2026-09-12) was run with the
    real `HttpFetcher` against the live URLs, into a throwaway OCFL root.
    Digests, byte counts, agent attribution and documentary-assertion counts
    were read back from the database. Database and storage were then
@@ -124,7 +124,7 @@ until both are ready.
 ## 4. Two agents, exercised in this rehearsal
 
 The rehearsal used `Collector`'s two-agent constructor
-(`DR-pending-collection-run-two-agents`, added earlier today): a person
+(`DR-0097`, added earlier today): a person
 agent of record on `collector_run`, and the self-registered
 `collector-pipeline` software agent (version `0.1.0`) on every preservation
 event. Read back after both runs: every `preservation_event.agent_id` was
