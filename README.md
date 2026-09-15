@@ -108,16 +108,19 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-14 | Branch `claude/common-crawl-fk1bw8` merged (PR #26): DR-0095, DR-0094's approval, the two-agent collection-run split, the `register.py` dependence fix, census tooling, and the OFSI/BIS/SECO verification-and-approval work above all landed on `main` in one pull request | PR #26 |
 | 2026-09-14 | WP 3.4 Track A item A6 drafted: a legal-review brief expanding §7's five questions with the specific project facts a reviewer needs, and what to hand them. Found, rather than resolved, a real blocking gap: **no controlled document names the project's establishment jurisdiction**, which POL-0001 §10 and WP 3.4 §7 both assume is already settled — commissioning the review needs that answered first. Proposes no new project rule; not sent to anyone by this deposit | `docs/legal/legal-review-brief.md`, `docs/policies/README.md` |
 | 2026-09-14 | Founder answered directly: the project's interim establishment jurisdiction is **France**, the founder's own personal jurisdiction — no separate legal entity exists yet. POL-0001 amended to v1.1 (§10 names France; no other substantive change), `DR-pending-establishment-jurisdiction` records the ruling, and the legal-review brief updated to reflect it — which surfaced a narrower open question in its place: whether the project should form a legal entity before or as part of commissioning the §10 review, since GDPR's establishment concept ordinarily presumes an organized controller | `docs/policies/POL-0001-personal-data.md`, `docs/decision-records/DR-pending-establishment-jurisdiction.md`, `docs/legal/legal-review-brief.md` |
+| 2026-09-15 | WP 3.4 Track A item A4, the WACZ evaluation DR-0006 made a standing task, done from primary sources: the WACZ container specification (v1.1.1) is stable and reachable, but its signing specification (v0.1.0) is, by its own words, "a working draft for a proposal" — confirmed against live PyPI release metadata for `wacz`, `authsign`, and `wacz-signing` (all still pre-1.0). Recommends **deferring** WACZ adoption entirely, WARC via `collector/pipeline.py` unchanged, on two stated revisit triggers; the "jurisdictionally meaningful" half of DR-0006's question is flagged as unanswerable from a spec alone, connecting to but not added to the A6 brief | [`WP 3.6`](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md) |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1 is
 under way**: 2 of the 7 sanctions sources are registered and have completed a
 first collection on the archive server (2026-09-09); 3 more are approved but
 not yet executed; the other 2 await verification. **A2's index tooling is
-built** (2026-09-12), no live query yet. **A6's legal-review brief is drafted**
-(2026-09-14, updated same day) — its establishment-jurisdiction gap is
-resolved (France, interim, see "Open decisions" above for the narrower
-question that resolving it surfaced). A4 (WACZ evaluation), A5 (registration
-classes) and A7 (storage measurement) are not started. A3 is done.
+built** (2026-09-12), no live query yet. **A4's WACZ evaluation is done**
+(2026-09-15, [WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md))
+— recommends deferring adoption, WARC unchanged. **A6's legal-review brief is
+drafted** (2026-09-14, updated same day) — its establishment-jurisdiction gap
+is resolved (France, interim, see "Open decisions" above for the narrower
+question that resolving it surfaced). A5 (registration classes) and A7
+(storage measurement) are not started. A3 is done.
 
 ## Picking up development
 
@@ -258,8 +261,13 @@ outstanding *execution*.
    decision set, which is legal or editorial judgment, not a URL to find
    — closer to founder-guided work than something a session should
    attempt alone.
-3. **WP 3.4's Track A items A4, A5, A7** (WACZ evaluation, registration
-   classes, storage measurement) are not started. **A6, the legal-review
+3. **WP 3.4's Track A items A5, A7** (registration classes, storage
+   measurement) are not started. **A4, the WACZ evaluation, is now done**
+   ([WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md),
+   2026-09-15, CDR-P3-42 candidate) — recommends **deferring** WACZ
+   adoption (the container spec is stable at v1.1.1, but its signing layer
+   is a pre-1.0 working draft at v0.1.0), WARC via `collector/pipeline.py`
+   unchanged, on two stated revisit triggers. **A6, the legal-review
    brief, is now drafted** (`docs/legal/legal-review-brief.md`,
    2026-09-14) — it expands WP 3.4 §7's five questions with the specific
    facts a reviewer needs; the establishment-jurisdiction gap it originally
