@@ -65,3 +65,15 @@ supersession never in-place (§77).
 | Inputs | Record §15–16, §77, §89; DATA-009/010, ARCH-001, PRES-009; DR-0012/0017/0018/0022/0045/0049/0055/0062/0064/0077/0080/0083/0086; SPEC-0001/0002/0005/0006; the current `schema/`, `registry/`, `storage/` and `publication/` identifier usage; ARK draft-43, RFC 9562/3650/8141/7089, two W3C URI notes, DataCite landing-page rules and the ARK Alliance comparison, verified by web retrieval (the DOI Handbook was unreachable — paper §7) |
 | Status | Reviewed — its five candidate DRs (CDR-P3-36…40) approved by the founder 2026-09-09, each ruled on separately (the second question was re-put after an inadvertent skip), and enacted as DR-0087…0091 |
 | SHA-256 after renumbering | `709ec67938b629ede057b403dc4cfa29f9ca88856e20d15808a4ac322f60f594` (2026-09-10) — filed as "WP 3.4" and CDR-P3-31…35 on 2026-09-08/09, before merge, while `origin/main` independently deposited its own unrelated WP 3.4 (foundational corpus acquisition strategy) using the same CDR-P3-31…35 range. Renumbered to WP 3.5 / CDR-P3-36…40 to resolve the collision before this branch merged — title, version, filename and every cross-reference updated; no reasoning, comparison, or decision content changed. DR-0087…0091 keep their numbers: only what they cite as their origin (the CDR and WP numbers) changed. Both hashes retained per §77 |
+
+## wp-3.6-wacz-evaluation.md
+
+| Field | Value |
+|---|---|
+| Title | Phase III / Study 6 — WACZ Evaluation (Working Paper 3.6) |
+| Version | 3.6 |
+| SHA-256 at deposit | `e3c33c1b2208df706bf8c6b6852fe6cf96f5eca6b3dc25455862bc237ae823a3` |
+| Deposited | 2026-09-15 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, as WP 3.4 Track A item A4, one of three options put to the founder and chosen; not an upload |
+| Inputs | DR-0006; WP 0.2 §4.9/§8 Q4; Phase II output 7 Q-04; DR-0008/LEGAL-007; DR-0005/0075/0067; §26, §28, §92; `collector/README.md`. The WACZ container specification (v1.1.1) and signing specification (v0.1.0) were fetched and read from `specs.webrecorder.net`, reachable from this session; `wacz`/`authsign`/`wacz-signing` release metadata was checked live against PyPI. GitHub itself (webrecorder/specs, webrecorder/authsign) was unreachable — session GitHub access is scoped to this project's own repository only |
+| Status | Candidate — one candidate DR (CDR-P3-42) awaiting founder review |

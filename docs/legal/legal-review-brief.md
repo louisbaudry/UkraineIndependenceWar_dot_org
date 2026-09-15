@@ -57,9 +57,14 @@ Facts an external adviser needs on the first page did not exist anywhere in
 the project's record when this brief was first drafted. They do now:
 **France**, the **founder as a natural person** as controller, and **IONOS in
 Spain** as the host, all recorded in
-[`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md)
-rather than decided here. The questions below are written against French law
-accordingly.
+[`DR-pending-jurisdiction-controller-and-hosting`](../decision-records/DR-pending-jurisdiction-controller-and-hosting.md)
+rather than decided here — which **confirms** the interim France ruling a
+parallel session recorded on 2026-09-14 (`DR-pending-establishment-jurisdiction`,
+which amended POL-0001 to v1.1) and adds the controller and hosting facts to
+it. *Interim* is that record's word and is kept: no legal entity exists, and
+whether entity formation should itself be a preliminary question for this
+review is open — counsel should be asked. The questions below are written
+against French law accordingly.
 
 **No decisions remain open.** All five of §9's blanks are closed: the brief
 goes to **French data-protection counsel for Part A (Q1–Q6) only**, with Part
@@ -636,7 +641,7 @@ covering letter §1 describes.
 
 ### 9.1–9.3 Establishment jurisdiction, controller, hosting — **closed**
 **These three facts are not decided in this brief.** They are decided in
-[`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md)
+[`DR-pending-jurisdiction-controller-and-hosting`](../decision-records/DR-pending-jurisdiction-controller-and-hosting.md)
 (approved 2026-09-15), and this brief is filled *from* that record rather
 than the other way round:
 
@@ -671,7 +676,7 @@ Ruled by the founder: **Part A goes to French data-protection counsel now.
 Part B is held**, to go to IP/media counsel later. The reasoning recorded
 with the ruling: POL-0001 §10 requires its six topics answered as one body of
 advice by one adviser, and splitting Part A would fragment the single record
-CDR-P3-43 needs; Part B is different expertise, and it governs acquisition
+CDR-P3-44 needs; Part B is different expertise, and it governs acquisition
 steps the project cannot take until Part A is answered anyway.
 
 **What that means for what is sent.** The whole brief goes to Part A's
@@ -708,23 +713,26 @@ above `public` access tier.
 
 ## 11. Candidate Decision Records
 
-Numbering continues from CDR-P3-41, the highest used anywhere in `docs/`.
+Numbering runs CDR-P3-43…45. It originally ran 42…44; a parallel session's
+WP 3.6 (WACZ evaluation) had independently taken **CDR-P3-42** on the same
+day, and this line of work renumbered because WP 3.6's claim is the older.
+DR-0095 prevents this for DR numbers and does not reach CDR numbers.
 **Two of the three are discharged**, both on 2026-09-15, into decision
 records of their own; they are kept here struck through because a spent CDR
-number is not reused. **Only CDR-P3-44 is still a proposal**, and it is held
+number is not reused. **Only CDR-P3-45 is still a proposal**, and it is held
 with a named trigger rather than open-ended.
 
-- **CDR-P3-42 — ~~The establishment jurisdiction and the controller's
+- **CDR-P3-43 — ~~The establishment jurisdiction and the controller's
   identity are recorded before the review is commissioned.~~ Discharged
   2026-09-15.** The founder ruled the same day this brief was drafted, and
   the proposal became
-  [`DR-pending-establishment-jurisdiction`](../decision-records/DR-pending-establishment-jurisdiction.md),
+  [`DR-pending-jurisdiction-controller-and-hosting`](../decision-records/DR-pending-jurisdiction-controller-and-hosting.md),
   which is where these facts now live. That record is a **draft**: its shape
   is ruled, its jurisdiction and hosting-location fields are still blank, and
   it is not approvable until they are filled. Kept here, struck through,
   because the CDR number is spent and should not be reused.
 
-- **CDR-P3-43 — ~~What "the review's outcome is recorded" means.~~
+- **CDR-P3-44 — ~~What "the review's outcome is recorded" means.~~
   Discharged 2026-09-15.** Ruled the same day it was raised, and enacted as
   [`DR-pending-recording-the-legal-review`](../decision-records/DR-pending-recording-the-legal-review.md),
   which is where it now lives. In short: the review is recorded by a Decision
@@ -737,7 +745,7 @@ with a named trigger rather than open-ended.
   itself recorded, as a record that supersedes nothing. Kept here, struck
   through, because the CDR number is spent and should not be reused.
 
-- **CDR-P3-44 — A rights position marked unreviewed cannot reach Gate 3.**
+- **CDR-P3-45 — A rights position marked unreviewed cannot reach Gate 3.**
   **Held, deliberately** (founder ruling 2026-09-15): still a candidate, with
   a named trigger — **the start of Gate 3 work**. It is not urgent and does
   not become so before then: nothing is published and Gate 3 has never run.

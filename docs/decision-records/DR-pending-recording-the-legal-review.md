@@ -1,8 +1,8 @@
 # DR-pending-recording-the-legal-review — What "the review's outcome is recorded" means
 
 **Category:** legal / methodology | **Status:** **Approved**
-**Decided:** 2026-09-15 by founder/principal editor (option C of three: rule on this now, hold CDR-P3-44 until Gate 3 work starts)
-**Origin:** CDR-P3-43, [the A6 legal-review brief](../legal/legal-review-brief.md) §11 | **Supersedes:** — | **Superseded by:** —
+**Decided:** 2026-09-15 by founder/principal editor (option C of three: rule on this now, hold CDR-P3-45 until Gate 3 work starts)
+**Origin:** CDR-P3-44, [the A6 legal-review brief](../legal/legal-review-brief.md) §11 | **Supersedes:** — | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted 2026-09-15 by an AI assistant (Anthropic
 > Claude Code agent session) at the founder's direction, and approved by the
@@ -120,10 +120,10 @@ is not prose.
    call.** That is the point: the shape of the successor record was settled
    while nobody knew what the advice would say.
 
-3. **CDR-P3-43 is discharged.** The brief's §11 says so and keeps the number
+3. **CDR-P3-44 is discharged.** The brief's §11 says so and keeps the number
    struck through, since a spent CDR number is not reused.
 
-4. **CDR-P3-44 is untouched and deliberately held** (founder ruling, same
+4. **CDR-P3-45 is untouched and deliberately held** (founder ruling, same
    day): a rights position marked unreviewed cannot reach Gate 3. Its trigger
    is the start of Gate 3 work, not this record. Nothing is published, Gate 3
    has never run, and its fix touches the schema, `publication/gate3.py` and
