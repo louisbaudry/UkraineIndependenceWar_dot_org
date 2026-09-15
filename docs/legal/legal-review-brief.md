@@ -706,9 +706,13 @@ above `public` access tier.
 
 ---
 
-## 11. Candidate Decision Records (proposals — require founder approval)
+## 11. Candidate Decision Records
 
 Numbering continues from CDR-P3-41, the highest used anywhere in `docs/`.
+**Two of the three are discharged**, both on 2026-09-15, into decision
+records of their own; they are kept here struck through because a spent CDR
+number is not reused. **Only CDR-P3-44 is still a proposal**, and it is held
+with a named trigger rather than open-ended.
 
 - **CDR-P3-42 — ~~The establishment jurisdiction and the controller's
   identity are recorded before the review is commissioned.~~ Discharged
@@ -720,41 +724,35 @@ Numbering continues from CDR-P3-41, the highest used anywhere in `docs/`.
   it is not approvable until they are filled. Kept here, struck through,
   because the CDR number is spent and should not be reused.
 
-- **CDR-P3-43 — What "the review's outcome is recorded" means.** *(Revised
-  2026-09-15 after the founder split the engagement, §9.5.)* The review is
-  recorded by a decision record that supersedes DR-0072, states per question
-  what counsel concluded and with what degree of settledness, **records the
-  §3.5 deltas as named POL-0001 §11 review triggers** rather than as prose,
-  names every divergence from the §4 positions, and carries POL-0001 to v2.0
-  in the same act. **POL-0001 §9's releases take effect on that record's approval and not
-  before** — not on receipt of the advice, and not on the founder reading it.
-  LEGAL-009 moves from "partially satisfied" to satisfied in the same commit,
-  or the reason it does not is stated.
-
-  **The split makes one boundary explicit, and it matters.** POL-0001 §10's
-  condition is satisfied by **Part A alone** — its six topics are the whole
-  of what §10 requires — so Part A's advice is what supersedes DR-0072,
-  carries POL-0001 to v2.0, and lifts §9's suspension. **Part B's answers,
-  whenever they arrive, are recorded separately and move none of that.** They
-  are not a second legal review for §10 purposes and do not touch LEGAL-009.
-  What they do govern is whether specific acquisition steps may proceed:
-  until Part B is answered, retrospective recovery from third-party archives
-  (Q8), any `robots.txt` override (Q9) and named-channel platform capture
-  (Q10) stay unauthorised **whatever Part A concludes** — a lifted §9 is not
-  a licence to take a step whose own question is still open. The successor
-  record says this in terms, so a future session cannot read "§9 released"
-  as "everything in WP 3.4 Track B may now run".
+- **CDR-P3-43 — ~~What "the review's outcome is recorded" means.~~
+  Discharged 2026-09-15.** Ruled the same day it was raised, and enacted as
+  [`DR-pending-recording-the-legal-review`](../decision-records/DR-pending-recording-the-legal-review.md),
+  which is where it now lives. In short: the review is recorded by a Decision
+  Record superseding DR-0072 that carries POL-0001 to v2.0 in the same act;
+  **§9's releases take effect on that record's approval and not before**;
+  **§10 is discharged by Part A alone**, with Part B's answers recorded
+  separately and moving neither DR-0072 nor LEGAL-009 while still gating
+  Q8/Q9/Q10's acquisition steps; the §3.5 deltas are recorded as named
+  POL-0001 §11 triggers rather than prose; and a failed or partial review is
+  itself recorded, as a record that supersedes nothing. Kept here, struck
+  through, because the CDR number is spent and should not be reused.
 
 - **CDR-P3-44 — A rights position marked unreviewed cannot reach Gate 3.**
-  The source registry's `rights_basis` is free text, and the two registered
+  **Held, deliberately** (founder ruling 2026-09-15): still a candidate, with
+  a named trigger — **the start of Gate 3 work**. It is not urgent and does
+  not become so before then: nothing is published and Gate 3 has never run.
+  Its fix touches the schema, `publication/gate3.py` and a test suite that
+  must be shown to fail, which is work worth scheduling rather than bolting
+  on. The gap itself, so it is not rediscovered from scratch:
+  the source registry's `rights_basis` is free text, and the two registered
   sources carry `may-redistribute` on a basis whose own text says "NOT
   LEGALLY REVIEWED". Nothing in the schema or the publication gate prevents a
   publication decision from resting on it. The proposal: rights review state
   becomes a declared field rather than a marker buried in prose, and Gate 3
   refuses a publication whose rights basis is unreviewed, in the database and
-  in the code both. This is a real gap rather than a hypothetical one, but it
-  is **not urgent** — nothing is published, and it can be fixed any time
-  before the first Gate 3 decision.
+  in the code both. It is a real gap rather than a hypothetical one — found
+  by reading the code, not imagined — which is why it is held with a trigger
+  rather than dropped.
 
 ---
 

@@ -282,9 +282,12 @@ an open *decision*, just outstanding *execution*.
    text is what was read. Commissioning is a separate founder act. Three
    candidate DRs arose (CDR-P3-42…44, continuing from 41);
    **CDR-P3-42 was discharged the same day** into the pending decision record
-   at item 1 above. CDR-P3-43 fixes what "the review's outcome is recorded"
-   means — and now also requires the §3.5 deltas recorded as named §11
-   triggers. CDR-P3-44 is a real gap the drafting found: `rights_basis` is free
+   at item 1 above. **CDR-P3-43 was also discharged**, into
+   [`DR-pending-recording-the-legal-review`](docs/decision-records/DR-pending-recording-the-legal-review.md)
+   — "recorded" in POL-0001 §10 now means one specific act, fixed
+   deliberately before the advice exists. **CDR-P3-44 is held** with a named
+   trigger, the start of Gate 3 work, so the brief has no open proposals. The
+   gap it holds open, found by reading the code: `rights_basis` is free
    text, the two registered sources carry `may-redistribute` on a basis
    whose own text says "NOT LEGALLY REVIEWED", and nothing in the schema or
    Gate 3 prevents a publication decision resting on it — not urgent,
