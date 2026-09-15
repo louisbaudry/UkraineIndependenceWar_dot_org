@@ -30,3 +30,29 @@ transcription, not a re-investigation.
 Each note should state plainly what has and has not been verified — including,
 where it applies, that the source could not be reached from the drafting
 environment at all.
+
+## Verification and measurement records
+
+This directory also holds a second kind of note: records of what happened
+when a candidate's locators, or an already-registered source's collection
+run, were actually checked against something live. Same non-status as
+candidate notes above — not a registration, not an authorization, not a
+Decision Record — but grounded in a specific session's real commands and
+real output rather than preliminary assessment.
+
+- [`verification-eu-consolidated-list-ofac-sdn.md`](verification-eu-consolidated-list-ofac-sdn.md)
+  — the 2026-09-08 rehearsal behind [DR-0093](../decision-records/DR-0093-first-source-registrations.md).
+- [`verification-bis-dpl-ofsi-consolidated.md`](verification-bis-dpl-ofsi-consolidated.md)
+  — `uk-ofsi-consolidated` (full) and `bis-entity-list` (Denied Persons List
+  half only), behind `DR-pending-second-source-registrations`.
+- [`verification-seco-sanctions.md`](verification-seco-sanctions.md) —
+  `seco-sanctions`, found on a second attempt on a different host, behind
+  `DR-pending-seco-sanctions-registration`.
+- [`TEMPLATE-a7-measurement-results.md`](TEMPLATE-a7-measurement-results.md)
+  — not a record itself but the fill-in shape for one: WP 3.4 Track A item
+  A7's storage-and-bandwidth measurement, covering both the two A1 sources
+  already collected and one retrospective WARC pull for a registered
+  domain. Copy it to `a7-measurement-results-YYYY-MM-DD.md` once
+  [`docs/runbooks/A7-storage-bandwidth-measurement.md`](../runbooks/A7-storage-bandwidth-measurement.md)
+  is actually run on the archive server, and list the result here
+  alongside the entries above.

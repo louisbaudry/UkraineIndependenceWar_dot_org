@@ -2,6 +2,9 @@
 
 This file governs every AI-assisted session in this repository. Read it whole
 before doing anything; it is short relative to what it prevents.
+[`AGENTS.md`](AGENTS.md) exists only as a pointer to this file, for tools
+that look for that filename specifically — there are no separate
+instructions there, and none should be added; a second copy would drift.
 
 ## What this repository is
 
@@ -65,7 +68,7 @@ permits now. Keep this list current when you finish or start an item.
 | A4 — WACZ evaluation (DR-0006 standing task) | not started | from specifications only; say so |
 | A5 — registration classes (CDR-P3-32) | not started | changes how authorisation is granted; founder ruling first is preferable |
 | A6 — legal-review brief (WP 3.4 §7) | not started | a brief, not a policy; not legal advice |
-| A7 — storage and bandwidth measurement | not started | needs A1's remaining 5 sources, or can start from the 2 done |
+| A7 — storage and bandwidth measurement | **in progress: measurement tooling built and tested 2026-09-15; a runbook for executing it, including the retrospective pull, is written and unexecuted** | `storage/measure.py` reads `collector_run` for recorded bytes/throughput and walks the OCFL roots and quarantine directory for actual on-disk footprint, including the duplication ratio from `collector/README.md`'s undischarged-quarantine-copy gap. 11 tests, against fixture data only — not yet run against the archive server's real database, so WP 3.4 §5.3's real numbers are still outstanding. [`docs/runbooks/A7-storage-bandwidth-measurement.md`](docs/runbooks/A7-storage-bandwidth-measurement.md) gives the archive-server steps for both halves of A7 (baseline measurement of the two A1 sources, and one retrospective WARC pull via `Collector.ingest_warc` for a registered domain, WP 3.4 §4/CDR-P3-35) — a session did not execute it, since the retrospective pull is new acquisition needing a person as agent of record (DR-0093 §3) on the archive server, not something decided unilaterally from here |
 
 Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
 POL-0001 §10 review.
