@@ -62,24 +62,85 @@ class RegistrationError(Exception):
     """A candidate that must not be registered as it stands."""
 
 
-def load_candidates() -> tuple[list[dict], list[dict]]:
-    """Read every candidate file. Returns (sources, dependence)."""
+def load_candidates() -> tuple[list[dict], list[dict], dict[str, dict]]:
+    """Read every candidate file. Returns (sources, dependence, all_classes).
+
+    Classes are gathered from all candidate files for merging. Sources reference
+    their class by name; classes live in the candidate YAML and are not stored
+    in the registry (DR-pending-registration-classes, Option A).
+    """
     sources: list[dict] = []
     dependence: list[dict] = []
+    all_classes: dict[str, dict] = {}
+
     for path in sorted(CANDIDATES.glob("*.yaml")):
         doc = yaml.safe_load(path.read_text()) or {}
+
+        # Collect classes from this file
+        for class_name, class_def in (doc.get("classes") or {}).items():
+            if class_name in all_classes:
+                raise RegistrationError(
+                    f"duplicate class name {class_name!r} "
+                    f"(already in {all_classes[class_name].get('_file')}, "
+                    f"now in {path.name})")
+            class_def["_file"] = path.name
+            all_classes[class_name] = class_def
+
+        # Collect sources from this file
         for source in doc.get("sources", []):
             source["_file"] = path.name
             sources.append(source)
+
+        # Collect dependence relationships
         dependence.extend(doc.get("dependence", []))
-    return sources, dependence
+
+    return sources, dependence, all_classes
+
+
+def merge_class_defaults(source: dict, all_classes: dict[str, dict]) -> dict:
+    """Merge class defaults into source, returning a new merged dict.
+
+    If source names a class, inherit all policy fields from that class and
+    allow per-source overrides. If source does not name a class, return it
+    unchanged. The merge preserves source-specific values and uses class
+    defaults only where the source does not specify a value.
+
+    Verification fields (locator_verified, run_locators, verification_note)
+    are never inherited from classes — they are always per-source.
+    """
+    if "class" not in source:
+        # No class reference; return source as-is
+        return source.copy()
+
+    class_name = source["class"]
+    if class_name not in all_classes:
+        raise RegistrationError(
+            f"source {source.get('key', '?')}: references unknown class {class_name!r}")
+
+    class_def = all_classes[class_name]
+
+    # Start with class defaults, then overlay source values
+    merged = class_def.copy()
+    # Remove internal _file marker from merged result
+    merged.pop("_file", None)
+
+    # Now apply source fields, overriding class defaults
+    for key, value in source.items():
+        if key != "_file":  # Don't merge internal markers
+            merged[key] = value
+
+    return merged
 
 
 def validate(
     sources: list[dict], dependence: list[dict],
+    all_classes: dict[str, dict] | None = None,
     known_keys: set[str] | None = None,
 ) -> list[str]:
     """Everything checkable without a database or a network.
+
+    If `all_classes` is provided, each source that names a class will be
+    merged with that class before validation. Validates the merged result.
 
     `known_keys`, if given, is used only for the dependence-existence check
     below, in place of `sources`' own keys: a `--only` call validates a
@@ -88,14 +149,26 @@ def validate(
     call, or one meant to be registered later (DR-pending-second-source-
     registrations). Every other check still scopes to `sources` as given.
     """
+    all_classes = all_classes or {}
     problems: list[str] = []
-    keys = [s.get("key") for s in sources]
+
+    # Merge each source with its class before validation
+    merged_sources: list[dict] = []
+    for source in sources:
+        try:
+            merged = merge_class_defaults(source, all_classes)
+            merged_sources.append(merged)
+        except RegistrationError as e:
+            problems.append(str(e))
+            continue
+
+    keys = [s.get("key") for s in merged_sources]
     dependence_keys = known_keys if known_keys is not None else set(keys)
 
     for key in {k for k in keys if keys.count(k) > 1}:
         problems.append(f"duplicate source key: {key!r}")
 
-    for source in sources:
+    for source in merged_sources:
         key = source.get("key", "<no key>")
         for field in REQUIRED:
             if not source.get(field):
@@ -167,13 +240,30 @@ def validate(
     return problems
 
 
-def describe(sources: list[dict], dependence: list[dict]) -> None:
-    """What registering these would authorise, and what it would commit to."""
+def describe(sources: list[dict], dependence: list[dict],
+             all_classes: dict[str, dict] | None = None,
+             unmerged_sources: list[dict] | None = None) -> None:
+    """What registering these would authorise, and what it would commit to.
+
+    If `all_classes` and `unmerged_sources` are provided, shows which fields
+    are inherited from each source's class vs. overridden per-source.
+    """
+    all_classes = all_classes or {}
+    unmerged_sources = unmerged_sources or []
+    unmerged_by_key = {s.get("key"): s for s in unmerged_sources}
+
     print(f"{len(sources)} candidate source(s) in {CANDIDATES}\n")
 
     for source in sources:
         print(f"  {source['key']}")
         print(f"    {source['name']}")
+
+        # Show class membership if available
+        unmerged = unmerged_by_key.get(source['key'])
+        if unmerged and "class" in unmerged:
+            class_name = unmerged["class"]
+            print(f"    class {class_name}")
+
         print(f"    {source.get('jurisdiction','?')} · "
               f"{source['source_type']} · "
               f"{', '.join(source.get('primary_languages') or ['?'])} · "
@@ -333,7 +423,7 @@ def main() -> int:
                              "(DR-0028)")
     args = parser.parse_args()
 
-    all_sources, dependence = load_candidates()
+    all_sources, dependence, all_classes = load_candidates()
     sources = all_sources
     known_keys = None
     if args.only:
@@ -351,7 +441,12 @@ def main() -> int:
                       if d["from"] in args.only or d["to"] in args.only]
         known_keys = {s["key"] for s in all_sources}
 
-    problems = validate(sources, dependence, known_keys=known_keys)
+    # Report any class errors early (e.g. duplicate class definitions)
+    if not sources and all_classes:
+        pass  # Classes defined but no sources using them (OK, just informational)
+
+    problems = validate(sources, dependence, all_classes=all_classes,
+                        known_keys=known_keys)
     if problems:
         print("Candidates cannot be registered as they stand:\n")
         for problem in problems:
@@ -362,7 +457,19 @@ def main() -> int:
     if args.check:
         return 0
 
-    describe(sources, dependence)
+    # For describe(), merge sources so we can display final values, but keep
+    # unmerged originals to show class membership
+    merged_for_display = []
+    for source in sources:
+        try:
+            merged = merge_class_defaults(source, all_classes)
+            merged_for_display.append(merged)
+        except RegistrationError:
+            # Already caught in validate(); shouldn't happen again
+            merged_for_display.append(source)
+
+    describe(merged_for_display, dependence, all_classes=all_classes,
+             unmerged_sources=sources)
 
     if not args.commit:
         print("Nothing registered. Re-run with --commit --dbname <db> to "
