@@ -341,16 +341,31 @@ for WARC records. Verified by sabotage: removing the `IndexQueryResult`
 the by-host deduplication key crashes the suite outright on a `KeyError`
 rather than passing quietly. Both were restored and re-verified green.
 
-**Not verified: `CommonCrawlIndexClient` and `WaybackCdxClient` have never
-completed a live query.** This session's egress proxy resets the connection
-to `index.commoncrawl.org` on every attempt (`collinfo.json` and a direct
-index query alike — `curl` and Python's own `urllib` both fail identically,
-`ECONNRESET`) and times out on `web.archive.org` outright, the same host
-prior sessions and DR-0094's drafting session found blocked. Both clients
-are written to each service's documented API shape, not exercised against a
-live response. This matches WP 3.4 §3's own framing: "sessions are for
-building and reviewing the pipeline, not for being the crawler" — real
-execution is meant to happen where a session has the network access this
-one does not, the same pattern `collector/fetch.py`'s `HttpFetcher` followed
-before the 2026-09-08 verification session confirmed it against real
-publishers.
+**`CommonCrawlIndexClient` and `WaybackCdxClient` completed their first live
+queries 2026-09-17.** Every prior session's egress proxy had reset the
+connection to `index.commoncrawl.org` (`collinfo.json` and a direct index
+query alike — `curl` and Python's own `urllib` failing identically,
+`ECONNRESET`) and timed out on `web.archive.org` outright, the same host
+DR-0094's drafting session also found blocked. This session's network
+reached both. Run:
+
+```bash
+python3 sources/census.py --domain rnbo.gov.ua --index wayback
+python3 sources/census.py --domain rnbo.gov.ua --index common-crawl \
+        --crawl-id CC-MAIN-2024-46
+```
+
+against `rnbo.gov.ua` (the `ua-nsdc-sanctions` publisher). Wayback returned
+25 hosts, ranked by capture count, first/last seen 2012–2026; the entry
+`sanctions-t.rnbo.gov.ua` (73 captures, 2021-04-22 to 2022-05-20) is worth a
+look for `ua-nsdc-sanctions`'s eventual instrument-identification work, but
+that identification itself is legal/editorial judgment, not something this
+run does — census only counts what an index has captured, it does not fetch
+or interpret a candidate host (see "What registering these commits you to"
+below: registering `ua-nsdc-sanctions` is a separate, still-open decision).
+Common Crawl returned 2 hosts for the same domain. Both clients are exercised
+against their documented API shape in the fixture-based suite and now,
+separately, against a live response for the first time; this is not a
+durable fix — **network access varies by session** (CLAUDE.md's own
+caution) — so a future session finding these hosts unreachable again is not
+a regression, just the same variability recurring.
