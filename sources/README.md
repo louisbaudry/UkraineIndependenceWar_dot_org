@@ -112,6 +112,84 @@ independently and often diverge, and asserting dependence where none is
 established would understate corroboration as badly as assuming independence
 overstates it.
 
+## Registration classes (DR-0103)
+
+Source authorization scales by class, not by source: the founder approves a
+class once and individual sources register under it by inheritance
+(`class:` in the candidate YAML), with per-source exceptions stated
+explicitly as overrides. This file's `classes:` section carries six classes,
+one commitment DR-0103's own "Next step" asked for — the founder's ruling
+on the grouping principle is **jurisdiction first, topic second**, matching
+[WP 3.7](../docs/phase-3/working-papers/wp-3.7-registration-classes.md) §7's
+recommendation:
+
+| Class | Jurisdiction | Topic | Members |
+|---|---|---|---|
+| `EU-institutional-sanctions` | EU | sanctions | `eur-lex-sanctions`, `eu-consolidated-list` |
+| `US-institutional-sanctions` | US | sanctions | `ofac-sdn` |
+| `US-institutional-export-control` | US | export control | `bis-entity-list` |
+| `UK-institutional-sanctions` | GB | sanctions | `uk-ofsi-consolidated` |
+| `CH-institutional-sanctions` | CH | sanctions | `seco-sanctions` |
+| `UA-state-investigations` | UA | state investigations | `ua-nsdc-sanctions` |
+
+Jurisdiction first because the policy fields that vary most — rights basis,
+default access, retention — turn on *whose* publication this is, not what
+kind of list it is; two sanctions lists from different jurisdictions carry
+different copyright and reuse regimes, while two lists from the same
+jurisdiction (here, US sanctions vs. US export control) mostly diverge only
+in scope and redistribution terms. The one class split by topic within a
+jurisdiction, `US-institutional-export-control` vs.
+`US-institutional-sanctions`, exists because BIS's export-control lists
+carry a narrower redistribution term than OFAC's sanctions lists, which a
+single US class would have flattened.
+
+**Every source in this file that belongs to a class references it**
+(`eur-lex-sanctions` and `eu-consolidated-list` reference
+`EU-institutional-sanctions`; `ofac-sdn` references
+`US-institutional-sanctions`; `bis-entity-list` references
+`US-institutional-export-control`; `uk-ofsi-consolidated`,
+`seco-sanctions` and `ua-nsdc-sanctions` reference their respective
+one-member classes). Four of these seven sources needed explicit per-source
+overrides on top of their class, because their actual verified or approved
+values differ from the class default in policy-significant ways:
+
+- **`capture_format`.** The class default is `warc` (right for a source
+  whose collection captures a browsing session, like `eur-lex-sanctions`),
+  but `eu-consolidated-list`, `bis-entity-list`, `uk-ofsi-consolidated` and
+  `seco-sanctions` were all verified as a bare-body HTTP fetch of a whole
+  list file (DR-0006/DR-0067's capture-format guardrail: "a `warc` source
+  gets a WARC record, an `http` source a bare body recorded as such").
+  Inheriting the class default without an override would silently
+  misrecord how each was actually verified — `ofac-sdn` already carried
+  this override before classes existed; the other three did not reference
+  a class at all until this pass wired them up with the same override.
+- **`rights_permission`.** `bis-entity-list` was verified and (partially)
+  approved under `may-redistribute`, not the `US-institutional-export-control`
+  class's `may-provide-subscribers` default (written for a BIS
+  subscriber-only term this source does not carry). `seco-sanctions` and
+  `ua-nsdc-sanctions` carry the conservative `may-preserve` DR-0098 and
+  their own candidate status set for them respectively, because their
+  rights positions are unverified — their classes' `may-redistribute`
+  default is for sources whose reuse basis **is** known (the EU/UK/US
+  institutional publishers). Inheriting either class default without an
+  override would state an authorization no DR ever gave.
+- **`rights_basis`** (prose) and, for `ua-nsdc-sanctions`,
+  `grade_source_reliability`/`grade_item_credibility` — kept as the exact
+  text or triage values each source was verified, approved or drafted
+  against, rather than the class's more generic wording or (for the
+  UA class) an unreconciled B2/"1" pairing this one candidate has not
+  itself earned (DR-0027: triage only, never truth).
+
+**Do not remove an override to "clean up" duplication with its class**
+without first checking `python3 sources/register.py --dry-run` (or the
+`merge_class_defaults` output) shows the same merged value before and
+after — that is exactly the silent-misrecording failure mode this section
+exists to prevent recurring.
+
+Scope, for now: classes are defined per candidate file (WP 3.7 §7 sub-Q3),
+not shared across files; if a future file's classes duplicate one here,
+harmonizing is a later, visible decision, not an automatic one.
+
 ## What registering these commits you to
 
 `--dry-run` prints this; it is repeated here because each item is a real
