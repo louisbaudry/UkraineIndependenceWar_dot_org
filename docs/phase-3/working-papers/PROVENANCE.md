@@ -77,3 +77,16 @@ supersession never in-place (§77).
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, as WP 3.4 Track A item A4, one of three options put to the founder and chosen; not an upload |
 | Inputs | DR-0006; WP 0.2 §4.9/§8 Q4; Phase II output 7 Q-04; DR-0008/LEGAL-007; DR-0005/0075/0067; §26, §28, §92; `collector/README.md`. The WACZ container specification (v1.1.1) and signing specification (v0.1.0) were fetched and read from `specs.webrecorder.net`, reachable from this session; `wacz`/`authsign`/`wacz-signing` release metadata was checked live against PyPI. GitHub itself (webrecorder/specs, webrecorder/authsign) was unreachable — session GitHub access is scoped to this project's own repository only |
 | Status | Candidate — one candidate DR (CDR-P3-42) awaiting founder review |
+
+## wp-3.7-registration-classes.md
+
+| Field | Value |
+|---|---|
+| Title | Phase III — Registration classes for bulk authorization (Working Paper 3.7) |
+| Version | 0.1 |
+| SHA-256 at deposit | `f4945663f31d934f0267fdaa30b9cb19812499a6ebedaac678ff5da59dedbc13` |
+| Deposited | 2026-09-16, as WP 3.4 Track A item A5, merged (PR #29) under the filename `wp-3.5-registration-classes.md`, without a `docs/phase-3/README.md` row or a `PROVENANCE.md` entry |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, as WP 3.4 Track A item A5 ("Draft the registration-class mechanism"); not an upload |
+| Inputs | WP 3.4 §6 (the bottleneck) and §8 CDR-P3-32; DR-0067 (registry schema); OPS-001 (registration as authorisation); `sources/register.py` and `sources/candidates/sanctions-authorities.yaml` as they stood before this paper; `sources/README.md` |
+| Status | Its one candidate decision is **CDR-P3-32** (already deposited in WP 3.4 §8, 2026-09-08) — this paper is the founder-approved design (Option A) that discharges it, enacted as [DR-0103](../../decision-records/DR-0103-registration-classes.md), 2026-09-15/16 |
+| SHA-256 after renumbering | `e25be98d4cb6cda0c262995ca2b042c8412e9852f9f8c5ddeea3c60aefce2f45` (2026-09-16) — filed as "WP 3.5" at deposit, colliding with the already-taken WP 3.5 (identifier design). Renumbered to WP 3.7 when DR-0103 was enacted: title, filename and the §8 candidate-DR reference corrected to cite CDR-P3-32 instead of an unassigned `CDR-pending-A5–class-mechanism`; no reasoning, comparison, or decision content changed. Both hashes retained per §77. See `docs/decision-records/README.md`'s provenance note on DR-0103 for the full account |

@@ -5,7 +5,7 @@
 #
 # Drafted 2026-08-26 by an AI assistant at the founder's direction, against
 # the DR-0067 source-registry schema. Refactored 2026-09-16 to use registration
-# classes (DR-pending-registration-classes, adopted Option A). Every class
+# classes (DR-0103, adopted Option A). Every class
 # carries reasoning in sources/README.md so a decision can be made on the
 # reasoning rather than on the value alone.
 #
@@ -45,7 +45,7 @@
 # Each class defines the policy fields that apply to all sources in that
 # class. Sources inherit these fields and may override specific ones if
 # needed. Class adoption is a founder decision; the founder authorizes
-# classes, not individual sources. (DR-pending-registration-classes.)
+# classes, not individual sources. (DR-0103.)
 
 classes:
 

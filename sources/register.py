@@ -67,7 +67,7 @@ def load_candidates() -> tuple[list[dict], list[dict], dict[str, dict]]:
 
     Classes are gathered from all candidate files for merging. Sources reference
     their class by name; classes live in the candidate YAML and are not stored
-    in the registry (DR-pending-registration-classes, Option A).
+    in the registry (DR-0103, Option A).
     """
     sources: list[dict] = []
     dependence: list[dict] = []
