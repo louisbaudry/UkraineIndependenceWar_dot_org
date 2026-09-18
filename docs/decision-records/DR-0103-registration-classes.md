@@ -1,12 +1,12 @@
-# DR-pending — Registration classes: adopt Option A
+# DR-0103 — Registration classes: adopt Option A
 
-**Category:** architecture / operations | **Status:** DRAFT — awaiting merge numbering  
-**Decided:** 2026-09-15 by founder/principal editor | **Origin:** WP 3.5, CDR-pending-A5–class-mechanism  
+**Category:** architecture / operations | **Status:** Approved  
+**Decided:** 2026-09-15 by founder/principal editor | **Origin:** WP 3.7, CDR-P3-32  
 **Supersedes:** — | **Superseded by:** —
 
 ## Context
 
-Track A item A5 requires a mechanism to scale source authorization from per-source decisions (thousands, impractical) to per-class decisions (tens of classes plus exceptions, tractable). WP 3.5 proposed three design approaches and recommended Option A: class definitions as a section in the candidate YAML file, with sources naming their class and inheriting policy defaults, overriding specific fields only where needed.
+Track A item A5 requires a mechanism to scale source authorization from per-source decisions (thousands, impractical) to per-class decisions (tens of classes plus exceptions, tractable). WP 3.7 proposed three design approaches and recommended Option A: class definitions as a section in the candidate YAML file, with sources naming their class and inheriting policy defaults, overriding specific fields only where needed.
 
 The founder has decided to adopt Option A.
 
@@ -71,7 +71,7 @@ The project adopts **Option A**. Classes are defined in YAML, candidate files st
 
 The founder must decide: **what classes should the project define for the census candidates?** 
 
-WP 3.5 §6 asks three sub-questions:
+WP 3.7 §6 asks three sub-questions:
 1. Which ~10–20 candidate classes should exist?
 2. What is the grouping principle (jurisdiction, publisher type, combination)?
 3. Should classes be shared across multiple candidate files or scoped per file?
@@ -82,5 +82,5 @@ Once the founder names the classes, implementation can begin.
 
 ---
 
-**AI provenance (record §80):** This record was drafted by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, based on WP 3.5 and the founder's choice of Option A. The decision itself — adopting Option A — is the founder's.
+**AI provenance (record §80):** This record was drafted by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, based on WP 3.7 and the founder's choice of Option A. The decision itself — adopting Option A — is the founder's.
 

@@ -133,6 +133,7 @@ merely another renumbering.
 | [DR-0100](DR-0100-jurisdiction-controller-and-hosting.md) | Establishment jurisdiction confirmed; controller identity and archive hosting location | legal / operations | Approved | 2026-09-15 |
 | [DR-0101](DR-0101-recording-the-legal-review.md) | What "the review's outcome is recorded" means, for POL-0001 §10 | legal / methodology | Approved | 2026-09-15 |
 | [DR-0102](DR-0102-drafting-discipline-before-merge.md) | Drafting discipline before merge: CDR numbers assigned at merge, unmerged branches checked before starting, bounded in-place revision | architecture / methodology | Approved | 2026-09-15 |
+| [DR-0103](DR-0103-registration-classes.md) | Registration classes (Option A): source authorization scales from per-source to per-class plus exceptions | architecture / operations | Approved | 2026-09-15 |
 
 ## Provenance of decisions
 
@@ -345,3 +346,22 @@ once, at merge time, rather than guessed while drafting. It closes the gap
 DR-0093 and DR-0094 each hit, and CLAUDE.md's drafting instruction is
 updated in the same change to match (see "Numbering" below and CLAUDE.md's
 "Documents" section).
+
+DR-0103 originates from **CDR-P3-32**, deposited in WP 3.4 §8 on
+2026-09-08 — not a newly minted CDR. The PR that implemented and merged
+the mechanism (A5, merged 2026-09-16 as #29) deposited its own design
+paper as `wp-3.5-registration-classes.md`, colliding with the already-taken
+WP 3.5 (identifier design, DR-0087…0091) — the file merged to `main` under
+that name, undetected, exactly the kind of collision DR-0102 exists to
+catch, missed here because the collision is on the *working-paper* number,
+which DR-0102's pre-start branch check does not itself compute. Enacting
+DR-0103 renamed the file to `wp-3.7-registration-classes.md` (next free
+working-paper number), corrected its self-references and its Candidate
+Decision Records section to point at CDR-P3-32 rather than an
+unassigned `CDR-pending-A5–class-mechanism`, and added its
+`docs/phase-3/README.md` row and `PROVENANCE.md` entry, none of which the
+merged PR had done. `CLAUDE.md`'s Track A table and `sources/register.py`,
+`sources/candidates/sanctions-authorities.yaml` and
+`sources/tests/test_register_classes.py`'s references to
+`DR-pending-registration-classes` were updated to `DR-0103` in the same
+change.

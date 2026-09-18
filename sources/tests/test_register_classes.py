@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test the registration-class mechanism (DR-pending-registration-classes).
+"""Test the registration-class mechanism (DR-0103).
 
 This suite tests class loading, merging class defaults into sources,
 validation with classes, and error handling.
@@ -40,7 +40,7 @@ def test_merge_no_class():
     all_classes = {}
     merged = merge_class_defaults(source, all_classes)
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "source without class reference returns unchanged",
         merged == source
     )
@@ -74,37 +74,37 @@ def test_merge_with_class_inheritance():
 
     # Check inheritance
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "inherits collection_method from class",
         merged.get("collection_method") == "http"
     )
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "inherits collection_cadence from class",
         merged.get("collection_cadence") == "daily"
     )
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "inherits capture_format from class",
         merged.get("capture_format") == "warc"
     )
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "inherits default_retention_tier from class",
         merged.get("default_retention_tier") == "permanent"
     )
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "inherits default_access_tier from class",
         merged.get("default_access_tier") == "public"
     )
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "inherits rights_permission from class",
         merged.get("rights_permission") == "may-redistribute"
     )
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "source-level fields take precedence over class",
         merged.get("key") == "eu-test-source"
         and merged.get("name") == "Test EU Source"
@@ -138,12 +138,12 @@ def test_merge_with_source_override():
     merged = merge_class_defaults(source, all_classes)
 
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "source override of rights_permission takes effect",
         merged.get("rights_permission") == "may-provide-to-subscribers"
     )
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "source override of rights_basis takes effect",
         merged.get("rights_basis") == "Source-specific basis"
     )
@@ -161,13 +161,13 @@ def test_merge_unknown_class():
     try:
         merge_class_defaults(source, all_classes)
         check(
-            "CDR-pending-registration-classes",
+            "DR-0103",
             "unknown class reference raises RegistrationError",
             False
         )
     except RegistrationError as e:
         check(
-            "CDR-pending-registration-classes",
+            "DR-0103",
             "unknown class reference raises RegistrationError",
             "nonexistent-class" in str(e)
         )
@@ -190,7 +190,7 @@ def test_merge_removes_internal_markers():
     merged = merge_class_defaults(source, all_classes)
 
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "internal _file marker not included in merged result",
         "_file" not in merged
     )
@@ -223,7 +223,7 @@ def test_validate_with_classes():
 
     problems = validate(sources, [], all_classes=all_classes)
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "validation succeeds with class inheritance",
         len(problems) == 0
     )
@@ -252,7 +252,7 @@ def test_validate_missing_required_after_merge():
 
     problems = validate(sources, [], all_classes=all_classes)
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "validation catches missing required field after class merge",
         any("collection_method" in p for p in problems)
     )
@@ -271,7 +271,7 @@ def test_validate_class_reference_error():
 
     problems = validate(sources, [], all_classes=all_classes)
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "validation catches unknown class reference",
         any("unknown class" in p.lower() for p in problems)
     )
@@ -300,7 +300,7 @@ def test_verify_fields_not_inherited():
     # it just returns whatever is in the merged dict. This test documents
     # that behavior. In the future, we might want to explicitly strip them.
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "source inherits class fields",
         merged.get("collection_method") == "http"
     )
@@ -323,14 +323,14 @@ def test_class_independence():
 
     # Original class should not be modified
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "merging does not modify the original class definition",
         class_def == {"collection_method": "http", "default_retention_tier": "permanent"}
     )
 
     # Original source should not be modified
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "merging does not modify the original source",
         source == {"key": "test", "class": "test-class", "name": "Test"}
     )
@@ -367,14 +367,14 @@ def test_multiple_sources_same_class():
 
     problems = validate(sources, [], all_classes=all_classes)
     check(
-        "CDR-pending-registration-classes",
+        "DR-0103",
         "multiple sources can share the same class",
         len(problems) == 0
     )
 
 
 if __name__ == "__main__":
-    print("Testing registration-class mechanism (DR-pending-registration-classes)\n")
+    print("Testing registration-class mechanism (DR-0103)\n")
 
     test_merge_no_class()
     test_merge_with_class_inheritance()

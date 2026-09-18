@@ -5,7 +5,7 @@
 #
 # Drafted 2026-08-26 by an AI assistant at the founder's direction, against
 # the DR-0067 source-registry schema. Refactored 2026-09-16 to use registration
-# classes (DR-pending-registration-classes, adopted Option A). Every class
+# classes (DR-0103, adopted Option A). Every class
 # carries reasoning in sources/README.md so a decision can be made on the
 # reasoning rather than on the value alone.
 #
@@ -45,7 +45,7 @@
 # Each class defines the policy fields that apply to all sources in that
 # class. Sources inherit these fields and may override specific ones if
 # needed. Class adoption is a founder decision; the founder authorizes
-# classes, not individual sources. (DR-pending-registration-classes.)
+# classes, not individual sources. (DR-0103.)
 
 classes:
 
@@ -212,6 +212,12 @@ sources:
       No enrichment against other registries at collection time. Designation
       records stay distinct from canonical entities; mapping is a reviewed act
       at T1 (DR-0039, DR-0063, LEGAL-003).
+    # Override: verified as a bare-body HTTP fetch, not a WARC capture
+    # (DR-0006/DR-0067's capture-format guardrail). Without this override the
+    # class default of `warc` would silently misrecord how this source was
+    # actually verified and registered under DR-0093 — the same fix ofac-sdn
+    # already carries below for the same reason.
+    capture_format: http
     # All other policy fields inherited from EU-institutional-sanctions class
     # Personal-data note: designation records name individuals, including
     # dates and places of birth. POL-0001 §4 governs; DR-0071(b) forbids
@@ -275,6 +281,7 @@ sources:
     grade_item_credibility: "1"
 
   - key: bis-entity-list
+    class: US-institutional-export-control
     source_type: sanctions-authority
     name: BIS Entity List and Denied Persons List
     # bis.doc.gov now redirects to bis.gov (a domain migration since this
@@ -300,28 +307,29 @@ sources:
     jurisdiction: US
     primary_languages: [en]
     coverage_start: 2014-08-01
-    collection_method: http
-    collection_cadence: weekly
     scope_rules: >
       Entity List, Denied Persons List, Unverified List, and Federal Register
       notices amending them. Export-control state is decomposed (DR-0042), so
       listing on any of these is recorded as its own restriction rather than
       collapsed into one "restricted" flag.
     exclusions: Licensing statistics and general policy commentary.
+    # Overrides: verified as a bare-body HTTP fetch, not a WARC capture
+    # (capture_format). rights_permission is may-redistribute, the value the
+    # Denied Persons List half of this candidate was actually verified and
+    # described against — the class default of may-provide-subscribers
+    # (written for sources with a BIS subscriber-only redistribution term)
+    # does not apply here and would misstate this source's rights posture.
     capture_format: http
-    default_retention_tier: permanent
-    default_access_tier: public
-    expects_graphic_content: false
     rights_permission: may-redistribute
     rights_basis: US federal government work. NOT LEGALLY REVIEWED.
-    grade_source_reliability: A
-    grade_item_credibility: "1"
+    # All other policy fields inherited from US-institutional-export-control class
 
   # ---------------------------------------------------------------------
   # United Kingdom and Switzerland
   # ---------------------------------------------------------------------
 
   - key: uk-ofsi-consolidated
+    class: UK-institutional-sanctions
     source_type: sanctions-authority
     name: UK OFSI Consolidated List of Financial Sanctions Targets
     # The gov.uk page is a publication page, not a file; the actual files
@@ -344,22 +352,21 @@ sources:
     jurisdiction: GB
     primary_languages: [en]
     coverage_start: 2014-03-01
-    collection_method: http
-    collection_cadence: daily
     scope_rules: Consolidated list, whole-file captures forming a capture series.
     exclusions: General licences and enforcement notices (registered separately if wanted).
+    # Overrides: verified as a bare-body HTTP fetch, not a WARC capture
+    # (DR-0006/DR-0067's capture-format guardrail — the class default of
+    # `warc` does not match how this source was actually verified and would
+    # silently misrecord it if inherited). rights_basis kept verbatim as the
+    # text the source was verified and described against.
     capture_format: http
-    default_retention_tier: permanent
-    default_access_tier: public
-    expects_graphic_content: false
-    rights_permission: may-redistribute
     rights_basis: >
       Open Government Licence v3.0, subject to attribution.
       NOT LEGALLY REVIEWED.
-    grade_source_reliability: A
-    grade_item_credibility: "1"
+    # All other policy fields inherited from UK-institutional-sanctions class
 
   - key: seco-sanctions
+    class: CH-institutional-sanctions
     source_type: sanctions-authority
     name: SECO sanctions list (Switzerland)
     # The landing page has no direct file link; the real download lives on
@@ -386,29 +393,30 @@ sources:
     jurisdiction: CH
     primary_languages: [de, fr, it, en]
     coverage_start: 2014-03-01
-    collection_method: http
-    collection_cadence: weekly
     scope_rules: >
       Swiss sanctions ordinances and the consolidated list. Included because
       Switzerland's non-EU status makes divergence between its measures and
       the EU's evidentially interesting (§68–70: financial flows).
     exclusions: Commentary and press material.
+    # Overrides: verified as a bare-body HTTP fetch, not a WARC capture
+    # (capture_format). rights_permission is the conservative may-preserve
+    # DR-0098 approved for this source specifically, because its rights
+    # position is unverified — the class default of may-redistribute (set
+    # for sources whose reuse basis IS known, like the EU/UK/US institutional
+    # publishers) would misstate an approval DR-0098 never gave.
     capture_format: http
-    default_retention_tier: permanent
-    default_access_tier: public
-    expects_graphic_content: false
     rights_permission: may-preserve
     rights_basis: >
       Rights position UNVERIFIED. Conservative default until checked: preserve
       only, no redistribution (§14, DR-0067).
-    grade_source_reliability: A
-    grade_item_credibility: "1"
+    # All other policy fields inherited from CH-institutional-sanctions class
 
   # ---------------------------------------------------------------------
   # Ukraine
   # ---------------------------------------------------------------------
 
   - key: ua-nsdc-sanctions
+    class: UA-state-investigations
     source_type: official-ukrainian
     name: NSDC sanctions decisions and presidential decrees enacting them
     locator: https://www.rnbo.gov.ua/
@@ -416,8 +424,6 @@ sources:
     jurisdiction: UA
     primary_languages: [uk]
     coverage_start: 2014-09-01
-    collection_method: http
-    collection_cadence: weekly
     scope_rules: >
       NSDC decisions imposing sanctions and the presidential decrees enacting
       them. Ukraine designates entities the EU and US do not, and the
@@ -426,16 +432,20 @@ sources:
       Operational military statements and casualty reporting — different
       evidentiary character and a different personal-data profile; register
       separately, not here.
-    capture_format: warc
-    default_retention_tier: permanent
-    default_access_tier: public
-    expects_graphic_content: false
+    # Overrides: rights_permission is the conservative may-preserve default
+    # for a candidate whose rights position is unverified, unlike the class
+    # default of may-redistribute. grade_source_reliability B and
+    # grade_item_credibility "2" (rather than the class's B2/"1") are this
+    # candidate's own triage judgment (DR-0027: triage only, never truth) —
+    # a belligerent authority publishing about its adversary, read with
+    # commensurate care; not yet reconciled with the class's B2 label.
     rights_permission: may-preserve
     rights_basis: >
       Rights position UNVERIFIED. Ukrainian state works may be reusable; not
       assumed. Conservative default until checked.
     grade_source_reliability: B
     grade_item_credibility: "2"
+    # All other policy fields inherited from UA-state-investigations class
     # Reliability B rather than A: this is a party to the conflict publishing
     # about its adversary. The grade is triage only and never touches truth
     # (DR-0027) — it means "read with the care a belligerent source deserves",

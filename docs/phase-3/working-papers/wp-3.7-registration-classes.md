@@ -1,4 +1,4 @@
-# WP 3.5 — Registration classes for bulk authorization
+# WP 3.7 — Registration classes for bulk authorization
 
 **Project:** Ukraine Independence War Archive | **Status:** CANDIDATE — AI-drafted, awaiting founder review  
 **Version:** 0.1 | **Mandate:** WP 3.4 Track A item A5 ("Draft the registration-class mechanism")  
@@ -248,9 +248,19 @@ This proposal designs *how* classes work. Before the implementation, the founder
 
 ## 8. Candidate Decision Records
 
-**CDR-pending-A5–class-mechanism:** Adopt the class mechanism (Option A above) for source registration, with classes defined in the candidate YAML, merged into per-source values at registration, and frozen at authorization time. This moves authorization scale from per-source (thousands) to per-class plus exceptions (tens), reducing founder decision load to a tractable level.
+This paper does not raise a new candidate DR. **CDR-P3-32** (WP 3.4 §8:
+"`register.py` accepts a *class* template carrying every DR-0067 field
+group, which the founder approves once; individual sources register under
+it by inheritance, with per-source exceptions stated explicitly") already
+names this mechanism, deposited 2026-09-08. This paper is the design that
+discharges it: Option A above is the founder's chosen shape for CDR-P3-32,
+and DR-0103 enacts it.
 
-No decision is outstanding unless the founder rejects the mechanism or proposes a different approach. Implementation can begin once the founder names the initial set of classes and authorizes the class definitions.
+No decision is outstanding on the mechanism itself unless the founder
+rejects Option A or proposes a different approach. Implementation is done
+(`sources/register.py`, `sources/tests/test_register_classes.py`); what
+remains is the founder naming the initial set of classes and authorizing
+the class definitions per candidate file.
 
 ---
 

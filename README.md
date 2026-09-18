@@ -119,19 +119,24 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-15 | WP 3.4 Track A item A4, the WACZ evaluation DR-0006 made a standing task, done from primary sources: the WACZ container specification (v1.1.1) is stable and reachable, but its signing specification (v0.1.0) is, by its own words, "a working draft for a proposal" — confirmed against live PyPI release metadata for `wacz`, `authsign`, and `wacz-signing` (all still pre-1.0). Recommends **deferring** WACZ adoption entirely, WARC via `collector/pipeline.py` unchanged, on two stated revisit triggers; the "jurisdictionally meaningful" half of DR-0006's question is flagged as unanswerable from a spec alone, connecting to but not added to the A6 brief | [`WP 3.6`](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md) |
 | 2026-09-15 | WP 3.4 Track A item A7's measurement tooling built and tested: `storage/measure.py` reads `collector_run` for recorded bytes/throughput and walks the OCFL roots and quarantine directory for real on-disk footprint, reporting a measured duplication ratio for the undischarged-quarantine-copy gap `collector/README.md` documents. 11 tests against a real local database and filesystem tree, one rule shown to fail under sabotage and restored. An archive-server runbook and a fill-in results template were then written for executing both halves of A7 (baseline measurement of the two A1 sources; one retrospective WARC pull for a registered domain, WP 3.4 §4/CDR-P3-35) — neither executed, since the retrospective pull is new acquisition needing a person as agent of record (DR-0093 §3) on the archive server. `docs/sources/README.md` gained a section documenting and linking the directory's verification/measurement records, a genre that existed but had gone undescribed since DR-0093's rehearsal note | `storage/measure.py`, `storage/tests/test_measure.py`, [`docs/runbooks/A7-storage-bandwidth-measurement.md`](docs/runbooks/A7-storage-bandwidth-measurement.md), [`docs/sources/TEMPLATE-a7-measurement-results.md`](docs/sources/TEMPLATE-a7-measurement-results.md) |
 | 2026-09-15 | WP 3.4 Track A item **A6 done** (legal-review brief v0.4, French law, all five of its §9 founder decisions closed) and **two parallel A6 drafts reconciled** — the other line of work had already done A6 and A4 on an unmerged branch, so both are kept with DR-0100 superseding DR-0099 and the A6 brief's candidates renumbered around WP 3.6's CDR-P3-42. **DR-0096…0101 numbered** and the register brought current — three had reached `main` unnumbered and with no register rows. **DR-0102** supersedes DR-0095: CDR numbers are now assigned at merge like DR numbers, a session checks **unmerged** branches before starting (not just `origin/main`), and in-place revision of a record that has not reached `main` is permitted only under four named conditions. **POL-0001 is at v1.2** — §10 names DR-0100 and restates the jurisdiction, controller and hosting facts in the policy itself | `docs/legal/`, `docs/decision-records/`, `CLAUDE.md`, `docs/policies/POL-0001-personal-data.md` |
+| 2026-09-16 | WP 3.4 Track A item **A5 (registration classes) enacted as `DR-0103`**, at the founder's direction. Enacting it surfaced a real numbering collision the merged A5 PR (#29) had left in place: its design paper was deposited as `wp-3.5-registration-classes.md`, silently colliding with the already-taken WP 3.5 (identifier design), with no `docs/phase-3/README.md` row or `PROVENANCE.md` entry. Renumbered to **WP 3.7**, pointed its candidate-DR section at the correct pre-existing **CDR-P3-32** (from WP 3.4 §8, not a new CDR), and added the missing register/provenance entries | `docs/decision-records/DR-0103-registration-classes.md`, [`WP 3.7`](docs/phase-3/working-papers/wp-3.7-registration-classes.md), `docs/phase-3/working-papers/PROVENANCE.md` |
+| 2026-09-17 | Founder named the initial registration classes' grouping principle: **jurisdiction first, topic second**, matching WP 3.7 §7's recommendation. All seven `sanctions-authorities.yaml` sources wired to a class; four needed explicit per-source overrides where the class default would otherwise have silently changed an already-verified or DR-approved value (`capture_format`, `rights_permission`). Caught and fixed a live regression: `eu-consolidated-list` had already silently inherited `capture_format: warc` from its class against its DR-0093-verified `http`, the same fix `ofac-sdn` already carried | `sources/candidates/sanctions-authorities.yaml`, `sources/README.md` |
+| 2026-09-17 | WP 3.4 Track A item A2's index clients **completed a live query for the first time**: this session's network reached both `index.commoncrawl.org` and `web.archive.org`, where every prior session's had failed (`ECONNRESET`/timeout). Ran both against `rnbo.gov.ua` (the `ua-nsdc-sanctions` publisher domain) — Wayback returned 25 hosts including a `sanctions-t.rnbo.gov.ua` subdomain worth a look; Common Crawl returned 2. Network access varies by session (CLAUDE.md); this does not mean the gap is permanently closed, only that it is not fixed shut either | `sources/census.py` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
 is under way**: 2 of the 7 sanctions sources are registered and have completed
 a first collection on the archive server (2026-09-09); 3 more are approved but
 not yet executed; the other 2 await verification. **A2's index tooling is
-built** (2026-09-12), no live query yet. **A3 is done.** **A4's WACZ
+built** (2026-09-12) and **completed its first live query** (2026-09-17,
+against `rnbo.gov.ua`). **A3 is done.** **A4's WACZ
 evaluation is done** (2026-09-15, [WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md))
-— recommends deferring adoption, WARC unchanged. **A6's legal-review brief is
+— recommends deferring adoption, WARC unchanged. **A5 (registration classes)
+is done and enacted** (`DR-0103`, 2026-09-16), with the initial classes
+named 2026-09-17. **A6's legal-review brief is
 done** (v0.4, 2026-09-15), with all five founder decisions in its §9 closed;
 commissioning it is a separate founder act. **A7's measurement tooling is
-built and tested** (2026-09-15) with a runbook written and unexecuted. **A5**
-(registration classes) is the only item not started. See the Track A table in
-[CLAUDE.md](CLAUDE.md) for each item's exact state.
+built and tested** (2026-09-15) with a runbook written and unexecuted. See
+the Track A table in [CLAUDE.md](CLAUDE.md) for each item's exact state.
 
 ## Picking up development
 
@@ -296,8 +301,20 @@ outstanding *execution*.
    decision set, which is legal or editorial judgment, not a URL to find
    — closer to founder-guided work than something a session should
    attempt alone.
-4. **WP 3.4's Track A item A5** (registration classes) is the only Track A
-   item not started. **A4, the WACZ evaluation, is done**
+4. **WP 3.4's Track A item A5** (registration classes) is **done**: Option A
+   implemented and tested (18/18 checks,
+   `sources/tests/test_register_classes.py`), enacted as
+   [`DR-0103`](docs/decision-records/DR-0103-registration-classes.md), and
+   the initial six classes named — jurisdiction first, topic second, per
+   [WP 3.7](docs/phase-3/working-papers/wp-3.7-registration-classes.md) §7 —
+   with all seven `sources/candidates/sanctions-authorities.yaml` sources
+   now wired to a class (`sources/README.md`'s "Registration classes"
+   section has the table and the per-source overrides that keep each
+   source's actual verified/approved values from being silently overwritten
+   by a class default). **Not open**, but not yet done: execution of the
+   three approved-but-unexecuted registrations (item above) using the class
+   mechanism, on the archive server, by a person, per source. **A4, the
+   WACZ evaluation, is done**
    ([WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md),
    2026-09-15, CDR-P3-42 candidate) — recommends **deferring** WACZ adoption
    (the container spec is stable at v1.1.1, but its signing layer is a
