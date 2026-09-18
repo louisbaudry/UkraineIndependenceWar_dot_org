@@ -1,7 +1,7 @@
-# DR-pending — Registration classes: adopt Option A
+# DR-0103 — Registration classes: adopt Option A
 
-**Category:** architecture / operations | **Status:** DRAFT — awaiting merge numbering  
-**Decided:** 2026-09-15 by founder/principal editor | **Origin:** WP 3.5, CDR-pending-A5–class-mechanism  
+**Category:** architecture / operations | **Status:** DECIDED — enacted 2026-09-18  
+**Decided:** 2026-09-15 by founder/principal editor | **Implemented:** 2026-09-16 | **Enactment:** 2026-09-18 | **Origin:** WP 3.5, CDR-P3-32  
 **Supersedes:** — | **Superseded by:** —
 
 ## Context
@@ -67,18 +67,37 @@ The project adopts **Option A**. Classes are defined in YAML, candidate files st
 
 5. **Immutability of registered sources.** Once registered, a source carries frozen merged values. If a class definition is later refined, that affects only future registrations under the new or updated class name. Existing registrations do not silently update. This is correct behavior: registration is an authorization decision, not a declaration.
 
+## Implementation status
+
+**Completed 2026-09-16:**
+- `sources/register.py` extended with class loading, merging, validation
+- `sources/tests/test_register_classes.py` created with 18 passing tests
+- Initial class set defined in `sources/candidates/sanctions-authorities.yaml` (6 jurisdiction-based classes: EU, US export control, UK, CH, UA)
+- All 7 candidates validate successfully
+- Merged to main (PR #29, 2026-09-16)
+
+**Classes defined (jurisdiction-first grouping):**
+1. EU-institutional-sanctions
+2. US-institutional-sanctions
+3. US-institutional-export-control
+4. UK-institutional-sanctions
+5. CH-institutional-sanctions
+6. UA-state-investigations
+
+**Policy fields inherited:** collection_method, collection_cadence, capture_format, default_retention_tier, default_access_tier, expects_graphic_content, rights_permission, rights_basis, grade_source_reliability, grade_item_credibility.
+
 ## Next step
 
-The founder must decide: **what classes should the project define for the census candidates?** 
+1. **Execute pending A1 registrations** using the class mechanism:
+   - `uk-ofsi-consolidated` (approved DR-0096, 2026-09-12)
+   - `bis-entity-list` (approved DR-0096, 2026-09-12)
+   - `seco-sanctions` (approved DR-0098, 2026-09-14)
+   
+   Execution is on the archive server per each source's How to execute; not a session-side task.
 
-WP 3.5 §6 asks three sub-questions:
-1. Which ~10–20 candidate classes should exist?
-2. What is the grouping principle (jurisdiction, publisher type, combination)?
-3. Should classes be shared across multiple candidate files or scoped per file?
+2. **Define additional classes as census discovers more candidates** — grouping by jurisdiction first, then topic/authority type within each jurisdiction.
 
-Recommendation: Define classes by jurisdiction first (EU, US, UK, Switzerland, Ukraine), then topic second within each jurisdiction (institutional authority, export control, courts, OSINT, etc.). Scope classes per candidate file initially; harmonize later if duplicates emerge.
-
-Once the founder names the classes, implementation can begin.
+3. **Refine class definitions** if patterns emerge; new/updated class names enable graceful evolution without affecting frozen past registrations.
 
 ---
 

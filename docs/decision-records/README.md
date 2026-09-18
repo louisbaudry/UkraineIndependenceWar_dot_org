@@ -133,6 +133,7 @@ merely another renumbering.
 | [DR-0100](DR-0100-jurisdiction-controller-and-hosting.md) | Establishment jurisdiction confirmed; controller identity and archive hosting location | legal / operations | Approved | 2026-09-15 |
 | [DR-0101](DR-0101-recording-the-legal-review.md) | What "the review's outcome is recorded" means, for POL-0001 §10 | legal / methodology | Approved | 2026-09-15 |
 | [DR-0102](DR-0102-drafting-discipline-before-merge.md) | Drafting discipline before merge: CDR numbers assigned at merge, unmerged branches checked before starting, bounded in-place revision | architecture / methodology | Approved | 2026-09-15 |
+| [DR-0103](DR-0103-registration-classes.md) | Registration classes: adopt Option A (classes in YAML, sources inherit policy defaults) | architecture / operations | Approved | 2026-09-15 |
 
 ## Provenance of decisions
 
