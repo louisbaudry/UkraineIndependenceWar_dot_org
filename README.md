@@ -296,8 +296,14 @@ outstanding *execution*.
    decision set, which is legal or editorial judgment, not a URL to find
    — closer to founder-guided work than something a session should
    attempt alone.
-4. **WP 3.4's Track A item A5** (registration classes) is the only Track A
-   item not started. **A4, the WACZ evaluation, is done**
+4. **WP 3.4's Track A item A5** (registration classes) **is done**
+   — Option A implemented 2026-09-16: classes in YAML, sources inherit policy
+   defaults, merged at registration time. `sources/register.py` extended with
+   class loading, merging, and validation; `sources/tests/test_register_classes.py`
+   has 18 passing tests. All 7 candidates validate. Authorization scale reduced
+   from thousands per-source to tens per-class. Next: enact DR-pending-registration-classes
+   (founder act) and execute pending A1 registrations using the class mechanism.
+   **A4, the WACZ evaluation, is done**
    ([WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md),
    2026-09-15, CDR-P3-42 candidate) — recommends **deferring** WACZ adoption
    (the container spec is stable at v1.1.1, but its signing layer is a
