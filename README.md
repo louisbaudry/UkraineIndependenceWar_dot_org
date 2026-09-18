@@ -126,12 +126,14 @@ a first collection on the archive server (2026-09-09); 3 more are approved but
 not yet executed; the other 2 await verification. **A2's index tooling is
 built** (2026-09-12), no live query yet. **A3 is done.** **A4's WACZ
 evaluation is done** (2026-09-15, [WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md))
-— recommends deferring adoption, WARC unchanged. **A6's legal-review brief is
-done** (v0.4, 2026-09-15), with all five founder decisions in its §9 closed;
-commissioning it is a separate founder act. **A7's measurement tooling is
-built and tested** (2026-09-15) with a runbook written and unexecuted. **A5**
-(registration classes) is the only item not started. See the Track A table in
-[CLAUDE.md](CLAUDE.md) for each item's exact state.
+— recommends deferring adoption, WARC unchanged. **A5, registration classes,
+is done and enacted** ([`DR-0103`](docs/decision-records/DR-0103-registration-classes.md),
+2026-09-18) — implemented 2026-09-16, approved and enacted 2026-09-18. **A6's
+legal-review brief is done** (v0.4, 2026-09-15), with all five founder
+decisions in its §9 closed; commissioning it is a separate founder act. **A7's
+measurement tooling is built and tested** (2026-09-15) with a runbook written
+and unexecuted. See the Track A table in [CLAUDE.md](CLAUDE.md) for each
+item's exact state.
 
 ## Picking up development
 
@@ -308,7 +310,13 @@ outstanding *execution*.
    2026-09-15, CDR-P3-42 candidate) — recommends **deferring** WACZ adoption
    (the container spec is stable at v1.1.1, but its signing layer is a
    pre-1.0 working draft at v0.1.0), WARC via `collector/pipeline.py`
-   unchanged, on two stated revisit triggers. **A6, the legal-review brief,
+   unchanged, on two stated revisit triggers. **A5, registration classes,
+   is done and enacted** ([`DR-0103`](docs/decision-records/DR-0103-registration-classes.md),
+   2026-09-18) — Option A implemented and approved 2026-09-15;
+   `sources/register.py` extended with class extraction, merging, and
+   validation; 18 tests all passing; authorization scale reduced from
+   thousands per-source to tens per-class decisions. Next: execute pending
+   A1 registrations using the class mechanism. **A6, the legal-review brief,
    is done** — [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md)
    v0.4, 2026-09-15, with **all five founder decisions in its §9 closed**:
    France, controller a natural person, IONOS/Spain (§9.1–9.3); Part A
