@@ -1,6 +1,6 @@
 # Verification of LIL articles quoted in the legal-review brief
 
-**Status:** VERIFICATION IN PROGRESS — 2026-09-15
+**Status:** VERIFICATION BLOCKED — 2026-09-15; re-attempted 2026-09-18 (two separate sessions), same result
 
 **Purpose:** The legal-review brief (`docs/legal/legal-review-brief.md`) quotes four articles from the Loi n° 78-17 du 6 janvier 1978 (Loi Informatique et Libertés, "LIL") from the CNIL's consolidated text, because Légifrance was unreachable on the drafting date (2026-09-15, HTTP 403 anti-bot challenge). Per the brief's provenance note and the README's open decisions, every article quoted must be checked against Légifrance before the brief is sent to counsel.
 
@@ -88,11 +88,22 @@ Quoted at lines 383–390 of `docs/legal/legal-review-brief.md`:
 
 **Status:** BLOCKED — Légifrance inaccessible (HTTP 403 Cloudflare challenge).
 
-**Verification attempt, 2026-09-15 19:48 UTC:**
+**Verification attempts:**
+
+*2026-09-15 19:48 UTC (initial attempt):*
 - Direct access to `https://www.legifrance.gouv.fr/` → HTTP 403
 - Attempt with browser User-Agent to `https://www.legifrance.gouv.fr/codes/code-de-protection-des-donnees-personnelles` → HTTP 403 Cloudflare challenge (`cf-mitigated: challenge`; requires browser fingerprinting and JavaScript execution)
 - CNIL site (`https://www.cnil.fr/`) → HTTP 301 redirect, requires following
 - Session proxy environment does not support JavaScript or Cloudflare challenge completion
+
+*2026-09-18 14:22 UTC (retry, separate session):*
+- Direct access to `https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006529090` (Article 46 direct link) → HTTP 403 Cloudflare challenge
+- Same session proxy limitation prevents challenge completion
+
+*2026-09-18 (this session, later same day):*
+- `https://www.legifrance.gouv.fr/` → HTTP 403
+- `https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006529090` → HTTP 403
+- Same result as both prior attempts; three sessions across three days now agree the anti-bot challenge is not passable from this environment's proxy
 
 **Cross-check:** [`DR-0100`](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md) (approved 2026-09-15) contains independent mention of the same four articles with identical characterization: "the articles were read from the CNIL's consolidated text (Légifrance was unreachable)" and "their interaction is what counsel is engaged to resolve."
 
