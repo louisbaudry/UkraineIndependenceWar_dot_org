@@ -1,6 +1,6 @@
 # Verification of LIL articles quoted in the legal-review brief
 
-**Status:** VERIFICATION BLOCKED — 2026-09-15; re-attempted 2026-09-18 (two separate sessions), same result
+**Status:** VERIFICATION BLOCKED — 2026-09-15; re-attempted 2026-09-18 (two separate sessions) and 2026-09-19, same result each time
 
 **Purpose:** The legal-review brief (`docs/legal/legal-review-brief.md`) quotes four articles from the Loi n° 78-17 du 6 janvier 1978 (Loi Informatique et Libertés, "LIL") from the CNIL's consolidated text, because Légifrance was unreachable on the drafting date (2026-09-15, HTTP 403 anti-bot challenge). Per the brief's provenance note and the README's open decisions, every article quoted must be checked against Légifrance before the brief is sent to counsel.
 
@@ -104,6 +104,11 @@ Quoted at lines 383–390 of `docs/legal/legal-review-brief.md`:
 - `https://www.legifrance.gouv.fr/` → HTTP 403
 - `https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006529090` → HTTP 403
 - Same result as both prior attempts; three sessions across three days now agree the anti-bot challenge is not passable from this environment's proxy
+
+*2026-09-19 21:21 UTC (fourth attempt, separate session):*
+- `https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006529090` → HTTP 403, `cf-mitigated: challenge`, `server: cloudflare`
+- Same Cloudflare managed-challenge response as the three prior attempts, same Article 46 direct-link URL; the proxy establishes the TCP/TLS connection (`HTTP/1.1 200 Connection Established`) but Cloudflare still returns 403 before any page content
+- Four sessions across four days now agree: this is not a transient outage, it is a standing anti-bot policy this environment's proxy cannot pass
 
 **Cross-check:** [`DR-0100`](../decision-records/DR-0100-jurisdiction-controller-and-hosting.md) (approved 2026-09-15) contains independent mention of the same four articles with identical characterization: "the articles were read from the CNIL's consolidated text (Légifrance was unreachable)" and "their interaction is what counsel is engaged to resolve."
 
