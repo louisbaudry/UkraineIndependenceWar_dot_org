@@ -30,7 +30,7 @@ from dump import create_dump, list_tables, verify_dump  # noqa: E402
 from tiers import TIER_RULES, TierPolicyError, unclassified_tables  # noqa: E402
 from fetch import FixtureFetcher  # noqa: E402
 from ocfl import StorageRoot  # noqa: E402
-from pipeline import Collector  # noqa: E402
+from pipeline import Collector, ensure_software_agent  # noqa: E402
 
 PASSES: list[str] = []
 FAILURES: list[str] = []
@@ -87,11 +87,12 @@ def run() -> int:
                        'http','permanent','public','may-preserve')""",
             (source_id,))
 
+        software_agent_id = ensure_software_agent(conn)
         collector = Collector(
             conn,
             FixtureFetcher({"https://example.invalid/reg": fixture,
                             "https://example.invalid/gone": FileNotFoundError("404")}),
-            work / "quarantine", roots, agent_id,
+            work / "quarantine", roots, agent_id, software_agent_id,
         )
         collector.run(source_id,
                       ["https://example.invalid/reg", "https://example.invalid/gone"],

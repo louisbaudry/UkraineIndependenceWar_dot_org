@@ -23,7 +23,9 @@ sys.path.insert(0, str(ROOT / "sources"))
 
 import psycopg  # noqa: E402
 
-from register import commit, load_candidates, validate  # noqa: E402
+from register import (  # noqa: E402
+    commit, load_candidates, merge_class_defaults, validate,
+)
 
 PASSES: list[str] = []
 FAILURES: list[str] = []
@@ -55,12 +57,25 @@ def build_database() -> None:
 
 
 def run() -> int:
-    sources, dependence = load_candidates()
+    raw_sources, dependence, all_classes = load_candidates()
 
     # ---- the shipped candidates are internally sound --------------------
 
     check("DR-0067", "the shipped candidates validate as they stand",
-          validate(sources, dependence) == [])
+          validate(raw_sources, dependence, all_classes) == [])
+
+    # From here on, work against each candidate's merged (class defaults +
+    # own overrides) view, with the class reference itself dropped — the
+    # same fields commit() and describe() see (DR-0103). A class default is
+    # part of what a candidate declares, not an exemption from checking it,
+    # and the mutation tests below need a field's absence to actually mean
+    # absence, not "falls back to the class".
+    sources = []
+    for s in raw_sources:
+        merged = merge_class_defaults(s, all_classes)
+        merged.pop("class", None)
+        sources.append(merged)
+
     check("DR-0067", "every candidate names a jurisdiction and a scope",
           all(s.get("jurisdiction") and s.get("scope_rules") for s in sources))
     check("§14", "no candidate claims redistribution without flagging the basis",

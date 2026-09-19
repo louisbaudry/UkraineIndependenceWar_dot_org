@@ -26,9 +26,9 @@ For a real run, it also ensures a versioned **software** `pipeline_agent`
 exists (self-registered by name and version, no human step) and passes it
 to `Collector` separately from `--agent`: the software agent names every
 preservation event this run produces, while `--agent` stays the run's
-human agent of record (DR-0093 §3), unchanged
-(DR-pending-collection-run-two-agents). This is not a fifth refusal check —
-it never blocks a run — so `--dry-run` does not perform it.
+human agent of record (DR-0093 §3), unchanged (DR-0097). This is not a
+fifth refusal check — it never blocks a run — so `--dry-run` does not
+perform it.
 
 What it does NOT do: parse anything it fetches, create canonical knowledge,
 or decide whether a capture is worth keeping. A completed run with zero
@@ -55,7 +55,7 @@ from pipeline import (  # noqa: E402
     Collector, PolicyViolation, SOFTWARE_AGENT_NAME, SOFTWARE_AGENT_VERSION,
     ensure_software_agent,
 )
-from register import load_candidates, validate  # noqa: E402
+from register import load_candidates, merge_class_defaults, validate  # noqa: E402
 
 DEFAULT_USER_AGENT = (
     "UIW-collector/0.1 "
@@ -70,8 +70,8 @@ class Refused(Exception):
 # -- the four checks --------------------------------------------------------
 
 def find_candidate(key: str) -> dict:
-    sources, dependence = load_candidates()
-    problems = validate(sources, dependence)
+    sources, dependence, all_classes = load_candidates()
+    problems = validate(sources, dependence, all_classes)
     if problems:
         raise Refused("the candidate file does not validate:\n  "
                       + "\n  ".join(problems))
@@ -79,7 +79,7 @@ def find_candidate(key: str) -> dict:
     if not matches:
         known = ", ".join(sorted(s["key"] for s in sources))
         raise Refused(f"no candidate with key {key!r}; known keys: {known}")
-    candidate = matches[0]
+    candidate = merge_class_defaults(matches[0], all_classes)
     if not candidate.get("run_locators"):
         raise Refused(
             f"{key} has no run_locators. A run is authorised for exactly the "
@@ -203,11 +203,11 @@ def main(argv: list[str] | None = None, fetcher: Fetcher | None = None) -> int:
                 return 0
 
             roots, quarantine = open_roots(args.archive_root)
-            # DR-pending-collection-run-two-agents: --agent stays the run's
-            # agent of record (DR-0093 §3); the preservation events this run
-            # produces name a separate, versioned software agent instead --
-            # self-registered, since a software agent's identity is its own
-            # declared version, not a human decision (unlike --agent).
+            # DR-0097: --agent stays the run's agent of record (DR-0093 §3);
+            # the preservation events this run produces name a separate,
+            # versioned software agent instead -- self-registered, since a
+            # software agent's identity is its own declared version, not a
+            # human decision (unlike --agent).
             software_agent_id = ensure_software_agent(conn)
             print(f"software   {SOFTWARE_AGENT_NAME}  {SOFTWARE_AGENT_VERSION}  "
                   f"{software_agent_id}")
