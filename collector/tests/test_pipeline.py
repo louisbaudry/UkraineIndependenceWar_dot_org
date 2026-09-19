@@ -119,7 +119,7 @@ def run() -> int:
 
     conn = psycopg.connect(dbname=DB, autocommit=True)
     try:
-        # DR-pending-collection-run-two-agents: the run's agent of record is
+        # DR-0097: the run's agent of record is
         # a person (DR-0093 §3's rule, exercised here even though nothing
         # about it is being tested); preservation events go to a distinct,
         # self-registered software agent.
@@ -130,7 +130,7 @@ def run() -> int:
             (person_agent_id,),
         )
         software_agent_id = ensure_software_agent(conn, "test-collector", "0.1.0")
-        check("DR-pending-collection-run-two-agents",
+        check("DR-0097",
               "the same (name, version) resolves to the same software agent, not a new row",
               ensure_software_agent(conn, "test-collector", "0.1.0") == software_agent_id)
         source_id = seed_source(conn)
@@ -259,20 +259,20 @@ def run() -> int:
                   "WHERE event_type = 'ingestion' AND outcome = 'success'"
               ).fetchone()[0] == 1)
 
-        # -- DR-pending-collection-run-two-agents: the two agents land where
+        # -- DR-0097: the two agents land where
         # each is supposed to, and never swap ------------------------------
 
-        check("DR-pending-collection-run-two-agents",
+        check("DR-0097",
               "the run's agent of record is the person given",
               conn.execute(
                   "SELECT collector_agent_id FROM collector_run WHERE id = %s",
                   (run_id,)).fetchone()[0] == uuid.UUID(person_agent_id))
         event_agents = {row[0] for row in conn.execute(
             "SELECT DISTINCT agent_id FROM preservation_event").fetchall()}
-        check("DR-pending-collection-run-two-agents",
+        check("DR-0097",
               "every preservation event names the software agent",
               event_agents == {uuid.UUID(software_agent_id)})
-        check("DR-pending-collection-run-two-agents",
+        check("DR-0097",
               "no preservation event is ever attributed to the person",
               uuid.UUID(person_agent_id) not in event_agents)
 

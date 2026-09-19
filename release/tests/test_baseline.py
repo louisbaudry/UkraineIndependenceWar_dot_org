@@ -34,7 +34,7 @@ from baseline import (  # noqa: E402
 from dump import create_dump  # noqa: E402
 from fetch import FixtureFetcher  # noqa: E402
 from ocfl import StorageRoot  # noqa: E402
-from pipeline import Collector  # noqa: E402
+from pipeline import Collector, ensure_software_agent  # noqa: E402
 
 PASSES: list[str] = []
 FAILURES: list[str] = []
@@ -99,10 +99,11 @@ def run() -> int:
                default_retention_tier, default_access_tier, rights_permission)
                VALUES (%s,'government','Test source','http','permanent','public',
                        'may-preserve')""", (source_id,))
+        software_agent_id = ensure_software_agent(conn)
         Collector(conn,
                   FixtureFetcher({"https://example.invalid/a": fixture,
                                   "https://example.invalid/b": TimeoutError("slow")}),
-                  work / "quarantine", roots, agent_id).run(
+                  work / "quarantine", roots, agent_id, software_agent_id).run(
             source_id, ["https://example.invalid/a", "https://example.invalid/b"],
             configuration={})
 

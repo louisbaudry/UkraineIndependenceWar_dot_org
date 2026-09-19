@@ -166,17 +166,17 @@ def run() -> int:
               row is not None and str(row[3]) == person)
 
         software_agent_id = row[0].get("software_agent_id") if row else None
-        check("DR-pending-collection-run-two-agents",
+        check("DR-0097",
               "the run's configuration names the software agent used",
               software_agent_id is not None)
-        check("DR-pending-collection-run-two-agents",
+        check("DR-0097",
               "the software agent is a versioned software pipeline_agent, "
               "not the person given as --agent",
               software_agent_id is not None and software_agent_id != person
               and conn.execute(
                   "SELECT kind, software_version FROM pipeline_agent WHERE id = %s",
                   (software_agent_id,)).fetchone() == ("software", "0.1.0"))
-        check("DR-pending-collection-run-two-agents",
+        check("DR-0097",
               "the run's preservation events are attributed to the software "
               "agent, never to the person",
               conn.execute(
