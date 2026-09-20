@@ -265,7 +265,7 @@ the real download lives on a different host entirely
 
 ## Verification
 
-31 tests. The refusals are the substance:
+32 tests. The refusals are the substance:
 
 - a candidate missing any policy field is refused rather than defaulted —
   DR-0067's point is that collection policy is *stated*, and a silent default
@@ -294,6 +294,21 @@ of which resolves prints which end could not be found rather than
 vanishing. Verified by sabotage: reverting either half of the fix (the
 database lookup in `commit()`, or `validate()`'s `known_keys` parameter)
 turns one check red each.
+
+**`register.py --commit` hands `commit()` the merged view** (fixed
+2026-09-19): `commit()` reads each policy field straight off the dict it is
+given, and since 2026-09-17 every shipped candidate references a class, so
+its fields exist only after `merge_class_defaults()`. `main()` computed that
+merged view for `describe()` but passed the *unmerged* `sources` to
+`commit()` — a bare `KeyError` on the archive server the first time any of
+the three approved registrations was actually executed, invisible to every
+test above because they call `commit()` directly with fixture data. A new
+end-to-end check runs `register.py --commit --only ofac-sdn` as a subprocess
+against the test database and reads the registered row back. Verified by
+sabotage: reverting `main()` to pass `sources` turns exactly that check
+red. The same `load_candidates()` three-value return had also broken
+`collector/run.py`'s `find_candidate()` (now merges before returning) and
+the setup of this suite and `collector/tests/test_run.py`.
 
 **Not verified:** for the three still-unfetched candidates
 (`eur-lex-sanctions`, `seco-sanctions`, `ua-nsdc-sanctions`), that the

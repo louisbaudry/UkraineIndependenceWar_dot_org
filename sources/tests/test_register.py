@@ -23,7 +23,9 @@ sys.path.insert(0, str(ROOT / "sources"))
 
 import psycopg  # noqa: E402
 
-from register import commit, load_candidates, validate  # noqa: E402
+from register import (  # noqa: E402
+    commit, load_candidates, merge_class_defaults, validate,
+)
 
 PASSES: list[str] = []
 FAILURES: list[str] = []
@@ -55,12 +57,25 @@ def build_database() -> None:
 
 
 def run() -> int:
-    sources, dependence = load_candidates()
+    raw_sources, dependence, all_classes = load_candidates()
 
     # ---- the shipped candidates are internally sound --------------------
 
     check("DR-0067", "the shipped candidates validate as they stand",
-          validate(sources, dependence) == [])
+          validate(raw_sources, dependence, all_classes) == [])
+
+    # From here on, work against each candidate's merged (class defaults +
+    # own overrides) view, with the class reference itself dropped — the
+    # same fields commit() and describe() see (DR-0103). A class default is
+    # part of what a candidate declares, not an exemption from checking it,
+    # and the mutation tests below need a field's absence to actually mean
+    # absence, not "falls back to the class".
+    sources = []
+    for s in raw_sources:
+        merged = merge_class_defaults(s, all_classes)
+        merged.pop("class", None)
+        sources.append(merged)
+
     check("DR-0067", "every candidate names a jurisdiction and a scope",
           all(s.get("jurisdiction") and s.get("scope_rules") for s in sources))
     check("§14", "no candidate claims redistribution without flagging the basis",
@@ -257,6 +272,28 @@ def run() -> int:
               "not recorded, and commit() does not crash",
               len(ids_seco) == 1 and conn.execute(
                   "SELECT count(*) FROM source_dependence").fetchone()[0] == 0)
+
+        # -- DR-0103: the operator's real entry point, end to end. Every
+        #    shipped candidate now references a class, and commit() reads
+        #    each policy field directly off the dict it is given, so
+        #    `register.py --commit` must hand it the merged view — the
+        #    2026-09-19 regression was main() passing the unmerged one, which
+        #    no test above can see because they all call commit() directly.
+        conn.execute("DELETE FROM source_dependence")
+        conn.execute("DELETE FROM source")
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / "sources" / "register.py"),
+             "--commit", "--dbname", DB, "--only", "ofac-sdn", "--agent", agent],
+            capture_output=True, text=True)
+        registered = conn.execute(
+            "SELECT default_retention_tier, rights_permission FROM source "
+            "WHERE name = %s", (by_key["ofac-sdn"]["name"],)).fetchone()
+        check("DR-0103",
+              "register.py --commit registers a class-referencing candidate "
+              "with its class's policy fields merged in, not a crash",
+              proc.returncode == 0 and registered is not None
+              and registered[0] == by_key["ofac-sdn"]["default_retention_tier"]
+              and registered[1] == by_key["ofac-sdn"]["rights_permission"])
     finally:
         conn.close()
 
