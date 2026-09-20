@@ -487,9 +487,11 @@ def main() -> int:
         return 1
 
     import psycopg
+    merged_all_sources_by_key = {
+        s["key"]: merge_class_defaults(s, all_classes) for s in all_sources}
     with psycopg.connect(dbname=args.dbname, autocommit=True) as conn:
-        ids = commit(conn, sources, dependence, args.agent,
-                    all_sources_by_key={s["key"]: s for s in all_sources})
+        ids = commit(conn, merged_for_display, dependence, args.agent,
+                    all_sources_by_key=merged_all_sources_by_key)
     for key, source_id in ids.items():
         print(f"  registered  {key}  {source_id}")
     print(f"\n{len(ids)} source(s) registered. Collection is now authorised "

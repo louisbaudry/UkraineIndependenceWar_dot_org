@@ -190,6 +190,34 @@ Scope, for now: classes are defined per candidate file (WP 3.7 §7 sub-Q3),
 not shared across files; if a future file's classes duplicate one here,
 harmonizing is a later, visible decision, not an automatic one.
 
+**A real `--commit` bug found and fixed 2026-09-20.** `register.py`'s
+`main()` still called `commit()` with the *unmerged* candidate dicts —
+`sources = all_sources` straight from `load_candidates()`, never passed
+through `merge_class_defaults()` — even after every shipped candidate
+became class-based (this file's classes, named 2026-09-17). `commit()`
+accesses `source["collection_method"]` and other class-inherited fields
+directly, with no merge of its own, so **any real `--commit` run against
+any of these seven candidates would have raised `KeyError:
+'collection_method'`** — including the three approved-but-unexecuted
+registrations (`uk-ofsi-consolidated`, `bis-entity-list`,
+`seco-sanctions`) this file's own "Which locators are verified" section
+already lists as ready to execute. `--check` and `--dry-run` were
+unaffected (they call `validate()`/`describe()`, which merge internally),
+which is why the gap went unnoticed. Fixed by passing the same merged
+list `describe()` already builds (`merged_for_display`) into `commit()`
+instead of the raw one, plus a merged `all_sources_by_key` for
+cross-batch dependence resolution. `sources/tests/test_register.py` had
+the identical bug in five of its own direct-field checks (all previously
+run against raw candidate dicts that no longer carry those fields
+directly) — the whole suite was erroring at `0/31` before this fix, not
+reporting a real PASS/FAIL for any of them. Fixed the same way, plus a
+sixth spot (`load_candidates()`'s return signature grew from two values
+to three when classes were added, which the test's one call site had
+never been updated for either). Verified: the suite passes 31/31, and
+sabotaging `merge_class_defaults` back to a no-op reproduces the original
+`KeyError` and turns the suite red, confirming the fix is what closes the
+gap rather than the test merely no longer looking for it.
+
 ## What registering these commits you to
 
 `--dry-run` prints this; it is repeated here because each item is a real
@@ -209,7 +237,7 @@ obligation rather than a formality.
 
 ## Which locators are verified
 
-**Five are (one partially), two are not.** On 2026-09-08 the files behind
+**Six are (two partially), one is not.** On 2026-09-08 the files behind
 `eu-consolidated-list` and `ofac-sdn` were fetched, digested twice, and
 acquired end to end by the real collector into a throwaway database
 ([verification record](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md),
@@ -226,7 +254,22 @@ second attempt — the earlier session's six URL guesses had missed that the
 real file lives on a separate host (`sesam.search.admin.ch`, not
 `seco.admin.ch`), found only by following the site's own navigation
 ([verification record](../docs/sources/verification-seco-sanctions.md)).
-None of these five is registered — registering, like it was for the first
+On 2026-09-20 `eur-lex-sanctions` was verified partially — the two
+foundational instruments (Council Regulation 269/2014, Council Decision
+2014/145/CFSP) identified and fetched, rehearsed through the real collector
+(2 discovered, 2 acquired, 0 failed), but with an open question this
+session could not settle: the consolidated-text locator carries a dated
+CELEX suffix that advances roughly monthly as the Council amends the
+regime, so a registered `run_locator` will need periodic re-verification in
+a way none of the other six candidates do
+([verification record](../docs/sources/verification-eur-lex-sanctions.md)).
+`ua-nsdc-sanctions` stays unverified: the specific register it should point
+to is now identified (`drs.nsdc.gov.ua`, the NSDC's own "State Register of
+Sanctions," found via rnbo.gov.ua's own navigation), but that register
+returns HTTP 403 behind a Cloudflare managed challenge from every session
+that has tried it so far, the same block class found on Légifrance
+([verification record](../docs/sources/verification-ua-nsdc-sanctions.md)).
+None of these six is registered — registering, like it was for the first
 two, is the founder's act, per source.
 
 These entries carry three optional fields the registry does not store:

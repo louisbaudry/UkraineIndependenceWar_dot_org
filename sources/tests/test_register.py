@@ -23,7 +23,9 @@ sys.path.insert(0, str(ROOT / "sources"))
 
 import psycopg  # noqa: E402
 
-from register import commit, load_candidates, validate  # noqa: E402
+from register import (  # noqa: E402
+    commit, load_candidates, merge_class_defaults, validate,
+)
 
 PASSES: list[str] = []
 FAILURES: list[str] = []
@@ -35,9 +37,11 @@ def check(req: str, what: str, condition: bool) -> None:
         f"{'PASS' if condition else 'FAIL'}  {req} — {what}")
 
 
-def rejects(req: str, what: str, sources, dependence, fragment: str) -> None:
+def rejects(req: str, what: str, sources, dependence, fragment: str,
+            all_classes=None, known_keys=None) -> None:
     """Validation must refuse, and say why in terms the founder can act on."""
-    problems = validate(sources, dependence)
+    problems = validate(sources, dependence, all_classes=all_classes,
+                        known_keys=known_keys)
     if problems and any(fragment in p for p in problems):
         PASSES.append(f"PASS  {req} — {what}")
         return
@@ -55,58 +59,67 @@ def build_database() -> None:
 
 
 def run() -> int:
-    sources, dependence = load_candidates()
+    sources, dependence, classes = load_candidates()
+    merged_sources = [merge_class_defaults(s, classes) for s in sources]
+    # A fully merged copy with the class reference itself stripped: safe to
+    # sabotage a policy field on directly, since nothing will re-merge the
+    # popped field back in from the class default (DR-0103 made every
+    # shipped candidate class-based, so a raw, unmerged source no longer
+    # carries most required fields directly at all).
+    flat_sources = [dict(s) for s in merged_sources]
+    for s in flat_sources:
+        s.pop("class", None)
 
     # ---- the shipped candidates are internally sound --------------------
 
     check("DR-0067", "the shipped candidates validate as they stand",
-          validate(sources, dependence) == [])
+          validate(sources, dependence, all_classes=classes) == [])
     check("DR-0067", "every candidate names a jurisdiction and a scope",
-          all(s.get("jurisdiction") and s.get("scope_rules") for s in sources))
+          all(s.get("jurisdiction") and s.get("scope_rules") for s in merged_sources))
     check("§14", "no candidate claims redistribution without flagging the basis",
           all("NOT LEGALLY REVIEWED" in (s.get("rights_basis") or "").upper()
               or "UNVERIFIED" in (s.get("rights_basis") or "").upper()
-              for s in sources
+              for s in merged_sources
               if s["rights_permission"] == "may-redistribute"))
 
     # ---- what registration must refuse -----------------------------------
 
     for field in ("scope_rules", "default_access_tier", "rights_permission",
                   "jurisdiction"):
-        broken = copy.deepcopy(sources)
+        broken = copy.deepcopy(flat_sources)
         broken[0].pop(field, None)
         rejects("DR-0067", f"a candidate missing {field} is refused",
                 broken, [], f"missing required field {field!r}")
 
-    crawling = copy.deepcopy(sources)
+    crawling = copy.deepcopy(flat_sources)
     crawling[0]["scope_rules"] = "Crawl the entire site for anything relevant."
     rejects("DR-0071", "an open-ended scope is refused",
             crawling, [], "open-ended crawling")
 
-    unflagged = copy.deepcopy(sources)
+    unflagged = copy.deepcopy(flat_sources)
     unflagged[0]["rights_basis"] = "Public domain, obviously."
     rejects("§14", "a redistribution claim with an unflagged basis is refused",
             unflagged, [], "without flagging that the basis is unreviewed")
 
-    graphic = copy.deepcopy(sources)
+    graphic = copy.deepcopy(flat_sources)
     graphic[0]["expects_graphic_content"] = True
     graphic[0]["default_access_tier"] = "public"
     rejects("PRES-012", "a graphic-content source cannot default to public",
             graphic, [], "expects graphic content but defaults to public")
 
-    duplicated = copy.deepcopy(sources) + [copy.deepcopy(sources[0])]
+    duplicated = copy.deepcopy(flat_sources) + [copy.deepcopy(flat_sources[0])]
     rejects("DR-0067", "duplicate source keys are refused",
             duplicated, [], "duplicate source key")
 
     rejects("DR-0028", "a dependence declaration with no reasoning is refused",
-            sources,
-            [{"from": sources[0]["key"], "to": sources[1]["key"],
+            flat_sources,
+            [{"from": flat_sources[0]["key"], "to": flat_sources[1]["key"],
               "relation": "cites"}],
             "no note")
 
     rejects("DR-0028", "dependence on an unregistered source is refused",
-            sources,
-            [{"from": sources[0]["key"], "to": "nonexistent",
+            flat_sources,
+            [{"from": flat_sources[0]["key"], "to": "nonexistent",
               "relation": "cites", "note": "x"}],
             "unknown source")
 
@@ -114,9 +127,9 @@ def run() -> int:
     #      source-registrations): the other end may be outside this batch
     #      without being unknown ------------------------------------------
 
-    ofsi_only = [s for s in sources if s["key"] == "uk-ofsi-consolidated"]
+    ofsi_only = [s for s in flat_sources if s["key"] == "uk-ofsi-consolidated"]
     ofsi_dep = [d for d in dependence if d["from"] == "uk-ofsi-consolidated"]
-    all_keys = {s["key"] for s in sources}
+    all_keys = {s["key"] for s in flat_sources}
     check("DR-pending-second-source-registrations",
           "a dependence naming a source outside a --only batch validates "
           "when known_keys includes it",
@@ -139,21 +152,21 @@ def run() -> int:
           all(s.get("locator_verified") for s in sources
               if s.get("run_locators")))
 
-    undated = copy.deepcopy(sources)
+    undated = copy.deepcopy(flat_sources)
     for s in undated:
         if s["key"] == "ofac-sdn":
             s.pop("locator_verified")
     rejects("PRES-007", "run locators without a verification date are refused",
             undated, [], "locator_verified is not set")
 
-    badly_dated = copy.deepcopy(sources)
+    badly_dated = copy.deepcopy(flat_sources)
     for s in badly_dated:
         if s["key"] == "ofac-sdn":
             s["locator_verified"] = "recently"
     rejects("PRES-007", "a verification date that is not a date is refused",
             badly_dated, [], "must be an ISO date")
 
-    insecure = copy.deepcopy(sources)
+    insecure = copy.deepcopy(flat_sources)
     for s in insecure:
         if s["key"] == "ofac-sdn":
             s["run_locators"] = ["http://sanctionslistservice.ofac.treas.gov/x"]
@@ -178,14 +191,14 @@ def run() -> int:
         conn.execute("INSERT INTO pipeline_agent (id, kind, name) "
                      "VALUES (%s,'person','Test founder')", (agent,))
 
-        ids = commit(conn, sources, dependence, agent)
+        ids = commit(conn, flat_sources, dependence, agent)
         check("OPS-001", "registration inserts every accepted source",
-              len(ids) == len(sources))
+              len(ids) == len(flat_sources))
         check("DR-0067", "registered sources carry their collection policy",
               conn.execute(
                   "SELECT count(*) FROM source WHERE scope_rules IS NOT NULL "
                   "AND collection_method IS NOT NULL").fetchone()[0]
-              == len(sources))
+              == len(flat_sources))
         check("DR-0028", "declared dependence is stored with an asserter",
               conn.execute(
                   "SELECT count(*) FROM source_dependence WHERE "
@@ -210,14 +223,14 @@ def run() -> int:
               conn.execute(
                   "SELECT count(*) FROM source WHERE "
                   "default_retention_tier = 'permanent'").fetchone()[0]
-              == len([s for s in sources
+              == len([s for s in flat_sources
                       if s["default_retention_tier"] == "permanent"]))
 
         # -- per-source registration, which is how a per-source decision is
         #    actually executed
         conn.execute("DELETE FROM source_dependence")
         conn.execute("DELETE FROM source")
-        one = [s for s in sources if s["key"] == "ofac-sdn"]
+        one = [s for s in flat_sources if s["key"] == "ofac-sdn"]
         ids = commit(conn, one, [], agent)
         check("§78", "a single source can be registered on its own",
               len(ids) == 1
@@ -229,9 +242,9 @@ def run() -> int:
 
         conn.execute("DELETE FROM source_dependence")
         conn.execute("DELETE FROM source")
-        by_key = {s["key"]: s for s in sources}
-        eu = [s for s in sources if s["key"] == "eu-consolidated-list"]
-        ofsi = [s for s in sources if s["key"] == "uk-ofsi-consolidated"]
+        by_key = {s["key"]: s for s in flat_sources}
+        eu = [s for s in flat_sources if s["key"] == "eu-consolidated-list"]
+        ofsi = [s for s in flat_sources if s["key"] == "uk-ofsi-consolidated"]
         commit(conn, eu, [], agent, all_sources_by_key=by_key)
         commit(conn, ofsi, ofsi_dep, agent, all_sources_by_key=by_key)
         check("DR-pending-second-source-registrations",
@@ -249,7 +262,7 @@ def run() -> int:
 
         conn.execute("DELETE FROM source_dependence")
         conn.execute("DELETE FROM source")
-        seco = [s for s in sources if s["key"] == "seco-sanctions"]
+        seco = [s for s in flat_sources if s["key"] == "seco-sanctions"]
         seco_dep = [d for d in dependence if d["from"] == "seco-sanctions"]
         ids_seco = commit(conn, seco, seco_dep, agent, all_sources_by_key=by_key)
         check("DR-pending-second-source-registrations",
