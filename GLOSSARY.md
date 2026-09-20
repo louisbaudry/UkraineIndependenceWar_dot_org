@@ -252,15 +252,97 @@ An entry in `sources/candidates/*.yaml` describing a not-yet-registered
 source and the reasoning for its proposed configuration. Registering a
 candidate is a founder act, per source.
 
+## Epistemic layers and vocabulary (DR-0024, DR-0025, DR-0026)
+
+**Six-layer epistemic architecture**
+The project's structure for keeping facts, sources, and judgments distinct:
+(1) world layer, (2) documentary assertions, (3) evidence relations, (4)
+project assertions, (5) epistemic assessments, (6) arguments. Being present
+in the corpus never implies being evidentially used (DR-0024, Principle 5).
+
+**Project assertion**
+A belief held by the project or a named analyst, produced by visible
+inference and held under human accountability (record §79) — distinct from
+a documentary assertion, which is owned by its source, not the project
+(DR-0024 layer 4).
+
+**Epistemic assessment**
+A versioned status/likelihood/confidence judgment attached to an assertion.
+Prior states are never rewritten — a changed assessment is a new version,
+not an edit (record §63; DR-0024 layer 5).
+
+**Epistemic vocabulary v1**
+The six controlled categories an assertion in this system may carry:
+**observation, claim, assessment, hypothesis, finding,** and **project
+conclusion**. Every assertion carries exactly one; the set changes only by
+Decision Record (DR-0025).
+
+**Finding**
+One of the v1 epistemic categories. Includes *negative* findings (record
+§76) as first-class — the project stating that something was looked for,
+with a stated scope and method, and not found — not merely an absence of
+data.
+
+**Two-dimensional uncertainty**
+This project's rule that probability and confidence are kept as two
+separate, never-collapsed dimensions on a judgment (DR-0026):
+
+- **Likelihood** — an ordered scale of verbal probability expressions
+  (e.g., ICD 203/PHIA-style), each bound to an explicit numeric range.
+- **Analytic confidence** — low/moderate/high, derived from evidence
+  quality, corroboration, and reasoning strength — never a bare numeric
+  score, and never averaged across contradictory assessments.
+
+## Adopted standards not yet in wide use (DR-0020, DR-0021, DR-0022)
+
+**TEI (TEI P5)**
+The Text Encoding Initiative's scholarly text-encoding standard. Adopted
+here only *selectively* — deep TEI encoding (variant readings, damage,
+editorial apparatus) is reserved for high-value transcripts and critical
+editions, with the project's specific subset defined only once such a
+corpus exists, not speculatively (DR-0020). Routine transcripts stay plain
+derivative expressions with PROV lineage instead.
+
+**IIIF**
+The International Image Interoperability Framework (Presentation API
+3.0), used for region/interval annotation and delivery of image and audio/
+video evidence. Must be formally evaluated before this project's media
+delivery platform is designed; adoption is deferred to that point, and no
+media-delivery decision may bypass the evaluation (DR-0021). Composes
+natively with the Web Annotation vocabulary this project already uses
+(DR-0017).
+
+**CSL (Citation Style Language)**
+The standard adopted for *rendering* citations at the presentation layer,
+driven by documentary-layer metadata — so citation formatting can change
+(e.g., a different house style) without touching the canonical citation
+data underneath (record §61; DR-0022).
+
+## POL-0001-specific terms
+
+**Material change**
+Under POL-0001 §11, any change to collection scope, jurisdiction, or
+applicable law — explicitly including incorporation as a legal entity, or
+a change to the establishment jurisdiction or hosting country — that
+triggers a recorded policy review, rather than a silent update.
+
+**Review trigger**
+A named, specific condition (e.g., "the start of Gate 3 work," a material
+change under §11) that a Decision Record records as the point at which a
+held-open question or a policy section must be revisited — as opposed to
+an open-ended "review later," which this project avoids (see DR-0101's
+"recorded" act, and the founder's 2026-09-15 ruling that named review
+triggers must be recorded per §9.4/§8 of the legal-review brief).
+
 ## Suggested next terms
 
-The categories above are a starting set. Candidates not yet included, in
-case they're wanted:
-- Specific epistemic-layer terms from DR-0024/DR-0025 (e.g., "epistemic
-  vocabulary", "two-dimensional uncertainty")
-- IIIF, TEI, CSL (adopted per DR-0020/DR-0021/DR-0022 but not yet defined
-  here)
-- POL-0001-specific terms (e.g., "material change", "review trigger")
+The sections above now cover governance/process, archival/preservation,
+data model/epistemics, sanctions domain, epistemic vocabulary, the
+selectively-adopted standards (TEI/IIIF/CSL), and POL-0001-specific terms.
+Remaining candidates not yet included, in case they're wanted:
+- CRMinf (the epistemic/argumentation-layer candidate from DR-0016)
+- W3C Web Annotation and the "anchoring rule" (DR-0017, DR-0018)
+- DataCite / dataset release terms (referenced in DR-0022's consequences)
 
 Say which (if any) to add, or flag any definition above that needs
 correction.
