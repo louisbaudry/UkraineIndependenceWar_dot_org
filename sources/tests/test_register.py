@@ -272,6 +272,28 @@ def run() -> int:
               "not recorded, and commit() does not crash",
               len(ids_seco) == 1 and conn.execute(
                   "SELECT count(*) FROM source_dependence").fetchone()[0] == 0)
+
+        # -- DR-0103: the operator's real entry point, end to end. Every
+        #    shipped candidate now references a class, and commit() reads
+        #    each policy field directly off the dict it is given, so
+        #    `register.py --commit` must hand it the merged view — the
+        #    2026-09-19 regression was main() passing the unmerged one, which
+        #    no test above can see because they all call commit() directly.
+        conn.execute("DELETE FROM source_dependence")
+        conn.execute("DELETE FROM source")
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / "sources" / "register.py"),
+             "--commit", "--dbname", DB, "--only", "ofac-sdn", "--agent", agent],
+            capture_output=True, text=True)
+        registered = conn.execute(
+            "SELECT default_retention_tier, rights_permission FROM source "
+            "WHERE name = %s", (by_key["ofac-sdn"]["name"],)).fetchone()
+        check("DR-0103",
+              "register.py --commit registers a class-referencing candidate "
+              "with its class's policy fields merged in, not a crash",
+              proc.returncode == 0 and registered is not None
+              and registered[0] == by_key["ofac-sdn"]["default_retention_tier"]
+              and registered[1] == by_key["ofac-sdn"]["rights_permission"])
     finally:
         conn.close()
 
