@@ -122,6 +122,8 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-16 | WP 3.4 Track A item **A5 (registration classes) enacted as `DR-0103`**, at the founder's direction. Enacting it surfaced a real numbering collision the merged A5 PR (#29) had left in place: its design paper was deposited as `wp-3.5-registration-classes.md`, silently colliding with the already-taken WP 3.5 (identifier design), with no `docs/phase-3/README.md` row or `PROVENANCE.md` entry. Renumbered to **WP 3.7**, pointed its candidate-DR section at the correct pre-existing **CDR-P3-32** (from WP 3.4 §8, not a new CDR), and added the missing register/provenance entries | `docs/decision-records/DR-0103-registration-classes.md`, [`WP 3.7`](docs/phase-3/working-papers/wp-3.7-registration-classes.md), `docs/phase-3/working-papers/PROVENANCE.md` |
 | 2026-09-17 | Founder named the initial registration classes' grouping principle: **jurisdiction first, topic second**, matching WP 3.7 §7's recommendation. All seven `sanctions-authorities.yaml` sources wired to a class; four needed explicit per-source overrides where the class default would otherwise have silently changed an already-verified or DR-approved value (`capture_format`, `rights_permission`). Caught and fixed a live regression: `eu-consolidated-list` had already silently inherited `capture_format: warc` from its class against its DR-0093-verified `http`, the same fix `ofac-sdn` already carried | `sources/candidates/sanctions-authorities.yaml`, `sources/README.md` |
 | 2026-09-17 | WP 3.4 Track A item A2's index clients **completed a live query for the first time**: this session's network reached both `index.commoncrawl.org` and `web.archive.org`, where every prior session's had failed (`ECONNRESET`/timeout). Ran both against `rnbo.gov.ua` (the `ua-nsdc-sanctions` publisher domain) — Wayback returned 25 hosts including a `sanctions-t.rnbo.gov.ua` subdomain worth a look; Common Crawl returned 2. Network access varies by session (CLAUDE.md); this does not mean the gap is permanently closed, only that it is not fixed shut either | `sources/census.py` |
+| 2026-09-19 | Full status check across every component suite (per CLAUDE.md's "run the suites you will touch before editing", extended here since no Track A item was actionable without either a founder ruling or archive-server access): found `release/tests/test_baseline.py` had been erroring out (0/27, `TypeError`) since DR-0097 added a required `software_agent_id` argument to `Collector.__init__` and this test's own call site was never updated. Fixed; also renamed the stale `DR-pending-collection-run-two-agents` citation, still present in `collector/pipeline.py`, `collector/run.py`, and their tests, to `DR-0097`. All six component suites (199 checks) and `registry/validate.py` (31 entries) confirmed green. A fourth Légifrance re-attempt (same Article 46 direct-link URL as the three prior attempts) got the same `403`/Cloudflare-challenge response; logged as the fourth data point in the standing verification-attempt log | `release/tests/test_baseline.py`, `collector/pipeline.py`, `collector/run.py`, `collector/tests/`, `docs/sources/verification-lil-articles.md` |
+| 2026-09-20 | Founder ruled, one question at a time: pursue both remaining unverified sanctions candidates (`eur-lex-sanctions`, `ua-nsdc-sanctions`) in parallel rather than sequentially or singly — research only, no registration by this or any session; and **start forming an association loi 1901 now**, in parallel with French counsel's still-pending Part A response, resolving README's open-decisions item 2. Candidate DR drafted recording the ruling and what remains outside any session's reach (statutes, filing, SIRET, first general assembly) — the controller stays the founder as a natural person (`DR-0100`) until the association legally exists and a separate POL-0001 §11 review records the handover | `docs/decision-records/DR-pending-legal-entity-formation.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
 is under way**: 2 of the 7 sanctions sources are registered and have completed
@@ -286,16 +288,20 @@ outstanding *execution*.
    not Légifrance. **Nothing changes in POL-0001 until the review is
    recorded**; this is here so the ruling is not assumed safe in the interval.
 2. **Whether the project should form a legal entity before, or as part of,
-   commissioning the POL-0001 §10 review.** Surfaced 2026-09-14 while
-   naming France as the interim establishment jurisdiction
-   (`DR-0099`): no separate legal entity
-   exists, and GDPR's establishment concept ordinarily presumes an
-   organized controller. Engaging a reviewer productively may depend on
-   knowing whether they are advising an individual running a project or an
-   entity yet to be formed. **Still open** after the 2026-09-15 record, which
-   states the controller as the founder as a natural person without closing
-   this — a founder decision. The brief carries it to counsel at Q6 and flags
-   it at §9.1–9.3.
+   commissioning the POL-0001 §10 review — resolved 2026-09-20.** Surfaced
+   2026-09-14 while naming France as the interim establishment jurisdiction
+   (`DR-0099`); the founder ruled 2026-09-20 to start forming an
+   **association loi 1901** now, in parallel with counsel's still-pending
+   response to Part A (candidate
+   [`DR-pending-legal-entity-formation`](docs/decision-records/DR-pending-legal-entity-formation.md),
+   pending founder-facing filename only — the ruling itself is final).
+   This is a decision to proceed, not a completed formation: statutes,
+   filing, SIRET and a first general assembly remain outstanding
+   real-world acts no session can perform. The controller stays the
+   founder as a natural person (`DR-0100` Decision 2) until the
+   association legally exists and takes over — that handover is a
+   separate POL-0001 §11 material-change review, recorded when it
+   happens, not assumed now.
 3. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
    verified; each needs identifying a specific legal instrument or
    decision set, which is legal or editorial judgment, not a URL to find
