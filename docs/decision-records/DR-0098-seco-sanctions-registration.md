@@ -142,10 +142,23 @@ a pair.
 
 ## Executed
 
-Not yet. This record is approved; registration on the archive server has
-not been performed as of this record's drafting. Whoever executes it
-should replace this section with the actual run id, byte count and any
-findings, matching DR-0093's *Executed* section.
+**2026-09-21, on the archive server, by the founder**, in the same
+`--commit` call as `DR-0096`'s two sources
+(`--only uk-ofsi-consolidated bis-entity-list seco-sanctions`) — matches
+Decision 6's independence: registered together as a matter of session
+convenience, not because either decision required the other.
+
+1. **Registered.** Source id `04ea786f-0021-4033-b578-6921a7151386`. The
+   declared `seco-sanctions --common-evidentiary-origin-->
+   eu-consolidated-list` dependence recorded automatically by the same
+   call, confirmed by query.
+2. **Collection run**, real, `--dry-run` first: run
+   `d21d849d-fe96-409c-ae85-cb14b42f739e` — 1 discovered, 1 acquired, 0
+   failed, 42 300 406 bytes preserved, exactly matching the 2026-09-13
+   verification's digested file size.
+3. **`release/baseline.py --check --dbname uiw`** confirmed afterward:
+   every versioning dimension pinned except `dataset_snapshot` (expected —
+   no preservation dump requested this session).
 
 ## Consequences
 
