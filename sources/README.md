@@ -245,11 +245,13 @@ register (last seen 2026-08-24) but no bulk-export file among them,
 strengthening the working hypothesis that it is a search-UI-only
 application rather than confirming it
 ([verification record](../docs/sources/verification-ua-nsdc-sanctions.md)).
-None of these six is registered, and one (`eur-lex-sanctions`) is now
-approved but unexecuted
-([`DR-pending-eur-lex-sanctions-registration`](../docs/decision-records/DR-pending-eur-lex-sanctions-registration.md))
-— registering, like it was for the first two, is the founder's act, per
-source.
+`eur-lex-sanctions` was **registered and collected 2026-09-21**
+([`DR-0105`](../docs/decision-records/DR-0105-eur-lex-sanctions-registration.md)):
+2 discovered, 2 acquired, 0 failed, 16 199 485 bytes preserved, 0
+documentary assertions. The other three approved sources
+(`uk-ofsi-consolidated`, `bis-entity-list`, `seco-sanctions`) remain
+approved-but-unexecuted — registering any of them, like it was for the
+first three, is the founder's act, per source.
 
 These entries carry three optional fields the registry does not store:
 

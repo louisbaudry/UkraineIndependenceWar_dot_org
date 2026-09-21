@@ -1,4 +1,4 @@
-# DR-pending-legal-entity-formation — Legal entity formation: association loi 1901, started now
+# DR-0104 — Legal entity formation: association loi 1901, started now
 
 **Category:** legal / operations | **Status:** **Approved**
 **Decided:** 2026-09-20 by founder/principal editor — form and timing both supplied the same session

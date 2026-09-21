@@ -45,15 +45,20 @@ data model, the registry, the three-gate pipeline, the storage layout and the
 personal-data policy are all decided and documented. The code implements them and is
 tested against a real database and real storage. But:
 
-- **Two sources are registered and collected; five are still proposals.** Of the
-  seven sanctions authorities in [`sources/candidates/`](sources/README.md), the
-  founder accepted `eu-consolidated-list` and `ofac-sdn` on 2026-09-08 and ran the
-  first collection on the archive server on 2026-09-09 — five files, ~211 MB, zero
+- **Three sources are registered and collected; three more are approved but
+  not yet executed; one remains blocked.** Of the seven sanctions authorities
+  in [`sources/candidates/`](sources/README.md), the founder accepted
+  `eu-consolidated-list` and `ofac-sdn` on 2026-09-08 and ran the first
+  collection on the archive server on 2026-09-09 — five files, ~211 MB, zero
   failures ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)).
-  The other five remain candidates awaiting a per-source decision; registering is
-  the act that authorises collection (OPS-001).
-- **A live fetch has now completed, once, deliberately.** `HttpFetcher` acquired
-  the two sources above from a real server with an identified User-Agent. No WARC
+  `eur-lex-sanctions` was registered and collected the same way on 2026-09-21
+  ([DR-0105](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md)).
+  `uk-ofsi-consolidated`, `bis-entity-list` and `seco-sanctions` are approved
+  but not yet executed; `ua-nsdc-sanctions` remains a candidate, blocked on a
+  Cloudflare challenge; registering is the act that authorises collection
+  (OPS-001).
+- **A live fetch has now completed, twice, deliberately.** `HttpFetcher` acquired
+  the sources above from real servers with an identified User-Agent. No WARC
   file from Common Crawl or the Wayback Machine has been parsed against a live
   archive yet — the WARC reader is exercised only against files the test suite
   writes itself. [`collector/README.md`](collector/README.md) says exactly what is
@@ -124,14 +129,15 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-17 | Founder named the initial registration classes' grouping principle: **jurisdiction first, topic second**, matching WP 3.7 §7's recommendation. All seven `sanctions-authorities.yaml` sources wired to a class; four needed explicit per-source overrides where the class default would otherwise have silently changed an already-verified or DR-approved value (`capture_format`, `rights_permission`). Caught and fixed a live regression: `eu-consolidated-list` had already silently inherited `capture_format: warc` from its class against its DR-0093-verified `http`, the same fix `ofac-sdn` already carried | `sources/candidates/sanctions-authorities.yaml`, `sources/README.md` |
 | 2026-09-17 | WP 3.4 Track A item A2's index clients **completed a live query for the first time**: this session's network reached both `index.commoncrawl.org` and `web.archive.org`, where every prior session's had failed (`ECONNRESET`/timeout). Ran both against `rnbo.gov.ua` (the `ua-nsdc-sanctions` publisher domain) — Wayback returned 25 hosts including a `sanctions-t.rnbo.gov.ua` subdomain worth a look; Common Crawl returned 2. Network access varies by session (CLAUDE.md); this does not mean the gap is permanently closed, only that it is not fixed shut either | `sources/census.py` |
 | 2026-09-19 | Full status check across every component suite (per CLAUDE.md's "run the suites you will touch before editing", extended here since no Track A item was actionable without either a founder ruling or archive-server access): found `release/tests/test_baseline.py` had been erroring out (0/27, `TypeError`) since DR-0097 added a required `software_agent_id` argument to `Collector.__init__` and this test's own call site was never updated. Fixed; also renamed the stale `DR-pending-collection-run-two-agents` citation, still present in `collector/pipeline.py`, `collector/run.py`, and their tests, to `DR-0097`. All six component suites (199 checks) and `registry/validate.py` (31 entries) confirmed green. A fourth Légifrance re-attempt (same Article 46 direct-link URL as the three prior attempts) got the same `403`/Cloudflare-challenge response; logged as the fourth data point in the standing verification-attempt log | `release/tests/test_baseline.py`, `collector/pipeline.py`, `collector/run.py`, `collector/tests/`, `docs/sources/verification-lil-articles.md` |
-| 2026-09-20 | Founder ruled, one question at a time: pursue both remaining unverified sanctions candidates (`eur-lex-sanctions`, `ua-nsdc-sanctions`) in parallel rather than sequentially or singly — research only, no registration by this or any session; and **start forming an association loi 1901 now**, in parallel with French counsel's still-pending Part A response, resolving README's open-decisions item 2. Candidate DR drafted recording the ruling and what remains outside any session's reach (statutes, filing, SIRET, first general assembly) — the controller stays the founder as a natural person (`DR-0100`) until the association legally exists and a separate POL-0001 §11 review records the handover | `docs/decision-records/DR-pending-legal-entity-formation.md` |
+| 2026-09-20 | Founder ruled, one question at a time: pursue both remaining unverified sanctions candidates (`eur-lex-sanctions`, `ua-nsdc-sanctions`) in parallel rather than sequentially or singly — research only, no registration by this or any session; and **start forming an association loi 1901 now**, in parallel with French counsel's still-pending Part A response, resolving README's open-decisions item 2. Candidate DR drafted recording the ruling and what remains outside any session's reach (statutes, filing, SIRET, first general assembly) — the controller stays the founder as a natural person (`DR-0100`) until the association legally exists and a separate POL-0001 §11 review records the handover | `docs/decision-records/DR-0104-legal-entity-formation.md` |
 | 2026-09-20 | Both remaining sanctions candidates researched in parallel, per the founder's ruling above. **`eur-lex-sanctions`** verified partially: the two foundational instruments identified (Council Regulation 269/2014, Council Decision 2014/145/CFSP), fetched, and rehearsed through the real collector (2/2 acquired, 0 failed) — with a genuine open question flagged, not resolved: its consolidated-text locator carries a dated CELEX suffix that advances roughly monthly, unlike every other sanctions candidate's stable list-file locator. **`ua-nsdc-sanctions`** stays unverified: the actual register (`drs.nsdc.gov.ua`, the NSDC's own "State Register of Sanctions," found via rnbo.gov.ua's own navigation) is now identified but returns HTTP 403 behind a Cloudflare managed challenge, the same block class as Légifrance. **Separately, this branch independently rediscovered the same `register.py --commit` bug the 2026-09-19 row above already fixed on `main`** — unaware of it, since this branch was cut before that fix merged. `sources/tests/test_register.py` carried the identical redundant fix. On merging the two branches, the 2026-09-19 fix was kept (more thorough — also covers `collector/run.py` and `collector/tests/test_run.py`, plus a real end-to-end `--commit` subprocess check) and this branch's duplicate discarded; `eur-lex-sanctions`'s own verification and approval work is unaffected | `sources/candidates/sanctions-authorities.yaml`, `docs/sources/verification-eur-lex-sanctions.md`, `docs/sources/verification-ua-nsdc-sanctions.md`, `sources/README.md` |
-| 2026-09-21 | Founder closed `eur-lex-sanctions`'s two remaining open questions, one at a time: `run_locators` keeps both instruments (Regulation 269/2014 and Decision 2014/145/CFSP), not the Regulation alone; and its dated-CELEX consolidated-text locator is re-verified manually before each collection run — the same agent-of-record model every other source uses (DR-0093 §3), no new tooling built. Founder then **approved `eur-lex-sanctions` for registration**, a fourth candidate joining `uk-ofsi-consolidated`/`bis-entity-list`/`seco-sanctions` as approved-but-unexecuted. Its cross-batch dependence on the already-registered `eu-consolidated-list` re-verified in a throwaway database seeded to match the archive server's real state, matching the `--only`-batch pattern `DR-0096`/`DR-0098` established | `docs/decision-records/DR-pending-eur-lex-sanctions-registration.md`, `docs/sources/verification-eur-lex-sanctions.md`, `sources/candidates/sanctions-authorities.yaml` |
+| 2026-09-21 | Founder closed `eur-lex-sanctions`'s two remaining open questions, one at a time: `run_locators` keeps both instruments (Regulation 269/2014 and Decision 2014/145/CFSP), not the Regulation alone; and its dated-CELEX consolidated-text locator is re-verified manually before each collection run — the same agent-of-record model every other source uses (DR-0093 §3), no new tooling built. Founder then **approved `eur-lex-sanctions` for registration**, a fourth candidate joining `uk-ofsi-consolidated`/`bis-entity-list`/`seco-sanctions` as approved-but-unexecuted. Its cross-batch dependence on the already-registered `eu-consolidated-list` re-verified in a throwaway database seeded to match the archive server's real state, matching the `--only`-batch pattern `DR-0096`/`DR-0098` established | `docs/decision-records/DR-0105-eur-lex-sanctions-registration.md`, `docs/sources/verification-eur-lex-sanctions.md`, `sources/candidates/sanctions-authorities.yaml` |
+| 2026-09-21 | **`eur-lex-sanctions` registration and first collection executed on the archive server**, interactively, by the founder: 2 discovered, 2 acquired, 0 failed, 16 199 485 bytes preserved, 0 documentary assertions (run `2eeef589-56aa-430d-af5f-855f5b6775d0`). Execution surfaced a real, unrelated blocker — the archive server's checkout was on a stale pre-DR-0087 branch, and its live database schema was ~10 weeks behind `main` (missing the whole identifier subsystem and more); this project has no schema-migration mechanism for a live database. Resolved by a full backup-then-reload: switched to `main`, `pg_dump` full and data-only to a timestamped backup, schema rebuilt from current DDL as the `postgres` superuser (the connecting `root` role lacked the privilege `pg_dump --disable-triggers`'s technique needs), data reloaded past expected DDL-seeded reference-table duplicate-key conflicts — row counts verified identical across every real data table before and after. Also numbered `DR-0104`/`DR-0105`, which had reached `main` still named `DR-pending-*` from an earlier merge that skipped the renaming step — every cross-reference updated | `docs/decision-records/DR-0105-eur-lex-sanctions-registration.md`, `docs/decision-records/DR-0104-legal-entity-formation.md`, `docs/decision-records/README.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
-is under way**: 2 of the 7 sanctions sources are registered and have completed
-a first collection on the archive server (2026-09-09); 4 more are approved but
-not yet executed; the other 1 is blocked pending network access
+is under way**: 3 of the 7 sanctions sources are registered and have completed
+a first collection on the archive server (2026-09-09, 2026-09-21); 3 more are
+approved but not yet executed; the other 1 is blocked pending network access
 (`ua-nsdc-sanctions`, Cloudflare-challenged). **A2's index tooling is
 built** (2026-09-12) and **completed its first live query** (2026-09-17,
 against `rnbo.gov.ua`). **A3 is done.** **A4's WACZ
@@ -305,7 +311,7 @@ outstanding *execution*.
    (`DR-0099`); the founder ruled 2026-09-20 to start forming an
    **association loi 1901** now, in parallel with counsel's still-pending
    response to Part A (candidate
-   [`DR-pending-legal-entity-formation`](docs/decision-records/DR-pending-legal-entity-formation.md),
+   [`DR-0104`](docs/decision-records/DR-0104-legal-entity-formation.md),
    pending founder-facing filename only — the ruling itself is final).
    This is a decision to proceed, not a completed formation: statutes,
    filing, SIRET and a first general assembly remain outstanding
@@ -316,7 +322,7 @@ outstanding *execution*.
    happens, not assumed now.
 3. **Registering `ua-nsdc-sanctions`.** Its sibling candidate,
    `eur-lex-sanctions`, was verified, scoped and approved 2026-09-20/21
-   ([`DR-pending-eur-lex-sanctions-registration`](docs/decision-records/DR-pending-eur-lex-sanctions-registration.md))
+   ([`DR-0105`](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md))
    — resolved and dropped from this list. `ua-nsdc-sanctions` is not: its
    register, `drs.nsdc.gov.ua`, is identified but Cloudflare-challenged
    from every session that has tried it, live or via a 2026-09-21
