@@ -194,6 +194,9 @@ site/                 Public-facing progress briefing (not governance content,
 CLAUDE.md             Working instructions for AI-assisted sessions
 AGENTS.md             Pointer to CLAUDE.md, for tools that look for this
                       filename specifically; no separate instructions
+GLOSSARY.md           Plain-language definitions of archival, preservation,
+                      and sanctions-domain terms used across this repo;
+                      informal, not a DR-0046 controlled document
 ```
 
 ## Running the test suites
@@ -244,6 +247,10 @@ deliberate acts that follow it (OPS-001).
 
 ## Reading order for a newcomer
 
+0. [GLOSSARY.md](GLOSSARY.md) — plain-language definitions of the archival,
+   preservation, and sanctions-domain terms used throughout this repository
+   (DR, CDR, OAIS, PREMIS, fixity, WARC, Gate 1/2/3, and more). Keep it open
+   while reading everything below.
 1. The [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md),
    especially §1–§14 and §104 (the principles). Everything else answers to it.
 2. [METH-0001](docs/methodology/METH-0001-evidentiary-method.md), the evidentiary method.
