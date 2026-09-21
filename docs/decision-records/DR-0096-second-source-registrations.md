@@ -173,10 +173,29 @@ crashing or asserting a link to a source that does not exist.
 
 ## Executed
 
-Not yet. This record is approved; registration on the archive server has
-not been performed as of this record's drafting. Whoever executes it
-should replace this section with the actual run ids, byte counts and any
-findings, matching DR-0093's *Executed* section.
+**2026-09-21, on the archive server, by the founder**, in the same session
+as `DR-0098` (`seco-sanctions`) and shortly after `DR-0105`
+(`eur-lex-sanctions`), which had already brought the archive server's
+checkout to `main` and its database schema current — this record's own
+execution needed neither step repeated.
+
+1. **Both registered in one `--commit --only uk-ofsi-consolidated
+   bis-entity-list` call**, alongside `seco-sanctions` in the same
+   invocation (`--only uk-ofsi-consolidated bis-entity-list
+   seco-sanctions`). Source ids: `uk-ofsi-consolidated`
+   `e5a9fa44-131a-49c5-9b40-3e3c992bba8a`; `bis-entity-list`
+   `e154ad21-0ea9-4f7c-96cc-0d8ec1b75335`. The declared
+   `uk-ofsi-consolidated --common-evidentiary-origin--> eu-consolidated-list`
+   dependence recorded automatically by the same call, confirmed by query.
+2. **Collection runs**, real, `--dry-run` first for each: `uk-ofsi-consolidated`
+   run `efcdcb38-44a8-4f07-972a-8a99c220b82b` — 2 discovered, 2 acquired, 0
+   failed, 70 739 812 bytes preserved (CSV + XML, matching the verified
+   sizes' sum). `bis-entity-list` run `cc2f55e3-84e0-4bca-a169-7c2072c46edb`
+   — 1 discovered, 1 acquired, 0 failed, 110 427 bytes preserved, exactly
+   matching the verified Denied Persons List CSV size.
+3. **`release/baseline.py --check --dbname uiw`** confirmed afterward:
+   every versioning dimension pinned except `dataset_snapshot` (expected —
+   no preservation dump requested this session).
 
 ## Consequences
 
