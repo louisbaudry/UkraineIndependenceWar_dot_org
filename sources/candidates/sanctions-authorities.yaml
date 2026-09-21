@@ -163,7 +163,43 @@ sources:
     class: EU-institutional-sanctions
     source_type: sanctions-authority
     name: EUR-Lex — restrictive measures (Ukraine/Russia)
+    # The two foundational instruments identified 2026-09-20: Council
+    # Regulation (EU) No 269/2014 (CELEX 32014R0269, whose Annex I carries
+    # the designated-persons list) and Council Decision 2014/145/CFSP
+    # (CELEX 32014D0145). run_locators below point at each instrument's
+    # *current consolidated version* as fetched that day (dated CELEX
+    # suffix 20260807) — this dated suffix advances roughly monthly as the
+    # Council amends the regime, so it WILL go stale and needs
+    # re-verification at registration time, not treated as a fixed URL.
+    # Founder confirmed 2026-09-21: both instruments belong in run_locators
+    # (matches scope_rules' "Regulations, Council Decisions and implementing
+    # acts"), not the Regulation alone. Re-verification cadence for the
+    # dated CELEX suffix also ruled 2026-09-21: manual, before each run --
+    # a person re-fetches eur-lex.europa.eu and updates run_locators, same
+    # as every other source (a person as agent of record, DR-0093 §3), no
+    # new tooling built for this. locator_verified below is a fetch date,
+    # not a promise the dated CELEX stays current until then. See
+    # verification_note and docs/sources/verification-eur-lex-sanctions.md.
     locator: https://eur-lex.europa.eu/
+    locator_verified: 2026-09-20
+    run_locators:
+      - https://eur-lex.europa.eu/legal-content/EN/AUTO/?uri=CELEX:02014R0269-20260807
+      - https://eur-lex.europa.eu/legal-content/EN/AUTO/?uri=CELEX:02014D0145-20260807
+    verification_note: >
+      Identified by following EUR-Lex's own "Consolidated texts" links from
+      each instrument's base CELEX page, not by guessing a URL. Both
+      instruments' current consolidated versions fetched 2026-09-20: the
+      regulation 8 677 685 bytes across three fetches, byte-identical
+      except for a per-request _csrf form token (confirmed by diff, not a
+      content change). Acquired end to end by the real collector in a
+      throwaway database: 2 discovered, 2 acquired, 0 failed, 16 196 543
+      bytes preserved, 0 documentary assertions. Unlike every other
+      sanctions candidate, this source's designated-persons content lives
+      inside amendable primary legislation with a dated consolidated CELEX
+      that changes on each amendment (observed roughly monthly over
+      2025-2026) rather than a stable list-file locator — the dated suffix
+      above WILL go stale and must be re-verified, not assumed permanent.
+      Record in docs/sources/verification-eur-lex-sanctions.md.
     publisher: Publications Office of the European Union
     jurisdiction: EU
     primary_languages: [en, fr, de, uk]
@@ -419,6 +455,15 @@ sources:
     class: UA-state-investigations
     source_type: official-ukrainian
     name: NSDC sanctions decisions and presidential decrees enacting them
+    # 2026-09-20: the specific register this candidate should point to is
+    # identified -- https://drs.nsdc.gov.ua, the NSDC's own "State Register
+    # of Sanctions," linked from every rnbo.gov.ua page's own navigation --
+    # but NOT verified: it returns HTTP 403 behind a Cloudflare managed
+    # challenge from this session, the same class of block found on
+    # Légifrance (docs/sources/verification-lil-articles.md). No
+    # run_locators added; locator stays the publisher's main site until the
+    # register is actually reachable. See
+    # docs/sources/verification-ua-nsdc-sanctions.md.
     locator: https://www.rnbo.gov.ua/
     publisher: National Security and Defence Council of Ukraine
     jurisdiction: UA

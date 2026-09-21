@@ -134,7 +134,7 @@ def capture_series_id(source_id: str, locator: str) -> str:
 # no code split between them here, so pinning them to one version is honest
 # rather than inventing a distinction the code does not have. Bump this when
 # a change to this file would matter to a reader of a past run's preservation
-# events (DR-pending-collection-run-two-agents).
+# events (DR-0097).
 SOFTWARE_AGENT_NAME = "collector-pipeline"
 SOFTWARE_AGENT_VERSION = "0.1.0"
 
@@ -146,7 +146,7 @@ def ensure_software_agent(
     """Returns the `pipeline_agent` id for a versioned software agent,
     inserting it the first time this exact (name, version) pair is seen.
 
-    DR-pending-collection-run-two-agents: unlike a person agent (DR-0093 §3,
+    DR-0097: unlike a person agent (DR-0093 §3,
     registered deliberately by a human), a software agent's identity is
     fully determined by its own declared version -- there is nothing for a
     human to decide, so this self-registers rather than requiring the
@@ -188,7 +188,7 @@ class Collector:
         self.quarantine_dir = Path(quarantine_dir)
         self.quarantine_dir.mkdir(parents=True, exist_ok=True)
         self.roots = storage_roots
-        # DR-pending-collection-run-two-agents: two agents per run,
+        # DR-0097: two agents per run,
         # deliberately distinct. `agent_id` is the run's agent of record
         # (DR-0093 §3 -- a person, for now) and governs collector_run and
         # the Gate 1 admission decision. `software_agent_id` is the
@@ -641,7 +641,7 @@ class Collector:
         self, event_type: str, object_id: str | None,
         quarantine_id: str | None, outcome: str, detail: str,
     ) -> None:
-        # DR-pending-collection-run-two-agents: a preservation event names
+        # DR-0097: a preservation event names
         # the software that mechanically performed it, not the run's agent
         # of record -- a digest calculation was not "decided" by whoever
         # started the run.

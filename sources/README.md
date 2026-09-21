@@ -209,7 +209,7 @@ obligation rather than a formality.
 
 ## Which locators are verified
 
-**Five are (one partially), two are not.** On 2026-09-08 the files behind
+**Six are (two partially), one is not.** On 2026-09-08 the files behind
 `eu-consolidated-list` and `ofac-sdn` were fetched, digested twice, and
 acquired end to end by the real collector into a throwaway database
 ([verification record](../docs/sources/verification-eu-consolidated-list-ofac-sdn.md),
@@ -226,8 +226,30 @@ second attempt — the earlier session's six URL guesses had missed that the
 real file lives on a separate host (`sesam.search.admin.ch`, not
 `seco.admin.ch`), found only by following the site's own navigation
 ([verification record](../docs/sources/verification-seco-sanctions.md)).
-None of these five is registered — registering, like it was for the first
-two, is the founder's act, per source.
+On 2026-09-20 `eur-lex-sanctions` was verified partially — the two
+foundational instruments (Council Regulation 269/2014, Council Decision
+2014/145/CFSP) identified and fetched, rehearsed through the real collector
+(2 discovered, 2 acquired, 0 failed), but with an open question this
+session could not settle: the consolidated-text locator carries a dated
+CELEX suffix that advances roughly monthly as the Council amends the
+regime, so a registered `run_locator` will need periodic re-verification in
+a way none of the other six candidates do
+([verification record](../docs/sources/verification-eur-lex-sanctions.md)).
+`ua-nsdc-sanctions` stays unverified: the specific register it should point
+to is now identified (`drs.nsdc.gov.ua`, the NSDC's own "State Register of
+Sanctions," found via rnbo.gov.ua's own navigation), but that register
+returns HTTP 403 behind a Cloudflare managed challenge from every session
+that has tried it so far, the same block class found on Légifrance. A
+2026-09-21 Wayback-history check found 3 489 historical captures of the
+register (last seen 2026-08-24) but no bulk-export file among them,
+strengthening the working hypothesis that it is a search-UI-only
+application rather than confirming it
+([verification record](../docs/sources/verification-ua-nsdc-sanctions.md)).
+None of these six is registered, and one (`eur-lex-sanctions`) is now
+approved but unexecuted
+([`DR-pending-eur-lex-sanctions-registration`](../docs/decision-records/DR-pending-eur-lex-sanctions-registration.md))
+— registering, like it was for the first two, is the founder's act, per
+source.
 
 These entries carry three optional fields the registry does not store:
 
@@ -309,6 +331,12 @@ sabotage: reverting `main()` to pass `sources` turns exactly that check
 red. The same `load_candidates()` three-value return had also broken
 `collector/run.py`'s `find_candidate()` (now merges before returning) and
 the setup of this suite and `collector/tests/test_run.py`.
+
+A separate session, branched before this fix merged to `main`, independently
+rediscovered the identical bug on 2026-09-20 while verifying
+`eur-lex-sanctions`, with its own redundant fix to `register.py` and
+`test_register.py`. Merging the two branches kept this (2026-09-19) fix,
+the more thorough of the two, and discarded the duplicate.
 
 **Not verified:** for the three still-unfetched candidates
 (`eur-lex-sanctions`, `seco-sanctions`, `ua-nsdc-sanctions`), that the
