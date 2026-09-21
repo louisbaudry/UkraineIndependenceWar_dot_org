@@ -1,0 +1,143 @@
+# Candidate sources — territorial control and military operations
+#
+# Status: CANDIDATE. Nothing here is registered until the founder accepts it
+# (per source, not as a block) and `register.py --commit` is run.
+#
+# Drafted 2026-09-21 by an AI assistant at the founder's direction, against
+# the DR-0067 source-registry schema, following the founder's redirection
+# toward war-fact subject matter (territorial control / military operations
+# category, chosen first over civilian-harm or war-crimes categories for its
+# lower personal-data sensitivity — see README.md's Recent work table).
+#
+# Scope: "where is the front line, and why did it move" — the foundational
+# war-fact category everything else (an incident, a casualty report, a
+# war-crimes allegation) needs a place and a date to sit against. Two
+# sources, deliberately complementary rather than redundant: one gives the
+# geometry, the other gives the narrative explaining it.
+#
+# VERIFICATION STATUS (2026-09-21). Both candidates below were fetched live
+# and rehearsed end to end through the real collector into a throwaway
+# database (1 discovered, 1 acquired, 0 failed each). See
+# docs/sources/verification-war-facts-first-two.md for the full record.
+# Neither is registered. Unlike every sanctions candidate, rights positions
+# for both are UNVERIFIED — ISW's site states "ALL RIGHTS RESERVED"
+# explicitly (conservative may-preserve is the obvious floor, not really in
+# question); DeepStateMap's licensing was not found anywhere on the site in
+# this session's search and needs a person to look harder or ask the
+# operators directly before any redistribution claim could be made.
+
+classes:
+
+  war-facts-territorial-control:
+    # Sources that track or narrate where military control actually sits,
+    # as opposed to sanctions/legal-instrument sources. Different risk
+    # profile from the sanctions classes: no designated-persons data, but
+    # also no institutional-publisher redistribution rights to inherit —
+    # both current candidates are volunteer/think-tank publishers, not
+    # governments or IGOs, so the class default is conservative.
+    collection_method: http
+    collection_cadence: daily
+    capture_format: warc
+    default_retention_tier: permanent
+    default_access_tier: public
+    rights_permission: may-preserve
+    rights_basis: >
+      Rights position UNVERIFIED for every source in this class. Neither
+      candidate is a government or intergovernmental publisher with an
+      obvious institutional reuse basis (contrast the sanctions-authority
+      classes); each needs its own rights check, not a class-level default,
+      before any redistribution claim (§14, DR-0067).
+    expects_graphic_content: false
+    grade_source_reliability: B
+    grade_item_credibility: "2"
+
+sources:
+
+  - key: isw-orca
+    class: war-facts-territorial-control
+    source_type: think-tank
+    name: ISW Russian Offensive Campaign Assessment
+    # The stable index page lists every dated report; the actual document
+    # to preserve each day is that day's own dated URL, which is why this
+    # candidate's real run_locators (once verified per run) are individual
+    # dated report pages, not the index alone — closer to rnbo.gov.ua's
+    # decree-stream pattern than to a single stable list-file locator.
+    # Verified 2026-09-21 against the 2026-09-20 report specifically.
+    locator: https://understandingwar.org/analysis/russia-ukraine/russian-offensive-campaign-assessment/
+    locator_verified: 2026-09-21
+    run_locators:
+      - https://understandingwar.org/research/russia-ukraine/russian-offensive-campaign-assessment-september-20-2026/
+    verification_note: >
+      Reachable this session (200, following a 301 from the analysis/
+      URL to the actual research/ URL — ISW restructured its URL scheme
+      at some point, both forms currently resolve). Rehearsed through the
+      real collector: 1 discovered, 1 acquired, 0 failed, 445 121 bytes
+      preserved, 0 documentary assertions. capture_format warc (not a
+      bare HTTP body) because the page embeds maps/graphics that are part
+      of the assessment's actual content, not decoration — a bare-body
+      fetch would lose them. "ALL RIGHTS RESERVED" found in the page
+      footer text directly (not inferred), confirming the class default.
+      Publishes daily; this candidate's run_locators will need updating to
+      each new day's URL before every run, the same manual-re-verification
+      obligation eur-lex-sanctions carries for its own reason (DR-0105).
+      Record in docs/sources/verification-war-facts-first-two.md.
+    publisher: Institute for the Study of War
+    jurisdiction: US
+    primary_languages: [en]
+    coverage_start: 2022-02-24        # ISW's daily assessment series began with the full-scale invasion
+    scope_rules: >
+      ISW's daily "Russian Offensive Campaign Assessment" reports:
+      territorial control, front-line movement, and the operational
+      narrative explaining it. One report per day, dated. Text and
+      embedded maps/graphics only.
+    exclusions: >
+      ISW's other publication series (Iran, other regions) and any
+      op-ed/commentary content outside the daily assessment series
+      itself — different scope, register separately if ever wanted.
+
+  - key: deepstatemap
+    class: war-facts-territorial-control
+    source_type: public-dataset
+    name: DeepStateMap territorial control (Ukraine)
+    # The actual data locator is an unauthenticated JSON API endpoint, not
+    # the interactive map page itself — found by checking a known public
+    # API pattern (deepstatemap.live/api/history/last), not from any link
+    # on the page: the site is a JS-rendered SPA with no visible API link
+    # in its raw HTML.
+    locator: https://deepstatemap.live/
+    locator_verified: 2026-09-21
+    run_locators:
+      - https://deepstatemap.live/api/history/last
+    verification_note: >
+      Fetched twice, 40 seconds apart: 627 479 bytes both times, same
+      map id (1789884551), 525 features — stable within that window,
+      though this is a genuinely live front-line dataset, so byte
+      stability across longer gaps (a day, a week) is not expected the
+      way a static sanctions-list file's is; that instability is the
+      point of the source, not a verification failure. Rehearsed
+      through the real collector: 1 discovered, 1 acquired, 0 failed,
+      627 479 bytes preserved, 0 documentary assertions. capture_format
+      http (bare JSON body, not a browsing session — this is a clean
+      API response, not a rendered page) unlike isw-orca. No license or
+      terms text found anywhere on the site in this session's search;
+      rights_permission stays the class default (may-preserve,
+      UNVERIFIED) rather than assuming redistribution is fine because
+      the endpoint requires no authentication. capture_format overridden
+      below because the class default (warc) is right for isw-orca but
+      wrong for this bare-JSON-API source (DR-0006/DR-0067's
+      capture-format guardrail — see the eu-consolidated-list precedent
+      in sanctions-authorities.yaml for the same class-default mismatch
+      pattern). Record in docs/sources/verification-war-facts-first-two.md.
+    capture_format: http
+    publisher: DeepState (Ukrainian volunteer OSINT project)
+    jurisdiction: UA
+    primary_languages: [uk, en]
+    coverage_start: 2022-02-24        # DeepState began tracking at the full-scale invasion
+    scope_rules: >
+      Front-line control polygons as GeoJSON, via the public
+      `/api/history/last` endpoint. The current snapshot only — the
+      site's own history browsing (dated past snapshots) is a separate,
+      unverified locator pattern not covered by this candidate yet.
+    exclusions: >
+      The interactive map's UI/rendering layer itself (not evidentiary
+      content); any donation/funding pages on the same site.

@@ -1,11 +1,18 @@
 # Source registration
 
-Candidate sources for the first real collection, drafted against the DR-0067
-registry schema. **Two are registered** on the archive server as of
-2026-09-09 under DR-0093 (`eu-consolidated-list`, `ofac-sdn`); the other five
-remain proposals for the founder to accept, amend, or reject — per source,
-not as a block. Registration lives in the server's database, not in this
-file: the file is the candidate, the row is the registration.
+Candidate sources for the archive's collection, drafted against the DR-0067
+registry schema, across two files: `sanctions-authorities.yaml` (the
+original thematic area) and `war-facts.yaml` (territorial control /
+military operations, started 2026-09-21 following the founder's
+redirection toward war-fact subject matter — see that file's own header).
+**Six of the seven sanctions candidates are registered and collected** on
+the archive server (`eu-consolidated-list`, `ofac-sdn`, `eur-lex-sanctions`,
+`uk-ofsi-consolidated`, `bis-entity-list`, `seco-sanctions`); the seventh
+(`ua-nsdc-sanctions`) remains blocked. **Both war-facts candidates
+(`isw-orca`, `deepstatemap`) are verified but not yet registered** — the
+founder's decision, per source. Registration lives in the server's
+database, not in this file: the file is the candidate, the row is the
+registration.
 
 ```bash
 python3 sources/register.py --check                      # validate only
@@ -345,6 +352,23 @@ the more thorough of the two, and discarded the duplicate.
 source exists at the address given or that the formats are as assumed;
 for all seven, that the rights positions are correct — that is a legal
 question (POL-0001 §10), not a network one.
+
+## War-fact candidates (`war-facts.yaml`, started 2026-09-21)
+
+The first candidates outside the sanctions/export-control thematic area,
+following the founder's redirection toward war-fact subject matter:
+territorial control / military operations, chosen first over civilian-harm
+or war-crimes categories for its lower personal-data sensitivity. Two
+complementary sources — `isw-orca` (the narrative: ISW's daily assessment
+of why the front line moved) and `deepstatemap` (the geometry: a live
+GeoJSON API of current control polygons) — both verified and rehearsed
+through the real collector, neither registered.
+[Verification record](../docs/sources/verification-war-facts-first-two.md)
+has the full account, including what is not yet settled: DeepStateMap's
+actual licensing (not found anywhere on the site), ISW's daily
+re-verification burden (a new dated URL every day, more demanding than
+`eur-lex-sanctions`'s monthly cadence), and a third candidate in the same
+category (LiveUAmap) that this session's network could not reach (403).
 
 ## Census tooling (`census.py`, WP 3.4 §4.1 Track A item A2)
 
