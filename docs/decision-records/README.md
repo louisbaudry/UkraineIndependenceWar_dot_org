@@ -126,9 +126,9 @@ merely another renumbering.
 | [DR-0093](DR-0093-first-source-registrations.md) | First source registrations: EU Consolidated Financial Sanctions List and OFAC SDN | operations / preservation | Approved | 2026-09-08 |
 | [DR-0094](DR-0094-third-party-web-captures.md) | Third-party web captures (Common Crawl, Wayback Machine, qualifying archives) as an acquisition channel | architecture / preservation | Approved | 2026-09-11 |
 | [DR-0095](DR-0095-dr-numbering-placeholder-until-merge.md) | Decision Records are drafted unnumbered; the number is assigned at merge | architecture / methodology | Approved — superseded by DR-0102 | 2026-09-11 |
-| [DR-0096](DR-0096-second-source-registrations.md) | Second source registrations: UK OFSI Consolidated List and BIS Denied Persons List (DPL half only) | operations / preservation | Approved | 2026-09-12 |
+| [DR-0096](DR-0096-second-source-registrations.md) | Second source registrations: UK OFSI Consolidated List and BIS Denied Persons List (DPL half only) | operations / preservation | Approved — executed 2026-09-21 | 2026-09-12 |
 | [DR-0097](DR-0097-collection-run-two-agents.md) | A collection run carries two agents: a human agent of record and a versioned software agent on its preservation events | architecture / preservation | Approved | 2026-09-12 |
-| [DR-0098](DR-0098-seco-sanctions-registration.md) | Third source registration: SECO sanctions list (Switzerland) | operations / preservation | Approved | 2026-09-14 |
+| [DR-0098](DR-0098-seco-sanctions-registration.md) | Third source registration: SECO sanctions list (Switzerland) | operations / preservation | Approved — executed 2026-09-21 | 2026-09-14 |
 | [DR-0099](DR-0099-establishment-jurisdiction.md) | Interim establishment jurisdiction: France; POL-0001 amended to v1.1 | legal / editorial | Approved — superseded by DR-0100 | 2026-09-14 |
 | [DR-0100](DR-0100-jurisdiction-controller-and-hosting.md) | Establishment jurisdiction confirmed; controller identity and archive hosting location | legal / operations | Approved | 2026-09-15 |
 | [DR-0101](DR-0101-recording-the-legal-review.md) | What "the review's outcome is recorded" means, for POL-0001 §10 | legal / methodology | Approved | 2026-09-15 |
