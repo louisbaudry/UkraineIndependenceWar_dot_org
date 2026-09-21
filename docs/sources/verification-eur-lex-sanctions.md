@@ -101,14 +101,13 @@ candidate's `scope_rules`, are reachable from at least this session, and a
 real `Collector` run against them succeeds cleanly with zero documentary
 assertions, matching every other sanctions candidate's rehearsal.
 
+**Settled 2026-09-21:** the founder confirmed both instruments belong in
+`run_locators` (over the Regulation alone), matching this record's original
+reading of the candidate's `scope_rules` ("Regulations" and "Council
+Decisions" both named).
+
 **Not settled, and not this session's to settle** (per README.md's original
 flagging of this candidate as founder-guided work):
-- Whether the *regulation* alone (which carries the actual designations in
-  Annex I) is sufficient as the candidate's `run_locators`, or whether the
-  *decision* should also be listed even though it duplicates the same
-  designations in CFSP form — the candidate's `scope_rules` names both
-  "Regulations" and "Council Decisions," so both being listed looks right,
-  but that reading is offered as a proposal, not a ruling.
 - Whether "the current consolidated version, re-verified per amendment" is
   the right capture cadence for this source, versus something closer to
   `eu-consolidated-list`'s own approach — a genuinely different question

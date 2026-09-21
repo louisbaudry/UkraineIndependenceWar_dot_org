@@ -171,10 +171,11 @@ sources:
     # suffix 20260807) — this dated suffix advances roughly monthly as the
     # Council amends the regime, so it WILL go stale and needs
     # re-verification at registration time, not treated as a fixed URL.
-    # See verification_note and docs/sources/verification-eur-lex-sanctions.md
-    # for the open questions this does not resolve (whether both
-    # instruments belong in run_locators, and the right re-verification
-    # cadence) — proposed for founder review, not decided here.
+    # Founder confirmed 2026-09-21: both instruments belong in run_locators
+    # (matches scope_rules' "Regulations, Council Decisions and implementing
+    # acts"), not the Regulation alone. See verification_note and
+    # docs/sources/verification-eur-lex-sanctions.md for what remains open:
+    # the right re-verification cadence for the dated CELEX suffix.
     locator: https://eur-lex.europa.eu/
     locator_verified: 2026-09-20
     run_locators:
