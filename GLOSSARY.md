@@ -64,10 +64,26 @@ rulings recorded in `CLAUDE.md` bind future sessions until superseded.
 
 **Gate 1 / Gate 2 / Gate 3**
 The project's sequence of human decision points that separate preservation
-from interpretation: preserving bytes (Gate 1) creates no documentary
-assertions on its own; structuring evidence (Gate 2) and publishing (Gate 3)
-are each separate human decisions at a declared risk tier, never automated
-(DR-0066, Principle 5).
+from interpretation, and the reason "we collected it" never quietly
+becomes "we're claiming it's true":
+- **Gate 1** — admitting quarantined material into the archive as
+  preserved bytes. Creates zero documentary assertions and zero evidence
+  relations by itself (DR-0066, Principle 5).
+- **Gate 2** — a human decision to *structure* preserved material into
+  documentary assertions and evidence relations (`editorial/gate2.py`).
+- **Gate 3** — a human decision to *publish* structured material for a
+  given access tier (`publication/gate3.py`).
+Each gate is a separate, accountable human decision at a declared risk
+tier — never automated, and never skipped by an earlier gate's approval.
+
+**Semantic registry**
+The project's controlled vocabulary store (record §101) — where
+enumerated terms like the epistemic vocabulary (DR-0025) or the
+absence-state vocabulary (DR-0029) are formally defined, including
+multilingual labels, so the same term means the same thing everywhere in
+the archive. Changes happen only by Decision Record, never by editing a
+label ad hoc. Implemented as `registry/` in this codebase, with enum SQL
+generated from it (`schema/gen_enums.py`, DR-0078).
 
 **Track A / Track B (WP 3.4)**
 The acquisition strategy's two phases. Track A (§4.1) is preparatory work —
@@ -85,16 +101,57 @@ reducing per-source authorization decisions to per-class ones (DR-0103).
 **OAIS**
 Open Archival Information System (ISO 14721) — the reference model this
 project adopts for what an archive must do to preserve information over
-time (DR-0001).
+time (DR-0001). OAIS is the "why" behind many of the terms below: it
+defines the roles (producer, archive, consumer) and packages that a
+long-term digital archive needs, independent of any specific technology.
+
+**SIP / AIP / DIP**
+Three package types from OAIS describing the same content at different
+stages of its life in the archive: a **Submission Information Package**
+(what a producer hands over), an **Archival Information Package** (what
+the archive actually stores and preserves long-term, with full metadata),
+and a **Dissemination Information Package** (what a consumer receives when
+they access it). This project's quarantine-to-Gate-1 flow is, in effect,
+turning submissions into SIPs and then AIPs.
+
+**Designated community**
+An OAIS concept: the specific audience an archive commits to keeping
+content understandable and usable for (e.g., future historians and
+researchers, not the general public today). It shapes how much context
+and format-migration effort preservation requires.
 
 **PREMIS**
 The preservation-metadata vocabulary (v3.0) used to record events like
-fixity checks, migrations, and ingestion (DR-0002).
+fixity checks, migrations, and ingestion (DR-0002). PREMIS organizes
+everything around five entity types: **objects** (the digital things being
+preserved), **events** (fixity checks, migrations, ingestion — things that
+happen to objects), **agents** (who or what caused an event — a person,
+organization, or piece of software), **rights** (permissions governing an
+object), and **relationships** (links between any of the above, e.g. "this
+object derives from that one").
 
 **PROV**
 The W3C provenance vocabulary used across the pipeline to record
 derivation and agency — who or what produced or acted on a given object
-(DR-0003).
+(DR-0003). PROV's three core building blocks are **entities** (things:
+files, documents, records), **activities** (processes that use or produce
+entities: a collection run, a transcription), and **agents** (who or what
+was responsible: a person, an organization, or software) — closely
+mirroring PREMIS's own object/event/agent split, since both standards
+describe the same kind of "what happened, and who did it" history.
+
+**Pipeline agent**
+An agent (person, organization, or software) recorded because it *acts on*
+the archive — e.g., a collector run's software agent, or the human agent
+of record for a collection run. Kept in a registry separate from world
+actors (DR-0059); confidential as a whole, because it may include people
+acting on behalf of a confidential source (DR-0092, SEC-001).
+
+**World actor**
+A historical person or group the archive holds information *about* — as
+opposed to a pipeline agent, which acts *on* the archive. Kept in a
+separate registry from pipeline agents so that queries about the world
+can never accidentally expose confidential pipeline-agent data (DR-0059).
 
 **Fixity**
 A cryptographic checksum (SHA-256, computed at ingestion and re-checked
@@ -151,11 +208,22 @@ An international protocol for open-source (digital) investigations that
 guides this project's custody and documentation practices without being
 adopted as a legal standard (DR-0008).
 
-**Quarantine**
-Storage holding for newly collected material before it is admitted into
-the archive proper, pending checks (e.g., security scanning). Undischarged
-quarantine copies factor into the project's storage/duplication accounting
-(see `storage/measure.py`, A7).
+**Quarantine (quarantine zone)**
+A holding area explicitly *outside* the archive proper, where every newly
+acquired file lands first — whether fetched automatically or submitted by
+a third party — before Gate 1. While quarantined, material gets malware
+and format checks, and its provenance and privacy/legal exposure are
+assessed; critically, **none of the archive's integrity guarantees apply
+to it yet**. Undischarged quarantine copies (material sitting in
+quarantine rather than admitted or discarded) factor into the project's
+storage/duplication accounting (`storage/measure.py`, A7; DR-0069).
+
+**Submitter claim**
+When material is submitted by a third party (rather than collected
+automatically), whatever that person says about it (where it came from,
+when, etc.) is kept as a labeled *claim*, stored separately from anything
+the project itself later concludes about the material — so a submitter's
+story is never confused with an established project finding (DR-0069).
 
 **Acquisition source vs. original publisher**
 A distinction this project always keeps: bytes recovered *from* an
@@ -204,13 +272,87 @@ truth or reliability (DR-0027).
 
 **Access tier**
 A declared (not derived) level of who may see a given piece of preserved
-or published material. Tiers are never computed from an ordering of other
-properties (DR-0086).
+or published material — e.g., `public`, `researcher-restricted`,
+`investigator-restricted`, `confidential`, `private-preservation`,
+`internal`, `subscriber`. Tiers are never computed from an ordering of
+other properties (DR-0086).
+
+**Tier restrictiveness (most-restrictive-governs rule)**
+When more than one access tier could apply to the same content (e.g., an
+object referenced by both a public holding and a subscriber-only one),
+the **most restrictive tier always governs** — but which tier is "more
+restrictive" must be an explicit, declared ranking, never inferred from
+alphabetical order or enum-declaration order. A real 2026-08-26 bug
+(`export/tiers.py` using `min()` over tier text) let a confidential object
+resolve to `public` by alphabetical accident, which is exactly the failure
+DR-0086 exists to prevent.
+
+**Split (disambiguation record)**
+An editorial act of separating out material that had been wrongly merged
+under one identity (e.g., two different people conflated as one). The
+record of that decision names a deciding agent, but — because pipeline
+agents are confidentiality-sensitive as a whole — the public-facing record
+shows only a **snapshotted public title/role** for that agent, never the
+underlying agent record itself, so an editorial act stays inspectable
+without risking exposure of a confidential agent's identity (DR-0089,
+DR-0092).
 
 **Redaction**
 The sole exception to this archive's general immutability of preserved
-content, used to remove or mask specific material after preservation
-(DR-0077).
+content, used to remove or mask specific material after preservation. It
+requires a recorded decision citing its legal ground, the content actually
+purged, and a preservation event plus **tombstone** left behind recording
+that something was removed, when, by what authority, and why — without the
+removed content itself (DR-0077).
+
+**Tombstone**
+A permanent marker left in place of redacted content, so the archive can
+show *that* something was removed and *why*, without keeping the removed
+material itself (DR-0077).
+
+**Immutability**
+The general rule that once content is written into archival storage
+(OCFL), it is never altered or deleted — the guarantee that lets anyone
+verify later that a preserved file is exactly what was captured. Redaction
+is the one governed exception (DR-0077).
+
+**Web Annotation (W3C Web Annotation Data Model)**
+The standard this project uses to point precisely at a piece of preserved
+content — a paragraph, an image region, a video interval — rather than
+just linking to a whole document. An annotation has a **body** (the
+comment or claim) and a **target** (the thing being annotated), with the
+target refined by a **selector** (e.g., quote the exact text, or give
+pixel coordinates) so the same spot can be found again even if formatting
+changes (DR-0017).
+
+**Anchoring rule**
+This project's rule that any annotation used as evidence must target a
+*preserved* capture held by the archive — never a live URL alone — because
+live web pages can silently change or disappear. A live URL may be
+recorded as context, but preservation always comes before evidential
+annotation (DR-0018).
+
+**Source dependence / independence**
+This project's discipline of never assuming that two sources repeating the
+same claim are independent confirmation of it — most "corroboration" is
+actually one source being copied, cited, or reposted by others.
+Dependence is recorded as a typed relationship (cites, reposts, syndicates,
+derives-from, shares-underlying-document, shares-underlying-witness,
+common-evidentiary-origin), and a source counts as an independent
+confirming line only when the *absence* of such a relationship has
+actually been researched and established — never assumed by default
+(DR-0028). This independence count feeds directly into analytic confidence
+(see "Two-dimensional uncertainty").
+
+**Absence-state vocabulary**
+A set of specific labels for "we don't have a value here" that avoid the
+single ambiguous meaning of a blank/null field: **unknown,
+not-researched, no-evidence-found, unavailable, withheld, redacted,
+lost-or-destroyed, not-applicable, indeterminate**. The point is that a
+missing value must never be silently read as "no" — e.g.,
+"no-evidence-found" (we looked, in a stated way, and found nothing) is a
+completely different, and equally recordable, fact from "not-researched"
+(we haven't looked yet) (DR-0029).
 
 ## Sanctions and compliance domain
 
@@ -334,15 +476,37 @@ an open-ended "review later," which this project avoids (see DR-0101's
 "recorded" act, and the founder's 2026-09-15 ruling that named review
 triggers must be recorded per §9.4/§8 of the legal-review brief).
 
+**CRMinf**
+The argumentation extension of CIDOC CRM (argumentation activities,
+beliefs, proposition sets, belief adoption, inference-making), named as
+this project's starting *candidate* for the epistemic/argumentation layer
+(layer 6 of the six-layer architecture) — a study commitment, not yet an
+adoption (DR-0016).
+
+**Document status vocabulary (DR-0046)**
+The controlled lifecycle states every governance document (DR, SPEC, POL,
+REQ, METH, PROC) moves through, always as explicit metadata rather than
+inferred from Git: **draft → proposed → approved → effective → superseded
+/ withdrawn**. Approval authority and date, effective date, and
+supersession links are recorded alongside the status itself.
+
 ## Suggested next terms
 
-The sections above now cover governance/process, archival/preservation,
-data model/epistemics, sanctions domain, epistemic vocabulary, the
-selectively-adopted standards (TEI/IIIF/CSL), and POL-0001-specific terms.
-Remaining candidates not yet included, in case they're wanted:
-- CRMinf (the epistemic/argumentation-layer candidate from DR-0016)
-- W3C Web Annotation and the "anchoring rule" (DR-0017, DR-0018)
-- DataCite / dataset release terms (referenced in DR-0022's consequences)
+The sections above now cover governance/process, archival/preservation
+(including OAIS package types and PREMIS/PROV entity models), data
+model/epistemics, sanctions domain, epistemic vocabulary, the
+selectively-adopted standards (TEI/IIIF/CSL), POL-0001-specific terms,
+security/access/redaction, source-dependence and absence-state
+vocabularies, and quarantine/gate/split mechanics. Smaller candidates
+still not included, purely because they're referenced only in passing so
+far:
+- DataCite (dataset-release citation identifiers, mentioned in DR-0022's
+  consequences but not yet used)
+- Specific identifier/resolver vocabulary from `identifiers/` and
+  SPEC-0007 (e.g., how public identifiers resolve to internal records)
+- METH-0001's evidentiary-method-specific terms, if any come up while
+  reading it
 
-Say which (if any) to add, or flag any definition above that needs
-correction.
+This glossary is meant to grow with your own reading — if something in a
+DR, SPEC, or POL confuses you, that's a good sign it belongs here. Just
+name the term or the document and it can be added.
