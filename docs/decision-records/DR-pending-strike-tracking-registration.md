@@ -1,0 +1,161 @@
+# DR-pending-strike-tracking-registration — Fifth and sixth source registrations: kpszsu and generalstaffzsu
+
+**Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-21 by founder/principal editor
+**Origin:** founder's direction of 2026-09-21 ("Yes, register both and run a bounded backfill"), following the redirection of the project's central purpose toward strike-level completeness and the 2026-09-21 verification/rehearsal of both candidates | **Supersedes:** — | **Superseded by:** —
+
+> **AI provenance (§80).** Drafted by Claude (model: `claude-sonnet-5`) on
+> 2026-09-21 at the founder's direction, and **approved by the founder the
+> same day**, matching every prior registration's pattern. Approval is
+> what authorises the registrations and the bounded backfill pass
+> described below; both are executed on the archive server by the
+> founder, per *How to execute*, and have not been executed by this
+> record.
+
+## Context
+
+The founder redirected the project's central purpose mid-session on
+2026-09-21: not territorial control, but strike-level completeness — "to
+come the closest possible to record EVERY SINGLE MISSILE, DRONE, that fell
+on each side and their effect." `kpszsu` (Ukraine's Air Force — incoming
+strikes over Ukraine) and `generalstaffzsu` (Ukraine's General Staff —
+outgoing Ukrainian strikes into Russia) were identified, fetched live, and
+rehearsed end to end through the real collector the same day: 1 discovered,
+1 acquired, 0 failed each, 112 688 and 172 322 bytes respectively
+([verification record](../sources/verification-strike-tracking-first-two.md)).
+
+Both are official Ukrainian government Telegram channels, captured via
+Telegram's public preview (`t.me/s/<channel>`), which needs no
+authentication. Neither has a verified rights/redistribution basis;
+`may-preserve`/UNVERIFIED is the class default, same posture as most
+sources this project has registered.
+
+A companion mechanism, `collector/telegram_backfill.py`
+(`CDR-pending-telegram-backfill`, still candidate, built and tested the
+same day), walks a channel's pagination backward to reach posts older than
+the live page shows. This record authorises registering both sources
+**and** running one bounded backfill pass per channel (`--max-pages 20`,
+roughly 400-600 posts each) — a cautious first real-scale exercise of the
+backfill mechanism, not a full historical backfill. A full backfill (an
+estimated 2 500-4 000 requests for `kpszsu` alone) is explicitly **not**
+authorised by this record and needs a separate founder decision once the
+bounded pass's results (rate-limit behaviour, storage footprint, content
+quality) are known.
+
+## Alternatives considered
+
+1. **Register both now, with a bounded backfill pass authorised in the same
+   act** (chosen). Matches the founder's own stated preference this
+   session; a cautious `--max-pages 20` pass is small enough (an estimated
+   40-60 requests per channel at the tool's 3-second default delay, under
+   five minutes each) to prove the pipeline works at real scale without
+   approaching the rate-limit risk a full backfill carries.
+2. **Register only, defer any backfill.** Available and offered to the
+   founder as an option; not chosen. Ongoing collection alone does not
+   advance the founder's stated completeness goal, which is specifically
+   about reaching backward into each channel's existing history.
+3. **Authorise a full backfill immediately**, skipping the bounded pass.
+   Rejected: the mechanism has been rehearsed for exactly two pages against
+   real infrastructure. Committing to thousands of requests before seeing
+   how even twenty behave — timing, content variety, whether Telegram's
+   preview changes behaviour under sustained pagination — is the kind of
+   caution the runbook itself argues for, not an arbitrary throttle.
+
+## Decision
+
+On approval:
+
+1. **`kpszsu` and `generalstaffzsu` are registered** into the source
+   registry with the field values in the candidate file as of this
+   record's approval, by `sources/register.py --commit --only kpszsu
+   generalstaffzsu`. Accepted individually (§78) but registered together
+   as a matter of session convenience, matching DR-0096's precedent for
+   `uk-ofsi-consolidated`/`bis-entity-list`.
+2. **A first, ordinary collection run against each** (the live head page,
+   not backfill) is authorised, matching every other registered source's
+   pattern — `--dry-run` first, then a real run.
+3. **One bounded backfill pass per channel is authorised**:
+   `collector/telegram_backfill.py --max-pages 20 --delay 3` (or more
+   cautious), following
+   [`docs/runbooks/telegram-channel-backfill.md`](../runbooks/telegram-channel-backfill.md).
+   **A full backfill is NOT authorised by this record** — its own
+   estimated request count and unresolved storage-cost question (per the
+   runbook's "Known gaps") make it a separate decision, once this bounded
+   pass's results are in.
+4. **Nothing from any run crosses Gate 2** (DR-0066, Principle 5),
+   unchanged from every other registered source.
+5. The registrations carry the obligations `register.py --dry-run` prints:
+   permanent retention with DR-0005 fixity checking, and the unverified
+   `may-preserve` rights position, unchanged by this record.
+6. **This decision is independent of every other pending registration**
+   (`ua-nsdc-sanctions`, `isw-orca`, `deepstatemap`) — none is required,
+   authorised, or affected by this record.
+
+### How to execute
+
+On the archive server, current `main` (schema already current as of
+DR-0105's execution). Reuse the person `pipeline_agent` id from DR-0093's
+step 1.
+
+```bash
+# 1. register both.
+python3 sources/register.py --check
+python3 sources/register.py --dry-run --only kpszsu generalstaffzsu
+python3 sources/register.py --commit --dbname uiw \
+        --agent <person agent id> --only kpszsu generalstaffzsu
+
+# 2. a first ordinary run each (the live head, not backfill).
+python3 collector/run.py --source kpszsu --dbname uiw \
+        --agent <agent id> --archive-root ~/uiw-archive --dry-run
+python3 collector/run.py --source kpszsu --dbname uiw \
+        --agent <agent id> --archive-root ~/uiw-archive
+python3 collector/run.py --source generalstaffzsu --dbname uiw \
+        --agent <agent id> --archive-root ~/uiw-archive --dry-run
+python3 collector/run.py --source generalstaffzsu --dbname uiw \
+        --agent <agent id> --archive-root ~/uiw-archive
+
+# 3. one bounded backfill pass per channel -- --dry-run first.
+python3 collector/telegram_backfill.py --source kpszsu --channel kpszsu \
+        --dbname uiw --agent <agent id> --archive-root ~/uiw-archive --dry-run
+python3 collector/telegram_backfill.py --source kpszsu --channel kpszsu \
+        --dbname uiw --agent <agent id> --archive-root ~/uiw-archive \
+        --max-pages 20 --delay 3
+python3 collector/telegram_backfill.py --source generalstaffzsu \
+        --channel GeneralStaffZSU --dbname uiw --agent <agent id> \
+        --archive-root ~/uiw-archive --dry-run
+python3 collector/telegram_backfill.py --source generalstaffzsu \
+        --channel GeneralStaffZSU --dbname uiw --agent <agent id> \
+        --archive-root ~/uiw-archive --max-pages 20 --delay 3
+
+# 4. see where the project now stands
+python3 release/baseline.py --check --dbname uiw
+python3 storage/measure.py --dbname uiw
+```
+
+Note `--channel` differs from `--source` for `generalstaffzsu`: the
+registry key is lowercase, the actual Telegram channel name (as it
+appears in `data-post` attributes) is `GeneralStaffZSU`.
+
+## Executed
+
+Not yet. This record is approved; execution on the archive server has not
+been performed as of this record's drafting.
+
+## Consequences
+
+1. **Five of nine current candidates are now registered and collected**
+   once executed (the six sanctions sources plus these two, minus
+   `ua-nsdc-sanctions` still blocked) — actually six of the project's
+   sanctions-plus-strike-tracking candidates registered, with
+   `isw-orca`/`deepstatemap` (territorial control) and `ua-nsdc-sanctions`
+   the only ones left undecided.
+2. **This is the first registration whose collection run's content this
+   project has not read in detail before registering** — every sanctions
+   source's file format was inspected structurally (CSV columns, XML
+   schema); these two are free-text Telegram posts, read for topical
+   relevance but not parsed or structured in any way. That is expected and
+   correct for this stage (DR-0066: collection creates no canonical
+   knowledge), stated here so a future reader does not assume more
+   scrutiny happened than did.
+3. **The bounded backfill pass's results (timing, any rate-limit signals,
+   actual bytes preserved) become the evidence a full-backfill decision
+   is made against.** Record them in this DR's *Executed* section when run.
