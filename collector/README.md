@@ -253,6 +253,54 @@ been parsed** — the build environment cannot reach them — and **obtaining
 WARC files from an archive is not implemented**; `ingest_warc` reads a local
 path. Expect the first real file to teach the reader something.
 
+## Telegram channel backfill (CDR-pending-telegram-backfill — **candidate**)
+
+`collector/telegram_backfill.py` walks a registered Telegram channel's
+public-preview pagination (`t.me/s/<channel>?before=<id>`) backward,
+preserving each page through the ordinary `Collector.run()` path — no
+shortcut past quarantine, Gate 1, storage-first writes or capture-format
+honouring, same as everything else in this file. It exists because
+`t.me/s/<channel>` alone shows only the newest ~20-30 posts; a channel with
+tens of thousands of historical posts (the first two candidates this was
+built for, `kpszsu`/`generalstaffzsu`, have on the order of tens of
+thousands each) needs its own pagination-discovery loop, which is not what
+a fixed `run_locators` list normally provides.
+
+Built 2026-09-21 at the founder's direction, following their redirection of
+the project's central purpose toward strike-level completeness. It makes
+exactly one network request per page — `CachingFetcher` fetches once,
+directly, to parse the page for the next `before=` id, and `Collector.run()`
+is served that same cached result rather than fetching again — because the
+whole reason this exists (very large channels) is also exactly the
+situation where doubling the request count is most costly: rate-limit or
+block risk on the requesting host, which would affect every other
+registered source's ongoing collection too. `--delay` between pages, and
+`--max-pages`/`--stop-before-id` for resumable, bounded runs, are the
+caller's own responsibility (`fetch.py`'s own stated convention: politeness
+belongs to the caller, not the fetcher). See
+[`docs/runbooks/telegram-channel-backfill.md`](../docs/runbooks/telegram-channel-backfill.md)
+for how to actually run it on the archive server, and the warnings that
+belong there rather than here.
+
+**What is verified, and what is not.** 10 tests
+(`collector/tests/test_telegram_backfill.py`) cover pagination parsing,
+each of the loop's three legitimate stopping points (bottom of history,
+`--stop-before-id`, `--max-pages`) and no others, a failed-page-stops-
+rather-than-retries-forever check, and the single-fetch-per-page property
+by direct call count — verified by sabotage: removing the caching layer
+turns exactly the caching-related checks red (not the others); removing
+the bottom-of-history check crashes the suite outright rather than looping
+forever, itself a safety property worth having, not just a bug to catch.
+**Also rehearsed live**, once, 2026-09-21: a bounded 2-page run against the
+real `kpszsu` channel (`--max-pages 2`), into a throwaway database and
+storage root — 2 discovered, 2 acquired, 0 failed, correct pagination
+confirmed (`https://t.me/s/kpszsu` then
+`https://t.me/s/kpszsu?before=79321`, genuinely distinct, genuinely
+earlier). **No full backfill of any channel has been run.** The estimated
+request count for a complete `kpszsu` backfill (2 500-4 000 requests) is
+an estimate from its live post-id range at verification time, not
+confirmed by actually walking it to the bottom.
+
 ## Tests
 
 Two suites, each test naming the requirement or Decision Record it verifies.

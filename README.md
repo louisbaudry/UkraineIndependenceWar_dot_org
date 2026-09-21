@@ -133,6 +133,9 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-20 | Both remaining sanctions candidates researched in parallel, per the founder's ruling above. **`eur-lex-sanctions`** verified partially: the two foundational instruments identified (Council Regulation 269/2014, Council Decision 2014/145/CFSP), fetched, and rehearsed through the real collector (2/2 acquired, 0 failed) — with a genuine open question flagged, not resolved: its consolidated-text locator carries a dated CELEX suffix that advances roughly monthly, unlike every other sanctions candidate's stable list-file locator. **`ua-nsdc-sanctions`** stays unverified: the actual register (`drs.nsdc.gov.ua`, the NSDC's own "State Register of Sanctions," found via rnbo.gov.ua's own navigation) is now identified but returns HTTP 403 behind a Cloudflare managed challenge, the same block class as Légifrance. **Separately, this branch independently rediscovered the same `register.py --commit` bug the 2026-09-19 row above already fixed on `main`** — unaware of it, since this branch was cut before that fix merged. `sources/tests/test_register.py` carried the identical redundant fix. On merging the two branches, the 2026-09-19 fix was kept (more thorough — also covers `collector/run.py` and `collector/tests/test_run.py`, plus a real end-to-end `--commit` subprocess check) and this branch's duplicate discarded; `eur-lex-sanctions`'s own verification and approval work is unaffected | `sources/candidates/sanctions-authorities.yaml`, `docs/sources/verification-eur-lex-sanctions.md`, `docs/sources/verification-ua-nsdc-sanctions.md`, `sources/README.md` |
 | 2026-09-21 | Founder closed `eur-lex-sanctions`'s two remaining open questions, one at a time: `run_locators` keeps both instruments (Regulation 269/2014 and Decision 2014/145/CFSP), not the Regulation alone; and its dated-CELEX consolidated-text locator is re-verified manually before each collection run — the same agent-of-record model every other source uses (DR-0093 §3), no new tooling built. Founder then **approved `eur-lex-sanctions` for registration**, a fourth candidate joining `uk-ofsi-consolidated`/`bis-entity-list`/`seco-sanctions` as approved-but-unexecuted. Its cross-batch dependence on the already-registered `eu-consolidated-list` re-verified in a throwaway database seeded to match the archive server's real state, matching the `--only`-batch pattern `DR-0096`/`DR-0098` established | `docs/decision-records/DR-0105-eur-lex-sanctions-registration.md`, `docs/sources/verification-eur-lex-sanctions.md`, `sources/candidates/sanctions-authorities.yaml` |
 | 2026-09-21 | **`eur-lex-sanctions` registration and first collection executed on the archive server**, interactively, by the founder: 2 discovered, 2 acquired, 0 failed, 16 199 485 bytes preserved, 0 documentary assertions (run `2eeef589-56aa-430d-af5f-855f5b6775d0`). Execution surfaced a real, unrelated blocker — the archive server's checkout was on a stale pre-DR-0087 branch, and its live database schema was ~10 weeks behind `main` (missing the whole identifier subsystem and more); this project has no schema-migration mechanism for a live database. Resolved by a full backup-then-reload: switched to `main`, `pg_dump` full and data-only to a timestamped backup, schema rebuilt from current DDL as the `postgres` superuser (the connecting `root` role lacked the privilege `pg_dump --disable-triggers`'s technique needs), data reloaded past expected DDL-seeded reference-table duplicate-key conflicts — row counts verified identical across every real data table before and after. Also numbered `DR-0104`/`DR-0105`, which had reached `main` still named `DR-pending-*` from an earlier merge that skipped the renaming step — every cross-reference updated | `docs/decision-records/DR-0105-eur-lex-sanctions-registration.md`, `docs/decision-records/DR-0104-legal-entity-formation.md`, `docs/decision-records/README.md` |
+| 2026-09-21 | **The remaining three approved sanctions registrations executed on the archive server**, interactively, by the founder: `uk-ofsi-consolidated` (run `efcdcb38-44a8-4f07-972a-8a99c220b82b`, 70 739 812 bytes), `bis-entity-list` (run `cc2f55e3-84e0-4bca-a169-7c2072c46edb`, 110 427 bytes), `seco-sanctions` (run `d21d849d-fe96-409c-ae85-cb14b42f739e`, 42 300 406 bytes), all 0 failed, all dependence links on `eu-consolidated-list` recorded correctly. Six of seven sanctions authorities now registered and collected. DR-0096/DR-0098 *Executed* sections updated | `docs/decision-records/DR-0096-second-source-registrations.md`, `docs/decision-records/DR-0098-seco-sanctions-registration.md` |
+| 2026-09-21 | **Founder redirected the project's central purpose**, mid-session, after pausing work to reflect: not territorial control, but strike-level completeness — "to come the closest possible to record EVERY SINGLE MISSILE, DRONE, that fell on each side and their effect." First step: two candidates drafted for territorial control (`isw-orca`, `deepstatemap`, `sources/candidates/war-facts.yaml`) before the redirection sharpened further; then two strike-tracking candidates for the actual goal (`kpszsu`, `generalstaffzsu`, `sources/candidates/strike-tracking.yaml`) — official Ukrainian channels covering both directions (incoming Russian strikes, outgoing Ukrainian strikes). All four verified and rehearsed through the real collector; none registered yet | `sources/candidates/war-facts.yaml`, `sources/candidates/strike-tracking.yaml`, `docs/sources/verification-war-facts-first-two.md`, `docs/sources/verification-strike-tracking-first-two.md` |
+| 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-pending-telegram-backfill, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started — see README's open decisions | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
 is under way**: 3 of the 7 sanctions sources are registered and have completed
@@ -333,7 +336,41 @@ outstanding *execution*.
    (per-decree WARC capture of rnbo.gov.ua's decree stream, rather than a
    single list locator) if the search-UI hypothesis holds — see
    [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md).
-4. **WP 3.4's Track A item A5** (registration classes) is **done**: Option A
+4. **Registering `kpszsu` and `generalstaffzsu` (strike tracking), and
+   whether/how far to run a historical backfill against either.** Drafted
+   2026-09-21 following the founder's redirection of the project's central
+   purpose from territorial control toward strike-level completeness —
+   "to come the closest possible to record EVERY SINGLE MISSILE, DRONE,
+   that fell on each side and their effect." Both candidates verified and
+   rehearsed; a backfill mechanism
+   (`collector/telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`)
+   is built, tested (10 checks, sabotage-verified) and rehearsed live
+   (2 pages against the real `kpszsu` channel). **Not yet decided:**
+   registering either source; running a bounded first backfill pass;
+   running a full backfill (~79 000 posts for `kpszsu` alone, an
+   estimated 2 500-4 000 requests — real rate-limit/block risk to the
+   archive server's Telegram access generally, not just this backfill,
+   named explicitly in the runbook). See
+   [`docs/sources/verification-strike-tracking-first-two.md`](docs/sources/verification-strike-tracking-first-two.md)
+   for the full account, including what this does NOT achieve: no
+   Russian-side source yet for either direction, and "effect" data
+   (casualties, damage) still needs Gate 2/3 editorial work no amount of
+   collection substitutes for.
+5. **Civilian casualties as a future subject area — noted, not started.**
+   The founder flagged this 2026-09-21 as a goal for later, explicitly
+   deferred: "I also want to use this project to track all civilians'
+   deaths... we will tackle that at a later date." Recorded here so it is
+   not lost, and so a future session inherits the caution already
+   established for this category: civilian-casualty data is the single
+   most personal-data-sensitive war-fact category discussed so far (named
+   individuals, cause and circumstance of death), the most exposed to
+   POL-0001 §10's still-pending legal review, and the category this
+   project's own standing rulings have twice named as needing the most
+   care (see the "civilian harm / casualties" option flagged and not
+   chosen when territorial control was picked first, and the strike-
+   tracking "effect" caveat above). No sources identified, nothing
+   researched — a clean start whenever the founder says go.
+6. **WP 3.4's Track A item A5** (registration classes) is **done**: Option A
    implemented and tested (18/18 checks,
    `sources/tests/test_register_classes.py`), enacted as
    [`DR-0103`](docs/decision-records/DR-0103-registration-classes.md), and
