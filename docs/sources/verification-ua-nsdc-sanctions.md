@@ -2,10 +2,14 @@
 
 **Status:** Verification record for one candidate registration —
 **PARTIALLY BLOCKED**: the mechanism is identified, the actual sanctions
-register is not reachable from this session. Nothing here is registered,
-nothing is collected, and nothing is enacted by this document. Registering
-this candidate is the founder's act (CLAUDE.md standing ruling).
-**Verified:** 2026-09-20, ~19:00–19:10 UTC, from this session's container.
+register is not reachable from this session. A 2026-09-21 Wayback-history
+check (§2a) found no bulk-export capture in 3 489 historical crawls of the
+register, strengthening but not confirming the working hypothesis that it
+is a search-UI-only application. Nothing here is registered, nothing is
+collected, and nothing is enacted by this document. Registering this
+candidate is the founder's act (CLAUDE.md standing ruling).
+**Verified:** 2026-09-20, ~19:00–19:10 UTC; Wayback follow-up 2026-09-21,
+~19:10–19:25 UTC. Both from this session's container.
 **Candidate:** `ua-nsdc-sanctions` in
 [`sources/candidates/sanctions-authorities.yaml`](../../sources/candidates/sanctions-authorities.yaml).
 
@@ -68,6 +72,41 @@ this reason — there is no confirmed fetchable locator to rehearse against,
 unlike `eur-lex-sanctions` where a rehearsal made sense once two concrete
 instrument URLs were confirmed reachable.
 
+## 2a. The Wayback workaround, tried 2026-09-21
+
+Per the "Next steps" below (as originally drafted), queried
+`drs.nsdc.gov.ua` through Wayback's CDX index instead of fetching it live,
+using `sources/census.py`'s already-tested `WaybackCdxClient` and direct
+CDX queries. Wayback itself was reachable this session, intermittently
+(the Internet Archive returned its own "Temporarily Offline" page and a
+connection reset on two of five attempts — worth noting as its own
+instability, separate from the Cloudflare block on the live site).
+
+**Result:** `drs.nsdc.gov.ua` has **3 489 Wayback captures**, first seen
+2024-02-02, **last seen 2026-08-24** — recent enough to be a live,
+actively crawled site, not an archived-and-abandoned one. This confirms
+the register exists and is real, but does not unblock verification:
+- The captured URL pattern is overwhelmingly a client-side **search
+  application** — `/actions/personal?searchQuery=<name>` — a person-search
+  UI, not a bulk list.
+- A large fraction of the captures are themselves **HTTP 403** with
+  Cloudflare challenge-token query parameters (`__cf_chl_tk=...`),
+  meaning Wayback's own crawler was blocked at capture time on many
+  attempts — the same wall this session hit live, just recorded
+  historically instead of encountered directly.
+- A filtered CDX query across up to 5 000 captures for common
+  bulk-export MIME types (`text/csv`, `application/json`,
+  `application/xml`, `text/xml`, `application/vnd.ms-excel`,
+  `application/octet-stream`) returned **zero matches**, across three
+  attempts. No evidence surfaced of a downloadable list file anywhere in
+  Wayback's history of this host.
+
+**What this changes:** the working hypothesis for §3's "next steps" below
+shifts from "unknown whether it's a bulk export or search-only" to
+**probably search-only, with no bulk export ever observed** — consistent
+with a search-UI architecture, though absence of a CSV/JSON capture in
+Wayback's history is evidence, not proof, that no such endpoint exists.
+
 ## 3. Next steps
 
 This needs the same thing Légifrance needs: human-assisted (browser-based)
@@ -79,15 +118,19 @@ challenge. Until then:
   written in as a decided `run_locator`, since it has not actually been
   reached.
 - `sanctions-t.rnbo.gov.ua` (the A2-surfaced Wayback lead) stays
-  unexplored; querying it *through* Wayback rather than fetching it live
-  may be a workaround worth a future session's attempt, since Wayback
-  itself was reachable in the 2026-09-17 session and A2's `census.py`
-  already has a working `WaybackCdxClient`.
-- If `drs.nsdc.gov.ua` turns out to only expose a search UI with no bulk
-  export, this candidate may need to be registered against something more
-  like rnbo.gov.ua's decree stream instead (each decree/decision
-  individually, WARC-captured) rather than a single list locator — a
-  materially different registration shape from every other sanctions
+  unexplored — this session's proxy rejected the direct CONNECT to it
+  outright (§1.1), and querying it *through* Wayback's CDX index (as §2a
+  did for `drs.nsdc.gov.ua`) was not attempted for that specific
+  subdomain; worth a future session's try.
+- **Per §2a's finding**, `drs.nsdc.gov.ua` looks like a search-UI-only
+  application with no bulk export ever captured by Wayback across 3 489
+  historical captures — not proven (Wayback's own instability this
+  session limited how thoroughly this could be checked), but the working
+  hypothesis now, not an open unknown. If confirmed, this candidate may
+  need to be registered against something more like rnbo.gov.ua's decree
+  stream instead (each decree/decision individually, WARC-captured)
+  rather than a single list locator — a materially different
+  registration shape from every other sanctions
   candidate, and a founder question when it is reachable enough to answer.
 
 ## Sources

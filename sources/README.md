@@ -267,10 +267,17 @@ a way none of the other six candidates do
 to is now identified (`drs.nsdc.gov.ua`, the NSDC's own "State Register of
 Sanctions," found via rnbo.gov.ua's own navigation), but that register
 returns HTTP 403 behind a Cloudflare managed challenge from every session
-that has tried it so far, the same block class found on Légifrance
+that has tried it so far, the same block class found on Légifrance. A
+2026-09-21 Wayback-history check found 3 489 historical captures of the
+register (last seen 2026-08-24) but no bulk-export file among them,
+strengthening the working hypothesis that it is a search-UI-only
+application rather than confirming it
 ([verification record](../docs/sources/verification-ua-nsdc-sanctions.md)).
-None of these six is registered — registering, like it was for the first
-two, is the founder's act, per source.
+None of these six is registered, and one (`eur-lex-sanctions`) is now
+approved but unexecuted
+([`DR-pending-eur-lex-sanctions-registration`](../docs/decision-records/DR-pending-eur-lex-sanctions-registration.md))
+— registering, like it was for the first two, is the founder's act, per
+source.
 
 These entries carry three optional fields the registry does not store:
 
