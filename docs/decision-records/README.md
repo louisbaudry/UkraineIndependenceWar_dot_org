@@ -134,6 +134,8 @@ merely another renumbering.
 | [DR-0101](DR-0101-recording-the-legal-review.md) | What "the review's outcome is recorded" means, for POL-0001 §10 | legal / methodology | Approved | 2026-09-15 |
 | [DR-0102](DR-0102-drafting-discipline-before-merge.md) | Drafting discipline before merge: CDR numbers assigned at merge, unmerged branches checked before starting, bounded in-place revision | architecture / methodology | Approved | 2026-09-15 |
 | [DR-0103](DR-0103-registration-classes.md) | Registration classes (Option A): source authorization scales from per-source to per-class plus exceptions | architecture / operations | Approved | 2026-09-15 |
+| [DR-0104](DR-0104-legal-entity-formation.md) | Legal entity formation: association loi 1901, started now, in parallel with pending counsel advice | legal / operations | Approved | 2026-09-20 |
+| [DR-0105](DR-0105-eur-lex-sanctions-registration.md) | Fourth source registration: EUR-Lex restrictive measures (Ukraine/Russia) | operations / preservation | Approved — executed 2026-09-21 | 2026-09-21 |
 
 ## Provenance of decisions
 
@@ -365,3 +367,14 @@ merged PR had done. `CLAUDE.md`'s Track A table and `sources/register.py`,
 `sources/tests/test_register_classes.py`'s references to
 `DR-pending-registration-classes` were updated to `DR-0103` in the same
 change.
+
+DR-0104 and DR-0105 reached `main` (via PR #34, merged 2026-09-21) still
+named `DR-pending-legal-entity-formation` and
+`DR-pending-eur-lex-sanctions-registration` — the merge that landed them
+did not perform the renaming step DR-0095/DR-0102 require in the same
+commit as the merge. Numbered here, in the session that executed DR-0105's
+registration on the archive server and noticed the gap while updating this
+register: DR-0104 (approved 2026-09-20) before DR-0105 (approved
+2026-09-21), matching approval order. Self-references in both files and
+every cross-reference in `README.md`, `CLAUDE.md` and `sources/README.md`
+were updated in the same change.

@@ -87,7 +87,7 @@ permits now. Keep this list current when you finish or start an item.
 
 | Item | State | Note |
 |---|---|---|
-| A1 — register the seven sanctions sources and make the first live collection | **in progress: 2 of 7 registered (2026-09-09), 4 more approved for registration but not yet executed (2026-09-12/14/21), 1 blocked** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `uk-ofsi-consolidated` (fully) and `bis-entity-list` (Denied Persons List half only) approved 2026-09-12 (`DR-0096`); `seco-sanctions` (fully verified, found 2026-09-13 on a second attempt — the real file lives on `sesam.search.admin.ch`, a different host than the main site) approved 2026-09-14 (`DR-0098`); `eur-lex-sanctions` (both foundational instruments — Council Regulation 269/2014, Council Decision 2014/145/CFSP — identified, fetched and rehearsed 2026-09-20) approved 2026-09-21 (`DR-pending-eur-lex-sanctions-registration`), with a manual per-run re-verification obligation for its dated-CELEX locator. Each a **separate decision**, executable in any order. The OFSI/BIS-pair record's drafting found a `register.py` gap (dependence on an already-registered source silently dropped when using `--only`) — **fixed 2026-09-12**: `commit()`/`validate()` now resolve a link's other end against the database, not only the current call's batch; `sources/tests/test_register.py` now 31 tests, up from 27. Re-verified 2026-09-14 for `seco-sanctions` and 2026-09-21 for `eur-lex-sanctions` specifically — single-source `--only` calls, not pairs — confirming the fix works there too. A separate session, branched before 2026-09-19's fix landed, independently rediscovered the identical `register.py --commit`/unmerged-candidate bug on 2026-09-20 while verifying `eur-lex-sanctions` — merging the two branches kept the 2026-09-19 fix (more thorough: also covers `collector/run.py`'s `find_candidate()` and `collector/tests/test_run.py`, and adds a real end-to-end `--commit` subprocess check) and discarded the redundant duplicate; see A5's note for the full account. `ua-nsdc-sanctions` remains blocked, not merely unverified: its actual register (`drs.nsdc.gov.ua`) is identified but Cloudflare-challenged from every session that has tried it, live or via a 2026-09-21 Wayback-history check (3 489 captures, no bulk-export file found — suggestive of a search-UI-only application, not confirmed). Since 2026-09-12, `collector/run.py` also records a versioned software agent on preservation events (`DR-0097`) — exercised against four live sources across rehearsals, not yet on the archive server |
+| A1 — register the seven sanctions sources and make the first live collection | **in progress: 3 of 7 registered and collected (2026-09-09, 2026-09-21), 3 more approved for registration but not yet executed, 1 blocked** | `eu-consolidated-list` and `ofac-sdn` registered and collected on the archive server via `collector/run.py` (DR-0093). `eur-lex-sanctions` **registered and collected 2026-09-21** (`DR-0105`) — both foundational instruments (Council Regulation 269/2014, Council Decision 2014/145/CFSP) fetched cleanly: 2 discovered, 2 acquired, 0 failed, 16 199 485 bytes preserved, 0 documentary assertions (run `2eeef589-56aa-430d-af5f-855f5b6775d0`); carries a manual per-run re-verification obligation for its dated-CELEX locator, re-checked live immediately before this run (still `20260807`, unchanged since verification). **Executing it surfaced a real, unrelated operational gap**: the archive server's checkout was on a stale pre-DR-0087 branch and its live database schema was ~10 weeks out of date (missing the entire identifier subsystem and more) — this project has no schema-migration mechanism for a live database (only "drop and rebuild from DDL," which suites do but a production database with real data cannot). Resolved by a full backup-then-reload (`pg_dump` full + data-only to a timestamped backup, schema rebuilt from current DDL as the `postgres` superuser, data reloaded past expected DDL-seed-table duplicate-key conflicts) — row counts verified identical before and after across every data table. See `DR-0105`'s *Executed* section for the full sequence; **writing an actual runbook for this, so it isn't reinvented at the next schema change, is flagged there as an open founder decision, not done**. `uk-ofsi-consolidated` (fully) and `bis-entity-list` (Denied Persons List half only) approved 2026-09-12 (`DR-0096`); `seco-sanctions` (fully verified, found 2026-09-13 on a second attempt — the real file lives on `sesam.search.admin.ch`, a different host than the main site) approved 2026-09-14 (`DR-0098`) — both still unexecuted, though the archive server's schema being current as of 2026-09-21 means their eventual execution will not hit the same schema-drift blocker `eur-lex-sanctions`'s did. Each a **separate decision**, executable in any order. The OFSI/BIS-pair record's drafting found a `register.py` gap (dependence on an already-registered source silently dropped when using `--only`) — **fixed 2026-09-12**: `commit()`/`validate()` now resolve a link's other end against the database, not only the current call's batch; `sources/tests/test_register.py` now 31 tests, up from 27. Re-verified 2026-09-14 for `seco-sanctions` and 2026-09-21 for `eur-lex-sanctions` specifically — single-source `--only` calls, not pairs — confirming the fix works there too. A separate session, branched before 2026-09-19's fix landed, independently rediscovered the identical `register.py --commit`/unmerged-candidate bug on 2026-09-20 while verifying `eur-lex-sanctions` — merging the two branches kept the 2026-09-19 fix (more thorough: also covers `collector/run.py`'s `find_candidate()` and `collector/tests/test_run.py`, and adds a real end-to-end `--commit` subprocess check) and discarded the redundant duplicate; see A5's note for the full account. `ua-nsdc-sanctions` remains blocked, not merely unverified: its actual register (`drs.nsdc.gov.ua`) is identified but Cloudflare-challenged from every session that has tried it, live or via a 2026-09-21 Wayback-history check (3 489 captures, no bulk-export file found — suggestive of a search-UI-only application, not confirmed). Since 2026-09-12, `collector/run.py` also records a versioned software agent on preservation events (`DR-0097`) — exercised against four live sources across rehearsals, not yet on the archive server |
 | A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | **in progress: index tooling built and tested 2026-09-12; first live query 2026-09-17** | `sources/census.py` queries Common Crawl's index and Wayback's CDX index for candidate domains, no fetch of any candidate host, no database writes. 28 tests. **Live query succeeded for the first time 2026-09-17**, against `rnbo.gov.ua` (the `ua-nsdc-sanctions` publisher domain) — both `index.commoncrawl.org` and `web.archive.org` were reachable this session, where every prior session's `curl`/`urllib` attempt had failed (`ECONNRESET`/timeout); Wayback returned 25 hosts (including a `sanctions-t.rnbo.gov.ua` subdomain, unexplored), Common Crawl 2. Network access varies by session — this is not a durable fix, just a session where the gap did not hold. The other four A2 evidence sources (Wikipedia citation graphs, sanctions link graphs, OSINT lists, bibliographies) are not built — editorial research tasks, not tooling. DR-0094 (approved 2026-09-11) still governs how a *retrieved* third-party capture gets recorded — that's the separate acquisition_attempt/FetchResult extension, not started |
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | **evaluated 2026-09-15** | [WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md) (CDR-P3-42 candidate): the container spec is stable (v1.1.1) but its signing layer is a pre-1.0 working draft (v0.1.0), confirmed by live retrieval of both spec texts and PyPI release metadata for `wacz`/`authsign`/`wacz-signing`. Recommends **deferring** adoption of both, WARC via `collector/pipeline.py` unchanged, on two stated triggers; the "jurisdictionally meaningful" half of DR-0006's question is flagged as unanswerable from a spec alone, not resolved |
@@ -144,22 +144,28 @@ commits to.
   now, POL-0001 §9(a) afterwards. The acquisition strategy is census,
   retrospective recovery from existing archives, registered live collection
   (WP 3.4, candidate). Do not propose a crawler.
-- **Two of the seven sanctions authorities in `sources/candidates/` are
-  registered** (`eu-consolidated-list`, `ofac-sdn`, DR-0093, 2026-09-08/09).
-  **Four more are approved for registration but not yet executed**:
+- **Three of the seven sanctions authorities in `sources/candidates/` are
+  registered and collected**: `eu-consolidated-list`, `ofac-sdn` (DR-0093,
+  2026-09-08/09); `eur-lex-sanctions` (DR-0105, 2026-09-21 — both
+  foundational instruments fetched cleanly, run `2eeef589-56aa-430d-af5f-855f5b6775d0`).
+  **Three more are approved for registration but not yet executed**:
   `uk-ofsi-consolidated` fully verified, `bis-entity-list` partially —
   Denied Persons List only — approved 2026-09-12
   (`DR-0096`); `seco-sanctions` fully
   verified, approved 2026-09-14
-  (`DR-0098`); `eur-lex-sanctions` fully
-  verified (both foundational instruments), approved 2026-09-21
-  (`DR-pending-eur-lex-sanctions-registration`, with a manual per-run
-  re-verification obligation for its dated-CELEX locator, see A1 above) —
-  **each a separate decision, not linked to the others**, may be executed
-  in any order or on any day. Execution is on the archive server, per each
-  record's *How to execute* — this is not a session-side task, and running
-  `register.py --commit` in an interactive session's own throwaway
-  database is not the same thing as executing it.
+  (`DR-0098`) — **each a separate decision, not linked to the others**,
+  may be executed in any order or on any day. Execution is on the archive
+  server, per each record's *How to execute* — this is not a session-side
+  task, and running `register.py --commit` in an interactive session's own
+  throwaway database is not the same thing as executing it.
+  **Executing DR-0105 on 2026-09-21 surfaced a real operational gap**: the
+  archive server's database schema had drifted ~10 weeks behind `main`
+  (this project has no schema-migration mechanism for a live database).
+  Resolved by a full backup-then-reload, verified lossless — see DR-0105's
+  *Executed* section. The archive server's schema is now current, so this
+  specific blocker will not recur for `uk-ofsi-consolidated`/
+  `bis-entity-list`/`seco-sanctions`'s eventual execution, but **writing an
+  actual runbook for schema drift is an open founder decision, not done**.
   **One remains a candidate**, blocked rather than merely unverified:
   `ua-nsdc-sanctions` — its register (`drs.nsdc.gov.ua`) is identified but
   Cloudflare-challenged from every session that has tried it. Registering
@@ -168,14 +174,14 @@ commits to.
   against the real archive database without that being asked for, and do
   not treat approval of one pending registration as authorization for any
   other source.
-- **2026-09-21 — the project has started forming a legal entity: an
+- **2026-09-20 — the project has started forming a legal entity: an
   association loi 1901.** Resolves the "whether the project should form a
   legal entity" question this file's own standing ruling below had left
   open since 2026-09-14/15. Chosen over another French form or a
   non-French entity (which would have reopened the interim-jurisdiction
   ruling below), started **in parallel with**, not conditional on, French
   data-protection counsel's still-pending Part A response
-  (`DR-pending-legal-entity-formation`). **This is a decision to proceed,
+  (`DR-0104`). **This is a decision to proceed,
   not a completed formation** — statutes, filing with a préfecture, a
   SIRET, and a first general assembly are real-world acts no session can
   perform. **The controller stays the founder as a natural person**
