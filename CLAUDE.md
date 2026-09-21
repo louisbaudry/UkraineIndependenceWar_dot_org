@@ -40,6 +40,11 @@ not a substitute for checking.
    needs a founder ruling right now — then the component README of whatever
    you are about to touch. `collector/README.md` says what the pipeline does
    and does not do today; `docs/phase-3/README.md` says where Phase III is.
+   [`GLOSSARY.md`](GLOSSARY.md) defines the archival/preservation/sanctions
+   vocabulary this file and the DRs assume — the founder has no prior
+   background in the domain and is learning it alongside the build, so keep
+   it current: when a session introduces or leans on a term a newcomer
+   wouldn't know, add it there in the same session, in plain language.
 2. Start PostgreSQL and run the suites you will touch **before** editing
    (see "Environment notes"), so you know green from green-because-broken.
 3. Check `git log --oneline -15` and the branch you are on. Work happens on
