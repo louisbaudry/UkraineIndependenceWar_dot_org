@@ -1,0 +1,148 @@
+# Candidate sources — missile/drone strikes, both directions
+#
+# Status: CANDIDATE. Nothing here is registered until the founder accepts it
+# (per source, not as a block) and `register.py --commit` is run.
+#
+# Drafted 2026-09-21 by an AI assistant at the founder's direction. This is
+# the project's central stated purpose in the founder's own words: "to come
+# the closest possible to record EVERY SINGLE MISSILE, DRONE, that fell on
+# each side and their effect" — not a side category, the point of the
+# archive. Two official Ukrainian government Telegram channels, chosen to
+# cover both directions: incoming (Russian strikes on Ukraine) and outgoing
+# (Ukrainian strikes on Russia and Russian-occupied territory).
+#
+# CRITICAL LIMITATION, stated plainly rather than implied away: registering
+# and running the collector against these locators as `run_locators`
+# collects each run's *currently visible recent posts* (Telegram's public
+# web preview, `t.me/s/<channel>`, shows roughly the newest ~20-30
+# messages). It does NOT, by itself, retrieve the channel's full history.
+# `kpszsu` alone has approximately 79 000 posts as of 2026-09-21 verification
+# (message ids ~79300+). The public preview DOES support paginating
+# backward through full history via a `?before=<message_id>` parameter,
+# confirmed working this session — so a full historical backfill is
+# technically possible, but it is a separate, larger engineering effort
+# (a paginated crawl of tens of thousands of pages) from what registering
+# a source normally means in this project, and is NOT built. Registering
+# these sources now gets the project *new* posts going forward, at
+# whatever cadence someone runs the collector; it does not retroactively
+# capture the ~79 000-post backlog. See
+# docs/sources/verification-strike-tracking-first-two.md for the full
+# account and what the backfill work would actually require.
+#
+# VERIFICATION STATUS (2026-09-21). Both fetched live and rehearsed end to
+# end through the real collector into a throwaway database (1 discovered,
+# 1 acquired, 0 failed each). Neither registered.
+
+classes:
+
+  strike-tracking-official-ukrainian:
+    # Official Ukrainian government channels documenting strikes, in either
+    # direction. Telegram-specific capture considerations (see individual
+    # source notes on the before= pagination gap) distinguish this class
+    # from the war-facts-territorial-control class even though both are
+    # Ukrainian-jurisdiction military sources.
+    collection_method: http
+    collection_cadence: daily
+    capture_format: warc
+    default_retention_tier: permanent
+    default_access_tier: public
+    rights_permission: may-preserve
+    rights_basis: >
+      Rights position UNVERIFIED. Official Ukrainian government channels,
+      but no explicit reuse/redistribution license found; the conservative
+      default applies pending a rights check (§14, DR-0067) — not because
+      government-sourced content is expected to be restrictive, but
+      because nothing here confirms it either way.
+    expects_graphic_content: false
+    grade_source_reliability: B
+    grade_item_credibility: "2"
+
+sources:
+
+  - key: kpszsu
+    class: strike-tracking-official-ukrainian
+    source_type: telegram-channel
+    name: Air Force Command of the Armed Forces of Ukraine (Telegram)
+    # The official Ukrainian Air Force channel: near-real-time tracking of
+    # individual drone/missile groups over Ukrainian territory -- type,
+    # location, direction, target city, shelter warnings. This is the
+    # "incoming" side (what fell on Ukraine).
+    locator: https://t.me/s/kpszsu
+    locator_verified: 2026-09-21
+    run_locators:
+      - https://t.me/s/kpszsu
+    verification_note: >
+      Fetched live 2026-09-21, 200, 112 688-112 924 bytes across two
+      fetches (small variance expected -- new posts appear between
+      fetches, the point of the source, not instability). Content
+      confirmed on-topic: recent posts include live UAV-group tracking
+      ("Group of UAVs from Khersonshchyna toward Mykolaivshchyna, heading
+      toward Snihurivka", shelter warnings for specific cities under
+      active drone/missile threat). Rehearsed through the real collector:
+      1 discovered, 1 acquired, 0 failed, 112 688 bytes preserved, 0
+      documentary assertions. capture_format warc, matching isw-orca's
+      reasoning (a rendered page, not a bare API body). Pagination via
+      `?before=<message_id>` confirmed working (fetched
+      `?before=79317`, got posts 79297-79299, i.e. genuinely earlier
+      than the live page's oldest visible post) -- full history is
+      technically reachable but NOT what a normal run_locators
+      registration retrieves; see this file's header comment and
+      docs/sources/verification-strike-tracking-first-two.md. Channel
+      had roughly 79 000+ posts as of this verification.
+    publisher: Air Force Command of the Armed Forces of Ukraine
+    jurisdiction: UA
+    primary_languages: [uk]
+    coverage_start: 2022-02-24        # channel active since the full-scale invasion
+    scope_rules: >
+      Real-time posts naming aerial threats over Ukrainian territory:
+      drone/missile group movements, types, directions, target locations,
+      shelter warnings, and (where posted) strike outcomes. Official
+      operational communications only.
+    exclusions: >
+      Any content unrelated to aerial-threat tracking (recruitment,
+      morale/PR posts unrelated to specific incidents) -- register a
+      separate source if that content is ever wanted.
+
+  - key: generalstaffzsu
+    class: strike-tracking-official-ukrainian
+    source_type: telegram-channel
+    name: General Staff of the Armed Forces of Ukraine (Telegram)
+    # The official General Staff channel: periodic (roughly weekly)
+    # summaries of Ukrainian strikes on Russian territory and Russian-
+    # occupied Ukrainian territory -- named facilities, dates, locations.
+    # This is the "outgoing" side (what Ukraine struck).
+    locator: https://t.me/s/GeneralStaffZSU
+    locator_verified: 2026-09-21
+    run_locators:
+      - https://t.me/s/GeneralStaffZSU
+    verification_note: >
+      Fetched live 2026-09-21, 200, 172 321-172 322 bytes across two
+      fetches. Content confirmed on-topic: most recent substantive post
+      was a weekly strike summary ("14-20 September: Ukraine's Defense
+      Forces struck a number of important enemy facilities in Russia and
+      temporarily occupied Ukrainian territory" -- naming a struck oil
+      refinery in Samara Oblast and a drone-component plant in Rostov
+      Oblast, with dates). Rehearsed through the real collector: 1
+      discovered, 1 acquired, 0 failed, 172 322 bytes preserved, 0
+      documentary assertions. capture_format warc, same reasoning as
+      kpszsu. Not tested for `before=` pagination specifically this
+      session, but the same public Telegram preview mechanism applies --
+      expect the same backfill gap and possibility as kpszsu (see this
+      file's header comment).
+    publisher: General Staff of the Armed Forces of Ukraine
+    jurisdiction: UA
+    primary_languages: [uk]
+    coverage_start: 2022-02-24        # channel active since the full-scale invasion
+    scope_rules: >
+      Official communications on Ukrainian strikes against Russian and
+      Russian-occupied targets: facilities struck, dates, locations, and
+      stated military-economic rationale. Also carries general
+      operational updates from the General Staff -- both are in scope,
+      since separating "strike reports" from "other General Staff posts"
+      within one channel is an editorial judgment for later, not a
+      registration-time filter.
+    exclusions: >
+      Press-contact/administrative posts (media inquiry procedures,
+      contact addresses) -- present in the channel but not strike-related
+      content; noted so a future session doesn't mistake their presence
+      for scope creep.

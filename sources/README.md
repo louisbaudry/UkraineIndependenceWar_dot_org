@@ -370,6 +370,29 @@ re-verification burden (a new dated URL every day, more demanding than
 `eur-lex-sanctions`'s monthly cadence), and a third candidate in the same
 category (LiveUAmap) that this session's network could not reach (403).
 
+## Strike-tracking candidates (`strike-tracking.yaml`, started 2026-09-21)
+
+The founder's actual stated purpose for this project: "to come the closest
+possible to record EVERY SINGLE MISSILE, DRONE, that fell on each side and
+their effect" — not a category alongside territorial control, the point of
+the archive. Two official Ukrainian government Telegram channels, one per
+direction: `kpszsu` (Air Force Command — near-real-time incoming
+drone/missile tracking over Ukraine) and `generalstaffzsu` (General Staff —
+periodic summaries of Ukrainian strikes on Russia/occupied territory).
+Both verified and rehearsed through the real collector, neither registered.
+**The critical caveat**, stated in the candidate file's own header and in
+full in the
+[verification record](../docs/sources/verification-strike-tracking-first-two.md):
+registering these sources gets ongoing coverage of *new* posts going
+forward, not the channels' existing ~79 000-message history. A full
+backfill is technically possible (Telegram's `?before=` pagination reaches
+the whole history) but is real, separate engineering — a paginated crawl
+of thousands of requests, closer in scope to A3's WARC bulk-ingest path
+than to a normal registration — not something registering the source
+does automatically. Also flagged: both sources are Ukraine's own official
+voice on both directions of the war; a fuller record eventually needs
+independently verified Russian-side sources too.
+
 ## Census tooling (`census.py`, WP 3.4 §4.1 Track A item A2)
 
 A separate tool from registration, built for a separate purpose:
