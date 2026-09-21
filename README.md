@@ -263,12 +263,13 @@ deliberate acts that follow it (OPS-001).
 
 Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
 propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
-wait for the answer before building against an assumption. Five items that
-stood here through 2026-09-11/14 (a DR-numbering collision; how a run is
+wait for the answer before building against an assumption. Items that stood
+here through 2026-09-11/21 (a DR-numbering collision; how a run is
 versioned under a human agent of record; registering `uk-ofsi-consolidated`/
 `bis-entity-list`; registering `seco-sanctions`; the project's establishment
-jurisdiction) are resolved and dropped from this list — see "Recent work"
-below for what changed and which DR governs each. **None of the three
+jurisdiction; whether to form a legal entity; registering
+`eur-lex-sanctions`) are resolved and dropped from this list — see "Recent
+work" below for what changed and which DR governs each. **None of the four
 approved registrations has been executed on the archive server yet** — that
 remains outstanding, but it is no longer an open *decision*, just
 outstanding *execution*.
@@ -305,11 +306,19 @@ outstanding *execution*.
    association legally exists and takes over — that handover is a
    separate POL-0001 §11 material-change review, recorded when it
    happens, not assumed now.
-3. **Registering `eur-lex-sanctions` or `ua-nsdc-sanctions`.** Neither is
-   verified; each needs identifying a specific legal instrument or
-   decision set, which is legal or editorial judgment, not a URL to find
-   — closer to founder-guided work than something a session should
-   attempt alone.
+3. **Registering `ua-nsdc-sanctions`.** Its sibling candidate,
+   `eur-lex-sanctions`, was verified, scoped and approved 2026-09-20/21
+   ([`DR-pending-eur-lex-sanctions-registration`](docs/decision-records/DR-pending-eur-lex-sanctions-registration.md))
+   — resolved and dropped from this list. `ua-nsdc-sanctions` is not: its
+   register, `drs.nsdc.gov.ua`, is identified but Cloudflare-challenged
+   from every session that has tried it, live or via a 2026-09-21
+   Wayback-history check (3 489 captures, no bulk-export file found —
+   suggestive, not conclusive, of a search-UI-only application). Needs
+   either human-assisted (browser) access to confirm or refute that, or a
+   founder decision to register it against a different shape entirely
+   (per-decree WARC capture of rnbo.gov.ua's decree stream, rather than a
+   single list locator) if the search-UI hypothesis holds — see
+   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md).
 4. **WP 3.4's Track A item A5** (registration classes) is **done**: Option A
    implemented and tested (18/18 checks,
    `sources/tests/test_register_classes.py`), enacted as
@@ -321,7 +330,7 @@ outstanding *execution*.
    section has the table and the per-source overrides that keep each
    source's actual verified/approved values from being silently overwritten
    by a class default). **Not open**, but not yet done: execution of the
-   three approved-but-unexecuted registrations (item above) using the class
+   four approved-but-unexecuted registrations (item above) using the class
    mechanism, on the archive server, by a person, per source. **A4, the
    WACZ evaluation, is done**
    ([WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md),
