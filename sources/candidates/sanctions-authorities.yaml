@@ -173,9 +173,13 @@ sources:
     # re-verification at registration time, not treated as a fixed URL.
     # Founder confirmed 2026-09-21: both instruments belong in run_locators
     # (matches scope_rules' "Regulations, Council Decisions and implementing
-    # acts"), not the Regulation alone. See verification_note and
-    # docs/sources/verification-eur-lex-sanctions.md for what remains open:
-    # the right re-verification cadence for the dated CELEX suffix.
+    # acts"), not the Regulation alone. Re-verification cadence for the
+    # dated CELEX suffix also ruled 2026-09-21: manual, before each run --
+    # a person re-fetches eur-lex.europa.eu and updates run_locators, same
+    # as every other source (a person as agent of record, DR-0093 §3), no
+    # new tooling built for this. locator_verified below is a fetch date,
+    # not a promise the dated CELEX stays current until then. See
+    # verification_note and docs/sources/verification-eur-lex-sanctions.md.
     locator: https://eur-lex.europa.eu/
     locator_verified: 2026-09-20
     run_locators:

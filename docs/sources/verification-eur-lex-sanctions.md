@@ -106,14 +106,19 @@ assertions, matching every other sanctions candidate's rehearsal.
 reading of the candidate's `scope_rules` ("Regulations" and "Council
 Decisions" both named).
 
-**Not settled, and not this session's to settle** (per README.md's original
-flagging of this candidate as founder-guided work):
-- Whether "the current consolidated version, re-verified per amendment" is
-  the right capture cadence for this source, versus something closer to
-  `eu-consolidated-list`'s own approach — a genuinely different question
-  from the other candidates, since this is the only sanctions candidate
-  whose designated-persons content lives inside amendable primary
-  legislation rather than a purpose-built list file.
+**Settled 2026-09-21:** the founder confirmed both instruments belong in
+`run_locators` (over the Regulation alone), matching this record's original
+reading of the candidate's `scope_rules` ("Regulations" and "Council
+Decisions" both named). Re-verification cadence for the dated CELEX suffix
+is also settled: **manual, before each collection run** — a person
+re-fetches EUR-Lex, finds the current dated CELEX, and updates
+`run_locators`, the same agent-of-record model every other source uses
+(DR-0093 §3), rather than new tooling to auto-resolve "latest consolidated
+version." `locator_verified: 2026-09-20` in the candidate file records when
+this session's fetch happened, not a guarantee the locator stays current
+past that date.
+
+**Not settled, and not this session's to settle:**
 - Registration itself, as with all seven candidates, per the standing
   ruling that this is the founder's act, per source.
 
