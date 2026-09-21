@@ -30,7 +30,7 @@ import psycopg  # noqa: E402
 
 import run as runner  # noqa: E402
 from fetch import FixtureFetcher  # noqa: E402
-from register import commit, load_candidates  # noqa: E402
+from register import commit, load_candidates, merge_class_defaults  # noqa: E402
 
 PASSES: list[str] = []
 FAILURES: list[str] = []
@@ -63,7 +63,11 @@ def run() -> int:
     work = Path(tempfile.mkdtemp(prefix="uiw-run-"))
     archive = work / "archive"
 
-    sources, _ = load_candidates()
+    raw_sources, _, all_classes = load_candidates()
+    # merge_class_defaults: commit() inserts a source's fields directly, so
+    # it needs class defaults already merged in (DR-0103) — same as
+    # collector/run.py's own find_candidate().
+    sources = [merge_class_defaults(s, all_classes) for s in raw_sources]
     ofac = next(s for s in sources if s["key"] == "ofac-sdn")
     eu = next(s for s in sources if s["key"] == "eu-consolidated-list")
 
@@ -229,7 +233,7 @@ def run() -> int:
         unverified_dir.mkdir()
         stripped = {k: v for k, v in eu.items()
                     if k not in ("run_locators", "locator_verified",
-                                 "verification_note", "_file")}
+                                 "verification_note", "_file", "class")}
         (unverified_dir / "eu.yaml").write_text(yaml.safe_dump({"sources": [stripped]}))
         original_dir = register.CANDIDATES
         register.CANDIDATES = unverified_dir

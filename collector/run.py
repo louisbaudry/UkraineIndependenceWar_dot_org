@@ -55,7 +55,7 @@ from pipeline import (  # noqa: E402
     Collector, PolicyViolation, SOFTWARE_AGENT_NAME, SOFTWARE_AGENT_VERSION,
     ensure_software_agent,
 )
-from register import load_candidates, validate  # noqa: E402
+from register import load_candidates, merge_class_defaults, validate  # noqa: E402
 
 DEFAULT_USER_AGENT = (
     "UIW-collector/0.1 "
@@ -70,8 +70,8 @@ class Refused(Exception):
 # -- the four checks --------------------------------------------------------
 
 def find_candidate(key: str) -> dict:
-    sources, dependence = load_candidates()
-    problems = validate(sources, dependence)
+    sources, dependence, all_classes = load_candidates()
+    problems = validate(sources, dependence, all_classes)
     if problems:
         raise Refused("the candidate file does not validate:\n  "
                       + "\n  ".join(problems))
@@ -79,7 +79,7 @@ def find_candidate(key: str) -> dict:
     if not matches:
         known = ", ".join(sorted(s["key"] for s in sources))
         raise Refused(f"no candidate with key {key!r}; known keys: {known}")
-    candidate = matches[0]
+    candidate = merge_class_defaults(matches[0], all_classes)
     if not candidate.get("run_locators"):
         raise Refused(
             f"{key} has no run_locators. A run is authorised for exactly the "

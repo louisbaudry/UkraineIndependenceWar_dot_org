@@ -486,9 +486,15 @@ def main() -> int:
               "registering them.")
         return 1
 
-    import psycopg
+    # commit() inserts each source's fields directly, so it needs class
+    # defaults already merged in — the same merged_for_display view describe()
+    # printed above, not the unmerged `sources` (DR-0103: a source referencing
+    # a class carries its policy fields only after merging).
     merged_all_sources_by_key = {
-        s["key"]: merge_class_defaults(s, all_classes) for s in all_sources}
+        s["key"]: merge_class_defaults(s, all_classes) for s in all_sources
+    }
+
+    import psycopg
     with psycopg.connect(dbname=args.dbname, autocommit=True) as conn:
         ids = commit(conn, merged_for_display, dependence, args.agent,
                     all_sources_by_key=merged_all_sources_by_key)

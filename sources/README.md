@@ -190,34 +190,6 @@ Scope, for now: classes are defined per candidate file (WP 3.7 §7 sub-Q3),
 not shared across files; if a future file's classes duplicate one here,
 harmonizing is a later, visible decision, not an automatic one.
 
-**A real `--commit` bug found and fixed 2026-09-20.** `register.py`'s
-`main()` still called `commit()` with the *unmerged* candidate dicts —
-`sources = all_sources` straight from `load_candidates()`, never passed
-through `merge_class_defaults()` — even after every shipped candidate
-became class-based (this file's classes, named 2026-09-17). `commit()`
-accesses `source["collection_method"]` and other class-inherited fields
-directly, with no merge of its own, so **any real `--commit` run against
-any of these seven candidates would have raised `KeyError:
-'collection_method'`** — including the three approved-but-unexecuted
-registrations (`uk-ofsi-consolidated`, `bis-entity-list`,
-`seco-sanctions`) this file's own "Which locators are verified" section
-already lists as ready to execute. `--check` and `--dry-run` were
-unaffected (they call `validate()`/`describe()`, which merge internally),
-which is why the gap went unnoticed. Fixed by passing the same merged
-list `describe()` already builds (`merged_for_display`) into `commit()`
-instead of the raw one, plus a merged `all_sources_by_key` for
-cross-batch dependence resolution. `sources/tests/test_register.py` had
-the identical bug in five of its own direct-field checks (all previously
-run against raw candidate dicts that no longer carry those fields
-directly) — the whole suite was erroring at `0/31` before this fix, not
-reporting a real PASS/FAIL for any of them. Fixed the same way, plus a
-sixth spot (`load_candidates()`'s return signature grew from two values
-to three when classes were added, which the test's one call site had
-never been updated for either). Verified: the suite passes 31/31, and
-sabotaging `merge_class_defaults` back to a no-op reproduces the original
-`KeyError` and turns the suite red, confirming the fix is what closes the
-gap rather than the test merely no longer looking for it.
-
 ## What registering these commits you to
 
 `--dry-run` prints this; it is repeated here because each item is a real
@@ -315,7 +287,7 @@ the real download lives on a different host entirely
 
 ## Verification
 
-31 tests. The refusals are the substance:
+32 tests. The refusals are the substance:
 
 - a candidate missing any policy field is refused rather than defaulted —
   DR-0067's point is that collection policy is *stated*, and a silent default
@@ -344,6 +316,27 @@ of which resolves prints which end could not be found rather than
 vanishing. Verified by sabotage: reverting either half of the fix (the
 database lookup in `commit()`, or `validate()`'s `known_keys` parameter)
 turns one check red each.
+
+**`register.py --commit` hands `commit()` the merged view** (fixed
+2026-09-19): `commit()` reads each policy field straight off the dict it is
+given, and since 2026-09-17 every shipped candidate references a class, so
+its fields exist only after `merge_class_defaults()`. `main()` computed that
+merged view for `describe()` but passed the *unmerged* `sources` to
+`commit()` — a bare `KeyError` on the archive server the first time any of
+the three approved registrations was actually executed, invisible to every
+test above because they call `commit()` directly with fixture data. A new
+end-to-end check runs `register.py --commit --only ofac-sdn` as a subprocess
+against the test database and reads the registered row back. Verified by
+sabotage: reverting `main()` to pass `sources` turns exactly that check
+red. The same `load_candidates()` three-value return had also broken
+`collector/run.py`'s `find_candidate()` (now merges before returning) and
+the setup of this suite and `collector/tests/test_run.py`.
+
+A separate session, branched before this fix merged to `main`, independently
+rediscovered the identical bug on 2026-09-20 while verifying
+`eur-lex-sanctions`, with its own redundant fix to `register.py` and
+`test_register.py`. Merging the two branches kept this (2026-09-19) fix,
+the more thorough of the two, and discarded the duplicate.
 
 **Not verified:** for the three still-unfetched candidates
 (`eur-lex-sanctions`, `seco-sanctions`, `ua-nsdc-sanctions`), that the
