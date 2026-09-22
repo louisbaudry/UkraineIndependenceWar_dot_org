@@ -13,6 +13,17 @@ server's real database.
 
 ## Read this before running anything
 
+**No Telegram account, API key, bot, or login is involved anywhere in
+this.** Every fetch — the live head, every `?before=` backfill page — is
+a plain HTTPS GET to `t.me/s/<channel>`, Telegram's own **public web
+preview**: the exact page anyone's browser gets for that URL with no
+Telegram account at all. `HttpFetcher` requests it the same way it
+requests a sanctions PDF or an ISW report — no credentials, no app
+integration, nothing that identifies this project to Telegram beyond a
+normal request's User-Agent string. If this ever needs explaining to
+someone unfamiliar with the mechanism (a reviewer, a future collaborator,
+the founder revisiting this a year from now), point them here first.
+
 **This is CDR-pending-telegram-backfill** — candidate, not decided. The
 mechanism itself (walking `?before=` pagination, preserving each page
 through the normal `Collector.run()` path) is built and tested. Whether
