@@ -181,6 +181,36 @@ pattern above makes them predictable:
 `/registry-api/subjects/export/<class>/<format>?lang=uk` — unconfirmed
 until read the same way, not assumed.
 
+## 2d. Confirmed export file structure — Vessels, 2026-09-22
+
+The founder downloaded and shared the "Vessels" CSV export
+(`22.09.2026_vessel_subjects.csv`, UTF-8, CRLF). **888 data rows**, exactly
+matching the page's stated count (§2b) — confirms the export is complete,
+not paginated or truncated. Header row (16 fields):
+
+```
+sid, name, translit_name, aliases, status, country, reg_id,
+additional_info, active_sanctions, sanctions_term, sanctions_end_date,
+last_action_type, last_action_decree, decree_date, decree_appendix,
+position_in_appendix
+```
+
+`sid` is a stable numeric register ID (e.g. `34090`); `status` is a closed
+vocabulary matching the page's filter options (`active` seen; presumably
+also the expired/lifted states from §2b's filter panel); `active_sanctions`
+is free-text Ukrainian prose naming each enacted sanction measure by
+number, not a coded list; `decree_date`/`decree_appendix`/
+`position_in_appendix` together identify exactly which enacting decree and
+line item the record traces to — this is the provenance link back to
+`rnbo.gov.ua`'s decree stream (§1.2–1.3) that a `run_locator` alone
+wouldn't otherwise carry. This is entity data (vessel identity, flag
+state, IMO/MMSI numbers, shipowner names in `additional_info`), not
+personal data of a natural person, so DR-0071(b) does not constrain this
+class the way it will constrain "Individuals."
+
+Legal entities and Individuals exports not yet received; Aircraft has 0
+records per §2b (nothing to receive).
+
 ## 3. Next steps
 
 **No longer blocked on Cloudflare for a human** — automated sessions
