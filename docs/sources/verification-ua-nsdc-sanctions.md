@@ -1,15 +1,17 @@
 # Verification record — NSDC sanctions decisions (Ukraine)
 
 **Status:** Verification record for one candidate registration —
-**PARTIALLY BLOCKED**: the mechanism is identified, the actual sanctions
-register is not reachable from this session. A 2026-09-21 Wayback-history
-check (§2a) found no bulk-export capture in 3 489 historical crawls of the
-register, strengthening but not confirming the working hypothesis that it
-is a search-UI-only application. Nothing here is registered, nothing is
-collected, and nothing is enacted by this document. Registering this
-candidate is the founder's act (CLAUDE.md standing ruling).
-**Verified:** 2026-09-20, ~19:00–19:10 UTC; Wayback follow-up 2026-09-21,
-~19:10–19:25 UTC. Both from this session's container.
+**UNBLOCKED 2026-09-22** by human-assisted (browser) access, which passed
+the Cloudflare challenge every automated session had failed. The
+2026-09-21 Wayback-history check's working hypothesis
+(search-UI-only, no bulk export) is **overturned**: the register exposes a
+dedicated bulk-download page with structured CSV/XLSX exports per entity
+class. Nothing here is registered, nothing is collected, and nothing is
+enacted by this document. Registering this candidate is the founder's act
+(CLAUDE.md standing ruling).
+**Verified:** 2026-09-20, ~19:00–19:10 UTC (automated, blocked); Wayback
+follow-up 2026-09-21, ~19:10–19:25 UTC (automated, blocked); human-assisted
+browser access 2026-09-22 (founder, screenshot evidence — see §2b).
 **Candidate:** `ua-nsdc-sanctions` in
 [`sources/candidates/sanctions-authorities.yaml`](../../sources/candidates/sanctions-authorities.yaml).
 
@@ -107,31 +109,74 @@ shifts from "unknown whether it's a bulk export or search-only" to
 with a search-UI architecture, though absence of a CSV/JSON capture in
 Wayback's history is evidence, not proof, that no such endpoint exists.
 
+## 2b. Human-assisted browser access, 2026-09-22
+
+The founder reached `https://drs.nsdc.gov.ua` directly in a browser,
+passing the Cloudflare challenge that blocked every prior automated
+attempt (§1.4, §2a). The site has a **"Data integration"** section
+(separate from the search UI at `/actions/personal`) with three tabs:
+"Downloading sanctions actions," "Loading subjects" (shown), and "API
+documentation." The "Loading subjects" tab provides a **"Download file"**
+panel: "Full list of unique entities according to selected filters,"
+with per-entity-class CSV and XLSX downloads, each showing a live record
+count as of the page's stated last update (Decree No. 901/2026 of
+2026-09-13):
+
+| Entity class | Records | Formats |
+|---|---|---|
+| Legal entities | 9,682 | CSV, XLSX |
+| Individuals | 13,900 | CSV, XLSX |
+| Vessels | 888 | CSV, XLSX |
+| Aircraft | 0 | CSV, XLSX |
+
+A left-hand filter panel (subject status, decree, sanction type, end
+date, country/territory) scopes the export; the screenshot shows no
+filters applied, i.e. the full unfiltered register per class. The page
+also documents "Description of the file structure" per entity class
+(collapsed sections, not yet expanded/read) and a separate **API
+documentation** tab exists, unexplored.
+
+**This overturns §2a's working hypothesis.** The register is not
+search-UI-only: it has an authoritative bulk-export mechanism that
+matches the shape every other registered sanctions source uses (a
+downloadable structured list), making this candidate's registration
+shape the *same* as `eu-consolidated-list`/`ofac-sdn`/`seco-sanctions`,
+not the decree-stream alternative §3 (prior revision) considered.
+
+**Not yet captured:** the exact download URLs (button `href`s), response
+headers, content-type, and a byte-for-byte sample of at least one export
+— none of this was read from the page itself, only observed visually.
+`sources/register.py`'s schema needs a concrete `run_locator` (or one per
+entity class, if this is registered as either one candidate covering all
+four classes or split the way `bis-entity-list`'s Denied-Persons-List-only
+scoping split a multi-list source). The "Description of the file
+structure" sections need reading before scope_rules can be drafted
+responsibly (DR-0071(b) — no automatic structuring of personal data means
+the field layout of "Individuals" matters before this is registered).
+
 ## 3. Next steps
 
-This needs the same thing Légifrance needs: human-assisted (browser-based)
-access, or a session whose network policy passes Cloudflare's managed
-challenge. Until then:
-- The candidate's `scope_rules` and `locator` in
-  `sources/candidates/sanctions-authorities.yaml` are not changed by this
-  record — `drs.nsdc.gov.ua` is proposed as the register to target, not
-  written in as a decided `run_locator`, since it has not actually been
-  reached.
-- `sanctions-t.rnbo.gov.ua` (the A2-surfaced Wayback lead) stays
-  unexplored — this session's proxy rejected the direct CONNECT to it
-  outright (§1.1), and querying it *through* Wayback's CDX index (as §2a
-  did for `drs.nsdc.gov.ua`) was not attempted for that specific
-  subdomain; worth a future session's try.
-- **Per §2a's finding**, `drs.nsdc.gov.ua` looks like a search-UI-only
-  application with no bulk export ever captured by Wayback across 3 489
-  historical captures — not proven (Wayback's own instability this
-  session limited how thoroughly this could be checked), but the working
-  hypothesis now, not an open unknown. If confirmed, this candidate may
-  need to be registered against something more like rnbo.gov.ua's decree
-  stream instead (each decree/decision individually, WARC-captured)
-  rather than a single list locator — a materially different
-  registration shape from every other sanctions
-  candidate, and a founder question when it is reachable enough to answer.
+**No longer blocked on Cloudflare** — human-assisted access works. What
+remains before this is registration-ready:
+1. Confirm the exact download URLs (right-click → copy link, or read the
+   Network tab when clicking a Download button) for each entity class's
+   CSV and/or XLSX.
+2. Read the "Description of the file structure" sections for at least
+   "Individuals" and "Legal entities," since those two carry personal
+   and organizational data respectively.
+3. Decide the registration shape: one candidate spanning all four entity
+   classes vs. one candidate per class (precedent: `bis-entity-list` was
+   approved for its Denied Persons List half only, not the full BIS
+   entity list) — a founder question once §3.1–3.2 are done, not decided
+   here.
+- `sanctions-t.rnbo.gov.ua` (the A2-surfaced Wayback lead) is no longer
+  needed as a fallback path now that the register itself is reachable;
+  left unexplored.
+- The decree-stream registration shape (§3, prior revision) is now
+  believed **unnecessary** — the bulk-export mechanism found in §2b
+  supersedes that fallback — but is not formally withdrawn until §3.1–3.2
+  confirm the export is genuinely complete (all sanctioned entities, not
+  a partial or delayed-update subset).
 
 ## Sources
 

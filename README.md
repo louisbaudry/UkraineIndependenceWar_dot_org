@@ -323,19 +323,26 @@ outstanding *execution*.
    association legally exists and takes over — that handover is a
    separate POL-0001 §11 material-change review, recorded when it
    happens, not assumed now.
-3. **Registering `ua-nsdc-sanctions`.** Its sibling candidate,
+3. **Registering `ua-nsdc-sanctions` — Cloudflare block cleared
+   2026-09-22, not yet registration-ready.** Its sibling candidate,
    `eur-lex-sanctions`, was verified, scoped and approved 2026-09-20/21
    ([`DR-0105`](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md))
-   — resolved and dropped from this list. `ua-nsdc-sanctions` is not: its
-   register, `drs.nsdc.gov.ua`, is identified but Cloudflare-challenged
-   from every session that has tried it, live or via a 2026-09-21
-   Wayback-history check (3 489 captures, no bulk-export file found —
-   suggestive, not conclusive, of a search-UI-only application). Needs
-   either human-assisted (browser) access to confirm or refute that, or a
-   founder decision to register it against a different shape entirely
-   (per-decree WARC capture of rnbo.gov.ua's decree stream, rather than a
-   single list locator) if the search-UI hypothesis holds — see
-   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md).
+   — resolved and dropped from this list. `ua-nsdc-sanctions`'s register,
+   `drs.nsdc.gov.ua`, was Cloudflare-challenged from every automated
+   session that tried it, including a 2026-09-21 Wayback-history check
+   (3 489 captures, no bulk-export file found) that pointed toward a
+   search-UI-only hypothesis. **Human-assisted browser access on
+   2026-09-22 overturned that**: the register has a "Data integration"
+   section with structured CSV/XLSX bulk exports per entity class (Legal
+   entities 9,682; Individuals 13,900; Vessels 888; Aircraft 0, as of
+   Decree No. 901/2026). Still needed before registration: the exact
+   download URLs, a read of the per-class file-structure documentation
+   (personal-data fields matter here, DR-0071(b)), and a founder call on
+   registering one candidate across all four entity classes vs. one per
+   class (precedent: `bis-entity-list`'s Denied-Persons-List-only scope)
+   — see
+   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md)
+   §2b–3.
 4. **Registering `kpszsu` and `generalstaffzsu` (strike tracking), and
    whether/how far to run a historical backfill against either.** Drafted
    2026-09-21 following the founder's redirection of the project's central
