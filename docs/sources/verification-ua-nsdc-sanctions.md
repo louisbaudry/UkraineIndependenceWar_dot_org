@@ -154,20 +154,52 @@ structure" sections need reading before scope_rules can be drafted
 responsibly (DR-0071(b) — no automatic structuring of personal data means
 the field layout of "Individuals" matters before this is registered).
 
+## 2c. Confirmed endpoint, 2026-09-22
+
+The founder identified the "Legal entities" CSV download's actual request
+URL via browser DevTools:
+
+```
+https://drs.nsdc.gov.ua/registry-api/subjects/export/legal/csv?lang=uk
+```
+
+A `registry-api` path confirms a genuine documented REST API behind the
+"Data integration" UI, not a client-side-only export (§2b's uncertainty
+on this point is resolved: the CSV is server-generated per request, not
+built from already-loaded page data). Re-tested from this session
+immediately after receiving it: **still HTTP 403, `cf-mitigated:
+challenge`** — the same Cloudflare managed challenge as every prior
+automated attempt (§1.4, §2a's live retest). This is expected and does
+not weaken §2b's finding: it confirms the block is session/origin-based
+(automated fetch vs. real browser), not that the URL is wrong or the
+export doesn't exist — the founder's browser reached it successfully
+enough to read this exact URL out of the Network tab.
+
+The other three entity classes' export URLs (Individuals, Vessels,
+Aircraft) and the XLSX variants are not yet confirmed, but the URL
+pattern above makes them predictable:
+`/registry-api/subjects/export/<class>/<format>?lang=uk` — unconfirmed
+until read the same way, not assumed.
+
 ## 3. Next steps
 
-**No longer blocked on Cloudflare** — human-assisted access works. What
-remains before this is registration-ready:
-1. Confirm the exact download URLs (right-click → copy link, or read the
-   Network tab when clicking a Download button) for each entity class's
-   CSV and/or XLSX.
+**No longer blocked on Cloudflare for a human** — automated sessions
+remain blocked (§2c). What remains before this is registration-ready:
+1. Confirm the export URLs for the remaining three entity classes
+   (Individuals, Vessels, Aircraft) and the XLSX variants, the same way
+   §2c's Legal-entities CSV URL was obtained.
 2. Read the "Description of the file structure" sections for at least
    "Individuals" and "Legal entities," since those two carry personal
    and organizational data respectively.
-3. Decide the registration shape: one candidate spanning all four entity
+3. Since this session cannot fetch the export directly (§2c), the
+   founder needs to actually download at least the "Legal entities" CSV
+   from the browser and share the file (or its header row plus a few
+   sample rows) so `scope_rules`/`identifier_scheme` can be drafted
+   against real field names rather than assumption.
+4. Decide the registration shape: one candidate spanning all four entity
    classes vs. one candidate per class (precedent: `bis-entity-list` was
    approved for its Denied Persons List half only, not the full BIS
-   entity list) — a founder question once §3.1–3.2 are done, not decided
+   entity list) — a founder question once §3.1–3.3 are done, not decided
    here.
 - `sanctions-t.rnbo.gov.ua` (the A2-surfaced Wayback lead) is no longer
   needed as a fallback path now that the register itself is reachable;
