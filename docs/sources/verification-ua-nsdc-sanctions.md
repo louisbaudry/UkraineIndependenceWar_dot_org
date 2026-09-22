@@ -208,29 +208,81 @@ state, IMO/MMSI numbers, shipowner names in `additional_info`), not
 personal data of a natural person, so DR-0071(b) does not constrain this
 class the way it will constrain "Individuals."
 
-Legal entities and Individuals exports not yet received; Aircraft has 0
-records per §2b (nothing to receive).
+## 2e. Confirmed export file structure — Legal entities and Individuals, 2026-09-22
+
+The founder shared both remaining non-empty exports. Both row counts match
+the page's stated totals exactly (§2b), confirming both are complete,
+non-paginated exports:
+
+- **Legal entities**: 9,683 lines (9,682 records + header) — matches
+  9,682 exactly.
+- **Individuals**: 13,901 lines (13,900 records + header) — matches
+  13,900 exactly.
+
+**Legal entities** header (17 fields) — same shape as Vessels (§2d) plus
+`tax_id`:
+
+```
+sid, name, translit_name, aliases, status, country, reg_id, tax_id,
+additional_info, active_sanctions, sanctions_term, sanctions_end_date,
+last_action_type, last_action_decree, decree_date, decree_appendix,
+position_in_appendix
+```
+
+**Individuals** header (19 fields) — same shared spine (`sid`, `name`,
+`translit_name`, `aliases`, `status`, `reg_id`, `tax_id`,
+`additional_info`, sanctions/decree provenance fields) plus three fields
+specific to natural persons:
+
+```
+sid, name, translit_name, aliases, status, birthdate, citizenship,
+identity_docs, reg_id, tax_id, additional_info, active_sanctions,
+sanctions_term, sanctions_end_date, last_action_type, last_action_decree,
+decree_date, decree_appendix, position_in_appendix
+```
+
+`birthdate`, `citizenship`, and `identity_docs` are personal data proper
+(the latter potentially special-category depending on document type —
+not inspected further here). **Only the header row was read for this
+record; no row content from the Individuals file was inspected, quoted,
+or retained beyond what this section states**, consistent with
+DR-0071(b) (no automatic structuring of personal data) — structuring the
+`identity_docs` field's actual sub-structure, if this candidate is
+registered, is Gate 2/3 editorial work, not something a verification
+record does. The shared files were deleted from the session scratchpad
+after this section was written.
+
+**What this settles for registration drafting:** all four entity classes
+(Legal entities, Individuals, Vessels; Aircraft empty) share one export
+mechanism, one decree/appendix provenance scheme, and mostly-overlapping
+field sets — Individuals is the only class carrying data that DR-0071(b)
+constrains. This is now enough structural information to draft a
+candidate registration (or candidates), pending only the founder's call
+on registration shape (§3.4).
 
 ## 3. Next steps
 
 **No longer blocked on Cloudflare for a human** — automated sessions
-remain blocked (§2c). What remains before this is registration-ready:
-1. Confirm the export URLs for the remaining three entity classes
-   (Individuals, Vessels, Aircraft) and the XLSX variants, the same way
-   §2c's Legal-entities CSV URL was obtained.
-2. Read the "Description of the file structure" sections for at least
-   "Individuals" and "Legal entities," since those two carry personal
-   and organizational data respectively.
-3. Since this session cannot fetch the export directly (§2c), the
-   founder needs to actually download at least the "Legal entities" CSV
-   from the browser and share the file (or its header row plus a few
-   sample rows) so `scope_rules`/`identifier_scheme` can be drafted
-   against real field names rather than assumption.
-4. Decide the registration shape: one candidate spanning all four entity
-   classes vs. one candidate per class (precedent: `bis-entity-list` was
-   approved for its Denied Persons List half only, not the full BIS
-   entity list) — a founder question once §3.1–3.3 are done, not decided
-   here.
+remain blocked (§2c). All three non-empty entity classes' export
+structure is now confirmed (§2d, §2e) with row counts matching the
+register exactly. What remains before this is registration-ready:
+1. Confirm the export URLs for Individuals and Vessels CSV (only Legal
+   entities' was read from DevTools, §2c) and the XLSX variants, if the
+   registration is meant to run against CSV or needs both formats
+   recorded — not load-bearing for drafting `scope_rules`, since the
+   field structure is already confirmed from the downloaded files.
+2. The "Description of the file structure" sections on the page itself
+   (§2b, collapsed, not yet read) were superseded by reading the actual
+   headers directly (§2d, §2e) — lower priority now, worth checking only
+   if a field's meaning (e.g. `status` vocabulary's full value set, or
+   `identity_docs`' sub-structure) needs confirming beyond what the
+   header names alone say.
+3. Decide the registration shape: one candidate spanning Legal entities,
+   Individuals and Vessels (Aircraft empty) vs. one candidate per class
+   — the latter matters specifically because Individuals is the only
+   class DR-0071(b) constrains (precedent: `bis-entity-list` was approved
+   for its Denied Persons List half only, not the full BIS entity list)
+   — a founder question, not decided here.
 - `sanctions-t.rnbo.gov.ua` (the A2-surfaced Wayback lead) is no longer
   needed as a fallback path now that the register itself is reachable;
   left unexplored.
