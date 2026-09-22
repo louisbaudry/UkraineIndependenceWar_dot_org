@@ -137,8 +137,55 @@ appears in `data-post` attributes) is `GeneralStaffZSU`.
 
 ## Executed
 
-Not yet. This record is approved; execution on the archive server has not
-been performed as of this record's drafting.
+**2026-09-22, on the archive server**, by the founder, per *How to execute*.
+
+1. **Registration.** `sources/register.py --commit --only kpszsu
+   generalstaffzsu` was run, resulting in **two `source` rows per
+   candidate** rather than one — a double invocation left duplicate rows
+   for `kpszsu` (`8aad3518-…` and `dcb3a252-…`) and `generalstaffzsu`
+   (`ef186f99-…` and `d835c0ee-…`), 12 seconds apart, both `active`,
+   identical `name`/`locator`. This surfaced as `collector/run.py`
+   refusing both sources: "matches 2 registered sources by name and
+   locator; resolve the duplicate in the registry before running" —
+   `resolve_registered_source`'s existing duplicate check working exactly
+   as intended. Diagnosed with a read-only query confirming both rows had
+   **zero** `collector_run` references before either was touched; the
+   later-created duplicate of each pair was deleted
+   (`dcb3a252-4c1d-4e6b-9643-ce95a52e6912`,
+   `d835c0ee-bbd0-4c4f-a34a-6473b4d1ca21`), leaving one row per source.
+   No code changes were needed — `register.py --commit` being safely
+   re-runnable into duplicate rows (rather than upserting or refusing) is
+   a real gap, not addressed here since it did not block this record's
+   own execution once diagnosed.
+2. **First ordinary collection run, each channel** (the live head, not
+   backfill): `kpszsu` — 1 discovered, 1 acquired, 0 failed, 112 709
+   bytes; `generalstaffzsu` — 1 discovered, 1 acquired, 0 failed, 135 349
+   bytes. Both clean.
+3. **Bounded backfill pass, each channel**
+   (`collector/telegram_backfill.py --max-pages 20 --delay 3`), per this
+   record's authorisation and the runbook:
+   - `kpszsu`: 20 pages attempted, 20 preserved, 0 failed, earliest post
+     id reached **79190** (resume point: `--stop-before-id 79190` — or
+     `--start-before 79190` to continue backward from there).
+   - `generalstaffzsu`: 20 pages attempted, 20 preserved, 0 failed,
+     earliest post id reached **41903** (resume point:
+     `--start-before 41903`).
+   - No rate-limit signals observed on either channel across 40 total
+     backfill requests plus 2 ordinary runs, at the tool's 3-second
+     default delay.
+4. **Verification.** `storage/measure.py --archive-root ~/uiw-archive`:
+   `kpszsu` 21 runs / 21 items / 2 398 262 bytes preserved; `generalstaffzsu`
+   21 runs / 21 items / 3 171 365 bytes preserved. `SELECT count(*) FROM
+   documentary_assertion` = 0, confirming DR-0066 held across every run.
+   `release/baseline.py --check` reports the expected `dataset_snapshot`
+   gap only (no publication is being made here) — unrelated to this
+   record.
+
+**A full historical backfill remains NOT authorised** by this record's
+step 3 — only the bounded 20-page pass per channel. The results above
+(no failures, no rate-limit signals, moderate storage footprint) are the
+evidence a future full-backfill decision would be made against, per
+*Consequences* item 3 below, but that decision has not been made.
 
 ## Consequences
 
