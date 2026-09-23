@@ -24,7 +24,7 @@ The time horizon is measured in years and potentially decades.
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
 | Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0007, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **First collection performed 2026-09-09** — two sanctions lists, registered and run on the archive server ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)). **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072); the founder ruled on 2026-09-08 that no scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0102 are approved and in force. DR-0095 governs how DRs are numbered
+DR-0001…0105 are approved and in force. DR-0095 governs how DRs are numbered
 (drafted unnumbered, assigned at merge). **DR-0096…0101 were approved between
 2026-09-12 and 2026-09-15 and numbered together on 2026-09-15** — three of
 them had reached `main` unnumbered and without register rows, which is the
@@ -45,17 +45,19 @@ data model, the registry, the three-gate pipeline, the storage layout and the
 personal-data policy are all decided and documented. The code implements them and is
 tested against a real database and real storage. But:
 
-- **Three sources are registered and collected; three more are approved but
-  not yet executed; one remains blocked.** Of the seven sanctions authorities
-  in [`sources/candidates/`](sources/README.md), the founder accepted
+- **Six of the seven sanctions sources are registered and collected; one
+  remains blocked.** Of the seven sanctions authorities in
+  [`sources/candidates/`](sources/README.md), the founder accepted
   `eu-consolidated-list` and `ofac-sdn` on 2026-09-08 and ran the first
   collection on the archive server on 2026-09-09 — five files, ~211 MB, zero
   failures ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)).
-  `eur-lex-sanctions` was registered and collected the same way on 2026-09-21
-  ([DR-0105](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md)).
-  `uk-ofsi-consolidated`, `bis-entity-list` and `seco-sanctions` are approved
-  but not yet executed; `ua-nsdc-sanctions` remains a candidate, blocked on a
-  Cloudflare challenge; registering is the act that authorises collection
+  `eur-lex-sanctions` ([DR-0105](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md)),
+  `uk-ofsi-consolidated`, `bis-entity-list` (Denied Persons List half only)
+  and `seco-sanctions` ([DR-0096](docs/decision-records/README.md),
+  [DR-0098](docs/decision-records/README.md)) followed on **2026-09-21**,
+  each a separate decision executed by a person on the archive server.
+  `ua-nsdc-sanctions` remains a candidate, blocked on a Cloudflare challenge
+  ([#46](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/46)); registering is the act that authorises collection
   (OPS-001).
 - **A live fetch has now completed, twice, deliberately.** `HttpFetcher` acquired
   the sources above from real servers with an identified User-Agent. No WARC
@@ -135,31 +137,24 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-21 | **`eur-lex-sanctions` registration and first collection executed on the archive server**, interactively, by the founder: 2 discovered, 2 acquired, 0 failed, 16 199 485 bytes preserved, 0 documentary assertions (run `2eeef589-56aa-430d-af5f-855f5b6775d0`). Execution surfaced a real, unrelated blocker — the archive server's checkout was on a stale pre-DR-0087 branch, and its live database schema was ~10 weeks behind `main` (missing the whole identifier subsystem and more); this project has no schema-migration mechanism for a live database. Resolved by a full backup-then-reload: switched to `main`, `pg_dump` full and data-only to a timestamped backup, schema rebuilt from current DDL as the `postgres` superuser (the connecting `root` role lacked the privilege `pg_dump --disable-triggers`'s technique needs), data reloaded past expected DDL-seeded reference-table duplicate-key conflicts — row counts verified identical across every real data table before and after. Also numbered `DR-0104`/`DR-0105`, which had reached `main` still named `DR-pending-*` from an earlier merge that skipped the renaming step — every cross-reference updated | `docs/decision-records/DR-0105-eur-lex-sanctions-registration.md`, `docs/decision-records/DR-0104-legal-entity-formation.md`, `docs/decision-records/README.md` |
 | 2026-09-21 | **The remaining three approved sanctions registrations executed on the archive server**, interactively, by the founder: `uk-ofsi-consolidated` (run `efcdcb38-44a8-4f07-972a-8a99c220b82b`, 70 739 812 bytes), `bis-entity-list` (run `cc2f55e3-84e0-4bca-a169-7c2072c46edb`, 110 427 bytes), `seco-sanctions` (run `d21d849d-fe96-409c-ae85-cb14b42f739e`, 42 300 406 bytes), all 0 failed, all dependence links on `eu-consolidated-list` recorded correctly. Six of seven sanctions authorities now registered and collected. DR-0096/DR-0098 *Executed* sections updated | `docs/decision-records/DR-0096-second-source-registrations.md`, `docs/decision-records/DR-0098-seco-sanctions-registration.md` |
 | 2026-09-21 | **Founder redirected the project's central purpose**, mid-session, after pausing work to reflect: not territorial control, but strike-level completeness — "to come the closest possible to record EVERY SINGLE MISSILE, DRONE, that fell on each side and their effect." First step: two candidates drafted for territorial control (`isw-orca`, `deepstatemap`, `sources/candidates/war-facts.yaml`) before the redirection sharpened further; then two strike-tracking candidates for the actual goal (`kpszsu`, `generalstaffzsu`, `sources/candidates/strike-tracking.yaml`) — official Ukrainian channels covering both directions (incoming Russian strikes, outgoing Ukrainian strikes). All four verified and rehearsed through the real collector; none registered yet | `sources/candidates/war-facts.yaml`, `sources/candidates/strike-tracking.yaml`, `docs/sources/verification-war-facts-first-two.md`, `docs/sources/verification-strike-tracking-first-two.md` |
-| 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-pending-telegram-backfill, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started — see README's open decisions | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
+| 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-pending-telegram-backfill, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
 
-Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
-is under way**: 3 of the 7 sanctions sources are registered and have completed
-a first collection on the archive server (2026-09-09, 2026-09-21); 3 more are
-approved but not yet executed; the other 1 is blocked pending network access
-(`ua-nsdc-sanctions`, Cloudflare-challenged). **A2's index tooling is
-built** (2026-09-12) and **completed its first live query** (2026-09-17,
-against `rnbo.gov.ua`). **A3 is done.** **A4's WACZ
-evaluation is done** (2026-09-15, [WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md))
-— recommends deferring adoption, WARC unchanged. **A5 (registration classes)
-is done and enacted** (`DR-0103`, 2026-09-16), with the initial classes
-named 2026-09-17. **A6's legal-review brief is
-done** (v0.4, 2026-09-15), with all five founder decisions in its §9 closed;
-commissioning it is a separate founder act. **A7's measurement tooling is
-built and tested** (2026-09-15) with a runbook written and unexecuted. See
-the Track A table in [CLAUDE.md](CLAUDE.md) for each item's exact state.
+Track A of WP 3.4 (work permitted now under DR-0071): **A3, A4, A5 and A6 are
+done; A1 is six sources of seven; A2 and A7 have their tooling built and their
+remaining halves open.** This paragraph used to restate each item's status and
+drifted from the table it claimed to summarise — what each item *produced*
+is the Track A table in [CLAUDE.md](CLAUDE.md), and what is still open is on
+the board: [`epic:track-a`](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues?q=is%3Aopen+label%3A%22epic%3Atrack-a%22).
+
+Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
+POL-0001 §10 review.
 
 ## Picking up development
 
-The next open decision, raised but not yet ruled on, is whether the project
-should **form a legal entity** before, or as part of, commissioning the
-POL-0001 §10 review — see
-["Open decisions"](#open-decisions-for-the-next-session) below and
-[CLAUDE.md](CLAUDE.md) for the full session-start protocol.
+Start from the board — [what needs a ruling](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues?q=is%3Aopen+label%3A%22kind%3Adecision%22)
+— and read [CLAUDE.md](CLAUDE.md) for the full session-start protocol,
+including how a question is put to the founder (named options, a
+recommendation, one at a time).
 
 ## Repository layout
 
@@ -276,163 +271,35 @@ deliberate acts that follow it (OPS-001).
    acquisition strategy, and [collector/README.md](collector/README.md) for what the
    code actually does today.
 
-## Open decisions for the next session
+## What needs deciding next
 
-Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
-propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
-wait for the answer before building against an assumption. Items that stood
-here through 2026-09-11/21 (a DR-numbering collision; how a run is
-versioned under a human agent of record; registering `uk-ofsi-consolidated`/
-`bis-entity-list`; registering `seco-sanctions`; the project's establishment
-jurisdiction; whether to form a legal entity; registering
-`eur-lex-sanctions`) are resolved and dropped from this list — see "Recent
-work" below for what changed and which DR governs each. **None of the four
-approved registrations has been executed on the archive server yet** — that
-remains outstanding, but it is no longer an open *decision*, just
-outstanding *execution*.
+**The board is the list:** https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues
 
-1. **Whether POL-0001 §8.3's legal posture survives French law.** Not a
-   question for a session to settle — but the A6 brief's drafting put it on
-   the table and the founder should know it is there. With the jurisdiction
-   now recorded as **France** — interim, 2026-09-14
-   ([`DR-0099`](docs/decision-records/DR-0099-establishment-jurisdiction.md)),
-   confirmed and extended 2026-09-15
-   ([`DR-0100`](docs/decision-records/DR-0100-jurisdiction-controller-and-hosting.md))
-   — the LIL's **Article 46** limits processing of
-   criminal-offence data to a closed list of actors that a private
-   documentation archive does not obviously sit in, while **Article 80**
-   disapplies Article 46 for university/artistic/literary expression and for
-   professional journalism. POL-0001 §8.3 ruled archiving and research
-   *primary* and expression *secondary*; French law may invert that. The
-   brief puts it to counsel at Q2 and Q3 and answers nothing — the drafter is
-   not a lawyer and the texts were read from the CNIL's consolidated version,
-   not Légifrance. **Nothing changes in POL-0001 until the review is
-   recorded**; this is here so the ruling is not assumed safe in the interval.
-2. **Whether the project should form a legal entity before, or as part of,
-   commissioning the POL-0001 §10 review — resolved 2026-09-20.** Surfaced
-   2026-09-14 while naming France as the interim establishment jurisdiction
-   (`DR-0099`); the founder ruled 2026-09-20 to start forming an
-   **association loi 1901** now, in parallel with counsel's still-pending
-   response to Part A (candidate
-   [`DR-0104`](docs/decision-records/DR-0104-legal-entity-formation.md),
-   pending founder-facing filename only — the ruling itself is final).
-   This is a decision to proceed, not a completed formation: statutes,
-   filing, SIRET and a first general assembly remain outstanding
-   real-world acts no session can perform. The controller stays the
-   founder as a natural person (`DR-0100` Decision 2) until the
-   association legally exists and takes over — that handover is a
-   separate POL-0001 §11 material-change review, recorded when it
-   happens, not assumed now.
-3. **Registering `ua-nsdc-sanctions`.** Its sibling candidate,
-   `eur-lex-sanctions`, was verified, scoped and approved 2026-09-20/21
-   ([`DR-0105`](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md))
-   — resolved and dropped from this list. `ua-nsdc-sanctions` is not: its
-   register, `drs.nsdc.gov.ua`, is identified but Cloudflare-challenged
-   from every session that has tried it, live or via a 2026-09-21
-   Wayback-history check (3 489 captures, no bulk-export file found —
-   suggestive, not conclusive, of a search-UI-only application). Needs
-   either human-assisted (browser) access to confirm or refute that, or a
-   founder decision to register it against a different shape entirely
-   (per-decree WARC capture of rnbo.gov.ua's decree stream, rather than a
-   single list locator) if the search-UI hypothesis holds — see
-   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md).
-4. **Registering `kpszsu` and `generalstaffzsu` (strike tracking), and
-   whether/how far to run a historical backfill against either.** Drafted
-   2026-09-21 following the founder's redirection of the project's central
-   purpose from territorial control toward strike-level completeness —
-   "to come the closest possible to record EVERY SINGLE MISSILE, DRONE,
-   that fell on each side and their effect." Both candidates verified and
-   rehearsed; a backfill mechanism
-   (`collector/telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`)
-   is built, tested (10 checks, sabotage-verified) and rehearsed live
-   (2 pages against the real `kpszsu` channel). **Not yet decided:**
-   registering either source; running a bounded first backfill pass;
-   running a full backfill (~79 000 posts for `kpszsu` alone, an
-   estimated 2 500-4 000 requests — real rate-limit/block risk to the
-   archive server's Telegram access generally, not just this backfill,
-   named explicitly in the runbook). See
-   [`docs/sources/verification-strike-tracking-first-two.md`](docs/sources/verification-strike-tracking-first-two.md)
-   for the full account, including what this does NOT achieve: no
-   Russian-side source yet for either direction, and "effect" data
-   (casualties, damage) still needs Gate 2/3 editorial work no amount of
-   collection substitutes for.
-5. **Civilian casualties as a future subject area — noted, not started.**
-   The founder flagged this 2026-09-21 as a goal for later, explicitly
-   deferred: "I also want to use this project to track all civilians'
-   deaths... we will tackle that at a later date." Recorded here so it is
-   not lost, and so a future session inherits the caution already
-   established for this category: civilian-casualty data is the single
-   most personal-data-sensitive war-fact category discussed so far (named
-   individuals, cause and circumstance of death), the most exposed to
-   POL-0001 §10's still-pending legal review, and the category this
-   project's own standing rulings have twice named as needing the most
-   care (see the "civilian harm / casualties" option flagged and not
-   chosen when territorial control was picked first, and the strike-
-   tracking "effect" caveat above). No sources identified, nothing
-   researched — a clean start whenever the founder says go.
-6. **WP 3.4's Track A item A5** (registration classes) is **done**: Option A
-   implemented and tested (18/18 checks,
-   `sources/tests/test_register_classes.py`), enacted as
-   [`DR-0103`](docs/decision-records/DR-0103-registration-classes.md), and
-   the initial six classes named — jurisdiction first, topic second, per
-   [WP 3.7](docs/phase-3/working-papers/wp-3.7-registration-classes.md) §7 —
-   with all seven `sources/candidates/sanctions-authorities.yaml` sources
-   now wired to a class (`sources/README.md`'s "Registration classes"
-   section has the table and the per-source overrides that keep each
-   source's actual verified/approved values from being silently overwritten
-   by a class default). **Not open**, but not yet done: execution of the
-   four approved-but-unexecuted registrations (item above) using the class
-   mechanism, on the archive server, by a person, per source. **A4, the
-   WACZ evaluation, is done**
-   ([WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md),
-   2026-09-15, CDR-P3-42 candidate) — recommends **deferring** WACZ adoption
-   (the container spec is stable at v1.1.1, but its signing layer is a
-   pre-1.0 working draft at v0.1.0), WARC via `collector/pipeline.py`
-   unchanged, on two stated revisit triggers. **A6, the legal-review brief,
-   is done** — [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md)
-   v0.4, 2026-09-15, with **all five founder decisions in its §9 closed**:
-   France, controller a natural person, IONOS/Spain (§9.1–9.3); Part A
-   (Q1–Q6) to French data-protection counsel with Part B (Q7–Q12) held for
-   IP/media counsel (§9.5); counsel answers for both the project as it is and
-   as it intends to be, naming the deltas, which become POL-0001 §11 review
-   triggers (§9.4, §3.5). **Not a decision but still outstanding:** every LIL
-   article the brief quotes must be checked against Légifrance, which was 403
-   behind an anti-bot challenge when it was drafted — CNIL's consolidated
-   text is what was read. Commissioning is a separate founder act. Three
-   candidate DRs arose, **renumbered CDR-P3-43…45** because a parallel
-   session's WP 3.6 had independently taken CDR-P3-42 the same day;
-   **CDR-P3-43 was discharged** into the jurisdiction record at item 1 above,
-   **CDR-P3-44** into
-   [`DR-0101`](docs/decision-records/DR-0101-recording-the-legal-review.md)
-   — "recorded" in POL-0001 §10 now means one specific act, fixed
-   deliberately before the advice exists — and **CDR-P3-45 is held** with a
-   named trigger, the start of Gate 3 work, so the brief has no open
-   proposals. The gap it holds open, found by reading the code:
-   `rights_basis` is free text, the two registered sources carry
-   `may-redistribute` on a basis whose own text says "NOT LEGALLY REVIEWED",
-   and nothing in the schema or Gate 3 prevents a publication decision
-   resting on it — not urgent, since nothing is published. **A2's index
-   tooling is now built and tested**
-   (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
-   Wayback CDX index only, discovery of candidate domains with no fetch of
-   any candidate host; the other four A2 evidence sources WP 3.4 names
-   (Wikipedia citation graphs, sanctions-authority link graphs, OSINT
-   source lists, academic bibliographies) remain editorial research tasks,
-   not built as tooling. Neither client has completed a live query — both
-   indexes were unreachable from this session; see `sources/README.md`.
-   **A7's measurement tooling is now built and tested**
-   (`storage/measure.py`, 2026-09-15) — reads `collector_run` for recorded
-   bytes/throughput and walks the OCFL roots and quarantine directory for
-   real on-disk footprint, including a measured duplication ratio for the
-   undischarged-quarantine-copy gap `collector/README.md` documents; not
-   yet run against the archive server's real database, so WP 3.4 §5.3's
-   real numbers are still outstanding, and it deliberately does not perform
-   A7's "one retrospective pull" clause (new acquisition, for
-   `collector/run.py` on the archive server) or extrapolate the two
-   registered sources' size onto the five unregistered candidates. A
-   runbook for executing both halves of A7 on the archive server —
-   [`docs/runbooks/A7-storage-bandwidth-measurement.md`](docs/runbooks/A7-storage-bandwidth-measurement.md)
-   — is written and unexecuted.
+This section used to carry a hand-maintained numbered list, and it drifted. On
+2026-09-22 it still described three sanctions registrations as awaiting
+execution, when all three had run on the archive server the day before and
+`sources/README.md` said so. Status now has one home; this file keeps the
+record instead. See [CLAUDE.md](CLAUDE.md)'s **"Where state lives"**.
+
+Every open item is one issue, labelled on three axes:
+
+| Axis | Values | What it tells you |
+|---|---|---|
+| `kind:` | `decision`, `execute`, `build`, `blocked-external` | what the item needs — a founder ruling, a person at the archive server or in the real world, a session, or somebody else |
+| `epic:` | `legal`, `collection`, `track-a`, `infrastructure`, `governance`, `publication`, `war-facts` | which part of the project it belongs to |
+| `size:` | `S`, `M`, `L` | rough cost |
+
+Two views to start from:
+
+- **[Needs a ruling](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues?q=is%3Aopen+label%3A%22kind%3Adecision%22)** —
+  what is waiting on the founder, and nothing else.
+- **[On the server](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues?q=is%3Aopen+label%3A%22kind%3Aexecute%22)** —
+  real-world acts no session can perform: executing a registration, checking
+  Légifrance from a browser, filing the association's statutes.
+
+A session picking one up proposes named options with a recommendation and
+waits for the answer (see [CLAUDE.md](CLAUDE.md)); it does not build against
+an assumption. Each is a real fork, not busywork.
 
 This README is an entry point, not the project's institutional memory (record §100).
 The authoritative statement of requirements, principles, and phase mandates is the
