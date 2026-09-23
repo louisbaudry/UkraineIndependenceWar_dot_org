@@ -260,37 +260,70 @@ constrains. This is now enough structural information to draft a
 candidate registration (or candidates), pending only the founder's call
 on registration shape (§3.4).
 
+## 2f. Registration drafted as three candidates; all three export URLs confirmed, 2026-09-22/23
+
+`ua-nsdc-sanctions` was drafted 2026-09-22 in
+`sources/candidates/sanctions-authorities.yaml` as three separate
+candidates rather than one — `ua-nsdc-sanctions-legal-entities`,
+`ua-nsdc-sanctions-individuals`, `ua-nsdc-sanctions-vessels` (Aircraft
+not registered, 0 records) — because Individuals is the only class
+DR-0071(b) constrains, and splitting keeps that constraint scoped to the
+one class it applies to (precedent: `bis-entity-list` scoped a verified
+locator to one sub-list within a single key; this goes further since the
+difference here is a policy constraint, not just verification status).
+The founder's decided sequencing (2026-09-23): confirm every export URL
+from DevTools first, then register all three together as a batch.
+
+All three URLs are now confirmed, each read independently from DevTools'
+Network tab rather than assumed from the pattern:
+
+| Class | Export URL | Confirmed |
+|---|---|---|
+| Legal entities | `https://drs.nsdc.gov.ua/registry-api/subjects/export/legal/csv?lang=uk` | 2026-09-22 |
+| Individuals | `https://drs.nsdc.gov.ua/registry-api/subjects/export/individual/csv?lang=uk` | 2026-09-23 |
+| Vessels | `https://drs.nsdc.gov.ua/registry-api/subjects/export/vessel/csv?lang=uk` | 2026-09-23 |
+
+All three matched the `/registry-api/subjects/export/<class>/csv?lang=uk`
+pattern predicted after Legal entities was first confirmed — a
+consistent, coherent API, not a one-off. Each is recorded in
+`sources/candidates/sanctions-authorities.yaml` with `locator_verified`
+and `run_locators` set; `sources/register.py --check` confirms all 13
+candidates in the file (including these three) validate. None was
+re-tested from this session — each is expected to hit the same
+Cloudflare `cf-mitigated: challenge` block confirmed for Legal entities in
+§2c, not separately re-confirmed for Individuals/Vessels.
+
+The founder also confirmed the Aircraft URL,
+`https://drs.nsdc.gov.ua/registry-api/subjects/export/aircraft/csv?lang=uk`
+— **returns 0 records**, matching the page's stated count (§2b) exactly.
+This confirms, rather than merely assumes, that there is genuinely
+nothing to register for Aircraft: not a page-display artifact, an
+uninspected endpoint, or a class the register silently omits from its
+export API. No `ua-nsdc-sanctions-aircraft` candidate is drafted.
+
 ## 3. Next steps
 
 **No longer blocked on Cloudflare for a human** — automated sessions
-remain blocked (§2c). All three non-empty entity classes' export
-structure is now confirmed (§2d, §2e) with row counts matching the
-register exactly. What remains before this is registration-ready:
-1. Confirm the export URLs for Individuals and Vessels CSV (only Legal
-   entities' was read from DevTools, §2c) and the XLSX variants, if the
-   registration is meant to run against CSV or needs both formats
-   recorded — not load-bearing for drafting `scope_rules`, since the
-   field structure is already confirmed from the downloaded files.
-2. The "Description of the file structure" sections on the page itself
+remain blocked (§2c). All three non-empty entity classes now have
+confirmed export structure (§2d, §2e) and confirmed export URLs (§2f),
+each with row counts matching the register exactly. What remains:
+1. The "Description of the file structure" sections on the page itself
    (§2b, collapsed, not yet read) were superseded by reading the actual
    headers directly (§2d, §2e) — lower priority now, worth checking only
    if a field's meaning (e.g. `status` vocabulary's full value set, or
    `identity_docs`' sub-structure) needs confirming beyond what the
    header names alone say.
-3. Decide the registration shape: one candidate spanning Legal entities,
-   Individuals and Vessels (Aircraft empty) vs. one candidate per class
-   — the latter matters specifically because Individuals is the only
-   class DR-0071(b) constrains (precedent: `bis-entity-list` was approved
-   for its Denied Persons List half only, not the full BIS entity list)
-   — a founder question, not decided here.
+2. Register the three candidates on the archive server, per source, per
+   the founder's decided sequencing (§2f) — this record and the candidate
+   file are now ready for that; execution is the archive-server act
+   DR-0093 §3 reserves for a person as agent of record, not something a
+   session performs.
 - `sanctions-t.rnbo.gov.ua` (the A2-surfaced Wayback lead) is no longer
   needed as a fallback path now that the register itself is reachable;
   left unexplored.
-- The decree-stream registration shape (§3, prior revision) is now
-  believed **unnecessary** — the bulk-export mechanism found in §2b
-  supersedes that fallback — but is not formally withdrawn until §3.1–3.2
-  confirm the export is genuinely complete (all sanctioned entities, not
-  a partial or delayed-update subset).
+- The decree-stream registration shape (earlier revision of this section)
+  is now **withdrawn**: three confirmed, complete bulk exports with
+  confirmed URLs supersede that fallback entirely.
 
 ## Sources
 

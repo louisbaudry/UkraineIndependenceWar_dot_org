@@ -563,23 +563,19 @@ sources:
     # stated count. See
     # docs/sources/verification-ua-nsdc-sanctions.md §2b, §2e.
     locator: https://drs.nsdc.gov.ua/
-    # No run_locators or locator_verified yet: register.py's own --check
-    # refuses a claimed run_locator without a verification date, correctly
-    # — the predicted URL below has not been independently confirmed the
-    # way Legal entities' was (read from DevTools, not just pattern
-    # matching). Predicted, NOT claimed as a run_locator:
-    #   https://drs.nsdc.gov.ua/registry-api/subjects/export/individual/csv?lang=uk
+    locator_verified: 2026-09-23
+    run_locators:
+      - https://drs.nsdc.gov.ua/registry-api/subjects/export/individual/csv?lang=uk
     verification_note: >
-      Export URL UNCONFIRMED — predicted from the Legal-entities pattern
-      (see comment above), not independently read from DevTools; not
-      listed in run_locators for that reason. The export itself was
-      downloaded via the site UI 2026-09-22 (human-assisted browser
-      access; automated fetch of the sibling Legal-entities URL confirmed
-      blocked, so this class is assumed equally blocked, not separately
-      tested). 13,901 lines (13,900 records + header), exactly matching
-      the register's own stated count for "Individuals." Header row only
-      was read, per DR-0071(b); no record content inspected or retained
-      beyond the field-name list in the verification record. Record in
+      Export URL confirmed 2026-09-23 via DevTools Network tab
+      (human-assisted browser access) — matches the pattern predicted from
+      Legal entities exactly. Export downloaded 2026-09-22: 13,901 lines
+      (13,900 records + header), exactly matching the register's own
+      stated count for "Individuals." Not re-tested from this session
+      (expected to be equally Cloudflare-blocked, per the confirmed block
+      on the sibling Legal-entities URL). Header row only was read, per
+      DR-0071(b); no record content inspected or retained beyond the
+      field-name list in the verification record. Record in
       docs/sources/verification-ua-nsdc-sanctions.md.
     publisher: National Security and Defence Council of Ukraine
     jurisdiction: UA
@@ -618,26 +614,24 @@ sources:
     # personal data, so kept alongside it in reasoning but as its own key
     # for symmetry with individuals and because vessel identity fields
     # (IMO/MMSI numbers, flag state) are a distinct scope from corporate
-    # legal-entity records. CSV export URL is UNCONFIRMED — predicted by
-    # the same pattern as Legal entities, not read from DevTools.
-    # Downloaded export: 888 rows, exactly matching the register's stated
-    # count. Aircraft (0 records per the register) is not registered as a
-    # candidate — nothing to register.
-    # See docs/sources/verification-ua-nsdc-sanctions.md §2b, §2d.
+    # legal-entity records. Downloaded export: 888 rows, exactly matching
+    # the register's stated count. Aircraft (0 records per the register)
+    # is not registered as a candidate — nothing to register.
+    # See docs/sources/verification-ua-nsdc-sanctions.md §2b, §2d, §2f.
     locator: https://drs.nsdc.gov.ua/
-    # No run_locators or locator_verified yet — same reasoning as
-    # ua-nsdc-sanctions-individuals above. Predicted, NOT claimed as a
-    # run_locator:
-    #   https://drs.nsdc.gov.ua/registry-api/subjects/export/vessel/csv?lang=uk
+    locator_verified: 2026-09-23
+    run_locators:
+      - https://drs.nsdc.gov.ua/registry-api/subjects/export/vessel/csv?lang=uk
     verification_note: >
-      Export URL UNCONFIRMED — predicted from the Legal-entities pattern
-      (see comment above), not independently read from DevTools; not
-      listed in run_locators for that reason. The export itself was
-      downloaded via the site UI 2026-09-22 (human-assisted browser
-      access). 889 lines (888 records + header), exactly matching the
-      register's own stated count for "Vessels." 16-field structure
-      (matches Legal entities minus tax_id) recorded in the verification
-      record §2d. Record in docs/sources/verification-ua-nsdc-sanctions.md.
+      Export URL confirmed 2026-09-23 via DevTools Network tab
+      (human-assisted browser access) — matches the pattern predicted from
+      Legal entities exactly. Export downloaded 2026-09-22: 889 lines
+      (888 records + header), exactly matching the register's own stated
+      count for "Vessels." 16-field structure (matches Legal entities
+      minus tax_id) recorded in the verification record §2d. Not re-tested
+      from this session (expected to be equally Cloudflare-blocked, per
+      the confirmed block on the sibling Legal-entities URL). Record in
+      docs/sources/verification-ua-nsdc-sanctions.md.
     publisher: National Security and Defence Council of Ukraine
     jurisdiction: UA
     primary_languages: [uk]
