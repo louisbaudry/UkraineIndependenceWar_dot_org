@@ -180,6 +180,20 @@ appears in `data-post` attributes) is `GeneralStaffZSU`.
    `release/baseline.py --check` reports the expected `dataset_snapshot`
    gap only (no publication is being made here) — unrelated to this
    record.
+5. **2026-09-23 — a second, larger bounded pass, each channel**
+   (`--max-pages 100 --delay 3`, resumed from each channel's step-3 stop
+   point), founder-directed as a scale check before deciding on a full
+   backfill:
+   - `kpszsu`: `--start-before 79190`, 100 pages attempted, 100 preserved,
+     0 failed, earliest post id reached **77184** (resume point:
+     `--start-before 77184`).
+   - `generalstaffzsu`: `--start-before 41903`, 100 pages attempted, 100
+     preserved, 0 failed, earliest post id reached **39618** (resume
+     point: `--start-before 39618`).
+   - Still **no rate-limit signals** on either channel, now across 240
+     total backfill requests plus 2 ordinary runs. This is the evidence a
+     full-backfill decision (§*Consequences* item 3) would be made
+     against; that decision has still not been made.
 
 **A full historical backfill remains NOT authorised** by this record's
 step 3 — only the bounded 20-page pass per channel. The results above
