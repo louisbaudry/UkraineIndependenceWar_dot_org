@@ -7,8 +7,14 @@ military operations, started 2026-09-21 following the founder's
 redirection toward war-fact subject matter — see that file's own header).
 **Six of the seven sanctions candidates are registered and collected** on
 the archive server (`eu-consolidated-list`, `ofac-sdn`, `eur-lex-sanctions`,
-`uk-ofsi-consolidated`, `bis-entity-list`, `seco-sanctions`); the seventh
-(`ua-nsdc-sanctions`) remains blocked. **Both war-facts candidates
+`uk-ofsi-consolidated`, `bis-entity-list`, `seco-sanctions`); the seventh,
+`ua-nsdc-sanctions`, was Cloudflare-blocked from every automated session
+through 2026-09-21. **Unblocked 2026-09-22/23** by human-assisted (founder)
+browser access, and now drafted as **three separate candidates**
+(`ua-nsdc-sanctions-legal-entities`, `ua-nsdc-sanctions-individuals`,
+`ua-nsdc-sanctions-vessels` — Aircraft not registered, 0 records), all
+fully verified (locator, export structure, row counts) but not yet
+registered — see "Which locators are verified" below. **Both war-facts candidates
 (`isw-orca`, `deepstatemap`) are verified but not yet registered** — the
 founder's decision, per source. Registration lives in the server's
 database, not in this file: the file is the candidate, the row is the
@@ -41,7 +47,10 @@ remain proposals.
 ## What is proposed
 
 Seven sanctions and export-control authorities — the thematic area the
-founder chose. Two of them, `eu-consolidated-list` and `ofac-sdn`, are
+founder chose — drafted as **nine candidates**, since `ua-nsdc-sanctions`
+was split into three (per entity class) on 2026-09-22 rather than
+registered as one (see "Which locators are verified" below). Two of them,
+`eu-consolidated-list` and `ofac-sdn`, are
 approved for registration and a first run by
 [DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md);
 the registration itself happens on the archive server. Institutional publishers, stable formats, near-zero
@@ -56,7 +65,9 @@ and POL-0001's structuring limits are straightforward to honour.
 | `bis-entity-list` | BIS Entity / Denied Persons | US | weekly | A1 |
 | `uk-ofsi-consolidated` | OFSI Consolidated List | GB | daily | A1 |
 | `seco-sanctions` | SECO sanctions list | CH | weekly | A1 |
-| `ua-nsdc-sanctions` | NSDC decisions and enacting decrees | UA | weekly | B2 |
+| `ua-nsdc-sanctions-legal-entities` | NSDC State Register of Sanctions — legal entities | UA | weekly | B2 |
+| `ua-nsdc-sanctions-individuals` | NSDC State Register of Sanctions — individuals | UA | weekly | B2 |
+| `ua-nsdc-sanctions-vessels` | NSDC State Register of Sanctions — vessels | UA | weekly | B2 |
 
 Grades are **triage only** — they set scrutiny depth and review priority and
 are architecturally barred from touching any proposition's truth, likelihood
@@ -78,7 +89,7 @@ dates and places of birth; DR-0071(b) forbids automatic promotion of personal
 data into queryable structure. Structuring is a Gate 2 decision under POL-0001
 §4, taken per record, not a side effect of fetching.
 
-**Why `ua-nsdc-sanctions` is graded B2, not A1.** It is a party to the conflict
+**Why the `ua-nsdc-sanctions` candidates are graded B2, not A1.** They are a party to the conflict
 publishing about its adversary. The grade means "read with the care a
 belligerent source deserves" — it does not mean less likely to be true, and it
 cannot reach any assessment. A1 for the EU and US lists is not a claim that
@@ -137,7 +148,7 @@ recommendation:
 | `US-institutional-export-control` | US | export control | `bis-entity-list` |
 | `UK-institutional-sanctions` | GB | sanctions | `uk-ofsi-consolidated` |
 | `CH-institutional-sanctions` | CH | sanctions | `seco-sanctions` |
-| `UA-state-investigations` | UA | state investigations | `ua-nsdc-sanctions` |
+| `UA-state-investigations` | UA | state investigations | `ua-nsdc-sanctions-legal-entities`, `ua-nsdc-sanctions-individuals`, `ua-nsdc-sanctions-vessels` |
 
 Jurisdiction first because the policy fields that vary most — rights basis,
 default access, retention — turn on *whose* publication this is, not what
@@ -154,11 +165,14 @@ single US class would have flattened.
 (`eur-lex-sanctions` and `eu-consolidated-list` reference
 `EU-institutional-sanctions`; `ofac-sdn` references
 `US-institutional-sanctions`; `bis-entity-list` references
-`US-institutional-export-control`; `uk-ofsi-consolidated`,
-`seco-sanctions` and `ua-nsdc-sanctions` reference their respective
-one-member classes). Four of these seven sources needed explicit per-source
-overrides on top of their class, because their actual verified or approved
-values differ from the class default in policy-significant ways:
+`US-institutional-export-control`; `uk-ofsi-consolidated` and
+`seco-sanctions` reference their respective one-member classes;
+`ua-nsdc-sanctions-legal-entities`, `ua-nsdc-sanctions-individuals` and
+`ua-nsdc-sanctions-vessels` all reference the shared
+`UA-state-investigations` class). Several of these sources needed explicit
+per-source overrides on top of their class, because their actual verified
+or approved values differ from the class default in policy-significant
+ways:
 
 - **`capture_format`.** The class default is `warc` (right for a source
   whose collection captures a browsing session, like `eur-lex-sanctions`),
@@ -174,18 +188,19 @@ values differ from the class default in policy-significant ways:
   approved under `may-redistribute`, not the `US-institutional-export-control`
   class's `may-provide-subscribers` default (written for a BIS
   subscriber-only term this source does not carry). `seco-sanctions` and
-  `ua-nsdc-sanctions` carry the conservative `may-preserve` DR-0098 and
-  their own candidate status set for them respectively, because their
-  rights positions are unverified — their classes' `may-redistribute`
-  default is for sources whose reuse basis **is** known (the EU/UK/US
-  institutional publishers). Inheriting either class default without an
-  override would state an authorization no DR ever gave.
-- **`rights_basis`** (prose) and, for `ua-nsdc-sanctions`,
-  `grade_source_reliability`/`grade_item_credibility` — kept as the exact
-  text or triage values each source was verified, approved or drafted
-  against, rather than the class's more generic wording or (for the
-  UA class) an unreconciled B2/"1" pairing this one candidate has not
-  itself earned (DR-0027: triage only, never truth).
+  all three `ua-nsdc-sanctions-*` candidates carry the conservative
+  `may-preserve` — DR-0098 for `seco-sanctions`, candidate status set for
+  the NSDC candidates — because their rights positions are unverified;
+  their classes' `may-redistribute` default is for sources whose reuse
+  basis **is** known (the EU/UK/US institutional publishers). Inheriting
+  either class default without an override would state an authorization
+  no DR ever gave.
+- **`rights_basis`** (prose) and, for all three `ua-nsdc-sanctions-*`
+  candidates, `grade_source_reliability`/`grade_item_credibility` — kept
+  as the exact text or triage values each source was verified, approved
+  or drafted against, rather than the class's more generic wording or
+  (for the UA class) an unreconciled B2/"2" pairing these candidates have
+  not themselves earned (DR-0027: triage only, never truth).
 
 **Do not remove an override to "clean up" duplication with its class**
 without first checking `python3 sources/register.py --dry-run` (or the
@@ -203,16 +218,18 @@ harmonizing is a later, visible decision, not an automatic one.
 obligation rather than a formality.
 
 - **Reading capacity in de, fr, it and uk at Gate 2.** No translations are
-  seeded (DR-0081). Registering `ua-nsdc-sanctions` in particular commits the
-  project to Ukrainian.
-- **Permanent retention for all seven**, meaning indefinite fixity checking
-  on a 180-day cadence (DR-0005).
+  seeded (DR-0081). Registering any of the three `ua-nsdc-sanctions-*`
+  candidates in particular commits the project to Ukrainian.
+- **Permanent retention for all nine candidates**, meaning indefinite
+  fixity checking on a 180-day cadence (DR-0005).
 - **Resolving the unverified rights positions** for `seco-sanctions` and
-  `ua-nsdc-sanctions` (§14).
-- **A first collection run.** Four of seven now have a verified, fetched
-  locator (one, `bis-entity-list`, only partially); the other three would be
-  a first collection run against locators nobody has yet fetched — see
-  "Which locators are verified" below for which is which.
+  all three `ua-nsdc-sanctions-*` candidates (§14).
+- **A first collection run.** Six of nine now have a verified, fetched
+  locator (one, `bis-entity-list`, only partially) — see "Which locators
+  are verified" below for which is which; the `ua-nsdc-sanctions-*` three
+  need human-assisted browser access at collection time, not a bare
+  `register.py --commit`, since automated fetches of their locators are
+  Cloudflare-blocked.
 
 ## Which locators are verified
 
@@ -242,15 +259,26 @@ CELEX suffix that advances roughly monthly as the Council amends the
 regime, so a registered `run_locator` will need periodic re-verification in
 a way none of the other six candidates do
 ([verification record](../docs/sources/verification-eur-lex-sanctions.md)).
-`ua-nsdc-sanctions` stays unverified: the specific register it should point
-to is now identified (`drs.nsdc.gov.ua`, the NSDC's own "State Register of
-Sanctions," found via rnbo.gov.ua's own navigation), but that register
-returns HTTP 403 behind a Cloudflare managed challenge from every session
-that has tried it so far, the same block class found on Légifrance. A
-2026-09-21 Wayback-history check found 3 489 historical captures of the
-register (last seen 2026-08-24) but no bulk-export file among them,
-strengthening the working hypothesis that it is a search-UI-only
-application rather than confirming it
+`ua-nsdc-sanctions` was unverified through 2026-09-21: the specific
+register it should point to was identified (`drs.nsdc.gov.ua`, the NSDC's
+own "State Register of Sanctions," found via rnbo.gov.ua's own
+navigation), but that register returned HTTP 403 behind a Cloudflare
+managed challenge from every automated session, the same block class
+found on Légifrance, and a 2026-09-21 Wayback-history check (3 489
+historical captures, last seen 2026-08-24, no bulk-export file among
+them) pointed toward a search-UI-only-application hypothesis without
+confirming it. **Unblocked 2026-09-22/23** by human-assisted (founder)
+browser access, which reached `drs.nsdc.gov.ua`'s "Data integration"
+section directly — the search-UI-only hypothesis was wrong: the register
+exposes a structured bulk-export API,
+`/registry-api/subjects/export/<class>/csv?lang=uk`, confirmed working
+for all four entity classes (Legal entities, Individuals, Vessels,
+Aircraft). Each of the three non-empty classes now has a confirmed
+`run_locator`, confirmed field structure, and a row count matching the
+register exactly (9,682 / 13,900 / 888); Aircraft's endpoint was confirmed
+to genuinely return 0 records. Drafted as three separate candidates
+rather than one (see "Registration classes" above), all validating under
+`sources/register.py --check`, none yet registered
 ([verification record](../docs/sources/verification-ua-nsdc-sanctions.md)).
 `eur-lex-sanctions` was **registered and collected 2026-09-21**
 ([`DR-0105`](../docs/decision-records/DR-0105-eur-lex-sanctions-registration.md)):
@@ -271,14 +299,13 @@ These entries carry three optional fields the registry does not store:
 `--dry-run` prints `(verified <date>)` or `(UNFETCHED)` per source, and
 adjusts what it says the first run commits you to.
 
-**The other two remain claims.** `eur-lex-sanctions` and
-`ua-nsdc-sanctions` answered a landing-page reachability probe but no file
-has been fetched from either — each needs identifying a specific
-instrument set or decision listing, which is legal/editorial judgment, not
-a URL to find. Each URL is drawn from documentation and prior knowledge,
-and some are probably wrong: sanctions authorities move endpoints, and
-several of these publish through interfaces that have changed more than
-once since 2014.
+As of 2026-09-23, every candidate in this file carries a confirmed
+`locator_verified` date and `run_locators` — none remains an unfetched
+claim. `eur-lex-sanctions` is the one exception worth flagging even so:
+its `run_locators` carry a dated CELEX suffix that advances roughly
+monthly, so `locator_verified` records when it was last checked, not a
+promise it stays current (see its candidate comment and verification
+record).
 
 That is expected and handled. A 404 on first collection is a **recorded failed
 acquisition** (PRES-007), not a system fault, and the coverage record will say
