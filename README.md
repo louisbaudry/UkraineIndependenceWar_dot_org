@@ -273,7 +273,8 @@ deliberate acts that follow it (OPS-001).
 
 ## What needs deciding next
 
-**The board is the list:** https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues
+**The board is the list:** https://github.com/users/louisbaudry/projects/7
+(its issues live in this repository: https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues)
 
 This section used to carry a hand-maintained numbered list, and it drifted. On
 2026-09-22 it still described three sanctions registrations as awaiting

@@ -39,7 +39,7 @@ not a substitute for checking.
 Three places, three different things, and everything below depends on not
 mixing them:
 
-- **[GitHub issues and the project board](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues)**
+- **The [project board](https://github.com/users/louisbaudry/projects/7) and [its issues](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues)**
   — status, ordering, what is in flight, what is blocked and on whom. The
   only thing that changes constantly. One card per open item, labelled on
   three axes: `epic:`, `size:`, and `kind:` — `decision` needs a founder
@@ -66,7 +66,7 @@ exists to prevent, which is why status now has exactly one home.
 
 ## Starting a session
 
-1. Read this file, then **the open issues** (https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues) — the board is the living
+1. Read this file, then **the [board](https://github.com/users/louisbaudry/projects/7)** — it is the living
    list of what needs a founder ruling (`kind:decision`), what needs a person
    at the archive server or in the real world (`kind:execute`), what a session
    can pick up (`kind:build`) and what is waiting on somebody else
