@@ -24,7 +24,7 @@ The time horizon is measured in years and potentially decades.
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
 | Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0007, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **First collection performed 2026-09-09** — two sanctions lists, registered and run on the archive server ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)). **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072); the founder ruled on 2026-09-08 that no scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0107 are approved and in force. DR-0095 governs how DRs are numbered
+DR-0001…0108 are approved and in force. DR-0095 governs how DRs are numbered
 (drafted unnumbered, assigned at merge). **DR-0096…0101 were approved between
 2026-09-12 and 2026-09-15 and numbered together on 2026-09-15** — three of
 them had reached `main` unnumbered and without register rows, which is the
@@ -164,7 +164,7 @@ recommendation, one at a time).
 docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
-  decision-records/   Unified Decision Record system (record §98); DR-0001…0107
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0108
                       approved and in force; register in its README
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
@@ -181,6 +181,9 @@ docs/
                       not controlled documents, no policy proposed
   legal/              Legal-review brief for POL-0001 §10 (WP 3.4 A6) — not
                       legal advice, not itself a Decision Record
+  infrastructure.md   What the project runs on (archive server, GitHub, Pages,
+                      sessions), where each part is documented, and the
+                      known gaps — informal, not a controlled document
 
 registry/             Semantic registry: vocabularies, argument schemes, compiler;
                       the source of truth for every enumeration (DR-0078)
@@ -237,6 +240,9 @@ records the sabotages under which its suite was shown to go red.
 
 ## Installing on a server
 
+For what the archive server actually is, what else the project runs on, and what
+is not yet in place, see [docs/infrastructure.md](docs/infrastructure.md).
+
 [`setup/install.sh`](setup/install.sh) installs PostgreSQL and Python, creates the
 database and the OCFL storage roots, loads the schema and runs the suites on a fresh
 Debian or Ubuntu system. It collects nothing and registers nothing; both are separate,
@@ -272,6 +278,9 @@ deliberate acts that follow it (OPS-001).
 5. [WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), the
    acquisition strategy, and [collector/README.md](collector/README.md) for what the
    code actually does today.
+6. [docs/infrastructure.md](docs/infrastructure.md), for what all of this runs on
+   and what is not yet in place (backups, scheduled fixity checks, a schema-change
+   runbook).
 
 ## What needs deciding next
 
