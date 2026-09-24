@@ -575,6 +575,35 @@ Registering look-alike web addresses of your own site (other spellings,
 other endings like `.org`/`.com`) so no one else can use them for fake
 copies.
 
+**HRMMU / OHCHR**
+The UN Human Rights Monitoring Mission in Ukraine (HRMMU), deployed since
+2014, is the field presence of the Office of the UN High Commissioner for
+Human Rights (OHCHR), the UN's human-rights secretariat in Geneva. HRMMU
+publishes the monthly civilian-casualty update most other publishers cite,
+on its own site `ukraine.ohchr.org`. OHCHR's main site is `www.ohchr.org`.
+
+**Verified (in HRMMU's sense) — "reasonable grounds to believe"**
+HRMMU counts a death or injury only when, on the information it has
+checked, "an ordinarily prudent observer would have reasonable grounds to
+believe" it happened as described. That is a lower bar than a court's
+"beyond reasonable doubt" and a higher one than "reported". "Verified" in
+its updates means exactly this, not proven. The project records the figure
+as that source's claim and never upgrades it into an established finding.
+
+**Undercount**
+A figure its own publisher says is below the true number: in HRMMU's case,
+because many deaths, especially in 2022 and in places like Mariupol, could
+not be checked. An undercount is not wrong; it is a floor. It is kept
+beside other sources' higher counts, never averaged with them (DR-0109
+Decision 4).
+
+**Cumulative revision**
+When a publisher's running total for past periods changes in a later
+edition, because older cases were confirmed in the meantime. HRMMU's
+monthly updates do this, so each edition is its own dated claim about the
+whole war to date, and the archive keeps every edition rather than
+replacing the old with the new.
+
 **Prisoner of war (POW) — "public curiosity"**
 Geneva Convention III Art. 13 protects prisoners of war against insults and
 public curiosity. The project applies it to imagery and details of POWs,

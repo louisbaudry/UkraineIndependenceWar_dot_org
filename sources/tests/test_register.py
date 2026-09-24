@@ -100,7 +100,12 @@ def run() -> int:
     rejects("DR-0071", "an open-ended scope is refused",
             crawling, [], "open-ended crawling")
 
+    # Set the claim under test rather than relying on whichever candidate
+    # happens to load first carrying it: files load alphabetically, and a
+    # `may-preserve` source sorting first (civilian-harm.yaml, 2026-09-24)
+    # silently turned this check into one that could not fail the rule.
     unflagged = copy.deepcopy(sources)
+    unflagged[0]["rights_permission"] = "may-redistribute"
     unflagged[0]["rights_basis"] = "Public domain, obviously."
     rejects("§14", "a redistribution claim with an unflagged basis is refused",
             unflagged, [], "without flagging that the basis is unreviewed")

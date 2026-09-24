@@ -1,0 +1,123 @@
+# Candidate sources — civilian harm (DR-0109)
+#
+# Status: CANDIDATE. Nothing here is registered until the founder accepts it
+# (per source, not as a block) and `register.py --commit` is run on the
+# archive server.
+#
+# Drafted 2026-09-24 by an AI assistant at the founder's direction, against
+# the DR-0067 source-registry schema. DR-0109 Decision 5 orders this area's
+# sources in three steps, each source a separate decision; this file opens
+# step 1 ("UN monitoring ... and Ukraine's Prosecutor General — counts, with
+# almost no names") with the UN half only. The Prosecutor General is a
+# separate candidate, not drafted here.
+#
+# VERIFICATION STATUS (2026-09-24). `un-hrmmu-protection-of-civilians` was
+# fetched live and rehearsed end to end through the real collector into a
+# throwaway database. See docs/sources/verification-un-hrmmu-civilian-casualties.md
+# for the full record. Not registered.
+
+classes:
+
+  UN-international-civilian-harm:
+    # Jurisdiction first, topic second (the founder's 2026-09-17 ruling on
+    # WP 3.7 §7). The UN is its own jurisdiction here: its publications sit
+    # under the Organization's own terms and privileges and immunities, not
+    # under any member state's copyright regime, which is exactly the
+    # policy-field difference that ruling groups on. Topic "civilian harm"
+    # keeps this class separate from any later UN source in another area
+    # (e.g. a UN sanctions list) whose scope and personal-data profile
+    # would differ.
+    collection_method: http
+    collection_cadence: monthly
+    # The documents are published files (PDF) and plain HTML landing
+    # pages, not rendered applications; a bare body loses nothing
+    # (DR-0006, DR-0067).
+    capture_format: http
+    default_retention_tier: permanent
+    default_access_tier: public
+    rights_permission: may-preserve
+    rights_basis: >
+      UNVERIFIED — NOT LEGALLY REVIEWED. The mission's site carries only
+      "© UN Human Rights Monitoring Mission in Ukraine" and no terms page
+      of its own. The UN's general website terms (un.org, fetched
+      2026-09-24) permit download and copying for personal, non-commercial
+      use "without any right to resell or redistribute them or to compile
+      or create derivative works therefrom"; whether those terms, or
+      OHCHR's own (ohchr.org, unreachable behind a Cloudflare challenge),
+      govern ukraine.ohchr.org was not established. Preservation is the
+      floor claimed; citing figures with attribution is DR-0109 Decision 7
+      stage 2's plan; any reuse of text or photographs waits for Part B of
+      the legal brief (§14, POL-0001 §10).
+    expects_graphic_content: false
+    grade_source_reliability: A
+    grade_item_credibility: "2"
+
+sources:
+
+  - key: un-hrmmu-protection-of-civilians
+    class: UN-international-civilian-harm
+    source_type: international-organisation
+    name: UN HRMMU — Protection of Civilians in Armed Conflict (monthly update)
+    # The listing page is stable; each month's update is a new landing
+    # page plus language-edition PDFs whose file names are NOT regular
+    # (compare "…(August)_ENG.pdf" with "…_August_UKR.pdf", and June's
+    # "…June and the first six months of 2026_ENG.pdf"). So run_locators
+    # name one month's documents and must be re-read from that month's
+    # landing page before every run — the same manual re-verification
+    # obligation eur-lex-sanctions (DR-0105) and isw-orca carry.
+    locator: https://ukraine.ohchr.org/en/reports/protection-of-civilians
+    locator_verified: 2026-09-24
+    run_locators:
+      - https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-August-2026
+      - https://ukraine.ohchr.org/sites/default/files/2026-09/Ukraine%20-%20protection%20of%20civilians%20in%20armed%20conflict%20%28August%29_ENG.pdf
+      - https://ukraine.ohchr.org/sites/default/files/2026-09/Ukraine_protection_of_civilians_in_armed_conflict_August_UKR.pdf
+    verification_note: >
+      Fetched live 2026-09-24. Listing page 200 (66 547 bytes), nine
+      pages back to 2022, monthly updates on this site from the October 2023 update
+      onward. August 2026 update: landing page 200 (dated 16 September
+      2026), English PDF 200, 4 402 535 bytes, 5 pages, byte-identical on
+      a second fetch; Ukrainian PDF 200, 4 193 477 bytes, uploaded a week
+      later (Last-Modified 23 Sep). The Russian PDF linked from the same
+      landing page returns 404 — a broken publisher link, recorded and
+      left out of run_locators. Content: verified counts of civilians
+      killed and injured for the month and cumulatively since
+      24 February 2022, by age and sex (children separately), by weapon
+      type, the number of regions affected and the worst-hit cities,
+      plus a few representative incidents counted without victims'
+      names; methodology stated as "reasonable
+      grounds to believe", with an explicit undercount warning. No
+      machine-readable data file is published. Rehearsed through the real
+      collector into a throwaway database. Record in
+      docs/sources/verification-un-hrmmu-civilian-casualties.md.
+    publisher: >
+      UN Human Rights Monitoring Mission in Ukraine (HRMMU), Office of the
+      UN High Commissioner for Human Rights (OHCHR)
+    jurisdiction: UN
+    # English is the mission's working and original language (the PDF
+    # says the Ukrainian and Russian versions follow "as they become
+    # available"); Ukrainian is collected alongside it per DR-0109
+    # Decision 9.
+    primary_languages: [en, uk]
+    # The full-scale series starts at the invasion; this site's own
+    # monthly updates start in late 2023, and the earlier 2022-2023
+    # updates were published on ohchr.org (see exclusions).
+    coverage_start: 2022-02-24
+    scope_rules: >
+      The mission's monthly "Protection of Civilians in Armed Conflict"
+      update, one per month, as published on ukraine.ohchr.org: that
+      month's landing page and its English and Ukrainian PDF editions,
+      as named in run_locators and re-read from the landing page before
+      each run. No other page or file.
+    exclusions: >
+      The mission's periodic reports on the human rights situation,
+      thematic reports (including the one-off incident reports listed on
+      the same "Protection of civilians" page, such as Hroza 2023 and the
+      2022 killings report), Secretary-General reports, news items and
+      images — each has a different scope and a heavier personal-data
+      profile, and each would be a separate candidate. The Russian
+      edition until it resolves. Earlier civilian-casualty updates
+      published on www.ohchr.org (2022 to autumn 2023) — that host
+      answered with a Cloudflare challenge and was not verified; their
+      recovery is a separate retrospective question (WP 3.4). The 2016-2021
+      OCHA-compiled spreadsheet on HDX is pre-invasion and a different
+      publisher.

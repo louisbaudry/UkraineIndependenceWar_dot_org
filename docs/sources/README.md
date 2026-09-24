@@ -48,6 +48,9 @@ real output rather than preliminary assessment.
 - [`verification-seco-sanctions.md`](verification-seco-sanctions.md) —
   `seco-sanctions`, found on a second attempt on a different host, behind
   `DR-0098`.
+- [`verification-un-hrmmu-civilian-casualties.md`](verification-un-hrmmu-civilian-casualties.md)
+  — `un-hrmmu-protection-of-civilians`, the UN monitoring mission's monthly
+  civilian-casualty update, DR-0109 Decision 5 step 1. Not registered.
 - [`TEMPLATE-a7-measurement-results.md`](TEMPLATE-a7-measurement-results.md)
   — not a record itself but the fill-in shape for one: WP 3.4 Track A item
   A7's storage-and-bandwidth measurement, covering both the two A1 sources

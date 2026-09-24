@@ -1,10 +1,12 @@
 # Source registration
 
 Candidate sources for the archive's collection, drafted against the DR-0067
-registry schema, across two files: `sanctions-authorities.yaml` (the
-original thematic area) and `war-facts.yaml` (territorial control /
+registry schema, across four files: `sanctions-authorities.yaml` (the
+original thematic area), `war-facts.yaml` (territorial control /
 military operations, started 2026-09-21 following the founder's
-redirection toward war-fact subject matter — see that file's own header).
+redirection toward war-fact subject matter — see that file's own header),
+`strike-tracking.yaml` (2026-09-21) and `civilian-harm.yaml` (DR-0109,
+2026-09-24 — see "Civilian-harm candidates" below).
 **Six of the seven sanctions candidates are registered and collected** on
 the archive server (`eu-consolidated-list`, `ofac-sdn`, `eur-lex-sanctions`,
 `uk-ofsi-consolidated`, `bis-entity-list`, `seco-sanctions`); the seventh,
@@ -488,6 +490,81 @@ than to a normal registration — not something registering the source
 does automatically. Also flagged: both sources are Ukraine's own official
 voice on both directions of the war; a fuller record eventually needs
 independently verified Russian-side sources too.
+
+## Civilian-harm candidates (`civilian-harm.yaml`, started 2026-09-24)
+
+DR-0109 Decision 5 fills this area in three steps, each source a separate
+decision. This file opens step 1 with **`un-hrmmu-protection-of-civilians`**:
+the UN Human Rights Monitoring Mission in Ukraine's monthly "Protection of
+Civilians in Armed Conflict" update. It was verified live and rehearsed
+through the real collector (3 acquired, 0 failed, 0 documentary assertions)
+and is **not registered**. The full record is in
+[`verification-un-hrmmu-civilian-casualties.md`](../docs/sources/verification-un-hrmmu-civilian-casualties.md).
+Ukraine's Prosecutor General, the other half of step 1, is a separate
+candidate that has not been drafted yet. The judgment calls, so you can
+disagree with them:
+
+- **Which host.** The series lives on the mission's own site,
+  `ukraine.ohchr.org`, not on `www.ohchr.org` (behind a Cloudflare
+  challenge from here) or `ukraine.un.org` (the UN country team, which does
+  not carry it). The locator is the stable "Protection of civilians"
+  listing page.
+- **What one run takes.** One month's landing page and its English and
+  Ukrainian PDFs. English is the original, published first. Ukrainian
+  follows about a week later and is kept because of DR-0109 Decision 9. The
+  Russian PDF linked from the August page returns 404, so it is left out
+  until it resolves.
+- **`run_locators` are re-read every month, by a person.** The PDF file
+  names are irregular (`…(August)_ENG.pdf`, `…_August_UKR.pdf`,
+  `…June and the first six months of 2026_ENG.pdf`) and cannot be
+  predicted. Like `eur-lex-sanctions` (DR-0105) and `isw-orca`, the next
+  month's run needs its locators taken from that month's landing page
+  first. Automating the discovery would be a separate piece of work, not
+  part of this candidate.
+- **Keep every edition.** Each update restates the cumulative totals since
+  24 February 2022 and folds in older cases corroborated since the last
+  edition, so the numbers for past months change. Every edition is its own
+  dated claim and is kept whole beside the others (DR-0030, DR-0109
+  Decision 4). Monthly cadence matches the publisher's rhythm (mid-month
+  for the previous month).
+- **Narrow scope on purpose.** The same listing page also carries one-off
+  reports (Hroza 2023, the 2022 summary-executions report), and the mission
+  publishes periodic human-rights reports as well. Both are broader and
+  carry more personal detail about victims and detainees, so they are
+  excluded here and would each be a separate candidate. The 2022-to-autumn-2023
+  updates on `www.ohchr.org` are excluded too, as a retrospective-recovery
+  question.
+- **`capture_format: http`.** The PDF is the document, and the landing page
+  is plain server-rendered HTML whose content is in the body. The rehearsal
+  stored all three byte-identical to `curl`. No browsing-session envelope is
+  needed.
+- **Class `UN-international-civilian-harm`.** This is a new class, following
+  jurisdiction first, topic second (the 2026-09-17 ruling). `jurisdiction:
+  UN` follows the `EU` precedent for a non-state publisher. The UN's own
+  terms and privileges and immunities are what set its policy fields apart
+  from any state's. The topic keeps any later UN source in another area out
+  of this class.
+- **`may-preserve`, `UNVERIFIED`.** The mission's site states only "© UN
+  Human Rights Monitoring Mission in Ukraine". The UN's general website
+  terms allow personal, non-commercial copying *without* redistribution, and
+  whether they govern this host was not established. OHCHR's own copyright
+  page was unreachable. Citing figures with attribution is what DR-0109
+  Decision 7 stage 2 plans. Reusing text or photographs waits for Part B of
+  the legal brief.
+- **Personal data: counts, no victims' names.** This is as DR-0109
+  expected. What the documents do contain: two UN press officers' published
+  work contacts, one anonymous witness quote, and aftermath photographs
+  with identifiable bystanders and one covered figure lying on the ground.
+  Those fall under POL-0001 §5.8 and §5.9 (preserved as part of the source,
+  never structured, never published as individuals).
+  `expects_graphic_content: false` is a judgment made after looking at the
+  August photographs, which are not gory. It is flagged for the founder,
+  and each month's re-reader should look again.
+- **Grades A / "2"** (triage only, DR-0027). Reliability A because the
+  mission publishes and applies a stated verification standard ("reasonable
+  grounds to believe"). Credibility "2" rather than "1" because each figure
+  is the mission's own claim, not independently confirmed, and the mission
+  says it is an undercount that it revises.
 
 ## Census tooling (`census.py`, WP 3.4 §4.1 Track A item A2)
 
