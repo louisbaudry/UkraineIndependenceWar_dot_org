@@ -72,6 +72,21 @@ structuring it, at the founder's express direction, while the review runs. The
 "effect" half of the founder's stated goal, and civilian-casualty data
 specifically, are the parts most exposed here, and both remain undecided.
 
+**This analysis is scoped to what this record authorises — the bounded pass
+alone.** The full historical backfill of both channels was authorised
+separately on 2026-09-23 by
+[`DR-pending-strike-tracking-full-backfill.md`](DR-pending-strike-tracking-full-backfill.md),
+which supersedes Decision 3's withholding for these two sources; its passes so
+far are *Executed* items 5 and 6. **That record carries no POL-0001 §10 or
+DR-0072 analysis of its own, and this subsection does not supply one for it.**
+The reasoning above was written for twenty pages per channel. A backfill run to
+the bottom of each channel's history — an estimated ~67 000 posts still to come
+for `kpszsu` alone, per *Executed* item 6 — is a question of degree that no
+record yet puts to the founder in those terms, and the 2026-09-08 ruling's own
+words are "no collection scale-up before the POL-0001 §10 legal review is
+recorded". Flagged here, deliberately unresolved: a session must not settle it,
+and a reader must not mistake the paragraphs above for having settled it.
+
 ## Alternatives considered
 
 1. **Register both now, with a bounded backfill pass authorised in the same
@@ -312,7 +327,13 @@ Two changes, both from the 2026-09-24 review:
    data to free-text strike reporting — as an open caution rather than
    resolving it. The gap mattered because a reader of the record as approved
    could not tell whether the still-pending §10 review had been considered at
-   all.
+   all. **Scoped explicitly to the bounded pass** after this branch's parallel
+   line of work was merged in: between the founder's ruling and this edit, a
+   separate record authorised the full historical backfill and two further
+   passes were executed (*Executed* items 5 and 6). The subsection therefore
+   states what it does not cover, and names the full-backfill record's
+   identical silence on POL-0001 as an open flag rather than filling it — that
+   record is approved, is not this record, and was not part of the ruling.
 
 Nothing in the *Decision*, *How to execute* or *Executed* sections was
 touched: what was authorised, and what was done on 2026-09-22, are unchanged.
