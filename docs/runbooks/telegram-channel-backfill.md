@@ -24,7 +24,7 @@ normal request's User-Agent string. If this ever needs explaining to
 someone unfamiliar with the mechanism (a reviewer, a future collaborator,
 the founder revisiting this a year from now), point them here first.
 
-**This is CDR-pending-telegram-backfill** — candidate, not decided. The
+**This is CDR-P3-46** — candidate, not decided. The
 mechanism itself (walking `?before=` pagination, preserving each page
 through the normal `Collector.run()` path) is built and tested. Whether
 and how far to actually run it against a given registered channel is a

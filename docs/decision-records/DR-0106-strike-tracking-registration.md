@@ -1,4 +1,4 @@
-# DR-pending-strike-tracking-registration — Fifth and sixth source registrations: kpszsu and generalstaffzsu
+# DR-0106 — Fifth and sixth source registrations: kpszsu and generalstaffzsu
 
 **Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-21 by founder/principal editor
 **Origin:** founder's direction of 2026-09-21 ("Yes, register both and run a bounded backfill"), following the redirection of the project's central purpose toward strike-level completeness and the 2026-09-21 verification/rehearsal of both candidates | **Supersedes:** — | **Superseded by:** —
@@ -30,7 +30,7 @@ authentication. Neither has a verified rights/redistribution basis;
 sources this project has registered.
 
 A companion mechanism, `collector/telegram_backfill.py`
-(`CDR-pending-telegram-backfill`, still candidate, built and tested the
+(`CDR-P3-46`, still candidate, built and tested the
 same day), walks a channel's pagination backward to reach posts older than
 the live page shows. This record authorises registering both sources
 **and** running one bounded backfill pass per channel (`--max-pages 20`,
@@ -75,7 +75,7 @@ specifically, are the parts most exposed here, and both remain undecided.
 **This analysis is scoped to what this record authorises — the bounded pass
 alone.** The full historical backfill of both channels was authorised
 separately on 2026-09-23 by
-[`DR-pending-strike-tracking-full-backfill.md`](DR-pending-strike-tracking-full-backfill.md),
+[`DR-0107-strike-tracking-full-backfill.md`](DR-0107-strike-tracking-full-backfill.md),
 which supersedes Decision 3's withholding for these two sources; its passes so
 far are *Executed* items 5 and 6. **That record carries no POL-0001 §10 or
 DR-0072 analysis of its own, and this subsection does not supply one for it.**
@@ -241,7 +241,7 @@ appears in `data-post` attributes) is `GeneralStaffZSU`.
      full-backfill decision (§*Consequences* item 3) would be made
      against; that decision has still not been made.
 6. **2026-09-23/24 — full backfill authorised and begun**, per
-   `DR-pending-strike-tracking-full-backfill.md`. Executing as a sequence
+   `DR-0107-strike-tracking-full-backfill.md`. Executing as a sequence
    of `--max-pages 500 --delay 3` passes, each resumed from the prior
    pass's stop point:
    - `kpszsu`: `--start-before 77184` → 500/500 pages, 0 failed, reached

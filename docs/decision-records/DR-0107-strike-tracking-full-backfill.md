@@ -1,7 +1,7 @@
-# DR-pending-strike-tracking-full-backfill — Authorizing full historical backfill of kpszsu and generalstaffzsu
+# DR-0107 — Authorizing full historical backfill of kpszsu and generalstaffzsu
 
 **Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-23 by founder/principal editor
-**Origin:** founder's direction of 2026-09-23, choosing "Authorize and run the full backfill now" after two consecutive clean bounded backfill passes | **Supersedes:** `DR-pending-strike-tracking-registration.md` Decision 3's "a full backfill is NOT authorised by this record" clause, for these two sources only | **Superseded by:** —
+**Origin:** founder's direction of 2026-09-23, choosing "Authorize and run the full backfill now" after two consecutive clean bounded backfill passes | **Supersedes:** `DR-0106-strike-tracking-registration.md` Decision 3's "a full backfill is NOT authorised by this record" clause, for these two sources only | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted by Claude (model: `claude-sonnet-5`) on
 > 2026-09-23 at the founder's direction, and **approved by the founder the
@@ -10,7 +10,7 @@
 
 ## Context
 
-`DR-pending-strike-tracking-registration.md` authorised registering
+`DR-0106-strike-tracking-registration.md` authorised registering
 `kpszsu`/`generalstaffzsu` and running one bounded backfill pass each
 (`--max-pages 20`), explicitly withholding authorisation for a full
 backfill pending that pass's results. Executed 2026-09-22 (20/20 pages
@@ -45,7 +45,7 @@ suspends collection scale-up until the POL-0001 §10 review is recorded, and
 permits preparatory work that "collects nothing, or collects only from
 registered sources with configured scope". Both channels were registered first,
 as their own separate decision
-([`DR-pending-strike-tracking-registration.md`](DR-pending-strike-tracking-registration.md));
+([`DR-0106-strike-tracking-registration.md`](DR-0106-strike-tracking-registration.md));
 their `run_locators` name two specific channels; every pass is bounded and
 resumable, from a configured start point, against those two locators only.
 There is no crawl, no open-web discovery, and no third source reached by
@@ -107,7 +107,7 @@ Civilian-casualty data specifically remains deferred and unstarted.
 On approval:
 
 1. **A full historical backfill of `kpszsu` and `generalstaffzsu` is
-   authorised**, superseding `DR-pending-strike-tracking-registration.md`
+   authorised**, superseding `DR-0106-strike-tracking-registration.md`
    Decision 3's full-backfill withholding for these two sources only (no
    other source's authorisation is affected).
 2. **Execution proceeds as a sequence of bounded, resumable passes**, not
@@ -137,7 +137,7 @@ On approval:
 ### How to execute
 
 On the archive server, continuing from the resume points recorded in
-`DR-pending-strike-tracking-registration.md`'s *Executed* section
+`DR-0106-strike-tracking-registration.md`'s *Executed* section
 (`kpszsu` at `--start-before 77184`, `generalstaffzsu` at
 `--start-before 39618` as of this record's drafting — check that
 record's latest entry for the current resume point before each pass, as
@@ -156,14 +156,14 @@ python3 collector/telegram_backfill.py --source generalstaffzsu \
         --max-pages <N> --delay 3
 ```
 
-Record each pass's results in `DR-pending-strike-tracking-registration.md`'s
+Record each pass's results in `DR-0106-strike-tracking-registration.md`'s
 *Executed* section (not this record's), keeping the running account of
 every pass in one place.
 
 ## Executed
 
 Not yet — this record authorises the work; execution continues under
-`DR-pending-strike-tracking-registration.md`'s *Executed* section, which
+`DR-0106-strike-tracking-registration.md`'s *Executed* section, which
 already tracks every pass to date and will continue to.
 
 ## Consequences
@@ -186,7 +186,7 @@ already tracks every pass to date and will continue to.
    Russian-side source exists yet for either direction, and "effect"
    data (casualties, damage) still needs Gate 2/3 editorial work no
    amount of collection substitutes for, unchanged from
-   `DR-pending-strike-tracking-registration.md`'s own caveats.
+   `DR-0106-strike-tracking-registration.md`'s own caveats.
 
 ## Revision note (2026-09-24, founder-ruled)
 
