@@ -34,6 +34,55 @@ founder judged this sufficient evidence to authorise completing the
 backfill for both channels now, rather than running further bounded
 scale checks first.
 
+### Relation to POL-0001 §10 and DR-0072
+
+Added 2026-09-24 on the founder's ruling; see the Revision note. The record as
+approved said nothing about this, which a reader could reasonably have read as
+the question never having been considered.
+
+**Why this sits inside the founder's ruling of 2026-09-08.** That ruling
+suspends collection scale-up until the POL-0001 §10 review is recorded, and
+permits preparatory work that "collects nothing, or collects only from
+registered sources with configured scope". Both channels were registered first,
+as their own separate decision
+([`DR-pending-strike-tracking-registration.md`](DR-pending-strike-tracking-registration.md));
+their `run_locators` name two specific channels; every pass is bounded and
+resumable, from a configured start point, against those two locators only.
+There is no crawl, no open-web discovery, and no third source reached by
+following a link (DR-0071(a), which is excluded before and after the review
+alike).
+
+**Nothing here structures anything.** DR-0066 holds and is verified rather than
+assumed — zero documentary assertions across every run to date. POL-0001 §4 and
+DR-0071(b) forbid automatic structuring of personal data, and never of the
+special-category list, for any person category; a backfill preserves bytes and
+crosses no gate. Preservation without structuring is what this record
+authorises and all that it authorises.
+
+**What this record does not settle, and no session may.** This is a question of
+degree as well as kind, and both halves are open:
+
+- *Degree.* The six sources registered before these two amount to a handful of
+  files. This authorises paging to the bottom of two channels' histories —
+  ~79 300 posts for `kpszsu` alone. "Scale-up" is the ruling's own word, and
+  whether a corpus of this size is inside the carve-out on volume as well as on
+  form is not a question a session should answer. The founder authorised it
+  twice, on the evidence of two clean bounded passes; that is a founder ruling,
+  not a finding that the tension does not exist.
+- *Kind.* Every earlier source is an institutional sanctions publisher whose
+  material is structured, official and close to free of personal data — the
+  reason `CLAUDE.md` gives for choosing them first. These are free-text reports
+  of strikes and their effects, which can name places, casualties and
+  individuals. POL-0001 §10's review is pending and §8.3's "archiving primary,
+  expression secondary" ruling is itself in question under LIL Arts. 46 and 80
+  (DR-0099, DR-0100, and the A6 brief's Q2 and Q3).
+
+If Part A's advice, once recorded, bears on material of this kind, the
+remediation surface is this corpus rather than six sanctions files. That is
+stated here as a consequence a future reader must be able to find, not as a
+reason to stop — the founder has ruled, and this record records the ruling.
+Civilian-casualty data specifically remains deferred and unstarted.
+
 ## Alternatives considered
 
 1. **Authorise the full backfill for both channels now** (chosen). Matches
@@ -138,3 +187,36 @@ already tracks every pass to date and will continue to.
    data (casualties, damage) still needs Gate 2/3 editorial work no
    amount of collection substitutes for, unchanged from
    `DR-pending-strike-tracking-registration.md`'s own caveats.
+
+## Revision note (2026-09-24, founder-ruled)
+
+Revised **in place**, before this record ever reached `main`, under
+[DR-0102](DR-0102-drafting-discipline-before-merge.md) Decision 7, on the
+founder's express ruling of 2026-09-24.
+
+The same three of Decision 7's four conditions held as for the registration
+record revised the same day: never merged to `main`, the founder ruled the
+change, and this note records it with its date and reason. The fourth —
+revision in the same session as approval, which was 2026-09-23 — did not, and
+the founder waived it **explicitly**, having been shown that it did not hold.
+Decision 7 states that "not merged yet" is a bound on blast radius and **not**
+a reason, so nothing here licenses a future session to infer revisability from
+Git state. The alternatives offered and not chosen were to pause the backfill
+until §10 is recorded, and to leave both records silent and let the DR that
+eventually supersedes DR-0072 address the corpus.
+
+**One change, additive.** A "Relation to POL-0001 §10 and DR-0072" subsection
+was **added** at the end of *Context*. Nothing was deleted, altered or
+reordered, so there is no replaced text to quote: *Decision*, *How to execute*,
+*Executed* and *Consequences* are untouched, and what this record authorises is
+exactly what it authorised on approval. The subsection **adds no authorisation
+and removes none.**
+
+It exists because the record as approved contained no reference to POL-0001,
+DR-0072, personal data or the §10 review, and a reader could not tell whether
+the still-pending review had been weighed. It states why registered sources
+with configured scope sit inside the founder's ruling of 2026-09-08, records
+that DR-0066 is verified at zero documentary assertions and that no structuring
+occurs, and leaves the questions of degree and kind open rather than answering
+them. Found by a review of the companion registration record on 2026-09-24,
+which had the identical gap.
