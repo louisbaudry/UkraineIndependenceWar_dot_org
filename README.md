@@ -325,19 +325,39 @@ outstanding *execution*.
    association legally exists and takes over — that handover is a
    separate POL-0001 §11 material-change review, recorded when it
    happens, not assumed now.
-3. **Registering `ua-nsdc-sanctions`.** Its sibling candidate,
-   `eur-lex-sanctions`, was verified, scoped and approved 2026-09-20/21
+3. **Registering `ua-nsdc-sanctions-legal-entities`,
+   `ua-nsdc-sanctions-individuals`, `ua-nsdc-sanctions-vessels` —
+   fully verified 2026-09-22/23, drafted, not yet registered.** Its
+   sibling candidate, `eur-lex-sanctions`, was verified, scoped and
+   approved 2026-09-20/21
    ([`DR-0105`](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md))
-   — resolved and dropped from this list. `ua-nsdc-sanctions` is not: its
-   register, `drs.nsdc.gov.ua`, is identified but Cloudflare-challenged
-   from every session that has tried it, live or via a 2026-09-21
-   Wayback-history check (3 489 captures, no bulk-export file found —
-   suggestive, not conclusive, of a search-UI-only application). Needs
-   either human-assisted (browser) access to confirm or refute that, or a
-   founder decision to register it against a different shape entirely
-   (per-decree WARC capture of rnbo.gov.ua's decree stream, rather than a
-   single list locator) if the search-UI hypothesis holds — see
-   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md).
+   — resolved and dropped from this list. `ua-nsdc-sanctions`'s register,
+   `drs.nsdc.gov.ua`, was Cloudflare-challenged from every automated
+   session that tried it, including a 2026-09-21 Wayback-history check
+   that pointed toward a search-UI-only hypothesis. **Human-assisted
+   browser access on 2026-09-22/23 overturned that and closed out every
+   remaining gap**: the register has a "Data integration" bulk-export
+   mechanism with a consistent, confirmed API
+   (`/registry-api/subjects/export/<class>/csv?lang=uk`) for each entity
+   class. All three non-empty classes (Legal entities 9,682, Individuals
+   13,900, Vessels 888) now have confirmed export URLs, confirmed field
+   structure, and row counts matching the register exactly; Aircraft's
+   endpoint was confirmed to genuinely return 0 records, not merely
+   display 0 on the page. Drafted as **three separate candidates**, not
+   one, in `sources/candidates/sanctions-authorities.yaml` — the founder's
+   ruling was to split rather than register one candidate spanning all
+   classes, since Individuals is the only class DR-0071(b) constrains
+   (precedent: `bis-entity-list`'s Denied-Persons-List-only scope, though
+   this split goes further since the difference is a policy constraint,
+   not just verification status). `sources/register.py --check` confirms
+   all three validate. **What remains is execution**: registering the
+   three candidates on the archive server, per source, is the founder's
+   act (DR-0093 §3, a person as agent of record) — not decided or
+   performed by any session. A quarterly Routine (next: 2026-10-01)
+   reminds the founder to re-visit this source, since it stays
+   Cloudflare-blocked for automated sessions. See
+   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md)
+   §2b–3.
 4. **Whether and when to run a FULL historical backfill against `kpszsu`
    and `generalstaffzsu`.** Both sources registered and executed
    2026-09-22 (`DR-pending-strike-tracking-registration.md`'s *Executed*
