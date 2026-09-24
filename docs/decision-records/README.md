@@ -140,6 +140,7 @@ merely another renumbering.
 | [DR-0107](DR-0107-strike-tracking-full-backfill.md) | Authorizing full historical backfill of `kpszsu` and `generalstaffzsu` | operations / preservation | Approved — in execution since 2026-09-23 | 2026-09-23 |
 | [DR-0108](DR-0108-backup-deferral.md) | Independent backups (OPS-005) deferred until the association exists | operations / preservation | Approved — OPS-005 knowingly unmet until the trigger | 2026-09-24 |
 | [DR-0109](DR-0109-civilian-harm-and-memorial.md) | Civilian harm and war crimes as a subject area, and a memorial site built on the archive | scope / publication / personal data | Approved — authorises no collection, registration or publication | 2026-09-24 |
+| [DR-0110](DR-0110-un-hrmmu-registration.md) | Register the UN monitoring mission's monthly civilian-casualty update (`un-hrmmu-protection-of-civilians`) | operations / preservation | Approved — registration and runs executed on the archive server by the founder, not by this record | 2026-09-24 |
 
 ## Provenance of decisions
 
@@ -407,6 +408,12 @@ Consequence 8 still names "README.md open decision 5"; that list was
 replaced by the project board while the record was being drafted, and the
 item lives on as board issue #61. The wording was left as approved rather
 than revised in place.
+
+DR-0110 was numbered at merge, from `DR-pending-un-hrmmu-registration`,
+after merging `origin/main` into `claude/awesome-einstein-7fa782` on
+2026-09-24: DR-0109 was then the highest record on `origin/main`, and the
+only other unmerged branch (`claude/register-strike-tracking`) drafts no
+new record.
 
 **Both records were also revised in place before merge, on 2026-09-24, under
 DR-0102 Decision 7 — and only three of its four conditions held.** Neither had

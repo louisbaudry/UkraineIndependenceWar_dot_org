@@ -1,4 +1,4 @@
-# DR-pending-un-hrmmu-registration — Register the UN monitoring mission's monthly civilian-casualty update
+# DR-0110 — Register the UN monitoring mission's monthly civilian-casualty update
 
 **Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-24 by founder/principal editor
 **Origin:** the founder's ruling of 2026-09-24 ("Do register `un-hrmmu-protection-of-civilians`"), answering the question that closed the verification of issue #69 | **Supersedes:** — | **Superseded by:** —
