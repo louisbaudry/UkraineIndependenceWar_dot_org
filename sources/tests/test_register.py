@@ -12,7 +12,9 @@ Run:  PGHOST=… PGPORT=… PGUSER=… python3 sources/tests/test_register.py
 
 from __future__ import annotations
 
+import contextlib
 import copy
+import io
 import subprocess
 import sys
 import uuid
@@ -294,6 +296,115 @@ def run() -> int:
               proc.returncode == 0 and registered is not None
               and registered[0] == by_key["ofac-sdn"]["default_retention_tier"]
               and registered[1] == by_key["ofac-sdn"]["rights_permission"])
+
+        # -- #62: re-running --commit must not register the same source
+        #    twice. Found on the archive server 2026-09-22 (DR-0106,
+        #    *Executed* step 1): a repeated commit inserted a second row per
+        #    candidate, and since collector/run.py resolves a source by
+        #    (name, locator) and refuses an ambiguous match, the duplicate
+        #    disabled the source that had just been registered. Cleared by
+        #    hand at the time; nothing stopped it recurring.
+
+        conn.execute("DELETE FROM source_dependence")
+        conn.execute("DELETE FROM source")
+        again = [s for s in sources if s["key"] == "ofac-sdn"]
+        first = commit(conn, again, [], agent)
+        # Caught rather than allowed to propagate: without the guard in
+        # commit() the DDL refuses the duplicate insert, which is the point of
+        # enforcing in both places — but an uncaught UniqueViolation would
+        # abort the suite here and every check below it would go unreported.
+        second, raised = None, None
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as spoken:
+                second = commit(conn, again, [], agent)
+        except psycopg.errors.UniqueViolation as exc:
+            spoken, raised = io.StringIO(), exc
+        check("#62", "commit() itself skips an already-registered source "
+              "rather than relying on the store to refuse it",
+              raised is None)
+        rows = conn.execute(
+            "SELECT count(*) FROM source WHERE name = %s",
+            (again[0]["name"],)).fetchone()[0]
+        check("#62", "a second --commit of the same source inserts no second "
+              "row, and returns the id already registered",
+              rows == 1 and second == first)
+        check("#62", "and says so, rather than succeeding silently",
+              "already registered" in spoken.getvalue())
+
+        # -- the same rule in the database, so the store refuses what the
+        #    code would if the code were wrong (a policy that matters is
+        #    enforced in both places).
+        try:
+            conn.execute(
+                "INSERT INTO source (id, source_type, name, locator, "
+                "collection_method, default_retention_tier, "
+                "default_access_tier, rights_permission) "
+                "SELECT gen_random_uuid(), source_type, name, locator, "
+                "collection_method, default_retention_tier, "
+                "default_access_tier, rights_permission FROM source "
+                "WHERE name = %s", (again[0]["name"],))
+            refused = False
+        except psycopg.errors.UniqueViolation:
+            refused = True
+        check("#62", "the DDL refuses a duplicate (name, locator) even when "
+              "inserted directly, not only through commit()", refused)
+
+        # -- a null locator is one locator, not a wildcard: NULLS NOT
+        #    DISTINCT is what makes the constraint cover this case at all.
+        # Vocabulary values are taken from a real candidate rather than
+        # written in, so this cannot drift from the generated enums (DR-0078).
+        no_locator = (
+            "INSERT INTO source (id, source_type, name, collection_method, "
+            "default_retention_tier, default_access_tier, rights_permission) "
+            "VALUES (gen_random_uuid(),%s,'No Locator Source',%s,%s,%s,%s)")
+        no_locator_args = (
+            again[0]["source_type"], again[0]["collection_method"],
+            again[0]["default_retention_tier"],
+            again[0]["default_access_tier"], again[0]["rights_permission"])
+        conn.execute(no_locator, no_locator_args)
+        try:
+            conn.execute(no_locator, no_locator_args)
+            refused_null = False
+        except psycopg.errors.UniqueViolation:
+            refused_null = True
+        check("#62", "two rows sharing a name and a NULL locator are refused "
+              "too (UNIQUE NULLS NOT DISTINCT)", refused_null)
+
+        # -- a re-run is a no-op, which means an edited candidate file must
+        #    not look as though its new policy was applied. Re-registering a
+        #    source whose policy changed is a founder act (DR-0093 §3).
+        drifted = copy.deepcopy(again[0])
+        drifted["capture_format"] = (
+            "warc" if again[0].get("capture_format") != "warc" else "http")
+        try:
+            with contextlib.redirect_stdout(io.StringIO()) as spoken:
+                commit(conn, [drifted], [], agent)
+        except psycopg.errors.UniqueViolation:
+            spoken = io.StringIO()   # guard gone; the store refused instead
+        stored_format = conn.execute(
+            "SELECT capture_format FROM source WHERE name = %s",
+            (again[0]["name"],)).fetchone()[0]
+        check("#62", "a changed policy field in the candidate file is reported "
+              "and NOT silently applied by a re-run",
+              "NOT updated: capture_format" in spoken.getvalue()
+              and stored_format == again[0].get("capture_format", "http"))
+
+        # -- and the operator's real entry point, twice, which is exactly what
+        #    happened on 2026-09-22. The checks above call commit() directly,
+        #    so none of them would catch main() losing this guard.
+        conn.execute("DELETE FROM source_dependence")
+        conn.execute("DELETE FROM source")
+        cmd = [sys.executable, str(ROOT / "sources" / "register.py"),
+               "--commit", "--dbname", DB, "--only", "ofac-sdn",
+               "--agent", agent]
+        one_run = subprocess.run(cmd, capture_output=True, text=True)
+        two_run = subprocess.run(cmd, capture_output=True, text=True)
+        check("#62", "register.py --commit run twice leaves one row, both "
+              "runs succeeding",
+              one_run.returncode == 0 and two_run.returncode == 0
+              and conn.execute(
+                  "SELECT count(*) FROM source WHERE name = %s",
+                  (by_key["ofac-sdn"]["name"],)).fetchone()[0] == 1)
     finally:
         conn.close()
 
