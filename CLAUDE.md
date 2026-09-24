@@ -39,7 +39,10 @@ not a substitute for checking.
    the next session"** section, which is the living list of what actually
    needs a founder ruling right now — then the component README of whatever
    you are about to touch. `collector/README.md` says what the pipeline does
-   and does not do today; `docs/phase-3/README.md` says where Phase III is.
+   and does not do today; `docs/phase-3/README.md` says where Phase III is;
+   [`docs/infrastructure.md`](docs/infrastructure.md) says what the project
+   runs on and what is not yet in place — update it in the same commit as
+   any change to hosting, scheduled jobs, backups or publishing.
    [`GLOSSARY.md`](GLOSSARY.md) defines the archival/preservation/sanctions
    vocabulary this file and the DRs assume — the founder has no prior
    background in the domain and is learning it alongside the build, so keep

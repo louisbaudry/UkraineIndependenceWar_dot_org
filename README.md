@@ -184,6 +184,9 @@ docs/
                       not controlled documents, no policy proposed
   legal/              Legal-review brief for POL-0001 §10 (WP 3.4 A6) — not
                       legal advice, not itself a Decision Record
+  infrastructure.md   What the project runs on (archive server, GitHub, Pages,
+                      sessions), where each part is documented, and the
+                      known gaps — informal, not a controlled document
 
 registry/             Semantic registry: vocabularies, argument schemes, compiler;
                       the source of truth for every enumeration (DR-0078)
@@ -240,6 +243,9 @@ records the sabotages under which its suite was shown to go red.
 
 ## Installing on a server
 
+For what the archive server actually is, what else the project runs on, and what
+is not yet in place, see [docs/infrastructure.md](docs/infrastructure.md).
+
 [`setup/install.sh`](setup/install.sh) installs PostgreSQL and Python, creates the
 database and the OCFL storage roots, loads the schema and runs the suites on a fresh
 Debian or Ubuntu system. It collects nothing and registers nothing; both are separate,
@@ -275,6 +281,9 @@ deliberate acts that follow it (OPS-001).
 5. [WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), the
    acquisition strategy, and [collector/README.md](collector/README.md) for what the
    code actually does today.
+6. [docs/infrastructure.md](docs/infrastructure.md), for what all of this runs on
+   and what is not yet in place (backups, scheduled fixity checks, a schema-change
+   runbook).
 
 ## Open decisions for the next session
 
