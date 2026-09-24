@@ -136,6 +136,8 @@ merely another renumbering.
 | [DR-0103](DR-0103-registration-classes.md) | Registration classes (Option A): source authorization scales from per-source to per-class plus exceptions | architecture / operations | Approved | 2026-09-15 |
 | [DR-0104](DR-0104-legal-entity-formation.md) | Legal entity formation: association loi 1901, started now, in parallel with pending counsel advice | legal / operations | Approved | 2026-09-20 |
 | [DR-0105](DR-0105-eur-lex-sanctions-registration.md) | Fourth source registration: EUR-Lex restrictive measures (Ukraine/Russia) | operations / preservation | Approved — executed 2026-09-21 | 2026-09-21 |
+| [DR-0106](DR-0106-strike-tracking-registration.md) | Fifth and sixth source registrations: `kpszsu` and `generalstaffzsu` (strike tracking) | operations / preservation | Approved — executed 2026-09-22 | 2026-09-21 |
+| [DR-0107](DR-0107-strike-tracking-full-backfill.md) | Authorizing full historical backfill of `kpszsu` and `generalstaffzsu` | operations / preservation | Approved — in execution since 2026-09-23 | 2026-09-23 |
 
 ## Provenance of decisions
 
@@ -378,3 +380,30 @@ register: DR-0104 (approved 2026-09-20) before DR-0105 (approved
 2026-09-21), matching approval order. Self-references in both files and
 every cross-reference in `README.md`, `CLAUDE.md` and `sources/README.md`
 were updated in the same change.
+
+DR-0106 and DR-0107 were numbered at merge (PR #39), from
+`DR-pending-strike-tracking-registration` and
+`DR-pending-strike-tracking-full-backfill`, in approval order: DR-0106
+approved 2026-09-21, DR-0107 on 2026-09-23. `CDR-pending-telegram-backfill`
+took `CDR-P3-46` in the same change, and every reference in `README.md`,
+`collector/README.md`, `collector/telegram_backfill.py` and
+`docs/runbooks/telegram-channel-backfill.md` was updated with it.
+
+**Both records were also revised in place before merge, on 2026-09-24, under
+DR-0102 Decision 7 — and only three of its four conditions held.** Neither had
+reached `main`, the founder ruled each change, and each carries a Revision note
+with its date and reason; but neither was revised *in the same session as its
+approval*, and the founder **waived that condition explicitly**, having been
+shown that it did not hold. Recorded here because Decision 7 states that "not
+merged yet" is a bound on blast radius and **not** a reason: this is a waiver
+granted per record, not a precedent for inferring revisability from Git state.
+The substance was a review finding that neither record mentioned POL-0001 §10,
+DR-0072, personal data or the pending legal review at all, so a reader could
+not tell whether the review had been weighed; each gained a "Relation to
+POL-0001 §10 and DR-0072" subsection that states why registered sources with
+configured scope sit inside the founder's ruling of 2026-09-08 and leaves the
+questions of degree and kind open. DR-0106's correction of a wrong candidate
+count (it read "five of nine", self-corrected mid-clause to "six", where eleven
+candidates exist and eight are registered) was the second change. Alternatives
+offered and not chosen: merge as-is and supersede; pause the backfill until §10
+is recorded.

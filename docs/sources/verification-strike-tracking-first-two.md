@@ -13,6 +13,22 @@ act, per source, same as every prior candidate.
 — a new file, separate from `war-facts.yaml` (territorial control), since
 the capture considerations (Telegram pagination) differ materially.
 
+## 0. What "collecting from Telegram" actually means here
+
+Worth stating explicitly, since it was a real question when this work was
+first explained: **no Telegram account, API key, bot, or login exists or
+is used anywhere in this project.** `kpszsu` and `generalstaffzsu` are
+collected the same way every other web source in this project is —
+`HttpFetcher` making a plain HTTPS GET — pointed at
+`https://t.me/s/<channel>`, which is Telegram's own **public web
+preview**: the identical page anyone's browser loads for that URL with no
+Telegram account at all. Nothing here is an app integration, a connected
+account, or anything that could be "logged into" or "disconnected."
+`?before=<message_id>` pagination (used by the backfill mechanism) is the
+same public, unauthenticated page. See
+`docs/runbooks/telegram-channel-backfill.md`'s own restatement of this,
+since it's the document someone runs commands from.
+
 ## 1. Why these two, and why together
 
 The founder's ask is symmetric: strikes "on each side." Two official

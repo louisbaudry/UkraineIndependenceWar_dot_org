@@ -5,7 +5,7 @@
             --agent <pipeline_agent uuid> --archive-root /opt/uiw-archive \\
             --channel kpszsu --delay 3.0
 
-CDR-pending-telegram-backfill (candidate — see docs/sources/
+CDR-P3-46 (candidate — see docs/sources/
 verification-strike-tracking-first-two.md §2). A registered source's
 `run_locators` normally names a fixed set of stable URLs, fetched fresh each
 run. A Telegram public-preview channel (`t.me/s/<channel>`) has no such
