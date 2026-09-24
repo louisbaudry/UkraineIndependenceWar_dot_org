@@ -138,6 +138,8 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-pending-telegram-backfill, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started — see README's open decisions | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
 | 2026-09-22 | **`kpszsu` and `generalstaffzsu` registered and their first collection and a bounded backfill pass executed on the archive server**, interactively, by the founder, per `DR-pending-strike-tracking-registration.md`. Registration hit a real bug — `register.py --commit` re-run left two identical `source` rows per candidate, which `collector/run.py`'s existing duplicate check correctly refused to run against; diagnosed via read-only query confirming zero dependent `collector_run` rows on either duplicate before either was deleted, no code change needed. First ordinary collection run each: `kpszsu` 112 709 bytes, `generalstaffzsu` 135 349 bytes, 0 failed. Bounded backfill pass each (`--max-pages 20 --delay 3`): 20/20 pages preserved, 0 failed, no rate-limit signals — `kpszsu` reached back to post id 79190, `generalstaffzsu` to 41903. Separately, PostgreSQL had been reinstalled as version 15 (not 16, `CLAUDE.md`'s documented version) with `pg_hba.conf` reverted to `peer` auth for the `postgres` role specifically (a more specific rule than the general `trust` line, so it won and blocked connections) — fixed by editing that one line. A full backfill remains undecided; see README's open decisions | `docs/decision-records/DR-pending-strike-tracking-registration.md` |
 | 2026-09-23 | **A second, larger bounded backfill pass executed for both channels** (`--max-pages 100 --delay 3`, resumed from 2026-09-22's stop points), founder-directed as a scale check before any full-backfill decision. `kpszsu`: 100/100 pages preserved, 0 failed, reached post id 77184. `generalstaffzsu`: 100/100 pages preserved, 0 failed, reached post id 39618. Still zero rate-limit signals, now across 240 total backfill requests. A full backfill remains undecided | `docs/decision-records/DR-pending-strike-tracking-registration.md` |
+| 2026-09-23 | **Full historical backfill of both channels authorised**, `DR-pending-strike-tracking-full-backfill.md`, after the founder judged two consecutive clean bounded passes (20 then 100 pages, 0 failures/rate-limit signals throughout) sufficient evidence, superseding the registration record's full-backfill withholding for these two sources only. Execution proceeds as a sequence of resumable bounded passes across as many sessions as needed, never restarting — credits and resumes from all prior progress. First 500-page pass each: `kpszsu` reached post id 67174, `generalstaffzsu` reached post id 28041, both 0 failed, still no rate-limit signals across 740 total backfill requests | `docs/decision-records/DR-pending-strike-tracking-full-backfill.md`, `docs/decision-records/DR-pending-strike-tracking-registration.md` |
+| 2026-09-24 | **`generalstaffzsu`'s full historical backfill completed; `kpszsu`'s continues.** At the founder's request to use larger batches per pass, `--max-pages` raised to 2000. `kpszsu`: 2000/2000 pages, 0 failed, reached post id 27066 (running total 2620 pages since 2026-09-22, 0 failures throughout; an estimated ~52 100 posts remain). `generalstaffzsu`'s equivalent 2000-page pass was interrupted mid-run by a power outage on the host running it, before any summary printed; **no data was lost** — the tool commits each page as it is preserved, so the true progress was recovered directly from the database (a read-only query for the lowest successfully-preserved post id) rather than guessed, showing the crashed pass had completed 1972 of 2000 pages. A 50-page follow-up pass from that recovered point reached post id 1 and reported "stopped because: ... bottom of history" — `generalstaffzsu`'s full backfill is done: 1973 total backfill pages since 2026-09-22, 0 failures throughout | `docs/decision-records/DR-pending-strike-tracking-registration.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
 is under way**: 3 of the 7 sanctions sources are registered and have completed
@@ -338,30 +340,29 @@ outstanding *execution*.
    (per-decree WARC capture of rnbo.gov.ua's decree stream, rather than a
    single list locator) if the search-UI hypothesis holds — see
    [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md).
-4. **Whether and when to run a FULL historical backfill against `kpszsu`
-   and `generalstaffzsu`.** Both sources registered and executed
-   2026-09-22 (`DR-pending-strike-tracking-registration.md`'s *Executed*
-   section has the full account): first ordinary collection run each,
-   then two bounded backfill passes each — `--max-pages 20` on
-   2026-09-22, then `--max-pages 100` (resumed) on 2026-09-23 — 120 pages
-   per channel total, 0 failures, no rate-limit signals across 240
-   backfill requests plus 2 ordinary runs. `kpszsu` has now reached back
-   to post id 77184; `generalstaffzsu` to 39618. **Not yet decided:** a
-   full backfill (`kpszsu` alone has ~79 000 posts total, so completing it
-   is still an estimated 1 900+ further pages/requests at this pace —
-   real rate-limit/block risk to the archive server's Telegram access
-   generally, not just this backfill, named explicitly in the runbook).
-   Two bounded passes at increasing scale, both clean, are the evidence
-   this decision should be made against. A registration duplicate-row bug
-   in `register.py --commit` (safely re-runnable into two rows rather
+4. **Full historical backfill of `kpszsu`/`generalstaffzsu` — authorised
+   2026-09-23, `generalstaffzsu` now complete, `kpszsu` in progress; not
+   an open decision, just outstanding execution.** After two clean bounded
+   passes (20 then 100 pages/channel, 0 failures, no rate-limit signals),
+   the founder authorised completing both channels' full histories
+   (`DR-pending-strike-tracking-full-backfill.md`), executed as a sequence
+   of resumable bounded passes — never restarting, always crediting prior
+   progress. As of 2026-09-24: **`generalstaffzsu`'s full backfill is
+   done** (1973 total pages since 2026-09-22, 0 failures, reached the
+   bottom of its history at post id 1). **`kpszsu` continues**: 2620 pages
+   backfilled so far, 0 failures, resume point post id 27066, an
+   estimated ~52 100 posts remaining at the tool's current pace. A power
+   outage on 2026-09-24 interrupted one `generalstaffzsu` pass mid-run;
+   no data was lost (recovered the true resume point from the database
+   rather than guessing) — see `DR-pending-strike-tracking-registration.md`
+   *Executed* item 7 for the full account. A registration duplicate-row
+   bug in `register.py --commit` (safely re-runnable into two rows rather
    than upserting or refusing) was found and worked around during
-   execution but not fixed in code — flagged as a real gap, not yet a
-   founder decision to prioritise. See
+   execution but not fixed in code — still flagged as a real gap. See
    [`docs/sources/verification-strike-tracking-first-two.md`](docs/sources/verification-strike-tracking-first-two.md)
-   for the full account, including what this does NOT achieve: no
-   Russian-side source yet for either direction, and "effect" data
-   (casualties, damage) still needs Gate 2/3 editorial work no amount of
-   collection substitutes for.
+   for what this does NOT achieve: no Russian-side source yet for either
+   direction, and "effect" data (casualties, damage) still needs Gate 2/3
+   editorial work no amount of collection substitutes for.
 5. **Civilian casualties as a future subject area — noted, not started.**
    The founder flagged this 2026-09-21 as a goal for later, explicitly
    deferred: "I also want to use this project to track all civilians'

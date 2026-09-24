@@ -212,11 +212,48 @@ appears in `data-post` attributes) is `GeneralStaffZSU`.
      total post count is still not independently known — its remaining
      distance is unmeasured until its own history bottoms out.
 
-**A full historical backfill remains NOT authorised** by this record's
-step 3 — only the bounded 20-page pass per channel. The results above
-(no failures, no rate-limit signals, moderate storage footprint) are the
-evidence a future full-backfill decision would be made against, per
-*Consequences* item 3 below, but that decision has not been made.
+7. **2026-09-24 — `kpszsu`'s 500-page pass extended to 2 000 pages, and
+   `generalstaffzsu` reached the bottom of its history**, continuing
+   under `DR-pending-strike-tracking-full-backfill.md` at the founder's
+   direction ("Keep going now, as many passes as we can fit" then "can we
+   try larger batches?", raising `--max-pages` from 500 to 2000 to reduce
+   round-trips):
+   - `kpszsu`: `--start-before 67174` → 2000/2000 pages, 0 failed, reached
+     post id **27066** (resume point: `--start-before 27066`). Running
+     total: 2620 pages backfilled since 2026-09-22, 0 failures throughout.
+   - `generalstaffzsu`: `--start-before 28041 --max-pages 2000` was
+     started, but **the host running it lost power mid-run** before any
+     summary was printed. Rather than trust an incomplete/guessed resume
+     point, the true state was recovered directly from the database (the
+     lowest post id among successful `acquisition_attempt` rows for the
+     source, read-only, before any further command was issued):
+     `MIN` post id **28**, **1972** successes recorded — the crashed run
+     had in fact completed almost all 2000 pages before power was lost.
+     A small follow-up pass, `--start-before 28 --max-pages 50`, then
+     reported **"stopped because: ... bottom of history"** at post id 1
+     (1 further page preserved) — **`generalstaffzsu`'s full historical
+     backfill is complete**: 1973 total backfill pages since 2026-09-22
+     (20+100+500+2000·[interrupted, recovered]+1), 0 failures throughout,
+     0 posts lost to the outage (the tool's per-page-commit design meant
+     the interruption cost only the unwritten remainder of one pass, not
+     any already-preserved data).
+   - This is the first time this project has needed to recover a
+     backfill's true progress from the database rather than from the
+     tool's own last printed summary — worth noting as a real instance of
+     why `acquisition_attempt` records every attempt (§28, PRES-007): the
+     recovery query would not have been possible without it. No code
+     changes were needed; the tool's existing per-page durability meant
+     recovery was a read, not a repair.
+   - `kpszsu` is not yet at the bottom of its history: an estimated
+     ~52 100 posts remain past post id 27066, unchanged in kind from the
+     ~67 000-posts-remaining estimate in item 6, now reduced by the 2000
+     pages just completed.
+
+**A full historical backfill of both channels was authorised 2026-09-23**
+by `DR-pending-strike-tracking-full-backfill.md`, superseding this
+record's step 3 for these two sources only. `generalstaffzsu`'s full
+backfill is now complete (item 7); `kpszsu`'s continues from
+`--start-before 27066`.
 
 ## Consequences
 
