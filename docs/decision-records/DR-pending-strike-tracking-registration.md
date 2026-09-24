@@ -211,6 +211,37 @@ appears in `data-post` attributes) is `GeneralStaffZSU`.
    `release/baseline.py --check` reports the expected `dataset_snapshot`
    gap only (no publication is being made here) — unrelated to this
    record.
+5. **2026-09-23 — a second, larger bounded pass, each channel**
+   (`--max-pages 100 --delay 3`, resumed from each channel's step-3 stop
+   point), founder-directed as a scale check before deciding on a full
+   backfill:
+   - `kpszsu`: `--start-before 79190`, 100 pages attempted, 100 preserved,
+     0 failed, earliest post id reached **77184** (resume point:
+     `--start-before 77184`).
+   - `generalstaffzsu`: `--start-before 41903`, 100 pages attempted, 100
+     preserved, 0 failed, earliest post id reached **39618** (resume
+     point: `--start-before 39618`).
+   - Still **no rate-limit signals** on either channel, now across 240
+     total backfill requests plus 2 ordinary runs. This is the evidence a
+     full-backfill decision (§*Consequences* item 3) would be made
+     against; that decision has still not been made.
+6. **2026-09-23/24 — full backfill authorised and begun**, per
+   `DR-pending-strike-tracking-full-backfill.md`. Executing as a sequence
+   of `--max-pages 500 --delay 3` passes, each resumed from the prior
+   pass's stop point:
+   - `kpszsu`: `--start-before 77184` → 500/500 pages, 0 failed, reached
+     post id **67174** (resume point: `--start-before 67174`).
+   - `generalstaffzsu`: `--start-before 39618` → 500/500 pages, 0 failed,
+     reached post id **28041** (resume point: `--start-before 28041`).
+   - Running totals: `kpszsu` 620 pages backfilled since 2026-09-22
+     (20+100+500), 0 failures throughout; `generalstaffzsu` 620 pages,
+     0 failures throughout. Still no rate-limit signals across 740 total
+     backfill requests plus 2 ordinary runs.
+   - `kpszsu` has ~79 300 total posts; post 67174 means roughly
+     12 100 posts back from the head, an estimated **~67 000 posts
+     remaining** to reach the bottom of its history. `generalstaffzsu`'s
+     total post count is still not independently known — its remaining
+     distance is unmeasured until its own history bottoms out.
 
 **A full historical backfill remains NOT authorised** by this record's
 step 3 — only the bounded 20-page pass per channel. The results above

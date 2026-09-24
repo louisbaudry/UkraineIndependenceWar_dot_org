@@ -137,6 +137,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-21 | **Founder redirected the project's central purpose**, mid-session, after pausing work to reflect: not territorial control, but strike-level completeness — "to come the closest possible to record EVERY SINGLE MISSILE, DRONE, that fell on each side and their effect." First step: two candidates drafted for territorial control (`isw-orca`, `deepstatemap`, `sources/candidates/war-facts.yaml`) before the redirection sharpened further; then two strike-tracking candidates for the actual goal (`kpszsu`, `generalstaffzsu`, `sources/candidates/strike-tracking.yaml`) — official Ukrainian channels covering both directions (incoming Russian strikes, outgoing Ukrainian strikes). All four verified and rehearsed through the real collector; none registered yet | `sources/candidates/war-facts.yaml`, `sources/candidates/strike-tracking.yaml`, `docs/sources/verification-war-facts-first-two.md`, `docs/sources/verification-strike-tracking-first-two.md` |
 | 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-pending-telegram-backfill, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started — see README's open decisions | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
 | 2026-09-22 | **`kpszsu` and `generalstaffzsu` registered and their first collection and a bounded backfill pass executed on the archive server**, interactively, by the founder, per `DR-pending-strike-tracking-registration.md`. Registration hit a real bug — `register.py --commit` re-run left two identical `source` rows per candidate, which `collector/run.py`'s existing duplicate check correctly refused to run against; diagnosed via read-only query confirming zero dependent `collector_run` rows on either duplicate before either was deleted, no code change needed. First ordinary collection run each: `kpszsu` 112 709 bytes, `generalstaffzsu` 135 349 bytes, 0 failed. Bounded backfill pass each (`--max-pages 20 --delay 3`): 20/20 pages preserved, 0 failed, no rate-limit signals — `kpszsu` reached back to post id 79190, `generalstaffzsu` to 41903. Separately, PostgreSQL had been reinstalled as version 15 (not 16, `CLAUDE.md`'s documented version) with `pg_hba.conf` reverted to `peer` auth for the `postgres` role specifically (a more specific rule than the general `trust` line, so it won and blocked connections) — fixed by editing that one line. A full backfill remains undecided; see README's open decisions | `docs/decision-records/DR-pending-strike-tracking-registration.md` |
+| 2026-09-23 | **A second, larger bounded backfill pass executed for both channels** (`--max-pages 100 --delay 3`, resumed from 2026-09-22's stop points), founder-directed as a scale check before any full-backfill decision. `kpszsu`: 100/100 pages preserved, 0 failed, reached post id 77184. `generalstaffzsu`: 100/100 pages preserved, 0 failed, reached post id 39618. Still zero rate-limit signals, now across 240 total backfill requests. A full backfill remains undecided | `docs/decision-records/DR-pending-strike-tracking-registration.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
 is under way**: 3 of the 7 sanctions sources are registered and have completed
@@ -341,20 +342,21 @@ outstanding *execution*.
    and `generalstaffzsu`.** Both sources registered and executed
    2026-09-22 (`DR-pending-strike-tracking-registration.md`'s *Executed*
    section has the full account): first ordinary collection run each,
-   then one bounded backfill pass each
-   (`collector/telegram_backfill.py --max-pages 20 --delay 3`) — 20 pages,
-   0 failures, no rate-limit signals on either channel. `kpszsu` reached
-   back to post id 79190; `generalstaffzsu` to 41903. **Not yet decided:**
-   a full backfill (`kpszsu` alone has ~79 000 posts total, so completing
-   it is still an estimated 2 000+ further pages/requests at this pace —
+   then two bounded backfill passes each — `--max-pages 20` on
+   2026-09-22, then `--max-pages 100` (resumed) on 2026-09-23 — 120 pages
+   per channel total, 0 failures, no rate-limit signals across 240
+   backfill requests plus 2 ordinary runs. `kpszsu` has now reached back
+   to post id 77184; `generalstaffzsu` to 39618. **Not yet decided:** a
+   full backfill (`kpszsu` alone has ~79 000 posts total, so completing it
+   is still an estimated 1 900+ further pages/requests at this pace —
    real rate-limit/block risk to the archive server's Telegram access
    generally, not just this backfill, named explicitly in the runbook).
-   The bounded pass's clean results are the evidence this decision should
-   be made against. A registration duplicate-row bug in `register.py
-   --commit` (safely re-runnable into two rows rather than upserting or
-   refusing) was found and worked around during execution but not fixed
-   in code — flagged as a real gap, not yet a founder decision to
-   prioritise. See
+   Two bounded passes at increasing scale, both clean, are the evidence
+   this decision should be made against. A registration duplicate-row bug
+   in `register.py --commit` (safely re-runnable into two rows rather
+   than upserting or refusing) was found and worked around during
+   execution but not fixed in code — flagged as a real gap, not yet a
+   founder decision to prioritise. See
    [`docs/sources/verification-strike-tracking-first-two.md`](docs/sources/verification-strike-tracking-first-two.md)
    for the full account, including what this does NOT achieve: no
    Russian-side source yet for either direction, and "effect" data
