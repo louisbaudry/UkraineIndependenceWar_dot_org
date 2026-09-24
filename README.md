@@ -140,6 +140,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-23 | **A second, larger bounded backfill pass executed for both channels** (`--max-pages 100 --delay 3`, resumed from 2026-09-22's stop points), founder-directed as a scale check before any full-backfill decision. `kpszsu`: 100/100 pages preserved, 0 failed, reached post id 77184. `generalstaffzsu`: 100/100 pages preserved, 0 failed, reached post id 39618. Still zero rate-limit signals, now across 240 total backfill requests. A full backfill remains undecided | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
 | 2026-09-23 | **Full historical backfill of both channels authorised**, `DR-0107-strike-tracking-full-backfill.md`, after the founder judged two consecutive clean bounded passes (20 then 100 pages, 0 failures/rate-limit signals throughout) sufficient evidence, superseding the registration record's full-backfill withholding for these two sources only. Execution proceeds as a sequence of resumable bounded passes across as many sessions as needed, never restarting — credits and resumes from all prior progress. First 500-page pass each: `kpszsu` reached post id 67174, `generalstaffzsu` reached post id 28041, both 0 failed, still no rate-limit signals across 740 total backfill requests | `docs/decision-records/DR-0107-strike-tracking-full-backfill.md`, `docs/decision-records/DR-0106-strike-tracking-registration.md` |
 | 2026-09-24 | **`generalstaffzsu`'s full historical backfill completed; `kpszsu`'s continues.** At the founder's request to use larger batches per pass, `--max-pages` raised to 2000. `kpszsu`: 2000/2000 pages, 0 failed, reached post id 27066 (running total 2620 pages since 2026-09-22, 0 failures throughout; an estimated ~52 100 posts remain). `generalstaffzsu`'s equivalent 2000-page pass was interrupted mid-run by a power outage on the host running it, before any summary printed; **no data was lost** — the tool commits each page as it is preserved, so the true progress was recovered directly from the database (a read-only query for the lowest successfully-preserved post id) rather than guessed, showing the crashed pass had completed 1972 of 2000 pages. A 50-page follow-up pass from that recovered point reached post id 1 and reported "stopped because: ... bottom of history" — `generalstaffzsu`'s full backfill is done: 1973 total backfill pages since 2026-09-22, 0 failures throughout | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
+| 2026-09-24 | **`kpszsu`'s full historical backfill also completed — both channels are now fully backfilled.** The next pass (`--start-before 27066 --max-pages 2000`) stopped well short of its cap: 1340 pages attempted, 1339 preserved, 0 failed, earliest id seen 1, "stopped because: ... bottom of history" — the same result `generalstaffzsu` reached earlier the same day. Running total: 3960 pages attempted since 2026-09-22 (20+100+500+2000+1340), 3959 preserved, 0 failures throughout every pass on either channel. The prior mid-backfill remaining-post estimates (~67 000, then ~52 100) were wrong by a wide margin, recorded plainly rather than left standing — this project's channel-size estimates, never independently confirmed, should be read as rough until a channel actually bottoms out. Both channels' full historical backfills are complete; only their ordinary, ongoing collection runs continue | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
 is under way**: 3 of the 7 sanctions sources are registered and have completed
@@ -360,22 +361,26 @@ outstanding *execution*.
    Cloudflare-blocked for automated sessions. See
    [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md)
    §2b–3.
-4. **Full historical backfill of `kpszsu`/`generalstaffzsu` — authorised
-   2026-09-23, `generalstaffzsu` now complete, `kpszsu` in progress; not
-   an open decision, just outstanding execution.** After two clean bounded
-   passes (20 then 100 pages/channel, 0 failures, no rate-limit signals),
-   the founder authorised completing both channels' full histories
-   (`DR-0107-strike-tracking-full-backfill.md`), executed as a sequence
-   of resumable bounded passes — never restarting, always crediting prior
-   progress. As of 2026-09-24: **`generalstaffzsu`'s full backfill is
-   done** (1973 total pages since 2026-09-22, 0 failures, reached the
-   bottom of its history at post id 1). **`kpszsu` continues**: 2620 pages
-   backfilled so far, 0 failures, resume point post id 27066, an
-   estimated ~52 100 posts remaining at the tool's current pace. A power
-   outage on 2026-09-24 interrupted one `generalstaffzsu` pass mid-run;
-   no data was lost (recovered the true resume point from the database
-   rather than guessing) — see `DR-0106-strike-tracking-registration.md`
-   *Executed* item 7 for the full account. A registration duplicate-row
+4. **Full historical backfill of `kpszsu`/`generalstaffzsu` — DONE
+   2026-09-24, both channels.** Authorised 2026-09-23 after two clean
+   bounded passes (20 then 100 pages/channel, 0 failures, no rate-limit
+   signals) — `DR-0107-strike-tracking-full-backfill.md` — and executed
+   as a sequence of resumable bounded passes, never restarting, always
+   crediting prior progress. **Both channels have now reached the bottom
+   of their Telegram history**: `generalstaffzsu` at post id 1 (1973
+   total backfill pages since 2026-09-22, 0 failures); `kpszsu` at post
+   id 1 (3960 total backfill pages attempted since 2026-09-22, 3959
+   preserved, 0 failures). Both prior mid-backfill estimates of remaining
+   post counts (~67 000, then ~52 100 for `kpszsu`) turned out wrong by a
+   wide margin once the real bottom was reached — recorded honestly in
+   `DR-0106-strike-tracking-registration.md`'s *Executed* item 8 rather
+   than left standing. A power outage on 2026-09-24 interrupted one
+   `generalstaffzsu` pass mid-run; no data was lost (recovered the true
+   resume point from the database rather than guessing) — see that
+   record's *Executed* item 7 for the full account. Nothing further to
+   decide or execute for either channel's backfill; only their ordinary,
+   ongoing collection runs continue as each channel publishes new posts.
+   A registration duplicate-row
    bug in `register.py --commit` (safely re-runnable into two rows rather
    than upserting or refusing) was found and worked around during
    execution but not fixed in code — still flagged as a real gap. See

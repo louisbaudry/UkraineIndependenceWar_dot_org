@@ -295,11 +295,31 @@ appears in `data-post` attributes) is `GeneralStaffZSU`.
      ~67 000-posts-remaining estimate in item 6, now reduced by the 2000
      pages just completed.
 
-**A full historical backfill of both channels was authorised 2026-09-23**
-by `DR-0107-strike-tracking-full-backfill.md`, superseding this
-record's step 3 for these two sources only. `generalstaffzsu`'s full
-backfill is now complete (item 7); `kpszsu`'s continues from
-`--start-before 27066`.
+8. **2026-09-24 — `kpszsu` also reached the bottom of its history.**
+   Continuing the same session's pace, `--start-before 27066 --max-pages
+   2000` was run next: it stopped well short of the 2000-page cap,
+   1340 pages attempted, 1339 preserved, 0 failed, earliest id seen **1**,
+   reporting the same **"stopped because: ... bottom of history"** line
+   `generalstaffzsu` gave. **`kpszsu`'s full historical backfill is
+   complete.** Running total: 3960 pages attempted since 2026-09-22
+   (20+100+500+2000+1340), 3959 preserved, 0 failures throughout across
+   every pass. The ~52 100-posts-remaining estimate in item 7 (itself
+   derived from a ~79 300-total-posts estimate in item 6) was **wrong by
+   a wide margin** — stated here plainly rather than left uncorrected:
+   `kpszsu`'s real total was far closer to its already-backfilled count
+   than either estimate suggested, a reminder that this project's
+   estimates of a channel's total post count (never independently
+   confirmed for either channel, only inferred from paging behaviour)
+   should be treated as rough until a channel actually bottoms out.
+
+**Both channels' full historical backfills, authorised 2026-09-23** by
+`DR-0107-strike-tracking-full-backfill.md` (superseding this record's
+step 3 for these two sources only), **are now complete.** `kpszsu`
+reached post id 1 (item 8); `generalstaffzsu` reached post id 1 (item 7).
+Neither channel's Telegram pagination offered any further history to
+walk back through. No further backfill passes are needed for either
+source; only their ordinary, ongoing collection runs (step 2) continue
+picking up new posts as each channel publishes them.
 
 ## Consequences
 
