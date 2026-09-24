@@ -12,7 +12,7 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0107); the design
+every enacted decision since is a Decision Record (DR-0001…0108); the design
 lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
 the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
 `publication/`, `export/` and `release/` implements those documents and is
@@ -77,7 +77,10 @@ exists to prevent, which is why status now has exactly one home.
    (`kind:blocked-external`). Then `README.md`, and the component README of
    whatever you are about to touch. `collector/README.md` says what the
    pipeline does and does not do today; `docs/phase-3/README.md` says where
-   Phase III is. [`GLOSSARY.md`](GLOSSARY.md) defines the archival/preservation/sanctions
+   Phase III is; [`docs/infrastructure.md`](docs/infrastructure.md) says what
+   the project runs on and what is not yet in place — update it in the same
+   commit as any change to hosting, scheduled jobs, backups or publishing.
+   [`GLOSSARY.md`](GLOSSARY.md) defines the archival/preservation/sanctions
    vocabulary this file and the DRs assume — the founder has no prior
    background in the domain and is learning it alongside the build, so keep
    it current: when a session introduces or leans on a term a newcomer

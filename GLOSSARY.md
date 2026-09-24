@@ -185,6 +185,25 @@ Oxford Common File Layout — the on-disk object storage layout this project
 uses for archival storage, versioned and self-describing independent of any
 particular database.
 
+**Archive server**
+The one machine that holds the archive itself: the PostgreSQL database
+(`uiw`) and the OCFL storage roots. It is hosted with IONOS in Spain
+(DR-0100). GitHub holds only code and documents, and AI sessions never
+touch this machine. Every command run on it so far was run by the founder.
+See `docs/infrastructure.md`.
+
+**Schema drift**
+When a live database's table structure falls behind the DDL files in
+`schema/` on `main`, so newer code expects columns or tables that do not
+exist yet. This project rebuilds databases from DDL instead of migrating
+them, so drift on a database with real data is fixed by backing up,
+rebuilding and reloading (DR-0105 *Executed*), not by running a migration.
+
+**Restore test**
+Actually restoring a backup somewhere and checking that it is complete,
+rather than only taking the backup. OPS-005 requires one a year. A backup
+that has never been restored is not yet known to work.
+
 **BagIt**
 A packaging convention for transferring and verifying a set of files as a
 unit (a "bag"), used for envelopes around preserved content pending the
