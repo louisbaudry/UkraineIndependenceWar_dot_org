@@ -138,6 +138,8 @@ merely another renumbering.
 | [DR-0105](DR-0105-eur-lex-sanctions-registration.md) | Fourth source registration: EUR-Lex restrictive measures (Ukraine/Russia) | operations / preservation | Approved — executed 2026-09-21 | 2026-09-21 |
 | [DR-0106](DR-0106-strike-tracking-registration.md) | Fifth and sixth source registrations: `kpszsu` and `generalstaffzsu` (strike tracking) | operations / preservation | Approved — executed 2026-09-22 | 2026-09-21 |
 | [DR-0107](DR-0107-strike-tracking-full-backfill.md) | Authorizing full historical backfill of `kpszsu` and `generalstaffzsu` | operations / preservation | Approved — in execution since 2026-09-23 | 2026-09-23 |
+| [DR-0108](DR-0108-backup-deferral.md) | Independent backups (OPS-005) deferred until the association exists | operations / preservation | Approved — OPS-005 knowingly unmet until the trigger | 2026-09-24 |
+| [DR-0109](DR-0109-civilian-harm-and-memorial.md) | Civilian harm and war crimes as a subject area, and a memorial site built on the archive | scope / publication / personal data | Approved — authorises no collection, registration or publication | 2026-09-24 |
 
 ## Provenance of decisions
 
@@ -388,6 +390,13 @@ approved 2026-09-21, DR-0107 on 2026-09-23. `CDR-pending-telegram-backfill`
 took `CDR-P3-46` in the same change, and every reference in `README.md`,
 `collector/README.md`, `collector/telegram_backfill.py` and
 `docs/runbooks/telegram-channel-backfill.md` was updated with it.
+
+DR-0108 was numbered before its PR was opened, not at merge. The founder
+merges from the UI, and PR #34 had shown that a number left for "merge time"
+can reach `main` still reading `DR-pending-*`. It was drafted as
+`DR-pending-backup-deferral`. The 2026-09-24 check found DR-0107 as the
+highest record on `origin/main` and no unmerged branch drafting a new one.
+If another record takes DR-0108 first, renumber this one when merging.
 
 **Both records were also revised in place before merge, on 2026-09-24, under
 DR-0102 Decision 7 — and only three of its four conditions held.** Neither had

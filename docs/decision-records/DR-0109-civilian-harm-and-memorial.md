@@ -1,4 +1,4 @@
-# DR-pending-civilian-harm-and-memorial — Civilian harm and war crimes as a subject area, and a memorial site built on the archive
+# DR-0109 — Civilian harm and war crimes as a subject area, and a memorial site built on the archive
 
 **Category:** scope / publication / personal data | **Status:** **Approved**
 **Decided:** 2026-09-24 by founder/principal editor — ten rulings made one at a time, and this record's text approved the same session

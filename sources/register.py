@@ -320,6 +320,57 @@ def describe(sources: list[dict], dependence: list[dict],
     print()
 
 
+# The policy fields worth reporting when a candidate file has drifted from
+# what was actually registered. Not every column: these are the ones that
+# decide what collection is authorised to do, so a silent difference here is
+# the kind that matters. The second element is commit()'s own default, so the
+# comparison is against what would really have been written.
+_AUTHORISING_FIELDS = (
+    ("collection_method", None),
+    ("capture_format", "http"),
+    ("default_retention_tier", None),
+    ("default_access_tier", None),
+    ("rights_permission", None),
+)
+
+
+def registered_id(conn, source: dict) -> str | None:
+    """This candidate's already-registered row id, or None.
+
+    Identity is `(name, locator)` — the pair `collector/run.py`'s
+    `resolve_registered_source()` resolves on, so this asks exactly the
+    question the collector will later ask. `IS NOT DISTINCT FROM` because a
+    null locator is one locator, not a wildcard, matching the DDL's
+    `UNIQUE NULLS NOT DISTINCT`.
+    """
+    row = conn.execute(
+        "SELECT id FROM source WHERE name = %s "
+        "AND locator IS NOT DISTINCT FROM %s",
+        (source["name"], source.get("locator")),
+    ).fetchone()
+    return str(row[0]) if row else None
+
+
+def _report_drift(conn, source_id: str, source: dict) -> None:
+    """Say so when the candidate file no longer matches what was registered.
+
+    A re-run is a no-op, which is the point — but a *silent* no-op would let
+    an edited candidate file look as though its new policy had been applied.
+    Re-registering a source whose policy changed is a founder decision per
+    source (DR-0093 §3), not a `--commit` side effect, so this reports and
+    does not update.
+    """
+    names = [f for f, _ in _AUTHORISING_FIELDS]
+    stored = conn.execute(
+        f"SELECT {', '.join(names)} FROM source WHERE id = %s", (source_id,)
+    ).fetchone()
+    for (field, default), was in zip(_AUTHORISING_FIELDS, stored):
+        now = source.get(field, default)
+        if str(was) != str(now):
+            print(f"    NOT updated: {field} is {was!r} in the registry, "
+                  f"{now!r} in the candidate file")
+
+
 def commit(conn, sources: list[dict], dependence: list[dict],
            asserter_id: str, all_sources_by_key: dict[str, dict] | None = None
            ) -> dict[str, str]:
@@ -328,6 +379,13 @@ def commit(conn, sources: list[dict], dependence: list[dict],
     `asserter_id` is a person: declaring that two sources are dependent is an
     analytic judgment about them (DR-0028), not a configuration value, and it
     carries an asserter like any other assertion.
+
+    Re-running is a no-op per source, not a duplicate: a candidate whose
+    `(name, locator)` is already registered is reported and skipped, and its
+    existing id is returned so dependence links still resolve. The store
+    enforces the same rule (`source_identity_unique`), so a future caller
+    that forgets this check is refused by the database rather than corrupting
+    the registry.
 
     `all_sources_by_key`, if given, lets a dependence link's other end
     resolve against a source registered by an *earlier* call, not only this
@@ -342,6 +400,21 @@ def commit(conn, sources: list[dict], dependence: list[dict],
     ids: dict[str, str] = {}
     with conn.transaction():
         for source in sources:
+            # A re-run must not register the same source twice. Before this
+            # check a second `--commit` inserted a second row with a fresh
+            # uuid, and because collector/run.py resolves a source by
+            # (name, locator) and refuses an ambiguous match, that *disabled*
+            # the source it had just registered — found on the archive server
+            # 2026-09-22 (DR-0106, *Executed* step 1), cleared by hand.
+            # Returning the existing id rather than skipping the key outright
+            # keeps dependence links resolvable through resolve() below.
+            existing = registered_id(conn, source)
+            if existing is not None:
+                ids[source["key"]] = existing
+                print(f"  already registered, not re-inserted: "
+                      f"{source['key']} ({existing})")
+                _report_drift(conn, existing, source)
+                continue
             source_id = str(uuid.uuid4())
             ids[source["key"]] = source_id
             conn.execute(

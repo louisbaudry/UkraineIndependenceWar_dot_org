@@ -24,7 +24,7 @@ The time horizon is measured in years and potentially decades.
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
 | Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0007, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **First collection performed 2026-09-09** — two sanctions lists, registered and run on the archive server ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)). **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072); the founder ruled on 2026-09-08 that no scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0107 are approved and in force. DR-0095 governs how DRs are numbered
+DR-0001…0109 are approved and in force. DR-0095 governs how DRs are numbered
 (drafted unnumbered, assigned at merge). **DR-0096…0101 were approved between
 2026-09-12 and 2026-09-15 and numbered together on 2026-09-15** — three of
 them had reached `main` unnumbered and without register rows, which is the
@@ -45,17 +45,19 @@ data model, the registry, the three-gate pipeline, the storage layout and the
 personal-data policy are all decided and documented. The code implements them and is
 tested against a real database and real storage. But:
 
-- **Three sources are registered and collected; three more are approved but
-  not yet executed; one remains blocked.** Of the seven sanctions authorities
-  in [`sources/candidates/`](sources/README.md), the founder accepted
+- **Six of the seven sanctions sources are registered and collected; one
+  remains blocked.** Of the seven sanctions authorities in
+  [`sources/candidates/`](sources/README.md), the founder accepted
   `eu-consolidated-list` and `ofac-sdn` on 2026-09-08 and ran the first
   collection on the archive server on 2026-09-09 — five files, ~211 MB, zero
   failures ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)).
-  `eur-lex-sanctions` was registered and collected the same way on 2026-09-21
-  ([DR-0105](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md)).
-  `uk-ofsi-consolidated`, `bis-entity-list` and `seco-sanctions` are approved
-  but not yet executed; `ua-nsdc-sanctions` remains a candidate, blocked on a
-  Cloudflare challenge; registering is the act that authorises collection
+  `eur-lex-sanctions` ([DR-0105](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md)),
+  `uk-ofsi-consolidated`, `bis-entity-list` (Denied Persons List half only)
+  and `seco-sanctions` ([DR-0096](docs/decision-records/README.md),
+  [DR-0098](docs/decision-records/README.md)) followed on **2026-09-21**,
+  each a separate decision executed by a person on the archive server.
+  `ua-nsdc-sanctions` remains a candidate, blocked on a Cloudflare challenge
+  ([#46](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/46)); registering is the act that authorises collection
   (OPS-001).
 - **A live fetch has now completed, twice, deliberately.** `HttpFetcher` acquired
   the sources above from real servers with an identified User-Agent. No WARC
@@ -138,31 +140,27 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-P3-46, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started — see README's open decisions | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
 | 2026-09-22 | **`kpszsu` and `generalstaffzsu` registered and their first collection and a bounded backfill pass executed on the archive server**, interactively, by the founder, per `DR-0106-strike-tracking-registration.md`. Registration hit a real bug — `register.py --commit` re-run left two identical `source` rows per candidate, which `collector/run.py`'s existing duplicate check correctly refused to run against; diagnosed via read-only query confirming zero dependent `collector_run` rows on either duplicate before either was deleted, no code change needed. First ordinary collection run each: `kpszsu` 112 709 bytes, `generalstaffzsu` 135 349 bytes, 0 failed. Bounded backfill pass each (`--max-pages 20 --delay 3`): 20/20 pages preserved, 0 failed, no rate-limit signals — `kpszsu` reached back to post id 79190, `generalstaffzsu` to 41903. Separately, PostgreSQL had been reinstalled as version 15 (not 16, `CLAUDE.md`'s documented version) with `pg_hba.conf` reverted to `peer` auth for the `postgres` role specifically (a more specific rule than the general `trust` line, so it won and blocked connections) — fixed by editing that one line. A full backfill remains undecided; see README's open decisions | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
 | 2026-09-23 | **A second, larger bounded backfill pass executed for both channels** (`--max-pages 100 --delay 3`, resumed from 2026-09-22's stop points), founder-directed as a scale check before any full-backfill decision. `kpszsu`: 100/100 pages preserved, 0 failed, reached post id 77184. `generalstaffzsu`: 100/100 pages preserved, 0 failed, reached post id 39618. Still zero rate-limit signals, now across 240 total backfill requests. A full backfill remains undecided | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
-| 2026-09-24 | **Civilian harm, war crimes and a memorial site: ten founder rulings, recorded and approved.** The founder took up open decision 5, widened it to all war crimes of Russia in Ukraine, and added a public memorial website; ten questions were ruled one at a time (relationship, scope, who is remembered, incidents vs. persons, source order, family participation, staged launch, hosting, languages, domain). Record text approved as written the same day. No code, no source registered, nothing collected or published | `docs/decision-records/DR-pending-civilian-harm-and-memorial.md`, `README.md`, `CLAUDE.md`, `GLOSSARY.md` |
+| 2026-09-23 | **Full historical backfill of both channels authorised**, `DR-0107-strike-tracking-full-backfill.md`, after the founder judged two consecutive clean bounded passes (20 then 100 pages, 0 failures/rate-limit signals throughout) sufficient evidence, superseding the registration record's full-backfill withholding for these two sources only. Execution proceeds as a sequence of resumable bounded passes across as many sessions as needed, never restarting — credits and resumes from all prior progress. First 500-page pass each: `kpszsu` reached post id 67174, `generalstaffzsu` reached post id 28041, both 0 failed, still no rate-limit signals across 740 total backfill requests | `docs/decision-records/DR-0107-strike-tracking-full-backfill.md`, `docs/decision-records/DR-0106-strike-tracking-registration.md` |
+| 2026-09-24 | **`generalstaffzsu`'s full historical backfill completed; `kpszsu`'s continues.** At the founder's request to use larger batches per pass, `--max-pages` raised to 2000. `kpszsu`: 2000/2000 pages, 0 failed, reached post id 27066 (running total 2620 pages since 2026-09-22, 0 failures throughout; an estimated ~52 100 posts remain). `generalstaffzsu`'s equivalent 2000-page pass was interrupted mid-run by a power outage on the host running it, before any summary printed; **no data was lost** — the tool commits each page as it is preserved, so the true progress was recovered directly from the database (a read-only query for the lowest successfully-preserved post id) rather than guessed, showing the crashed pass had completed 1972 of 2000 pages. A 50-page follow-up pass from that recovered point reached post id 1 and reported "stopped because: ... bottom of history" — `generalstaffzsu`'s full backfill is done: 1973 total backfill pages since 2026-09-22, 0 failures throughout | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
+| 2026-09-24 | **`kpszsu`'s full historical backfill also completed — both channels are now fully backfilled.** The next pass (`--start-before 27066 --max-pages 2000`) stopped well short of its cap: 1340 pages attempted, 1339 preserved, 0 failed, earliest id seen 1, "stopped because: ... bottom of history" — the same result `generalstaffzsu` reached earlier the same day. Running total: 3960 pages attempted since 2026-09-22 (20+100+500+2000+1340), 3959 preserved, 0 failures throughout every pass on either channel. The prior mid-backfill remaining-post estimates (~67 000, then ~52 100) were wrong by a wide margin, recorded plainly rather than left standing — this project's channel-size estimates, never independently confirmed, should be read as rough until a channel actually bottoms out. Both channels' full historical backfills are complete; only their ordinary, ongoing collection runs continue | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
+| 2026-09-24 | **Civilian harm, war crimes and a memorial site: ten founder rulings, recorded and approved.** The founder took up the deferred civilian-casualties item (issue #61), widened it to all war crimes of Russia in Ukraine, and added a public memorial website; ten questions were ruled one at a time (relationship, scope, who is remembered, incidents vs. persons, source order, family participation, staged launch, hosting, languages, domain). Record text approved as written the same day. No code, no source registered, nothing collected or published | `docs/decision-records/DR-0109-civilian-harm-and-memorial.md`, `README.md`, `CLAUDE.md`, `GLOSSARY.md` |
 
-Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
-is under way**: 3 of the 7 sanctions sources are registered and have completed
-a first collection on the archive server (2026-09-09, 2026-09-21); 3 more are
-approved but not yet executed; the other 1 is blocked pending network access
-(`ua-nsdc-sanctions`, Cloudflare-challenged). **A2's index tooling is
-built** (2026-09-12) and **completed its first live query** (2026-09-17,
-against `rnbo.gov.ua`). **A3 is done.** **A4's WACZ
-evaluation is done** (2026-09-15, [WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md))
-— recommends deferring adoption, WARC unchanged. **A5 (registration classes)
-is done and enacted** (`DR-0103`, 2026-09-16), with the initial classes
-named 2026-09-17. **A6's legal-review brief is
-done** (v0.4, 2026-09-15), with all five founder decisions in its §9 closed;
-commissioning it is a separate founder act. **A7's measurement tooling is
-built and tested** (2026-09-15) with a runbook written and unexecuted. See
-the Track A table in [CLAUDE.md](CLAUDE.md) for each item's exact state.
+Track A of WP 3.4 (work permitted now under DR-0071): **A3, A4, A5 and A6 are
+done; A1 is six sources of seven; A2 and A7 have their tooling built and their
+remaining halves open.** This paragraph used to restate each item's status and
+drifted from the table it claimed to summarise — what each item *produced*
+is the Track A table in [CLAUDE.md](CLAUDE.md), and what is still open is on
+the board: [`epic:track-a`](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues?q=is%3Aopen+label%3A%22epic%3Atrack-a%22).
+
+Track B (WP 3.4 §4.2) does not start until DR-0072's successor records the
+POL-0001 §10 review.
 
 ## Picking up development
 
-The next open decision, raised but not yet ruled on, is whether the project
-should **form a legal entity** before, or as part of, commissioning the
-POL-0001 §10 review — see
-["Open decisions"](#open-decisions-for-the-next-session) below and
-[CLAUDE.md](CLAUDE.md) for the full session-start protocol.
+Start from the board — [what needs a ruling](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues?q=is%3Aopen+label%3A%22kind%3Adecision%22)
+— and read [CLAUDE.md](CLAUDE.md) for the full session-start protocol,
+including how a question is put to the founder (named options, a
+recommendation, one at a time).
 
 ## Repository layout
 
@@ -170,7 +168,7 @@ POL-0001 §10 review — see
 docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
-  decision-records/   Unified Decision Record system (record §98); DR-0001…0107
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0109
                       approved and in force; register in its README
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
@@ -187,6 +185,9 @@ docs/
                       not controlled documents, no policy proposed
   legal/              Legal-review brief for POL-0001 §10 (WP 3.4 A6) — not
                       legal advice, not itself a Decision Record
+  infrastructure.md   What the project runs on (archive server, GitHub, Pages,
+                      sessions), where each part is documented, and the
+                      known gaps — informal, not a controlled document
 
 registry/             Semantic registry: vocabularies, argument schemes, compiler;
                       the source of truth for every enumeration (DR-0078)
@@ -243,6 +244,9 @@ records the sabotages under which its suite was shown to go red.
 
 ## Installing on a server
 
+For what the archive server actually is, what else the project runs on, and what
+is not yet in place, see [docs/infrastructure.md](docs/infrastructure.md).
+
 [`setup/install.sh`](setup/install.sh) installs PostgreSQL and Python, creates the
 database and the OCFL storage roots, loads the schema and runs the suites on a fresh
 Debian or Ubuntu system. It collects nothing and registers nothing; both are separate,
@@ -278,193 +282,40 @@ deliberate acts that follow it (OPS-001).
 5. [WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), the
    acquisition strategy, and [collector/README.md](collector/README.md) for what the
    code actually does today.
+6. [docs/infrastructure.md](docs/infrastructure.md), for what all of this runs on
+   and what is not yet in place (backups, scheduled fixity checks, a schema-change
+   runbook).
 
-## Open decisions for the next session
+## What needs deciding next
 
-Not yet ruled on by the founder. Each is a real fork, not busywork — pick one,
-propose named options with a recommendation (see [CLAUDE.md](CLAUDE.md)), and
-wait for the answer before building against an assumption. Items that stood
-here through 2026-09-11/21 (a DR-numbering collision; how a run is
-versioned under a human agent of record; registering `uk-ofsi-consolidated`/
-`bis-entity-list`; registering `seco-sanctions`; the project's establishment
-jurisdiction; whether to form a legal entity; registering
-`eur-lex-sanctions`) are resolved and dropped from this list — see "Recent
-work" below for what changed and which DR governs each. **None of the four
-approved registrations has been executed on the archive server yet** — that
-remains outstanding, but it is no longer an open *decision*, just
-outstanding *execution*.
+**The board is the list:** https://github.com/users/louisbaudry/projects/7
+(its issues live in this repository: https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues)
 
-1. **Whether POL-0001 §8.3's legal posture survives French law.** Not a
-   question for a session to settle — but the A6 brief's drafting put it on
-   the table and the founder should know it is there. With the jurisdiction
-   now recorded as **France** — interim, 2026-09-14
-   ([`DR-0099`](docs/decision-records/DR-0099-establishment-jurisdiction.md)),
-   confirmed and extended 2026-09-15
-   ([`DR-0100`](docs/decision-records/DR-0100-jurisdiction-controller-and-hosting.md))
-   — the LIL's **Article 46** limits processing of
-   criminal-offence data to a closed list of actors that a private
-   documentation archive does not obviously sit in, while **Article 80**
-   disapplies Article 46 for university/artistic/literary expression and for
-   professional journalism. POL-0001 §8.3 ruled archiving and research
-   *primary* and expression *secondary*; French law may invert that. The
-   brief puts it to counsel at Q2 and Q3 and answers nothing — the drafter is
-   not a lawyer and the texts were read from the CNIL's consolidated version,
-   not Légifrance. **Nothing changes in POL-0001 until the review is
-   recorded**; this is here so the ruling is not assumed safe in the interval.
-2. **Whether the project should form a legal entity before, or as part of,
-   commissioning the POL-0001 §10 review — resolved 2026-09-20.** Surfaced
-   2026-09-14 while naming France as the interim establishment jurisdiction
-   (`DR-0099`); the founder ruled 2026-09-20 to start forming an
-   **association loi 1901** now, in parallel with counsel's still-pending
-   response to Part A (candidate
-   [`DR-0104`](docs/decision-records/DR-0104-legal-entity-formation.md),
-   pending founder-facing filename only — the ruling itself is final).
-   This is a decision to proceed, not a completed formation: statutes,
-   filing, SIRET and a first general assembly remain outstanding
-   real-world acts no session can perform. The controller stays the
-   founder as a natural person (`DR-0100` Decision 2) until the
-   association legally exists and takes over — that handover is a
-   separate POL-0001 §11 material-change review, recorded when it
-   happens, not assumed now.
-3. **Registering `ua-nsdc-sanctions-legal-entities`,
-   `ua-nsdc-sanctions-individuals`, `ua-nsdc-sanctions-vessels` —
-   fully verified 2026-09-22/23, drafted, not yet registered.** Its
-   sibling candidate, `eur-lex-sanctions`, was verified, scoped and
-   approved 2026-09-20/21
-   ([`DR-0105`](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md))
-   — resolved and dropped from this list. `ua-nsdc-sanctions`'s register,
-   `drs.nsdc.gov.ua`, was Cloudflare-challenged from every automated
-   session that tried it, including a 2026-09-21 Wayback-history check
-   that pointed toward a search-UI-only hypothesis. **Human-assisted
-   browser access on 2026-09-22/23 overturned that and closed out every
-   remaining gap**: the register has a "Data integration" bulk-export
-   mechanism with a consistent, confirmed API
-   (`/registry-api/subjects/export/<class>/csv?lang=uk`) for each entity
-   class. All three non-empty classes (Legal entities 9,682, Individuals
-   13,900, Vessels 888) now have confirmed export URLs, confirmed field
-   structure, and row counts matching the register exactly; Aircraft's
-   endpoint was confirmed to genuinely return 0 records, not merely
-   display 0 on the page. Drafted as **three separate candidates**, not
-   one, in `sources/candidates/sanctions-authorities.yaml` — the founder's
-   ruling was to split rather than register one candidate spanning all
-   classes, since Individuals is the only class DR-0071(b) constrains
-   (precedent: `bis-entity-list`'s Denied-Persons-List-only scope, though
-   this split goes further since the difference is a policy constraint,
-   not just verification status). `sources/register.py --check` confirms
-   all three validate. **What remains is execution**: registering the
-   three candidates on the archive server, per source, is the founder's
-   act (DR-0093 §3, a person as agent of record) — not decided or
-   performed by any session. A quarterly Routine (next: 2026-10-01)
-   reminds the founder to re-visit this source, since it stays
-   Cloudflare-blocked for automated sessions. See
-   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md)
-   §2b–3.
-4. **Whether and when to run a FULL historical backfill against `kpszsu`
-   and `generalstaffzsu`.** Both sources registered and executed
-   2026-09-22 (`DR-0106-strike-tracking-registration.md`'s *Executed*
-   section has the full account): first ordinary collection run each,
-   then two bounded backfill passes each — `--max-pages 20` on
-   2026-09-22, then `--max-pages 100` (resumed) on 2026-09-23 — 120 pages
-   per channel total, 0 failures, no rate-limit signals across 240
-   backfill requests plus 2 ordinary runs. `kpszsu` has now reached back
-   to post id 77184; `generalstaffzsu` to 39618. **Not yet decided:** a
-   full backfill (`kpszsu` alone has ~79 000 posts total, so completing it
-   is still an estimated 1 900+ further pages/requests at this pace —
-   real rate-limit/block risk to the archive server's Telegram access
-   generally, not just this backfill, named explicitly in the runbook).
-   Two bounded passes at increasing scale, both clean, are the evidence
-   this decision should be made against. A registration duplicate-row bug
-   in `register.py --commit` (safely re-runnable into two rows rather
-   than upserting or refusing) was found and worked around during
-   execution but not fixed in code — flagged as a real gap, not yet a
-   founder decision to prioritise. See
-   [`docs/sources/verification-strike-tracking-first-two.md`](docs/sources/verification-strike-tracking-first-two.md)
-   for the full account, including what this does NOT achieve: no
-   Russian-side source yet for either direction, and "effect" data
-   (casualties, damage) still needs Gate 2/3 editorial work no amount of
-   collection substitutes for.
-5. **Civilian harm, war crimes and a memorial site — started 2026-09-24,
-   record approved.** Flagged 2026-09-21 and deferred; taken up
-   2026-09-24, widened to "all war crimes of Russia in Ukraine", plus a
-   second project: a public memorial website. The founder ruled ten
-   questions, one at a time, recorded in
-   [`DR-pending-civilian-harm-and-memorial`](docs/decision-records/DR-pending-civilian-harm-and-memorial.md)
-   (**Approved** 2026-09-24). In short: the
-   archive holds the evidence and the memorial is a separate site whose
-   every fact points to it; a model built for every crime category, filled
-   with civilian deaths first; the memorial remembers civilians plus
-   soldiers who died as victims of war crimes; incidents as the
-   foundation, named persons added by hand only when a source names them;
-   sources in three separately-decided steps (UN monitoring and the
-   Prosecutor General first); moderated family contributions handled like
-   witness material; a staged launch in which **names wait for the
-   DR-0072 successor**; a separate static site on its own IONOS Spain
-   hosting; Ukrainian then English; its own EU-registered domain. **Nothing
-   registered, collected or published.** Still open: the memorial's domain name; live verification of the first sources; a
-   working paper on the incident / harm / person model.
-6. **WP 3.4's Track A item A5** (registration classes) is **done**: Option A
-   implemented and tested (18/18 checks,
-   `sources/tests/test_register_classes.py`), enacted as
-   [`DR-0103`](docs/decision-records/DR-0103-registration-classes.md), and
-   the initial six classes named — jurisdiction first, topic second, per
-   [WP 3.7](docs/phase-3/working-papers/wp-3.7-registration-classes.md) §7 —
-   with all seven `sources/candidates/sanctions-authorities.yaml` sources
-   now wired to a class (`sources/README.md`'s "Registration classes"
-   section has the table and the per-source overrides that keep each
-   source's actual verified/approved values from being silently overwritten
-   by a class default). **Not open**, but not yet done: execution of the
-   four approved-but-unexecuted registrations (item above) using the class
-   mechanism, on the archive server, by a person, per source. **A4, the
-   WACZ evaluation, is done**
-   ([WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md),
-   2026-09-15, CDR-P3-42 candidate) — recommends **deferring** WACZ adoption
-   (the container spec is stable at v1.1.1, but its signing layer is a
-   pre-1.0 working draft at v0.1.0), WARC via `collector/pipeline.py`
-   unchanged, on two stated revisit triggers. **A6, the legal-review brief,
-   is done** — [`docs/legal/legal-review-brief.md`](docs/legal/legal-review-brief.md)
-   v0.4, 2026-09-15, with **all five founder decisions in its §9 closed**:
-   France, controller a natural person, IONOS/Spain (§9.1–9.3); Part A
-   (Q1–Q6) to French data-protection counsel with Part B (Q7–Q12) held for
-   IP/media counsel (§9.5); counsel answers for both the project as it is and
-   as it intends to be, naming the deltas, which become POL-0001 §11 review
-   triggers (§9.4, §3.5). **Not a decision but still outstanding:** every LIL
-   article the brief quotes must be checked against Légifrance, which was 403
-   behind an anti-bot challenge when it was drafted — CNIL's consolidated
-   text is what was read. Commissioning is a separate founder act. Three
-   candidate DRs arose, **renumbered CDR-P3-43…45** because a parallel
-   session's WP 3.6 had independently taken CDR-P3-42 the same day;
-   **CDR-P3-43 was discharged** into the jurisdiction record at item 1 above,
-   **CDR-P3-44** into
-   [`DR-0101`](docs/decision-records/DR-0101-recording-the-legal-review.md)
-   — "recorded" in POL-0001 §10 now means one specific act, fixed
-   deliberately before the advice exists — and **CDR-P3-45 is held** with a
-   named trigger, the start of Gate 3 work, so the brief has no open
-   proposals. The gap it holds open, found by reading the code:
-   `rights_basis` is free text, the two registered sources carry
-   `may-redistribute` on a basis whose own text says "NOT LEGALLY REVIEWED",
-   and nothing in the schema or Gate 3 prevents a publication decision
-   resting on it — not urgent, since nothing is published. **A2's index
-   tooling is now built and tested**
-   (`sources/census.py`, 2026-09-12) — Common Crawl's index and the
-   Wayback CDX index only, discovery of candidate domains with no fetch of
-   any candidate host; the other four A2 evidence sources WP 3.4 names
-   (Wikipedia citation graphs, sanctions-authority link graphs, OSINT
-   source lists, academic bibliographies) remain editorial research tasks,
-   not built as tooling. Neither client has completed a live query — both
-   indexes were unreachable from this session; see `sources/README.md`.
-   **A7's measurement tooling is now built and tested**
-   (`storage/measure.py`, 2026-09-15) — reads `collector_run` for recorded
-   bytes/throughput and walks the OCFL roots and quarantine directory for
-   real on-disk footprint, including a measured duplication ratio for the
-   undischarged-quarantine-copy gap `collector/README.md` documents; not
-   yet run against the archive server's real database, so WP 3.4 §5.3's
-   real numbers are still outstanding, and it deliberately does not perform
-   A7's "one retrospective pull" clause (new acquisition, for
-   `collector/run.py` on the archive server) or extrapolate the two
-   registered sources' size onto the five unregistered candidates. A
-   runbook for executing both halves of A7 on the archive server —
-   [`docs/runbooks/A7-storage-bandwidth-measurement.md`](docs/runbooks/A7-storage-bandwidth-measurement.md)
-   — is written and unexecuted.
+This section used to carry a hand-maintained numbered list, and it drifted. On
+2026-09-22 it still described three sanctions registrations as awaiting
+execution, when all three had run on the archive server the day before and
+`sources/README.md` said so. Status now has one home; this file keeps the
+record instead. See [CLAUDE.md](CLAUDE.md)'s **"Where state lives"**.
+
+Every open item is one issue, labelled on three axes:
+
+| Axis | Values | What it tells you |
+|---|---|---|
+| `kind:` | `decision`, `execute`, `build`, `blocked-external` | what the item needs — a founder ruling, a person at the archive server or in the real world, a session, or somebody else |
+| `epic:` | `legal`, `collection`, `track-a`, `infrastructure`, `governance`, `publication`, `war-facts` | which part of the project it belongs to |
+| `size:` | `S`, `M`, `L` | rough cost |
+
+Two views to start from:
+
+- **[Needs a ruling](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues?q=is%3Aopen+label%3A%22kind%3Adecision%22)** —
+  what is waiting on the founder, and nothing else.
+- **[On the server](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues?q=is%3Aopen+label%3A%22kind%3Aexecute%22)** —
+  real-world acts no session can perform: executing a registration, checking
+  Légifrance from a browser, filing the association's statutes.
+
+A session picking one up proposes named options with a recommendation and
+waits for the answer (see [CLAUDE.md](CLAUDE.md)); it does not build against
+an assumption. Each is a real fork, not busywork.
 
 This README is an entry point, not the project's institutional memory (record §100).
 The authoritative statement of requirements, principles, and phase mandates is the
