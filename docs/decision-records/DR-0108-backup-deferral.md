@@ -1,4 +1,4 @@
-# DR-pending-backup-deferral — Independent backups deferred until the association exists
+# DR-0108 — Independent backups deferred until the association exists
 
 **Category:** operations / preservation | **Status:** **Approved**
 **Decided:** 2026-09-24 by founder/principal editor, choosing option C of three put to them

@@ -158,7 +158,7 @@ collection run.
 ### 3.3 Backups
 
 **Deferred by decision until the association exists**
-([`DR-pending-backup-deferral`](decision-records/DR-pending-backup-deferral.md),
+([`DR-0108`](decision-records/DR-0108-backup-deferral.md),
 approved 2026-09-24). OPS-005 is **knowingly unmet** until then.
 
 - **Recorded:** one set of dumps (full and data-only) taken on
@@ -192,7 +192,7 @@ Only item 3 has been ruled on. Status for each lives on the board, not here.
 2. The Art. 28 processor contract with IONOS: status unknown.
 3. No regular backups and no off-server copy. OPS-005 is knowingly unmet,
    **deferred by decision** until the association exists
-   (DR-pending-backup-deferral, board issue #65).
+   (DR-0108, board issue #65).
 4. No fixity schedule recorded as actually running (PRES-003).
 5. No runbook for schema changes on the live database (DR-0105 open
    decision, board issue #57).
