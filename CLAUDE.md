@@ -487,6 +487,10 @@ change could break:
 - Once a branch's PR is merged, follow-up work goes on a **new** branch from
   `main`; never stack commits on merged history.
 - Merge commits, never rebase or force-push a branch the founder has seen.
+- **After a git merge, tell Louis if the current session can be safely
+  archived or not** — and why: e.g. everything is pushed and merged and
+  nothing is in flight (safe), or there is unpushed work, an open PR still
+  being driven, a running job or a pending founder question (not safe).
 - Commit messages say what changed and why, cite the DRs and record sections
   involved, and state what was verified and what was not. The message is part
   of the project's memory.
