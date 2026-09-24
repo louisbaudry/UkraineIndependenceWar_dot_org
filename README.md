@@ -24,7 +24,7 @@ The time horizon is measured in years and potentially decades.
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
 | Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0007, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **First collection performed 2026-09-09** — two sanctions lists, registered and run on the archive server ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)). **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072); the founder ruled on 2026-09-08 that no scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0102 are approved and in force. DR-0095 governs how DRs are numbered
+DR-0001…0107 are approved and in force. DR-0095 governs how DRs are numbered
 (drafted unnumbered, assigned at merge). **DR-0096…0101 were approved between
 2026-09-12 and 2026-09-15 and numbered together on 2026-09-15** — three of
 them had reached `main` unnumbered and without register rows, which is the
@@ -135,11 +135,11 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-21 | **`eur-lex-sanctions` registration and first collection executed on the archive server**, interactively, by the founder: 2 discovered, 2 acquired, 0 failed, 16 199 485 bytes preserved, 0 documentary assertions (run `2eeef589-56aa-430d-af5f-855f5b6775d0`). Execution surfaced a real, unrelated blocker — the archive server's checkout was on a stale pre-DR-0087 branch, and its live database schema was ~10 weeks behind `main` (missing the whole identifier subsystem and more); this project has no schema-migration mechanism for a live database. Resolved by a full backup-then-reload: switched to `main`, `pg_dump` full and data-only to a timestamped backup, schema rebuilt from current DDL as the `postgres` superuser (the connecting `root` role lacked the privilege `pg_dump --disable-triggers`'s technique needs), data reloaded past expected DDL-seeded reference-table duplicate-key conflicts — row counts verified identical across every real data table before and after. Also numbered `DR-0104`/`DR-0105`, which had reached `main` still named `DR-pending-*` from an earlier merge that skipped the renaming step — every cross-reference updated | `docs/decision-records/DR-0105-eur-lex-sanctions-registration.md`, `docs/decision-records/DR-0104-legal-entity-formation.md`, `docs/decision-records/README.md` |
 | 2026-09-21 | **The remaining three approved sanctions registrations executed on the archive server**, interactively, by the founder: `uk-ofsi-consolidated` (run `efcdcb38-44a8-4f07-972a-8a99c220b82b`, 70 739 812 bytes), `bis-entity-list` (run `cc2f55e3-84e0-4bca-a169-7c2072c46edb`, 110 427 bytes), `seco-sanctions` (run `d21d849d-fe96-409c-ae85-cb14b42f739e`, 42 300 406 bytes), all 0 failed, all dependence links on `eu-consolidated-list` recorded correctly. Six of seven sanctions authorities now registered and collected. DR-0096/DR-0098 *Executed* sections updated | `docs/decision-records/DR-0096-second-source-registrations.md`, `docs/decision-records/DR-0098-seco-sanctions-registration.md` |
 | 2026-09-21 | **Founder redirected the project's central purpose**, mid-session, after pausing work to reflect: not territorial control, but strike-level completeness — "to come the closest possible to record EVERY SINGLE MISSILE, DRONE, that fell on each side and their effect." First step: two candidates drafted for territorial control (`isw-orca`, `deepstatemap`, `sources/candidates/war-facts.yaml`) before the redirection sharpened further; then two strike-tracking candidates for the actual goal (`kpszsu`, `generalstaffzsu`, `sources/candidates/strike-tracking.yaml`) — official Ukrainian channels covering both directions (incoming Russian strikes, outgoing Ukrainian strikes). All four verified and rehearsed through the real collector; none registered yet | `sources/candidates/war-facts.yaml`, `sources/candidates/strike-tracking.yaml`, `docs/sources/verification-war-facts-first-two.md`, `docs/sources/verification-strike-tracking-first-two.md` |
-| 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-pending-telegram-backfill, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started — see README's open decisions | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
-| 2026-09-22 | **`kpszsu` and `generalstaffzsu` registered and their first collection and a bounded backfill pass executed on the archive server**, interactively, by the founder, per `DR-pending-strike-tracking-registration.md`. Registration hit a real bug — `register.py --commit` re-run left two identical `source` rows per candidate, which `collector/run.py`'s existing duplicate check correctly refused to run against; diagnosed via read-only query confirming zero dependent `collector_run` rows on either duplicate before either was deleted, no code change needed. First ordinary collection run each: `kpszsu` 112 709 bytes, `generalstaffzsu` 135 349 bytes, 0 failed. Bounded backfill pass each (`--max-pages 20 --delay 3`): 20/20 pages preserved, 0 failed, no rate-limit signals — `kpszsu` reached back to post id 79190, `generalstaffzsu` to 41903. Separately, PostgreSQL had been reinstalled as version 15 (not 16, `CLAUDE.md`'s documented version) with `pg_hba.conf` reverted to `peer` auth for the `postgres` role specifically (a more specific rule than the general `trust` line, so it won and blocked connections) — fixed by editing that one line. A full backfill remains undecided; see README's open decisions | `docs/decision-records/DR-pending-strike-tracking-registration.md` |
-| 2026-09-23 | **A second, larger bounded backfill pass executed for both channels** (`--max-pages 100 --delay 3`, resumed from 2026-09-22's stop points), founder-directed as a scale check before any full-backfill decision. `kpszsu`: 100/100 pages preserved, 0 failed, reached post id 77184. `generalstaffzsu`: 100/100 pages preserved, 0 failed, reached post id 39618. Still zero rate-limit signals, now across 240 total backfill requests. A full backfill remains undecided | `docs/decision-records/DR-pending-strike-tracking-registration.md` |
-| 2026-09-23 | **Full historical backfill of both channels authorised**, `DR-pending-strike-tracking-full-backfill.md`, after the founder judged two consecutive clean bounded passes (20 then 100 pages, 0 failures/rate-limit signals throughout) sufficient evidence, superseding the registration record's full-backfill withholding for these two sources only. Execution proceeds as a sequence of resumable bounded passes across as many sessions as needed, never restarting — credits and resumes from all prior progress. First 500-page pass each: `kpszsu` reached post id 67174, `generalstaffzsu` reached post id 28041, both 0 failed, still no rate-limit signals across 740 total backfill requests | `docs/decision-records/DR-pending-strike-tracking-full-backfill.md`, `docs/decision-records/DR-pending-strike-tracking-registration.md` |
-| 2026-09-24 | **`generalstaffzsu`'s full historical backfill completed; `kpszsu`'s continues.** At the founder's request to use larger batches per pass, `--max-pages` raised to 2000. `kpszsu`: 2000/2000 pages, 0 failed, reached post id 27066 (running total 2620 pages since 2026-09-22, 0 failures throughout; an estimated ~52 100 posts remain). `generalstaffzsu`'s equivalent 2000-page pass was interrupted mid-run by a power outage on the host running it, before any summary printed; **no data was lost** — the tool commits each page as it is preserved, so the true progress was recovered directly from the database (a read-only query for the lowest successfully-preserved post id) rather than guessed, showing the crashed pass had completed 1972 of 2000 pages. A 50-page follow-up pass from that recovered point reached post id 1 and reported "stopped because: ... bottom of history" — `generalstaffzsu`'s full backfill is done: 1973 total backfill pages since 2026-09-22, 0 failures throughout | `docs/decision-records/DR-pending-strike-tracking-registration.md` |
+| 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-P3-46, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started — see README's open decisions | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
+| 2026-09-22 | **`kpszsu` and `generalstaffzsu` registered and their first collection and a bounded backfill pass executed on the archive server**, interactively, by the founder, per `DR-0106-strike-tracking-registration.md`. Registration hit a real bug — `register.py --commit` re-run left two identical `source` rows per candidate, which `collector/run.py`'s existing duplicate check correctly refused to run against; diagnosed via read-only query confirming zero dependent `collector_run` rows on either duplicate before either was deleted, no code change needed. First ordinary collection run each: `kpszsu` 112 709 bytes, `generalstaffzsu` 135 349 bytes, 0 failed. Bounded backfill pass each (`--max-pages 20 --delay 3`): 20/20 pages preserved, 0 failed, no rate-limit signals — `kpszsu` reached back to post id 79190, `generalstaffzsu` to 41903. Separately, PostgreSQL had been reinstalled as version 15 (not 16, `CLAUDE.md`'s documented version) with `pg_hba.conf` reverted to `peer` auth for the `postgres` role specifically (a more specific rule than the general `trust` line, so it won and blocked connections) — fixed by editing that one line. A full backfill remains undecided; see README's open decisions | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
+| 2026-09-23 | **A second, larger bounded backfill pass executed for both channels** (`--max-pages 100 --delay 3`, resumed from 2026-09-22's stop points), founder-directed as a scale check before any full-backfill decision. `kpszsu`: 100/100 pages preserved, 0 failed, reached post id 77184. `generalstaffzsu`: 100/100 pages preserved, 0 failed, reached post id 39618. Still zero rate-limit signals, now across 240 total backfill requests. A full backfill remains undecided | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
+| 2026-09-23 | **Full historical backfill of both channels authorised**, `DR-0107-strike-tracking-full-backfill.md`, after the founder judged two consecutive clean bounded passes (20 then 100 pages, 0 failures/rate-limit signals throughout) sufficient evidence, superseding the registration record's full-backfill withholding for these two sources only. Execution proceeds as a sequence of resumable bounded passes across as many sessions as needed, never restarting — credits and resumes from all prior progress. First 500-page pass each: `kpszsu` reached post id 67174, `generalstaffzsu` reached post id 28041, both 0 failed, still no rate-limit signals across 740 total backfill requests | `docs/decision-records/DR-0107-strike-tracking-full-backfill.md`, `docs/decision-records/DR-0106-strike-tracking-registration.md` |
+| 2026-09-24 | **`generalstaffzsu`'s full historical backfill completed; `kpszsu`'s continues.** At the founder's request to use larger batches per pass, `--max-pages` raised to 2000. `kpszsu`: 2000/2000 pages, 0 failed, reached post id 27066 (running total 2620 pages since 2026-09-22, 0 failures throughout; an estimated ~52 100 posts remain). `generalstaffzsu`'s equivalent 2000-page pass was interrupted mid-run by a power outage on the host running it, before any summary printed; **no data was lost** — the tool commits each page as it is preserved, so the true progress was recovered directly from the database (a read-only query for the lowest successfully-preserved post id) rather than guessed, showing the crashed pass had completed 1972 of 2000 pages. A 50-page follow-up pass from that recovered point reached post id 1 and reported "stopped because: ... bottom of history" — `generalstaffzsu`'s full backfill is done: 1973 total backfill pages since 2026-09-22, 0 failures throughout | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
 is under way**: 3 of the 7 sanctions sources are registered and have completed
@@ -171,7 +171,7 @@ POL-0001 §10 review — see
 docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
-  decision-records/   Unified Decision Record system (record §98); DR-0001…0102
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0107
                       approved and in force; register in its README
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
@@ -327,25 +327,45 @@ outstanding *execution*.
    association legally exists and takes over — that handover is a
    separate POL-0001 §11 material-change review, recorded when it
    happens, not assumed now.
-3. **Registering `ua-nsdc-sanctions`.** Its sibling candidate,
-   `eur-lex-sanctions`, was verified, scoped and approved 2026-09-20/21
+3. **Registering `ua-nsdc-sanctions-legal-entities`,
+   `ua-nsdc-sanctions-individuals`, `ua-nsdc-sanctions-vessels` —
+   fully verified 2026-09-22/23, drafted, not yet registered.** Its
+   sibling candidate, `eur-lex-sanctions`, was verified, scoped and
+   approved 2026-09-20/21
    ([`DR-0105`](docs/decision-records/DR-0105-eur-lex-sanctions-registration.md))
-   — resolved and dropped from this list. `ua-nsdc-sanctions` is not: its
-   register, `drs.nsdc.gov.ua`, is identified but Cloudflare-challenged
-   from every session that has tried it, live or via a 2026-09-21
-   Wayback-history check (3 489 captures, no bulk-export file found —
-   suggestive, not conclusive, of a search-UI-only application). Needs
-   either human-assisted (browser) access to confirm or refute that, or a
-   founder decision to register it against a different shape entirely
-   (per-decree WARC capture of rnbo.gov.ua's decree stream, rather than a
-   single list locator) if the search-UI hypothesis holds — see
-   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md).
+   — resolved and dropped from this list. `ua-nsdc-sanctions`'s register,
+   `drs.nsdc.gov.ua`, was Cloudflare-challenged from every automated
+   session that tried it, including a 2026-09-21 Wayback-history check
+   that pointed toward a search-UI-only hypothesis. **Human-assisted
+   browser access on 2026-09-22/23 overturned that and closed out every
+   remaining gap**: the register has a "Data integration" bulk-export
+   mechanism with a consistent, confirmed API
+   (`/registry-api/subjects/export/<class>/csv?lang=uk`) for each entity
+   class. All three non-empty classes (Legal entities 9,682, Individuals
+   13,900, Vessels 888) now have confirmed export URLs, confirmed field
+   structure, and row counts matching the register exactly; Aircraft's
+   endpoint was confirmed to genuinely return 0 records, not merely
+   display 0 on the page. Drafted as **three separate candidates**, not
+   one, in `sources/candidates/sanctions-authorities.yaml` — the founder's
+   ruling was to split rather than register one candidate spanning all
+   classes, since Individuals is the only class DR-0071(b) constrains
+   (precedent: `bis-entity-list`'s Denied-Persons-List-only scope, though
+   this split goes further since the difference is a policy constraint,
+   not just verification status). `sources/register.py --check` confirms
+   all three validate. **What remains is execution**: registering the
+   three candidates on the archive server, per source, is the founder's
+   act (DR-0093 §3, a person as agent of record) — not decided or
+   performed by any session. A quarterly Routine (next: 2026-10-01)
+   reminds the founder to re-visit this source, since it stays
+   Cloudflare-blocked for automated sessions. See
+   [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md)
+   §2b–3.
 4. **Full historical backfill of `kpszsu`/`generalstaffzsu` — authorised
    2026-09-23, `generalstaffzsu` now complete, `kpszsu` in progress; not
    an open decision, just outstanding execution.** After two clean bounded
    passes (20 then 100 pages/channel, 0 failures, no rate-limit signals),
    the founder authorised completing both channels' full histories
-   (`DR-pending-strike-tracking-full-backfill.md`), executed as a sequence
+   (`DR-0107-strike-tracking-full-backfill.md`), executed as a sequence
    of resumable bounded passes — never restarting, always crediting prior
    progress. As of 2026-09-24: **`generalstaffzsu`'s full backfill is
    done** (1973 total pages since 2026-09-22, 0 failures, reached the
@@ -354,7 +374,7 @@ outstanding *execution*.
    estimated ~52 100 posts remaining at the tool's current pace. A power
    outage on 2026-09-24 interrupted one `generalstaffzsu` pass mid-run;
    no data was lost (recovered the true resume point from the database
-   rather than guessing) — see `DR-pending-strike-tracking-registration.md`
+   rather than guessing) — see `DR-0106-strike-tracking-registration.md`
    *Executed* item 7 for the full account. A registration duplicate-row
    bug in `register.py --commit` (safely re-runnable into two rows rather
    than upserting or refusing) was found and worked around during

@@ -451,32 +451,82 @@ sources:
   # Ukraine
   # ---------------------------------------------------------------------
 
-  - key: ua-nsdc-sanctions
+  # `ua-nsdc-sanctions` (single candidate for the NSDC State Register of
+  # Sanctions) was CANDIDATE-DRAFTED as three separate keys 2026-09-22,
+  # after https://drs.nsdc.gov.ua was reached via human-assisted browser
+  # access (Cloudflare had blocked every automated session, §1.4/§2a of
+  # the verification record) and its "Data integration" bulk-export
+  # mechanism, and all three exports' real field structure, were confirmed
+  # (docs/sources/verification-ua-nsdc-sanctions.md §2b-2e). Split rather
+  # than kept as one candidate because only the Individuals export carries
+  # personal data (birthdate, citizenship, identity_docs) that DR-0071(b)
+  # constrains — Legal entities and Vessels do not, and splitting keeps
+  # that constraint scoped to the one class it actually applies to, rather
+  # than blanket-applying it (rights_permission, grade, etc.) to entity
+  # records that don't need it. Precedent: `bis-entity-list` scoped a
+  # verified locator to one sub-list within a single key; this candidate
+  # goes further and gives each class its own key because the difference
+  # here is a policy constraint (personal data), not just verification
+  # status. NONE of the three below is verified enough to register:
+  # exact run_locators are confirmed for Legal entities CSV only (§2c);
+  # Individuals and Vessels CSV/XLSX URLs are unconfirmed (predicted by
+  # the same URL pattern, not read from DevTools) and the "Description of
+  # the file structure" page sections (§2b) have not been read. All three
+  # exports' row counts, however, are confirmed complete and matching the
+  # register's own stated totals (§2d, §2e) — this is real evidence, not a
+  # locator claim from documentation.
+
+  - key: ua-nsdc-sanctions-legal-entities
     class: UA-state-investigations
-    source_type: official-ukrainian
-    name: NSDC sanctions decisions and presidential decrees enacting them
-    # 2026-09-20: the specific register this candidate should point to is
-    # identified -- https://drs.nsdc.gov.ua, the NSDC's own "State Register
-    # of Sanctions," linked from every rnbo.gov.ua page's own navigation --
-    # but NOT verified: it returns HTTP 403 behind a Cloudflare managed
-    # challenge from this session, the same class of block found on
-    # Légifrance (docs/sources/verification-lil-articles.md). No
-    # run_locators added; locator stays the publisher's main site until the
-    # register is actually reachable. See
-    # docs/sources/verification-ua-nsdc-sanctions.md.
-    locator: https://www.rnbo.gov.ua/
+    source_type: sanctions-authority
+    name: NSDC State Register of Sanctions — legal entities
+    # Confirmed 2026-09-22 via human-assisted browser access: the "Data
+    # integration" > "Loading subjects" tab exposes a bulk CSV/XLSX export
+    # per entity class. CSV URL read from DevTools; XLSX URL unconfirmed
+    # (predicted by the same pattern). Downloaded export: 9,682 rows,
+    # exactly matching the register's stated count — a complete,
+    # non-paginated export, not a probed claim. 17-field structure
+    # (sid, name, translit_name, aliases, status, country, reg_id, tax_id,
+    # additional_info, active_sanctions, sanctions_term,
+    # sanctions_end_date, last_action_type, last_action_decree,
+    # decree_date, decree_appendix, position_in_appendix) recorded in the
+    # verification record §2e — no re-derivation of a decree/appendix
+    # scheme needed, the export already carries per-record provenance
+    # back to the enacting decree. Automated sessions still get HTTP 403
+    # (Cloudflare managed challenge) on this exact URL — collection at
+    # registration time needs the same human-assisted access this
+    # candidate was verified with, not a bare `register.py --commit`.
+    # See docs/sources/verification-ua-nsdc-sanctions.md §2b-2e.
+    locator: https://drs.nsdc.gov.ua/
+    locator_verified: 2026-09-22
+    run_locators:
+      - https://drs.nsdc.gov.ua/registry-api/subjects/export/legal/csv?lang=uk
+    verification_note: >
+      Export downloaded 2026-09-22 via human-assisted browser access
+      (automated fetch blocked, HTTP 403 Cloudflare challenge, re-tested
+      immediately after the URL was obtained). 9,683 lines (9,682 records
+      + header), exactly matching the register's own stated count for
+      "Legal entities." Not run through the collector end to end — no
+      digest-stability check across repeated fetches, no throwaway-database
+      rehearsal, unlike eu-consolidated-list/ofac-sdn/uk-ofsi-consolidated/
+      seco-sanctions/eur-lex-sanctions. Record in
+      docs/sources/verification-ua-nsdc-sanctions.md.
     publisher: National Security and Defence Council of Ukraine
     jurisdiction: UA
     primary_languages: [uk]
     coverage_start: 2014-09-01
     scope_rules: >
-      NSDC decisions imposing sanctions and the presidential decrees enacting
-      them. Ukraine designates entities the EU and US do not, and the
-      divergence is itself evidence.
+      The State Register of Sanctions' bulk export of legal-entity subjects
+      under active or historical NSDC sanctions decisions, captured as a
+      whole file each time it changes (DR-0074 capture series). Each record
+      carries its own enacting-decree and appendix-position provenance.
     exclusions: >
-      Operational military statements and casualty reporting — different
-      evidentiary character and a different personal-data profile; register
-      separately, not here.
+      Individuals and vessels — registered separately (see
+      ua-nsdc-sanctions-individuals, ua-nsdc-sanctions-vessels) since only
+      Individuals carries DR-0071(b)-constrained personal data and the
+      split should not be re-merged casually. Operational military
+      statements and casualty reporting are a different evidentiary
+      character entirely; register separately, not here.
     # Overrides: rights_permission is the conservative may-preserve default
     # for a candidate whose rights position is unverified, unlike the class
     # default of may-redistribute. grade_source_reliability B and
@@ -490,13 +540,121 @@ sources:
       assumed. Conservative default until checked.
     grade_source_reliability: B
     grade_item_credibility: "2"
-    # All other policy fields inherited from UA-state-investigations class
-    # Reliability B rather than A: this is a party to the conflict publishing
-    # about its adversary. The grade is triage only and never touches truth
-    # (DR-0027) — it means "read with the care a belligerent source deserves",
-    # not "less likely to be true".
+    # All other policy fields inherited from UA-state-investigations class.
     # LANGUAGE: Ukrainian only. Registering this commits the project to
     # Ukrainian reading capacity at Gate 2. DR-0081 seeds no translations.
+
+  - key: ua-nsdc-sanctions-individuals
+    class: UA-state-investigations
+    source_type: sanctions-authority
+    name: NSDC State Register of Sanctions — individuals
+    # Same export mechanism as ua-nsdc-sanctions-legal-entities; kept as a
+    # SEPARATE candidate specifically because this is the one class that
+    # carries personal data DR-0071(b) constrains (birthdate, citizenship,
+    # identity_docs, in addition to the shared name/alias/sanctions fields
+    # — 19-field structure recorded in the verification record §2e). Only
+    # the header row was read when this candidate was drafted; no record
+    # content was inspected. CSV export URL is UNCONFIRMED — predicted by
+    # the same /registry-api/subjects/export/<class>/<format>?lang=uk
+    # pattern the Legal-entities URL uses, not read from DevTools. Do not
+    # treat run_locators below as verified until that URL is actually
+    # confirmed the same way. Downloaded export (via the site's UI, not
+    # this predicted URL): 13,900 rows, exactly matching the register's
+    # stated count. See
+    # docs/sources/verification-ua-nsdc-sanctions.md §2b, §2e.
+    locator: https://drs.nsdc.gov.ua/
+    locator_verified: 2026-09-23
+    run_locators:
+      - https://drs.nsdc.gov.ua/registry-api/subjects/export/individual/csv?lang=uk
+    verification_note: >
+      Export URL confirmed 2026-09-23 via DevTools Network tab
+      (human-assisted browser access) — matches the pattern predicted from
+      Legal entities exactly. Export downloaded 2026-09-22: 13,901 lines
+      (13,900 records + header), exactly matching the register's own
+      stated count for "Individuals." Not re-tested from this session
+      (expected to be equally Cloudflare-blocked, per the confirmed block
+      on the sibling Legal-entities URL). Header row only was read, per
+      DR-0071(b); no record content inspected or retained beyond the
+      field-name list in the verification record. Record in
+      docs/sources/verification-ua-nsdc-sanctions.md.
+    publisher: National Security and Defence Council of Ukraine
+    jurisdiction: UA
+    primary_languages: [uk]
+    coverage_start: 2014-09-01
+    scope_rules: >
+      The State Register of Sanctions' bulk export of natural-person
+      subjects under active or historical NSDC sanctions decisions,
+      captured as a whole file each time it changes (DR-0074 capture
+      series). Carries personal data (birthdate, citizenship,
+      identity_docs) — DR-0071(b) applies: no automatic structuring of
+      this data beyond preserving the export as captured. Any
+      identifier-scheme mapping of `identity_docs` or linkage to other
+      registries is Gate 2/3 editorial work, not something this
+      registration itself performs.
+    exclusions: >
+      Legal entities and vessels — registered separately (see
+      ua-nsdc-sanctions-legal-entities, ua-nsdc-sanctions-vessels).
+      Operational military statements and casualty reporting are a
+      different evidentiary character entirely; register separately, not
+      here.
+    rights_permission: may-preserve
+    rights_basis: >
+      Rights position UNVERIFIED. Ukrainian state works may be reusable; not
+      assumed. Conservative default until checked.
+    grade_source_reliability: B
+    grade_item_credibility: "2"
+    # All other policy fields inherited from UA-state-investigations class.
+    # LANGUAGE: Ukrainian only. DR-0081 seeds no translations.
+
+  - key: ua-nsdc-sanctions-vessels
+    class: UA-state-investigations
+    source_type: sanctions-authority
+    name: NSDC State Register of Sanctions — vessels
+    # Same export mechanism as ua-nsdc-sanctions-legal-entities; not
+    # personal data, so kept alongside it in reasoning but as its own key
+    # for symmetry with individuals and because vessel identity fields
+    # (IMO/MMSI numbers, flag state) are a distinct scope from corporate
+    # legal-entity records. Downloaded export: 888 rows, exactly matching
+    # the register's stated count. Aircraft (0 records per the register)
+    # is not registered as a candidate — nothing to register.
+    # See docs/sources/verification-ua-nsdc-sanctions.md §2b, §2d, §2f.
+    locator: https://drs.nsdc.gov.ua/
+    locator_verified: 2026-09-23
+    run_locators:
+      - https://drs.nsdc.gov.ua/registry-api/subjects/export/vessel/csv?lang=uk
+    verification_note: >
+      Export URL confirmed 2026-09-23 via DevTools Network tab
+      (human-assisted browser access) — matches the pattern predicted from
+      Legal entities exactly. Export downloaded 2026-09-22: 889 lines
+      (888 records + header), exactly matching the register's own stated
+      count for "Vessels." 16-field structure (matches Legal entities
+      minus tax_id) recorded in the verification record §2d. Not re-tested
+      from this session (expected to be equally Cloudflare-blocked, per
+      the confirmed block on the sibling Legal-entities URL). Record in
+      docs/sources/verification-ua-nsdc-sanctions.md.
+    publisher: National Security and Defence Council of Ukraine
+    jurisdiction: UA
+    primary_languages: [uk]
+    coverage_start: 2014-09-01
+    scope_rules: >
+      The State Register of Sanctions' bulk export of vessel subjects under
+      active or historical NSDC sanctions decisions, captured as a whole
+      file each time it changes (DR-0074 capture series).
+    exclusions: >
+      Legal entities and individuals — registered separately (see
+      ua-nsdc-sanctions-legal-entities, ua-nsdc-sanctions-individuals).
+      Aircraft is not registered as a candidate: 0 records in the register
+      as of 2026-09-22 (§2b). Operational military statements and casualty
+      reporting are a different evidentiary character entirely; register
+      separately, not here.
+    rights_permission: may-preserve
+    rights_basis: >
+      Rights position UNVERIFIED. Ukrainian state works may be reusable; not
+      assumed. Conservative default until checked.
+    grade_source_reliability: B
+    grade_item_credibility: "2"
+    # All other policy fields inherited from UA-state-investigations class.
+    # LANGUAGE: Ukrainian only. DR-0081 seeds no translations.
 
 # ---------------------------------------------------------------------
 # Declared dependence between these sources (DR-0028, DR-0067)
