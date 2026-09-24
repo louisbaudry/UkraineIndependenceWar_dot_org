@@ -168,6 +168,18 @@ A newer web-archive container format built on WARC, evaluated but not yet
 adopted here because its signing layer is still a pre-1.0 draft (see WP
 3.6 / DR-0006).
 
+**Live head** (of a Telegram channel)
+A channel's current front page — `https://t.me/s/<channel>` with no
+`?before=` parameter — showing whatever the newest ~20-30 posts happen to
+be right now. Fetching the live head is what an ordinary, registered
+collection run does. It's the opposite of a **backfill** page
+(`?before=<message_id>`), which reaches backward into older history one
+page at a time; `collector/telegram_backfill.py` walks backfill pages,
+never the live head, once it starts (see `docs/runbooks/telegram-channel-
+backfill.md`). Both are Telegram's own **public web preview** — no
+account, login, or API access involved, the same page anyone's browser
+gets for that URL.
+
 **OCFL**
 Oxford Common File Layout — the on-disk object storage layout this project
 uses for archival storage, versioned and self-describing independent of any

@@ -253,7 +253,7 @@ been parsed** — the build environment cannot reach them — and **obtaining
 WARC files from an archive is not implemented**; `ingest_warc` reads a local
 path. Expect the first real file to teach the reader something.
 
-## Telegram channel backfill (CDR-pending-telegram-backfill — **candidate**)
+## Telegram channel backfill (CDR-P3-46 — **candidate**)
 
 `collector/telegram_backfill.py` walks a registered Telegram channel's
 public-preview pagination (`t.me/s/<channel>?before=<id>`) backward,

@@ -12,7 +12,7 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0102); the design
+every enacted decision since is a Decision Record (DR-0001…0107); the design
 lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
 the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
 `publication/`, `export/` and `release/` implements those documents and is
@@ -125,7 +125,7 @@ card. Filter the board on `epic:track-a` for the live view.
 
 | Item | Outcome | Note |
 |---|---|---|
-| A1 — register the seven sanctions sources and make the first live collection | **six of seven registered and collected**, 2026-09-08 … 2026-09-21; the seventh is [#46](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/46) | `eu-consolidated-list` and `ofac-sdn` first (DR-0093, 2026-09-08/09); then `eur-lex-sanctions` (DR-0105), `uk-ofsi-consolidated`, `bis-entity-list` (Denied Persons List half only) and `seco-sanctions` (DR-0096, DR-0098), all on 2026-09-21, each a separate decision executed on the archive server by a person. `eur-lex-sanctions` fetched both foundational instruments cleanly (2 discovered, 2 acquired, 0 failed, 16 199 485 bytes, 0 documentary assertions, run `2eeef589-56aa-430d-af5f-855f5b6775d0`) and carries a **manual per-run re-verification obligation** for its dated-CELEX locator. **Executing it surfaced a real, unrelated operational gap**: the archive server's checkout was on a stale pre-DR-0087 branch and its live database schema was ~10 weeks out of date, because this project has no schema-migration mechanism for a live database — only "drop and rebuild from DDL," which the suites do and a production database holding real data cannot. Resolved by a full backup-then-reload (`pg_dump` full + data-only to a timestamped backup, schema rebuilt from current DDL as the `postgres` superuser, data reloaded past expected DDL-seed-table duplicate-key conflicts), row counts verified identical before and after across every data table; DR-0105's *Executed* section has the sequence. `seco-sanctions`'s real file turned out to live on `sesam.search.admin.ch`, a different host than the main site — found only on a second attempt (2026-09-13). Two `register.py` bugs were caught along the way: dependence on an already-registered source silently dropped under `--only` (fixed 2026-09-12; `sources/tests/test_register.py` 27 → 31 tests), and `--commit` passing **unmerged** candidates to `commit()` after DR-0103 (fixed 2026-09-19 — see A5). Since 2026-09-12 `collector/run.py` records a versioned software agent on preservation events (DR-0097). `ua-nsdc-sanctions` is **blocked, not merely unverified**: its register (`drs.nsdc.gov.ua`) is identified but Cloudflare-challenged from every session that has tried it, live or via a 2026-09-21 Wayback-history check (3 489 captures, no bulk-export file found — suggestive of a search-UI-only application, not confirmed) |
+| A1 — register the seven sanctions sources and make the first live collection | **six of seven registered and collected**, 2026-09-08 … 2026-09-21; the seventh is verified and split into three candidates but unregistered — [#46](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/46) | `eu-consolidated-list` and `ofac-sdn` first (DR-0093, 2026-09-08/09); then `eur-lex-sanctions` (DR-0105), `uk-ofsi-consolidated`, `bis-entity-list` (Denied Persons List half only) and `seco-sanctions` (DR-0096, DR-0098), all on 2026-09-21, each a separate decision executed on the archive server by a person. `eur-lex-sanctions` carries a **manual per-run re-verification obligation** for its dated-CELEX locator. **Executing it surfaced a real, unrelated operational gap**: the archive server's live schema was ~10 weeks behind `main`, because this project has no schema-migration mechanism for a live database — only "drop and rebuild from DDL," which the suites do and a production database holding real data cannot. Resolved by a full backup-then-reload, row counts verified identical before and after across every data table; DR-0105's *Executed* section has the sequence. `seco-sanctions`'s real file turned out to live on `sesam.search.admin.ch`, a different host than the main site. Three `register.py` bugs were caught by executing registrations rather than by testing them: dependence on an already-registered source dropped under `--only` (fixed 2026-09-12), `--commit` passing **unmerged** candidates to `commit()` after DR-0103 (fixed 2026-09-19 — see A5), and duplicate source rows on a re-run (2026-09-22, diagnosed and worked around, **not fixed** — [#62](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/62)). Since 2026-09-12 `collector/run.py` records a versioned software agent on preservation events (DR-0097). **`ua-nsdc-sanctions`'s Cloudflare block was cleared 2026-09-22/23 by human-assisted (founder) browser access**, which passed a challenge no automated session could: the register has a confirmed bulk-export API, and all three non-empty entity classes (Legal entities 9 682, Individuals 13 900, Vessels 888) have confirmed export URLs, confirmed field structure and row counts matching the register exactly; Aircraft genuinely returns 0. Drafted as **three** separate candidates so DR-0071(b)'s personal-data constraint stays scoped to Individuals alone. Still unregistered — that remains the founder's act, per source. See `docs/sources/verification-ua-nsdc-sanctions.md` |
 | A2 — census tooling against indices (Common Crawl index, Wayback CDX, citation graphs) | **index tooling done 2026-09-12**, first live query 2026-09-17; the four research sources are [#53](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/53) | `sources/census.py` queries Common Crawl's index and Wayback's CDX index for candidate domains, no fetch of any candidate host, no database writes. 28 tests. **Live query succeeded for the first time 2026-09-17**, against `rnbo.gov.ua` (the `ua-nsdc-sanctions` publisher domain) — both `index.commoncrawl.org` and `web.archive.org` were reachable this session, where every prior session's `curl`/`urllib` attempt had failed (`ECONNRESET`/timeout); Wayback returned 25 hosts (including a `sanctions-t.rnbo.gov.ua` subdomain, unexplored), Common Crawl 2. Network access varies by session — this is not a durable fix, just a session where the gap did not hold. The other four A2 evidence sources (Wikipedia citation graphs, sanctions link graphs, OSINT lists, bibliographies) are not built — editorial research tasks, not tooling. DR-0094 (approved 2026-09-11) still governs how a *retrieved* third-party capture gets recorded — that's the separate acquisition_attempt/FetchResult extension, not started |
 | A3 — WARC bulk-ingest path | **done 2026-09-09** | `Collector.ingest_warc`; live `warc` sources wrapped as WARC records; CDR-P3-35 still a candidate |
 | A4 — WACZ evaluation (DR-0006 standing task) | **done 2026-09-15** | [WP 3.6](docs/phase-3/working-papers/wp-3.6-wacz-evaluation.md) (CDR-P3-42 candidate): the container spec is stable (v1.1.1) but its signing layer is a pre-1.0 working draft (v0.1.0), confirmed by live retrieval of both spec texts and PyPI release metadata for `wacz`/`authsign`/`wacz-signing`. Recommends **deferring** adoption of both, WARC via `collector/pipeline.py` unchanged, on two stated triggers; the "jurisdictionally meaningful" half of DR-0006's question is flagged as unanswerable from a spec alone, not resolved |
@@ -195,19 +195,27 @@ commits to.
   server's database schema had drifted ~10 weeks behind `main`
   (this project has no schema-migration mechanism for a live database).
   Resolved by a full backup-then-reload, verified lossless — see DR-0105's
-  *Executed* section. The archive server's schema is current as of
-  2026-09-21, so that blocker is not standing, but **writing an actual
-  runbook for schema drift is an open founder decision** —
+  *Executed* section. The archive server's schema is now current, so this
+  specific blocker will not recur for `uk-ofsi-consolidated`/
+  `bis-entity-list`/`seco-sanctions`'s eventual execution, but **writing an
+  actual runbook for schema drift is an open founder decision** —
   [#57](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/57).
-  **One remains a candidate**, blocked rather than merely unverified:
-  `ua-nsdc-sanctions` — its register (`drs.nsdc.gov.ua`) is identified but
-  Cloudflare-challenged from every session that has tried it —
-  [#46](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/46).
-  Registering it, or re-verifying/re-registering any of the six decided
-  sources, is still the founder's act, per source — do not run
-  `register.py --commit` against the real archive database without that
-  being asked for, and do not treat approval of one registration as
-  authorization for any other source.
+  **`ua-nsdc-sanctions`'s Cloudflare block was cleared 2026-09-22/23** by
+  human-assisted (founder) browser access — its register
+  (`drs.nsdc.gov.ua`) now has a confirmed bulk-export API, and all three
+  non-empty entity classes (Legal entities, Individuals, Vessels) are
+  fully verified: confirmed export URLs, confirmed field structure, row
+  counts matching the register exactly. Drafted as three separate
+  candidates (`ua-nsdc-sanctions-legal-entities`,
+  `ua-nsdc-sanctions-individuals`, `ua-nsdc-sanctions-vessels`) so
+  DR-0071(b)'s personal-data constraint stays scoped to Individuals only
+  — see `docs/sources/verification-ua-nsdc-sanctions.md`, and
+  [#46](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/46). **Still not registered.** Registering any of the nine now-verified candidates, or
+  re-verifying/re-registering any already-decided source, is still the
+  founder's act, per source — do not run `register.py --commit` against
+  the real archive database without that being asked for, and do not
+  treat approval of one pending registration as authorization for any
+  other source.
 - **2026-09-20 — the project has started forming a legal entity: an
   association loi 1901.** Resolves the "whether the project should form a
   legal entity" question this file's own standing ruling below had left
