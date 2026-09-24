@@ -398,6 +398,16 @@ can reach `main` still reading `DR-pending-*`. It was drafted as
 highest record on `origin/main` and no unmerged branch drafting a new one.
 If another record takes DR-0108 first, renumber this one when merging.
 
+DR-0109 was numbered at merge, from `DR-pending-civilian-harm-and-memorial`,
+after merging `origin/main` into `claude/zealous-ritchie-6fail5` on
+2026-09-24: DR-0108 was then the highest record on `origin/main`, and no
+unmerged branch was drafting a new one. Every reference in `README.md`,
+`CLAUDE.md` and `GLOSSARY.md` was updated in the same change. The record's
+Consequence 8 still names "README.md open decision 5"; that list was
+replaced by the project board while the record was being drafted, and the
+item lives on as board issue #61. The wording was left as approved rather
+than revised in place.
+
 **Both records were also revised in place before merge, on 2026-09-24, under
 DR-0102 Decision 7 — and only three of its four conditions held.** Neither had
 reached `main`, the founder ruled each change, and each carries a Revision note
