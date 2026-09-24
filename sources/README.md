@@ -374,6 +374,75 @@ rediscovered the identical bug on 2026-09-20 while verifying
 `test_register.py`. Merging the two branches kept this (2026-09-19) fix,
 the more thorough of the two, and discarded the duplicate.
 
+**A re-run of `register.py --commit` is a no-op per source, not a duplicate**
+(fixed 2026-09-24, [#62](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/62)).
+The third `register.py` bug found by *executing* a registration rather than by
+testing one, and the worst of the three in effect: on 2026-09-22 a repeated
+`--commit` inserted a second `source` row with a fresh uuid for each
+strike-tracking candidate, and because `collector/run.py`'s
+`resolve_registered_source()` identifies a source by `(name, locator)` and
+refuses an ambiguous match rather than guessing which authorisation applies,
+**the duplicate disabled the two sources that had just been registered**
+(DR-0106, *Executed* step 1). It was cleared by hand — a read-only query
+confirmed neither duplicate had any dependent `collector_run` row before
+either was deleted — and nothing stopped it recurring.
+
+Enforced in both places, as a rule that matters must be:
+
+- **In code**, `commit()` calls `registered_id()` first and, on a hit, records
+  the existing id, prints `already registered, not re-inserted`, and skips the
+  insert. Returning the existing id rather than dropping the key keeps
+  dependence links resolvable through `resolve()`.
+- **In the DDL**, `source` gains `CONSTRAINT source_identity_unique UNIQUE
+  NULLS NOT DISTINCT (name, locator)`, so the store refuses what the code
+  would if the code were wrong. `NULLS NOT DISTINCT` because a null locator is
+  one locator, not a wildcard — under the default, two null-locator rows
+  sharing a name would both be admitted, which is the same ambiguity.
+- **A silent no-op would be its own trap**, so a re-run whose candidate file
+  has since been edited reports each differing authorising field
+  (`collection_method`, `capture_format`, the two tiers, `rights_permission`)
+  as `NOT updated` rather than appearing to apply it. Re-registering a source
+  whose policy changed is a founder act per source (DR-0093 §3), never a
+  `--commit` side effect.
+
+Verified by sabotage, one rule at a time, each turning exactly the expected
+checks red and nothing else:
+
+| Sabotage | Result |
+|---|---|
+| `registered_id()` always returns `None` (the code guard) | 5 checks red |
+| the DDL constraint removed entirely | 2 checks red |
+| `UNIQUE NULLS NOT DISTINCT` → plain `UNIQUE` | 1 check red — the null-locator case only |
+| the `_report_drift()` call removed | 1 check red |
+
+`sources/tests/test_register.py` is now 39 checks, up from 32. Six are new,
+and one of them runs `register.py --commit` **twice** as a subprocess — the
+operator's real entry point, and the only shape of test that would have caught
+this, since every other check calls `commit()` directly. Two checks needed
+`try`/`except psycopg.errors.UniqueViolation` around their `commit()` calls:
+without the code guard the DDL refuses the insert, and an uncaught violation
+would abort the suite and leave every later check unreported.
+
+**A limitation, stated rather than left to be discovered:** identity here is
+`(name, locator)`, because that is the pair the collector resolves on. A
+candidate whose `locator` changes is correctly seen as a different source; a
+candidate whose **`name`** changes looks unregistered and would be inserted
+afresh, leaving two rows for one real source under two names. Nothing in this
+fix prevents that, and it is not a bug in it — making the registry's identity
+something more stable than a display name would be a change to DR-0067's
+schema and a founder decision, not a side effect of closing #62.
+
+**Outstanding, and it matters:** this is a DDL change, and the project has no
+schema-migration mechanism for a live database — only "drop and rebuild from
+DDL," which the suites do and the archive server cannot
+([#57](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/57)).
+**The archive server's `source` table therefore still has no such
+constraint**, so until someone adds it there the store-side half of this fix
+protects the test databases only. Unlike most schema changes this one needs no
+rebuild — a single `ALTER TABLE source ADD CONSTRAINT source_identity_unique
+UNIQUE NULLS NOT DISTINCT (name, locator);` suffices, and it will succeed only
+if no duplicate pair is present, which is itself worth knowing.
+
 **Not verified:** for the three still-unfetched candidates
 (`eur-lex-sanctions`, `seco-sanctions`, `ua-nsdc-sanctions`), that the
 source exists at the address given or that the formats are as assumed;

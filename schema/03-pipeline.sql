@@ -51,7 +51,27 @@ CREATE TABLE source (
     -- WARC capture is the high-value tier (DR-0006); a source expecting
     -- graphic content must not default to public (PRES-012, POL-0001 §5.9).
     CONSTRAINT graphic_sources_not_public_by_default
-        CHECK (NOT expects_graphic_content OR default_access_tier <> 'public')
+        CHECK (NOT expects_graphic_content OR default_access_tier <> 'public'),
+
+    -- Registration is the act that authorises collection (OPS-001), and
+    -- collector/run.py's resolve_registered_source() identifies a candidate's
+    -- row by (name, locator). Two rows sharing that pair make the source
+    -- unresolvable, so the collector refuses to run rather than guess which
+    -- authorisation applies. That is not hypothetical: on 2026-09-22 a
+    -- repeated `register.py --commit` inserted a second row for each
+    -- strike-tracking source and thereby disabled the two sources it had just
+    -- registered (DR-0106, *Executed* step 1). The code refuses a re-run too,
+    -- in register.py's commit(); this constraint is here because a policy that
+    -- matters is enforced in the database as well, so the store refuses what
+    -- the code would if the code were wrong.
+    --
+    -- NULLS NOT DISTINCT (PostgreSQL 15+, and both the session container and
+    -- the archive server are at or above it) because a null locator is one
+    -- locator, not a wildcard: under the default NULLS DISTINCT two
+    -- null-locator rows with the same name would both be admitted, which is
+    -- precisely the ambiguity this forbids.
+    CONSTRAINT source_identity_unique
+        UNIQUE NULLS NOT DISTINCT (name, locator)
 );
 
 COMMENT ON COLUMN source.grade_source_reliability IS
