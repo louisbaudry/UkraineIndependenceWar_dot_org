@@ -12,6 +12,13 @@ discovery → acquisition → [QUARANTINE] → GATE 1: preservation
 
 With this the pipeline is complete end to end.
 
+**A second public surface is planned: the memorial site** (DR-0109). It is
+a publication surface of this gate, not a separate source of facts: every
+page is generated from records this gate has approved, and nothing flows
+back into the archive. Its first stage publishes incident pages without
+names; names wait for the DR-0072 successor and then follow POL-0001 §8.1.
+Nothing for it is built yet.
+
 ## Why it is a separate gate
 
 Accepting something as true and deciding to say it in public are **different

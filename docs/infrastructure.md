@@ -198,6 +198,13 @@ Only item 3 has been ruled on. Status for each lives on the board, not here.
    decision, board issue #57).
 6. No CI: tests do not run on GitHub.
 7. One IP address for all Telegram collection (runbook risk).
+8. **Planned, not in place: the memorial site** (DR-0109 Decisions 8 and
+   10). A static site on its own IONOS Spain hosting package, separate from
+   the archive server, generated from Gate 3-approved records and pushed
+   one way, with a traffic-flood protection service in front and its own
+   EU-registered domain (board issue #72). Nothing is provisioned. Before
+   names are published, the protection service is EU-based or goes to
+   counsel. Add it to the picture in §1 when it exists.
 
 ## 5. Keeping this page current
 
