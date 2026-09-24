@@ -41,6 +41,37 @@ authorised by this record and needs a separate founder decision once the
 bounded pass's results (rate-limit behaviour, storage footprint, content
 quality) are known.
 
+### Relation to POL-0001 §10 and DR-0072
+
+Neither this record nor its execution is a collection scale-up of the kind
+DR-0072 and the founder's ruling of 2026-09-08 suspend. That ruling permits
+preparatory work that "collects nothing, or collects only from registered
+sources with configured scope"; both channels are registered here first, their
+`run_locators` name two specific channels, and the backfill is bounded to
+twenty pages each by this record's own step 3. No crawl, no open-web
+discovery, no third source reached by following a link (DR-0071(a)).
+
+**What is genuinely new, and is flagged here rather than resolved.** Every
+source registered before these two was an institutional sanctions publisher
+whose material is structured, official, and close to free of personal data —
+the reason `CLAUDE.md` gives for choosing them first. These two are free-text
+reports about missile and drone strikes and their effects, a category that can
+name places, casualties and individuals. Nothing here structures any of it:
+DR-0066 holds, verified rather than assumed (zero documentary assertions, see
+*Executed*), and POL-0001 §4 with DR-0071(b) forbid automatic structuring of
+personal data in any case. Preservation without structuring is what this
+record authorises, and all that it authorises.
+
+The shift in content class is nonetheless real, and this record does not
+settle its consequences. POL-0001 §10's external review is still pending;
+§8.3's "archiving primary, expression secondary" ruling is itself in question
+under LIL Arts. 46 and 80 (DR-0099, DR-0100, and the A6 brief's Q2 and Q3). A
+future session must not read this record as having found strike reporting
+unproblematic under POL-0001 — only as having preserved it, without
+structuring it, at the founder's express direction, while the review runs. The
+"effect" half of the founder's stated goal, and civilian-casualty data
+specifically, are the parts most exposed here, and both remain undecided.
+
 ## Alternatives considered
 
 1. **Register both now, with a bounded backfill pass authorised in the same
@@ -189,12 +220,13 @@ evidence a future full-backfill decision would be made against, per
 
 ## Consequences
 
-1. **Five of nine current candidates are now registered and collected**
-   once executed (the six sanctions sources plus these two, minus
-   `ua-nsdc-sanctions` still blocked) — actually six of the project's
-   sanctions-plus-strike-tracking candidates registered, with
-   `isw-orca`/`deepstatemap` (territorial control) and `ua-nsdc-sanctions`
-   the only ones left undecided.
+1. **Eight of the project's eleven candidate sources are now registered and
+   collected**: the six sanctions authorities, plus these two. The three
+   remaining are `ua-nsdc-sanctions` (blocked on a Cloudflare challenge) and
+   `isw-orca`/`deepstatemap` (territorial control — verified and rehearsed,
+   undecided). Counted against the nine sanctions-plus-strike-tracking
+   candidates alone, it is eight of nine. (Corrected 2026-09-24; see the
+   Revision note.)
 2. **This is the first registration whose collection run's content this
    project has not read in detail before registering** — every sanctions
    source's file format was inspected structurally (CSV columns, XML
@@ -206,3 +238,50 @@ evidence a future full-backfill decision would be made against, per
 3. **The bounded backfill pass's results (timing, any rate-limit signals,
    actual bytes preserved) become the evidence a full-backfill decision
    is made against.** Record them in this DR's *Executed* section when run.
+
+## Revision note (2026-09-24, founder-ruled)
+
+Revised **in place**, before this record ever reached `main`, under
+[DR-0102](DR-0102-drafting-discipline-before-merge.md) Decision 7, on the
+founder's express ruling of 2026-09-24 following a review of this record the
+same day.
+
+**Three of Decision 7's four conditions held plainly**: the record had never
+been merged to `main`, the founder ruled the change, and this note quotes the
+replaced text in full with its date and reason. **The fourth did not** —
+revision in the same session as approval, which was 2026-09-21. The founder
+waived it *explicitly*, having been shown that it did not hold, rather than by
+inference. Recorded this way deliberately: Decision 7 states that "not merged
+yet" is a bound on blast radius and **not** a reason, so no future session
+should read this revision as licence to infer revisability from Git state. The
+alternative offered and not chosen was to merge as-is and supersede.
+
+Two changes, both from the 2026-09-24 review:
+
+1. **Consequence 1's candidate arithmetic was wrong.** Replaced text, in full:
+
+   > 1. **Five of nine current candidates are now registered and collected**
+   >    once executed (the six sanctions sources plus these two, minus
+   >    `ua-nsdc-sanctions` still blocked) — actually six of the project's
+   >    sanctions-plus-strike-tracking candidates registered, with
+   >    `isw-orca`/`deepstatemap` (territorial control) and
+   >    `ua-nsdc-sanctions` the only ones left undecided.
+
+   The sentence corrected itself mid-clause, from five to six, and neither
+   figure was right. Counted from `sources/candidates/*.yaml`: **eleven**
+   candidates in total — seven sanctions authorities, two strike-tracking, two
+   war-facts — of which **eight** are registered and collected.
+
+2. **The record said nothing about POL-0001 §10 or DR-0072.** A
+   "Relation to POL-0001 §10 and DR-0072" subsection was **added** at the end
+   of *Context*; nothing was deleted for it, so there is no replaced text to
+   quote. It **adds no authorisation and removes none**. It states why these
+   registrations and the bounded pass sit inside the founder's ruling of
+   2026-09-08, and flags the shift in content class — institutional sanctions
+   data to free-text strike reporting — as an open caution rather than
+   resolving it. The gap mattered because a reader of the record as approved
+   could not tell whether the still-pending §10 review had been considered at
+   all.
+
+Nothing in the *Decision*, *How to execute* or *Executed* sections was
+touched: what was authorised, and what was done on 2026-09-22, are unchanged.
