@@ -138,7 +138,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-21 | **Built and tested a Telegram channel historical-backfill mechanism**, `collector/telegram_backfill.py` (CDR-P3-46, candidate) — walks `t.me/s/<channel>?before=<id>` pagination backward, preserving each page through the ordinary `Collector.run()` path, one network request per page (a `CachingFetcher` avoids the double-fetch a naive discover-then-preserve approach would cause). 10 tests, sabotage-verified (removing the cache turns exactly the caching checks red; removing the bottom-of-history check crashes rather than looping forever). Rehearsed live against the real `kpszsu` channel: 2 pages, 0 failed, genuine pagination confirmed. No full backfill run. `docs/runbooks/telegram-channel-backfill.md` written with explicit rate-limit/block-risk warnings — a full `kpszsu` backfill is an estimated 2 500-4 000 requests, and a block would cost the archive server's Telegram access generally, not just this job. Civilian casualties noted as a future subject area at the founder's request, deliberately deferred, not started — see README's open decisions | `collector/telegram_backfill.py`, `collector/tests/test_telegram_backfill.py`, `docs/runbooks/telegram-channel-backfill.md`, `collector/README.md` |
 | 2026-09-22 | **`kpszsu` and `generalstaffzsu` registered and their first collection and a bounded backfill pass executed on the archive server**, interactively, by the founder, per `DR-0106-strike-tracking-registration.md`. Registration hit a real bug — `register.py --commit` re-run left two identical `source` rows per candidate, which `collector/run.py`'s existing duplicate check correctly refused to run against; diagnosed via read-only query confirming zero dependent `collector_run` rows on either duplicate before either was deleted, no code change needed. First ordinary collection run each: `kpszsu` 112 709 bytes, `generalstaffzsu` 135 349 bytes, 0 failed. Bounded backfill pass each (`--max-pages 20 --delay 3`): 20/20 pages preserved, 0 failed, no rate-limit signals — `kpszsu` reached back to post id 79190, `generalstaffzsu` to 41903. Separately, PostgreSQL had been reinstalled as version 15 (not 16, `CLAUDE.md`'s documented version) with `pg_hba.conf` reverted to `peer` auth for the `postgres` role specifically (a more specific rule than the general `trust` line, so it won and blocked connections) — fixed by editing that one line. A full backfill remains undecided; see README's open decisions | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
 | 2026-09-23 | **A second, larger bounded backfill pass executed for both channels** (`--max-pages 100 --delay 3`, resumed from 2026-09-22's stop points), founder-directed as a scale check before any full-backfill decision. `kpszsu`: 100/100 pages preserved, 0 failed, reached post id 77184. `generalstaffzsu`: 100/100 pages preserved, 0 failed, reached post id 39618. Still zero rate-limit signals, now across 240 total backfill requests. A full backfill remains undecided | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
-| 2026-09-24 | **Civilian harm, war crimes and a memorial site: ten founder rulings, drafted as a proposed Decision Record.** The founder took up open decision 5, widened it to all war crimes of Russia in Ukraine, and added a public memorial website; ten questions were ruled one at a time (relationship, scope, who is remembered, incidents vs. persons, source order, family participation, staged launch, hosting, languages, domain). Record text awaits founder approval. No code, no source registered, nothing collected or published | `docs/decision-records/DR-pending-civilian-harm-and-memorial.md`, `README.md`, `CLAUDE.md`, `GLOSSARY.md` |
+| 2026-09-24 | **Civilian harm, war crimes and a memorial site: ten founder rulings, recorded and approved.** The founder took up open decision 5, widened it to all war crimes of Russia in Ukraine, and added a public memorial website; ten questions were ruled one at a time (relationship, scope, who is remembered, incidents vs. persons, source order, family participation, staged launch, hosting, languages, domain). Record text approved as written the same day. No code, no source registered, nothing collected or published | `docs/decision-records/DR-pending-civilian-harm-and-memorial.md`, `README.md`, `CLAUDE.md`, `GLOSSARY.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071) stands as follows. **A1
 is under way**: 3 of the 7 sanctions sources are registered and have completed
@@ -384,12 +384,12 @@ outstanding *execution*.
    (casualties, damage) still needs Gate 2/3 editorial work no amount of
    collection substitutes for.
 5. **Civilian harm, war crimes and a memorial site — started 2026-09-24,
-   record awaiting approval.** Flagged 2026-09-21 and deferred; taken up
+   record approved.** Flagged 2026-09-21 and deferred; taken up
    2026-09-24, widened to "all war crimes of Russia in Ukraine", plus a
    second project: a public memorial website. The founder ruled ten
    questions, one at a time, recorded in
    [`DR-pending-civilian-harm-and-memorial`](docs/decision-records/DR-pending-civilian-harm-and-memorial.md)
-   (**Proposed** — its text awaits founder approval). In short: the
+   (**Approved** 2026-09-24). In short: the
    archive holds the evidence and the memorial is a separate site whose
    every fact points to it; a model built for every crime category, filled
    with civilian deaths first; the memorial remembers civilians plus
@@ -400,8 +400,7 @@ outstanding *execution*.
    witness material; a staged launch in which **names wait for the
    DR-0072 successor**; a separate static site on its own IONOS Spain
    hosting; Ukrainian then English; its own EU-registered domain. **Nothing
-   registered, collected or published.** Still open: approving the record;
-   the memorial's domain name; live verification of the first sources; a
+   registered, collected or published.** Still open: the memorial's domain name; live verification of the first sources; a
    working paper on the incident / harm / person model.
 6. **WP 3.4's Track A item A5** (registration classes) is **done**: Option A
    implemented and tested (18/18 checks,

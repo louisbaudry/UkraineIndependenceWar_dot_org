@@ -236,9 +236,9 @@ commits to.
   like one nobody commissioned. A session that receives the advice follows
   that record; it does not re-decide what recording means.
 - **2026-09-24 — civilian harm, war crimes and a memorial site: ten
-  rulings, record proposed.** The founder ruled ten questions recorded in
-  `DR-pending-civilian-harm-and-memorial` (**Proposed**, text awaiting
-  approval — do not treat it as approved until its status says so). Do
+  rulings, record approved.** The founder ruled ten questions recorded in
+  `DR-pending-civilian-harm-and-memorial` (**Approved** 2026-09-24; number
+  assigned at merge). Do
   not reopen them without the founder. The ones most likely to be
   crossed by accident: **the memorial adds no facts of its own** — every
   fact on it points to an archive record, and family submissions enter

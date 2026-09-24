@@ -1,7 +1,7 @@
 # DR-pending-civilian-harm-and-memorial — Civilian harm and war crimes as a subject area, and a memorial site built on the archive
 
-**Category:** scope / publication / personal data | **Status:** **Proposed** — the ten rulings below were made by the founder on 2026-09-24; this record's text awaits founder approval
-**Decided:** 2026-09-24 by founder/principal editor (rulings) — record not yet approved
+**Category:** scope / publication / personal data | **Status:** **Approved**
+**Decided:** 2026-09-24 by founder/principal editor — ten rulings made one at a time, and this record's text approved the same session
 **Origin:** README.md "Open decisions for the next session" item 5 ("Civilian casualties as a future subject area — noted, not started", flagged by the founder 2026-09-21), taken up by the founder 2026-09-24 together with a second project: a public memorial website | **Supersedes:** — | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted 2026-09-24 by an AI assistant (Anthropic
@@ -11,7 +11,7 @@
 > the recommended sequence "A, then B, then C, each step a separate
 > decision"). The rulings are the founder's; the wording, the reasons given
 > and the consequences drawn are the drafter's and are what approval of this
-> record confirms. **Nothing was verified live for this record**: no source
+> record confirmed; the founder approved the text as written on 2026-09-24. **Nothing was verified live for this record**: no source
 > named below was fetched, no domain availability was checked, no hosting
 > product was priced, and the `.ua` registration conditions mentioned under
 > Decision 10 were not checked. Nothing here is legal advice.
