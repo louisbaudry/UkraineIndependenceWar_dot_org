@@ -22,9 +22,13 @@ Governance is still far ahead of collection, but collection is no longer
 theoretical. **The first real collection ran on the archive server on 2026-09-09**
 (`eu-consolidated-list`, `ofac-sdn` — five files, ~211 MB, zero failures, zero
 documentary assertions, [DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)),
-**and as of 2026-09-21 six of the seven sanctions-authority candidates are
-registered and collected**; only `ua-nsdc-sanctions` is not, and it is blocked
-rather than undecided. The external legal review POL-0001 §10 requires has not
+**and as of 2026-09-22 eight sources are registered and collected**: six of the
+seven sanctions-authority candidates, plus the two strike-tracking channels
+`kpszsu` and `generalstaffzsu` (DR-0106, DR-0107 — the latter's full historical
+backfill is still running). The seventh sanctions authority,
+`ua-nsdc-sanctions`, is **no longer blocked**: human-assisted browser access
+cleared its Cloudflare challenge on 2026-09-22/23, and it is now three verified
+candidates awaiting registration, which is a founder act. The external legal review POL-0001 §10 requires has not
 been commissioned, and collection **at scale** stays suspended until it is
 (DR-0072, DR-0093 §3).
 Do not write "nothing has been collected" or "no live fetch has ever
