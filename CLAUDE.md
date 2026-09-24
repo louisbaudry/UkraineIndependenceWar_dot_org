@@ -235,6 +235,24 @@ commits to.
   as a record that supersedes nothing — an unanswered review must not look
   like one nobody commissioned. A session that receives the advice follows
   that record; it does not re-decide what recording means.
+- **2026-09-24 — civilian harm, war crimes and a memorial site: ten
+  rulings, record proposed.** The founder ruled ten questions recorded in
+  `DR-pending-civilian-harm-and-memorial` (**Proposed**, text awaiting
+  approval — do not treat it as approved until its status says so). Do
+  not reopen them without the founder. The ones most likely to be
+  crossed by accident: **the memorial adds no facts of its own** — every
+  fact on it points to an archive record, and family submissions enter
+  the archive first as sources; **no name is published before the
+  DR-0072 successor is approved**, and then only under POL-0001 §8.1;
+  **deported children, sexual violence and torture each need their own
+  later decision** — the model is built for them, but they are not
+  collected or structured by default; **the memorial is a static site on
+  separate hosting with nothing flowing back into the archive**; a person
+  enters the data only by a reviewer's hand, never by extraction. The
+  ruling authorises no source registration, collection or publication —
+  each source is still verified and registered one at a time, by the
+  founder, in three steps (UN monitoring and the Prosecutor General
+  first).
 - **A person, not software, is the agent of record for a collection run**
   (DR-0093 §3) — deliberately, at the founder's direction, for the first
   runs. Unchanged. As of 2026-09-12

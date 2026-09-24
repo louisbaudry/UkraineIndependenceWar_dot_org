@@ -502,6 +502,65 @@ inferred from Git: **draft → proposed → approved → effective → supersede
 / withdrawn**. Approval authority and date, effective date, and
 supersession links are recorded alongside the status itself.
 
+## Civilian harm, war crimes and the memorial (DR-pending-civilian-harm-and-memorial)
+
+**Incident**
+One documented event — a strike, an execution, a deportation — with a place,
+a date and the type of crime alleged. In this area it is the foundation:
+counts of the dead and injured, and any named persons, hang off an incident.
+The exact model is not yet designed (a working paper is due).
+
+**Harm**
+What an incident did to people or things: a death, an injury, destruction, a
+deportation, a detention. A death is one kind of harm; modelling it that way
+lets later crime categories be added without rebuilding.
+
+**Allegation vs. established finding**
+Most deaths recorded here are *alleged* war crimes: a source says so, and no
+court has ruled. The project records which status each has — alleged, under
+investigation, or established by a court (Phase I record §62–63) — and never
+upgrades an allegation by itself. The memorial remembers people whatever the
+legal status, and shows the status honestly.
+
+**Already-public standard**
+POL-0001 §8.1's rule for naming victims: the project publishes a victim's
+name only if an official record, a court document or the family's own
+public statement has already named them, or the family consents. It never
+becomes the first publisher of a name.
+
+**Memorial (the site)**
+The separate public website remembering victims. It adds no facts of its own:
+every fact on it points to an archive record, and it goes live in stages,
+with no names until the POL-0001 §10 legal review is recorded.
+
+**Static site**
+A website made of pre-built pages, with no database or program running behind
+it. Much harder to break into than a dynamic site and cheap to keep online
+under attack. The memorial is one; the archive generates it and pushes it
+out, and nothing flows back.
+
+**Traffic-flood protection (DDoS protection)**
+A service placed in front of a website that absorbs deliberate floods of
+fake traffic meant to knock it offline (a *distributed denial-of-service*
+attack). The common providers are American, which matters for data
+protection once a site shows personal data.
+
+**Transliteration**
+Writing a name from one alphabet in another, e.g. Ukrainian Cyrillic in
+Latin letters. Ukraine has an official system; the memorial uses the
+Ukrainian spelling as the reference and that system for English, keeping
+Russian-derived and variant spellings only for search.
+
+**Defensive domain registration**
+Registering look-alike web addresses of your own site (other spellings,
+other endings like `.org`/`.com`) so no one else can use them for fake
+copies.
+
+**Prisoner of war (POW) — "public curiosity"**
+Geneva Convention III Art. 13 protects prisoners of war against insults and
+public curiosity. The project applies it to imagery and details of POWs,
+including those who died in captivity.
+
 ## Suggested next terms
 
 The sections above now cover governance/process, archival/preservation
