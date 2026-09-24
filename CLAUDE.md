@@ -147,7 +147,10 @@ POL-0001 §10 review.
 
 **This is the standing instruction for every question, without exception.**
 
-When anything needs a decision from the founder/principal editor:
+> When asking questions to Louis, always propose multiple choices and
+> recommendation.
+
+Louis is the founder/principal editor. When anything needs a decision from the founder/principal editor:
 
 1. **One question at a time.** Never batch questions into a single message.
    Ask, wait for the answer, then ask the next.
