@@ -10,7 +10,7 @@ this page needs fixing.
 **Author:** AI assistant (Anthropic Claude Code agent session), at the
 founder's direction, 2026-09-24.
 **How it was compiled:** from the repository only, on `origin/main` at
-`83810ed`. **No session has ever had shell access to the archive server**,
+`893474a`. **No session has ever had shell access to the archive server**,
 so anything about the server that the repository does not record is
 marked **Unknown** below, not guessed. Filling those gaps in is the
 founder's job, or the job of a session the founder runs on the server.
@@ -91,7 +91,7 @@ archive holds material at every access tier (SEC-004).
 |---|---|---|
 | Repository | Code and all governance documents. Changes go through `claude/<topic>` branches and founder-merged pull requests | CLAUDE.md "Git and pull requests" |
 | GitHub Pages | Publishes `site/`, and only `site/`, on every push to `main` that touches it. **It is the project's only public web presence** | [`site/README.md`](../site/README.md), `.github/workflows/deploy-pages.yml` |
-| Issue board | Proposed as the single home for project status, on the unmerged branch `claude/exciting-knuth-hbtdlh`. **Not adopted on `main`** | that branch |
+| [Project board](https://github.com/users/louisbaudry/projects/7) and issues | The single home for project **status**: one card per open item, labelled `kind:`/`epic:`/`size:`. Infrastructure items carry `epic:infrastructure`. This page records how things are set up, not their status | CLAUDE.md "Where state lives" |
 
 There is **no CI test workflow**. The suites run only inside sessions and
 on the server during install. Nothing on GitHub runs them on a push.
@@ -105,9 +105,10 @@ on the server during install. Nothing on GitHub runs them on a push.
   and `drs.nsdc.gov.ua` return anti-bot challenges to every session tried
   so far.
 - **Scheduled Routines** (Claude Code triggers) send the founder
-  reminders. The one on record is the quarterly revisit of
-  `ua-nsdc-sanctions` (next 2026-10-01; `README.md`). A Routine only
-  reminds. It runs no collection.
+  reminders. `README.md` used to mention a quarterly revisit of
+  `ua-nsdc-sanctions` (next 2026-10-01). The 2026-09-22 board rewrite
+  dropped that line, and the repository no longer records whether the
+  Routine still exists. A Routine only reminds. It runs no collection.
 
 ### 2.4 Founder's browser (human-assisted access)
 
@@ -134,9 +135,9 @@ channel's collection stops, not only the backfill
 
 | Job | Cadence defined | Actually scheduled on the server? |
 |---|---|---|
-| Collection runs (`collector/run.py`) | OPS-001 wants automatic collection. DR-0093 §3 makes the first runs manual, with a person as agent of record | **No** — every run on record was started by hand |
+| Collection runs (`collector/run.py`, `collector/telegram_backfill.py`) | OPS-001 wants automatic collection. DR-0093 §3 makes the first runs manual, with a person as agent of record | **No** — every run on record, including the DR-0106/DR-0107 Telegram backfills, was started by hand |
 | Fixity checks (`storage/fixity_schedule.py --run`) | Every 180 days for `permanent`, every 365 for `medium-term` (PRES-003) | **Unknown** — no cron job or timer is recorded |
-| Backups | OPS-005: independent backups, an annual restore test | **Unknown** — see §3.3 |
+| Backups | OPS-005: independent backups, an annual restore test | **No** — deferred by decision (board issue #65), see §3.3 |
 
 ### 3.2 Schema changes on a live database
 
@@ -147,7 +148,7 @@ it was done as a full backup and reload: `pg_dump` full and data-only,
 rebuild from DDL as `postgres`, reload the data, and compare row counts
 before and after. [DR-0105 *Executed* §2](decision-records/DR-0105-eur-lex-sanctions-registration.md)
 records every step and both obstacles. **A written runbook for next time
-is an open founder decision**, not done.
+is an open founder decision**, not done (board issue #57).
 
 Practical rule until then: **before running anything on the server after
 pulling `main`, check whether `schema/` changed since the server's last
@@ -156,13 +157,21 @@ collection run.
 
 ### 3.3 Backups
 
+**Deferred by decision until the association exists**
+([`DR-pending-backup-deferral`](decision-records/DR-pending-backup-deferral.md),
+approved 2026-09-24). OPS-005 is **knowingly unmet** until then.
+
 - **Recorded:** one set of dumps (full and data-only) taken on
-  2026-09-21 to `~/uiw-backups/`, **on the same server**.
-- **Not recorded:** any regular backup, any copy off the server or with
-  another provider (OPS-005 requires "infrastructure independent of the
-  primary"), any backup of the OCFL roots, and any restore test.
-- For now, the archive's bytes and its database exist on one machine
-  with one provider.
+  2026-09-21 to `~/uiw-backups/`, **on the same server**, before the
+  DR-0105 schema reload.
+- **Not in place:** any regular backup, any copy off the server or with
+  another provider, any backup of the OCFL roots, any restore test.
+- **What that means:** the archive's bytes and its database exist on one
+  machine with one provider. Losing that server or the IONOS account before
+  the association exists loses the only copy. Material still online could
+  be collected again, but only as a new capture, not a restoration.
+- Ad-hoc `pg_dump`s on the server, like DR-0105's, are still allowed. They
+  do not count as the independent backup OPS-005 requires.
 
 ### 3.4 Runbooks
 
@@ -175,17 +184,18 @@ section.
 ## 4. Gaps, in one list
 
 Each of these is either unknown to the repository or known not to be done.
-None is decided here.
+Only item 3 has been ruled on. Status for each lives on the board, not here.
 
 1. Server facts not recorded: OS version, PostgreSQL version, whether a
    control panel is present. The hostname and IP belong somewhere
    private, not in this public repository.
 2. The Art. 28 processor contract with IONOS: status unknown.
-3. No regular backups and no off-server copy recorded (OPS-005 unmet as
-   far as the repository shows).
+3. No regular backups and no off-server copy. OPS-005 is knowingly unmet,
+   **deferred by decision** until the association exists
+   (DR-pending-backup-deferral, board issue #65).
 4. No fixity schedule recorded as actually running (PRES-003).
 5. No runbook for schema changes on the live database (DR-0105 open
-   decision).
+   decision, board issue #57).
 6. No CI: tests do not run on GitHub.
 7. One IP address for all Telegram collection (runbook risk).
 
