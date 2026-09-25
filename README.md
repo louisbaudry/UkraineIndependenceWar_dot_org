@@ -29,7 +29,7 @@ It is published from [`site/`](site/README.md) and is not a governance document.
 | Phase II — Theoretical Synthesis & Standards Mapping | **Closed 2026-08-16** ([DR-0053](docs/decision-records/DR-0053-phase-2-closure.md)) — 7 workstreams, 53 Decision Records, all eight consolidation outputs approved ([docs/phase-2/outputs/](docs/phase-2/outputs/README.md)) |
 | Phase III — Conceptual Architecture | **Open** — see [docs/phase-3/](docs/phase-3/README.md). All nine planned studies delivered; SPEC-0001…0007, POL-0001, METH-0001 and ten REQ documents effective; all three pipeline gates built. **First collection performed 2026-09-09** — two sanctions lists, registered and run on the archive server ([DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)). **Collection at scale is suspended pending external legal review** ([POL-0001 §10](docs/policies/POL-0001-personal-data.md), DR-0072); the founder ruled on 2026-09-08 that no scale-up precedes that review ([WP 3.4](docs/phase-3/working-papers/wp-3.4-foundational-corpus-acquisition.md), candidate) |
 
-DR-0001…0109 are approved and in force. DR-0095 governs how DRs are numbered
+DR-0001…0110 are approved and in force. DR-0095 governs how DRs are numbered
 (drafted unnumbered, assigned at merge). **DR-0096…0101 were approved between
 2026-09-12 and 2026-09-15 and numbered together on 2026-09-15** — three of
 them had reached `main` unnumbered and without register rows, which is the
@@ -50,8 +50,8 @@ data model, the registry, the three-gate pipeline, the storage layout and the
 personal-data policy are all decided and documented. The code implements them and is
 tested against a real database and real storage. But:
 
-- **Six of the seven sanctions sources are registered and collected; one
-  remains blocked.** Of the seven sanctions authorities in
+- **Six of the seven sanctions sources are registered and collected; the
+  seventh is verified but not registered.** Of the seven sanctions authorities in
   [`sources/candidates/`](sources/README.md), the founder accepted
   `eu-consolidated-list` and `ofac-sdn` on 2026-09-08 and ran the first
   collection on the archive server on 2026-09-09 — five files, ~211 MB, zero
@@ -61,9 +61,13 @@ tested against a real database and real storage. But:
   and `seco-sanctions` ([DR-0096](docs/decision-records/README.md),
   [DR-0098](docs/decision-records/README.md)) followed on **2026-09-21**,
   each a separate decision executed by a person on the archive server.
-  `ua-nsdc-sanctions` remains a candidate, blocked on a Cloudflare challenge
-  ([#46](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/46)); registering is the act that authorises collection
-  (OPS-001).
+  `ua-nsdc-sanctions` was blocked by a Cloudflare challenge for every
+  automated session. The founder cleared it by hand in a browser on
+  2026-09-22/23, and it is now three verified candidates (legal entities,
+  individuals, vessels), none of them registered yet
+  ([#46](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/46),
+  [`docs/sources/verification-ua-nsdc-sanctions.md`](docs/sources/verification-ua-nsdc-sanctions.md)).
+  Registering is the act that authorises collection (OPS-001).
 - **A live fetch has now completed, twice, deliberately.** `HttpFetcher` acquired
   the sources above from real servers with an identified User-Agent. No WARC
   file from Common Crawl or the Wayback Machine has been parsed against a live
@@ -175,7 +179,7 @@ recommendation, one at a time).
 docs/
   discovery/          Phase I requirements-discovery record (immutable source
                       material) + acquisition provenance
-  decision-records/   Unified Decision Record system (record §98); DR-0001…0109
+  decision-records/   Unified Decision Record system (record §98); DR-0001…0110
                       approved and in force; register in its README
   phase-2/            Phase II (closed) — working papers WP 0.1–0.8 + provenance,
                       approved consolidation outputs
