@@ -73,10 +73,13 @@ exists to prevent, which is why status now has exactly one home.
 <https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/>. It restates
 counts and progress in plain language for readers who will never open the
 board. It is a copy, so it drifts: it went two weeks out of date before
-2026-09-25's rewrite. A session that lands a milestone the page mentions (a
-source registered or collected, a DR approved, a legal step taken) updates
-the page in the same session. `site/README.md` lists which parts go stale
-first and what must never appear there.
+2026-09-25's rewrite. **Ask Louis before changing it; never update it
+unasked** (founder ruling, 2026-09-25, option A of three). When a session
+lands a milestone the page mentions (a source registered or collected, a DR
+approved, a legal step taken), it asks whether the page should be updated,
+with options and a recommendation, and names what a public reader would
+notice. The page changes only on a yes. `site/README.md` lists which parts
+go stale first and what must never appear there.
 
 ## Starting a session
 
