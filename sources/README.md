@@ -497,8 +497,9 @@ DR-0109 Decision 5 fills this area in three steps, each source a separate
 decision. This file opens step 1 with **`un-hrmmu-protection-of-civilians`**:
 the UN Human Rights Monitoring Mission in Ukraine's monthly "Protection of
 Civilians in Armed Conflict" update. It was verified live and rehearsed
-through the real collector (3 acquired, 0 failed, 0 documentary assertions)
-and is **not registered**. The full record is in
+through the real collector (3 acquired, 0 failed, 0 documentary assertions),
+then **registered and its August 2026 edition collected on 2026-09-25**
+(DR-0110, *Executed*). The verification record is in
 [`verification-un-hrmmu-civilian-casualties.md`](../docs/sources/verification-un-hrmmu-civilian-casualties.md).
 Ukraine's Prosecutor General, the other half of step 1, is a separate
 candidate that has not been drafted yet. The judgment calls, so you can

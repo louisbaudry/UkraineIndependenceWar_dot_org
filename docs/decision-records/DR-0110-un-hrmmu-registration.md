@@ -146,5 +146,60 @@ links into `run_locators`, set `locator_verified` to that day, run
 
 ## Executed
 
-Not yet. To be filled in when the founder runs *How to execute* on the
-archive server.
+**2026-09-25, on the archive server**, by the founder, per *How to
+execute*, step by step with an AI assistant (Anthropic Claude Code agent
+session) reading each output before the next step. The server was on
+`main` at `4391ce0`. The person agent was `442c1d13-a3e3-4e87-a856-f278e5063b47`
+(Louis Baudry), the one DR-0093 created.
+
+1. **Registration.** `register.py --check`: 14 candidates validate.
+   `--dry-run --only un-hrmmu-protection-of-civilians` described the one
+   source in class `UN-international-civilian-harm` (retention permanent,
+   access public, rights `may-preserve`, the three August 2026 run
+   locators). A read-only query found no `(name, locator)` pair
+   registered twice. `--commit` was run once and registered source
+   **`03411054-022a-41d6-998d-5803429169be`**, `lifecycle_state` `active`,
+   `capture_format` `http`, created 2026-09-25 14:48:42 UTC.
+2. **First run, August 2026 edition.** `collector/run.py --dry-run` was
+   clean. The real run was **`c72bf2df-cb39-44d9-97b5-c72dc2067c53`**:
+   3 discovered, 3 acquired, 0 skipped, 0 failed, **8 651 549 bytes** in
+   1.7 s, 0 documentary assertions. The software agent on its
+   preservation events is `collector-pipeline` 0.1.0 (DR-0097).
+3. **Digests** (SHA-256 of the quarantined bytes), against the
+   verification record's §3:
+
+   | File | Bytes | SHA-256 | Against the record |
+   |---|---|---|---|
+   | Landing page | 55 537 | `d15c961d8857f8ec9336f16c687009767754c7d63768a8ddb11502a383fa7ccf` | differs from the 2026-09-24 `ae550e50…`, and equals the 2026-09-25 re-fetch the record already notes: the page was edited, same size |
+   | Ukrainian PDF | 4 193 477 | `dec34226801d19468c983e8d060994ce2bfd5428d25d3c61d60af57cfde6ab83` | identical |
+   | English PDF | 4 402 535 | `a8ff316b6d44753bf5be6ccffddb6a9fedba166426132d8c10fe2b17f0dc425b` | identical |
+
+4. **Checks.** `SELECT count(*) FROM documentary_assertion` = 0, so
+   DR-0066 held. `storage/measure.py`: the new source shows 1 run, 3 items
+   and 8 651 549 bytes preserved. The archive now totals 1 043 721 127
+   bytes preserved across nine sources, and the duplication ratio is
+   2.01x (the known undischarged-quarantine gap). `release/baseline.py
+   --check` is unchanged: every item is pinned except `dataset_snapshot`,
+   because no dump was supplied and no release is being made.
+
+**Two slips in *How to execute*, recorded here rather than edited above:**
+
+- `storage/measure.py` takes no `--dbname`. It reads the database from the
+  libpq environment, so it was run as `PGDATABASE=uiw python3
+  storage/measure.py --archive-root ~/uiw-archive`.
+- The step-1 SQL an assistant supplied asked for a `status` column. The
+  column is `lifecycle_state`. That was a query error only; nothing was
+  written by it.
+
+**Schema drift, found and not fixed.** The #62 fix (`de6bbe7`) added a
+`source_identity_unique` constraint to `schema/03-pipeline.sql`. The live
+database was built before it and does not carry it. Registration was
+still safe, because `register.py` itself refuses a re-run (the code
+half of #62 is live), and no duplicate existed. Bringing the live schema
+up to date is issue #57's open decision, and this is a second instance
+of it.
+
+**Not done:** no earlier edition was collected, and nothing was structured
+or published. The next run waits for the September 2026 edition and a
+person's update of `run_locators` (Decision 3). Issue #82 carries the
+monthly reminder.
