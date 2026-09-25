@@ -91,6 +91,15 @@ census tooling, registration groundwork, format evaluation — that collects
 nothing at scale and may proceed now. Track B (§4.2) is scaled collection
 itself, and does not start until the POL-0001 §10 legal review is recorded.
 
+**Public briefing page**
+The project's one public web page (`site/index.html`), published with
+*GitHub Pages*, GitHub's free service that turns a folder of a repository
+into a website at a `github.io` address:
+<https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/>. It explains
+the project in plain language to outsiders. It is not a governance document,
+not evidence, and not the eventual archive website or the memorial. See
+`site/README.md`.
+
 **Registration class**
 A named, reusable set of policy defaults (capture format, rights
 permission, etc.) that a source record inherits from and can override,

@@ -16,6 +16,11 @@ source claims, evidence, inference, legal findings, and project conclusions.
 
 The time horizon is measured in years and potentially decades.
 
+**For a plain-language overview**, read the public briefing page:
+<https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/>. It covers what the
+project is, how the archive works, what has been collected and what comes next.
+It is published from [`site/`](site/README.md) and is not a governance document.
+
 ## Project status
 
 | Phase | Status |
@@ -145,6 +150,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-09-24 | **`kpszsu`'s full historical backfill also completed — both channels are now fully backfilled.** The next pass (`--start-before 27066 --max-pages 2000`) stopped well short of its cap: 1340 pages attempted, 1339 preserved, 0 failed, earliest id seen 1, "stopped because: ... bottom of history" — the same result `generalstaffzsu` reached earlier the same day. Running total: 3960 pages attempted since 2026-09-22 (20+100+500+2000+1340), 3959 preserved, 0 failures throughout every pass on either channel. The prior mid-backfill remaining-post estimates (~67 000, then ~52 100) were wrong by a wide margin, recorded plainly rather than left standing — this project's channel-size estimates, never independently confirmed, should be read as rough until a channel actually bottoms out. Both channels' full historical backfills are complete; only their ordinary, ongoing collection runs continue | `docs/decision-records/DR-0106-strike-tracking-registration.md` |
 | 2026-09-24 | **Civilian harm, war crimes and a memorial site: ten founder rulings, recorded and approved.** The founder took up the deferred civilian-casualties item (issue #61), widened it to all war crimes of Russia in Ukraine, and added a public memorial website; ten questions were ruled one at a time (relationship, scope, who is remembered, incidents vs. persons, source order, family participation, staged launch, hosting, languages, domain). Record text approved as written the same day. No code, no source registered, nothing collected or published | `docs/decision-records/DR-0109-civilian-harm-and-memorial.md`, `README.md`, `CLAUDE.md`, `GLOSSARY.md` |
 | 2026-09-24 | **First civilian-harm source verified: the UN monitoring mission's monthly civilian-casualty update** (`un-hrmmu-protection-of-civilians`, DR-0109 Decision 5 step 1, issue #69). Published on the mission's own site `ukraine.ohchr.org`, monthly since the October 2023 edition, as a landing page plus English and Ukrainian PDFs with irregular file names, so run locators are re-read each month. Verified counts by age, sex, weapon and place, with incident examples and no victims' names; the stated standard is "reasonable grounds to believe", an admitted undercount revised in later editions. `capture_format: http`, new class `UN-international-civilian-harm`, `may-preserve` with rights **unverified** (`www.ohchr.org` is behind a Cloudflare challenge). Rehearsed through the real collector: 3 acquired, 0 failed, 0 documentary assertions. **Not registered**, which is the founder's act. The August Russian edition linked by the publisher returns 404. A fragile `test_register.py` check that silently depended on candidate-file load order was fixed alongside | `sources/candidates/civilian-harm.yaml`, `docs/sources/verification-un-hrmmu-civilian-casualties.md` |
+| 2026-09-25 | **The public briefing page was rewritten as a detailed project page** (PR #85), at the founder's direction (option 1 of 3: expand the existing page in place rather than build a multi-page site or rely on this README). Its sections: at a glance, principles, how material moves through the gates, an 11-row sources table, safeguards and the pending legal review, civilian harm and the memorial (DR-0109), a timeline, what's next and a glossary. It deliberately leaves out hostnames, the hosting provider, the backup deferral (DR-0108), names and the detail of the open legal questions. Checked at 1100px and 375px, in light and dark mode. Deployed and confirmed live the same day | `site/index.html`, `site/README.md` |
 
 Track A of WP 3.4 (work permitted now under DR-0071): **A3, A4, A5 and A6 are
 done; A1 is six sources of seven; A2 and A7 have their tooling built and their
@@ -209,7 +215,8 @@ release/              Release baselines
 setup/                install.sh — one-command install on Debian/Ubuntu
 site/                 Public-facing progress briefing (not governance content,
                       not the eventual archive website — see site/README.md);
-                      published via GitHub Pages from this folder only
+                      published via GitHub Pages from this folder only, at
+                      https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/
 CLAUDE.md             Working instructions for AI-assisted sessions
 AGENTS.md             Pointer to CLAUDE.md, for tools that look for this
                       filename specifically; no separate instructions
