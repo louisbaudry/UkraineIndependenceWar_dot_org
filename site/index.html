@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ukraine's Second War of Independence — Project Briefing</title>
+<meta name="description" content="A plain-language briefing on a long-term evidence archive about Russia's war against Ukraine: what it is, how it works, what has been collected, and what comes next.">
 <style>
   :root {
     color-scheme: light dark;
@@ -14,17 +15,25 @@
     --accent-2: #ffd700; /* Ukraine yellow */
     --card: #ffffff;
     --border: #e2ddd2;
+    --soft: #eef3fa;
+    --ok: #1f7a3a;
+    --wait: #8a6100;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #14161a;
       --fg: #ececec;
       --muted: #b7b3a8;
+      --accent: #6ea8ff;
       --card: #1d2026;
       --border: #2d313a;
+      --soft: #1a2433;
+      --ok: #6fd08c;
+      --wait: #e6c25a;
     }
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
     background: var(--bg);
@@ -33,115 +42,357 @@
     line-height: 1.6;
   }
   .bar { height: 6px; background: linear-gradient(90deg, var(--accent) 50%, var(--accent-2) 50%); }
-  main {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 2.5rem 1.25rem 4rem;
-  }
-  h1 {
-    font-size: 1.7rem;
-    line-height: 1.3;
-    margin: 0 0 0.25rem;
-  }
-  .subtitle {
-    color: var(--muted);
-    margin: 0 0 2rem;
-    font-size: 1rem;
-  }
+  main { max-width: 860px; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+  h1 { font-size: 1.8rem; line-height: 1.25; margin: 0 0 0.4rem; }
+  .subtitle { color: var(--muted); margin: 0 0 1.25rem; font-size: 1.05rem; }
   .updated {
-    display: inline-block;
-    font-size: 0.85rem;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 0.2rem 0.75rem;
-    margin-bottom: 2rem;
+    display: inline-block; font-size: 0.85rem; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 0.2rem 0.75rem; margin-bottom: 1.5rem;
   }
+  nav.toc {
+    display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 2rem;
+  }
+  nav.toc a {
+    font-size: 0.85rem; text-decoration: none; color: var(--fg);
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 999px; padding: 0.2rem 0.7rem;
+  }
+  nav.toc a:hover { border-color: var(--accent); color: var(--accent); }
   section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.25rem;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; scroll-margin-top: 1rem;
   }
-  h2 {
-    font-size: 1.05rem;
-    margin: 0 0 0.6rem;
-    color: var(--accent);
-  }
-  ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+  h2 { font-size: 1.15rem; margin: 0 0 0.6rem; color: var(--accent); }
+  h3 { font-size: 1rem; margin: 1.1rem 0 0.3rem; }
+  ul, ol { margin: 0.4rem 0 0; padding-left: 1.2rem; }
   li { margin-bottom: 0.4rem; }
   p { margin: 0.4rem 0; }
-  footer {
-    margin-top: 2.5rem;
-    font-size: 0.8rem;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    padding-top: 1rem;
-  }
   a { color: var(--accent); }
+  .note { color: var(--muted); font-size: 0.9rem; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.75rem; margin-top: 0.6rem;
+  }
+  .stat {
+    background: var(--soft); border-radius: 8px; padding: 0.8rem 0.9rem;
+  }
+  .stat .n { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+  .stat .l { font-size: 0.85rem; color: var(--muted); }
+
+  .flow { list-style: none; padding: 0; margin: 0.8rem 0 0; counter-reset: step; }
+  .flow li {
+    position: relative; padding: 0.7rem 0.9rem 0.7rem 3rem; margin-bottom: 0.5rem;
+    border: 1px solid var(--border); border-radius: 8px; background: var(--soft);
+    counter-increment: step;
+  }
+  .flow li::before {
+    content: counter(step); position: absolute; left: 0.8rem; top: 0.7rem;
+    width: 1.6rem; height: 1.6rem; border-radius: 50%;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .flow strong { display: block; }
+  .who { font-size: 0.8rem; color: var(--muted); }
+
+  .table-wrap { overflow-x: auto; margin-top: 0.6rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
+  .tag {
+    display: inline-block; font-size: 0.75rem; font-weight: 600; white-space: nowrap;
+    border-radius: 999px; padding: 0.05rem 0.55rem; border: 1px solid currentColor;
+  }
+  .tag.ok { color: var(--ok); }
+  .tag.wait { color: var(--wait); }
+
+  .timeline { list-style: none; padding: 0; margin: 0.6rem 0 0; border-left: 3px solid var(--accent-2); }
+  .timeline li { padding: 0 0 0.8rem 1rem; position: relative; margin: 0; }
+  .timeline li::before {
+    content: ""; position: absolute; left: -7.5px; top: 0.45rem;
+    width: 12px; height: 12px; border-radius: 50%; background: var(--accent);
+  }
+  .timeline .d { font-weight: 700; font-size: 0.9rem; }
+
+  dl.gloss { margin: 0.6rem 0 0; }
+  dl.gloss dt { font-weight: 700; margin-top: 0.6rem; }
+  dl.gloss dd { margin: 0.1rem 0 0; }
+
+  footer {
+    margin-top: 2.5rem; font-size: 0.8rem; color: var(--muted);
+    border-top: 1px solid var(--border); padding-top: 1rem;
+  }
+  @media (max-width: 520px) {
+    h1 { font-size: 1.45rem; }
+    section { padding: 1rem 1rem; }
+  }
 </style>
 </head>
 <body>
 <div class="bar"></div>
 <main>
   <h1>Ukraine's Second War of Independence — Project Briefing</h1>
-  <p class="subtitle">A plain-language progress update on the evidence archive project, kept current alongside development.</p>
-  <span class="updated">Last updated: 2026-09-10</span>
+  <p class="subtitle">A plain-language guide to the evidence archive project: what it is,
+  how it works, what it has collected so far, and what comes next.</p>
+  <span class="updated">Last updated: 2026-09-25</span>
 
-  <section>
+  <nav class="toc" aria-label="Contents">
+    <a href="#glance">At a glance</a>
+    <a href="#what">What this is</a>
+    <a href="#principles">Principles</a>
+    <a href="#how">How it works</a>
+    <a href="#sources">What is collected</a>
+    <a href="#safeguards">Safeguards</a>
+    <a href="#civilian-harm">Civilian harm &amp; memorial</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#next">What's next</a>
+    <a href="#glossary">Glossary</a>
+  </nav>
+
+  <section id="glance">
+    <h2>At a glance</h2>
+    <div class="stats">
+      <div class="stat"><div class="n">8</div><div class="l">sources registered and collected so far</div></div>
+      <div class="stat"><div class="n">2026-09-09</div><div class="l">date of the first real collection</div></div>
+      <div class="stat"><div class="n">~6,000</div><div class="l">pages of channel history preserved, with no failed pages</div></div>
+      <div class="stat"><div class="n">110</div><div class="l">recorded decisions governing how the archive works</div></div>
+      <div class="stat"><div class="n">0</div><div class="l">conclusions drawn automatically by software</div></div>
+    </div>
+  </section>
+
+  <section id="what">
     <h2>What this is</h2>
-    <p>We are building a long-term evidence archive — documents, sanctions data, and other
-    records connected to Russia's war against Ukraine and the networks that sustain it. The
-    goal is a record that holds up years or decades from now: to courts, investigators,
-    journalists, and historians, not just to us. This page is a plain-language progress
-    update, kept current as the work develops.</p>
+    <p>We are building a long-term evidence archive of documents, sanctions data, war
+    reporting and other records about Russia's war against Ukraine and the networks
+    that sustain it. The goal is a record that still holds up years or decades from
+    now, for courts, investigators, journalists and historians as well as for us.</p>
+    <p>The project calls the war <em>Ukraine's Second War of Independence</em>. We
+    chose that name on purpose, and we say so openly. The project is independent and
+    not Ukrainian. It supports Ukrainian sovereignty. It also holds itself to strict
+    standards of evidence, and it keeps clear lines between what a source claims, what
+    the evidence shows, what we infer, and what a court has found.</p>
+    <p>The archive comes first and the website comes last. Everything we eventually
+    publish will rest on material that has already been captured, checked and
+    preserved.</p>
   </section>
 
-  <section>
-    <h2>Why the pace looks slow, on purpose</h2>
-    <p>An evidence archive is only as good as its discipline. Before collecting anything at
-    scale, we built and tested the rules for how evidence is captured, verified, and
-    preserved — so that every record can be trusted, traced back to its source, and never
-    quietly altered. That groundwork is now done and tested against a real database and
-    real storage.</p>
-  </section>
-
-  <section>
-    <h2>What has actually happened, as of today (2026-09-10)</h2>
+  <section id="principles">
+    <h2>The principles it is built on</h2>
     <ul>
-      <li>Two sanctions lists — the EU's consolidated sanctions list and the US Treasury's
-      OFAC list — are formally registered as sources.</li>
-      <li>The first real, live collection ran on 2026-09-09: five files, about 211 MB,
-      pulled directly from the EU and US Treasury publishers, with zero failures.</li>
-      <li>Nothing was silently interpreted or asserted about anyone during that collection
-      — by design, collecting data does not yet draw conclusions from it. That's a
-      deliberate, later, human-reviewed step.</li>
+      <li><strong>Capture exactly and never alter.</strong> We keep every file exactly as
+      it was received, with a fingerprint (a checksum) that shows whether it has
+      changed since. The one exception is redaction to protect people, and every
+      redaction is recorded.</li>
+      <li><strong>A claim is not a fact.</strong> A sanctions listing, a military
+      report or a UN count is kept as that source's claim. Figures from different
+      sources are never averaged into one number.</li>
+      <li><strong>People decide and software assists.</strong> Software can fetch and
+      preserve material. Only a person can decide that something is established or
+      publish it.</li>
+      <li><strong>Failures are recorded, not hidden.</strong> A download that fails or a
+      page that has disappeared becomes part of the record, with an explanation.</li>
+      <li><strong>We are honest about limits.</strong> The archive does not claim a legal
+      chain of custody. Where something has not been verified, we say so.</li>
+      <li><strong>Every decision is written down.</strong> Each significant choice is
+      recorded, with the options considered and the reasons for the choice. A recorded
+      decision is never quietly edited. A new record replaces it instead.</li>
     </ul>
   </section>
 
-  <section>
-    <h2>What's deliberately not done yet</h2>
+  <section id="how">
+    <h2>How material moves through the archive</h2>
+    <p>Every item passes the same checkpoints in the same order. Each checkpoint is a
+    separate decision, so preserving an item does not mean it gets published.</p>
+    <ol class="flow">
+      <li><strong>A source is registered</strong>
+        Nothing is collected from a source until a person has checked it by hand and
+        formally approved it, one source at a time. <span class="who">Human decision</span></li>
+      <li><strong>Capture and quarantine</strong>
+        Files are downloaded from the publisher's own address and held apart until they
+        have been checked for safety and integrity. <span class="who">Automated, logged</span></li>
+      <li><strong>Gate 1: preservation</strong>
+        Files that pass the checks go into long-term storage in an open archival format
+        (OCFL), together with a record of when, where from and how they were obtained.
+        <span class="who">Automated, logged</span></li>
+      <li><strong>Gate 2: editorial acceptance</strong>
+        A reviewer reads the material and decides what it says and how far it can be
+        relied on. This is the only step where the archive starts to hold knowledge,
+        as opposed to files. <span class="who">Human decision</span></li>
+      <li><strong>Gate 3: publication</strong>
+        A separate decision, at a stated level of risk, about what is shown publicly and
+        at what access level. <span class="who">Human decision</span></li>
+    </ol>
+    <p class="note">Published records will get permanent identifiers (ARKs, a
+    long-lived identifier scheme used by libraries and archives), so that a citation
+    made today still resolves decades from now.</p>
+  </section>
+
+  <section id="sources">
+    <h2>What is collected so far</h2>
+    <p>Each row is its own recorded decision. Approving one source never approves
+    another.</p>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Source</th><th>What it is</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>EU consolidated sanctions list</td><td>The EU's list of persons and entities under sanctions</td><td><span class="tag ok">Collected</span></td></tr>
+        <tr><td>US Treasury OFAC SDN list</td><td>The US sanctions list of Specially Designated Nationals</td><td><span class="tag ok">Collected</span></td></tr>
+        <tr><td>EUR-Lex restrictive measures</td><td>The EU legal acts that impose the Russia and Ukraine sanctions</td><td><span class="tag ok">Collected</span></td></tr>
+        <tr><td>UK OFSI consolidated list</td><td>The UK sanctions list</td><td><span class="tag ok">Collected</span></td></tr>
+        <tr><td>US BIS Denied Persons List</td><td>US export-control denials (the Entity List is not yet included)</td><td><span class="tag ok">Collected</span></td></tr>
+        <tr><td>Swiss SECO sanctions</td><td>Switzerland's full sanctions list</td><td><span class="tag ok">Collected</span></td></tr>
+        <tr><td>Ukrainian Air Force channel</td><td>Daily reports of Russian missile and drone attacks, with the full history back to the first post</td><td><span class="tag ok">Collected</span></td></tr>
+        <tr><td>General Staff of the Armed Forces of Ukraine channel</td><td>Daily operational reports, with the full history back to the first post</td><td><span class="tag ok">Collected</span></td></tr>
+        <tr><td>UN monitoring mission: civilian casualties</td><td>Monthly verified civilian-casualty updates from the UN human-rights mission in Ukraine</td><td><span class="tag wait">Approved, first run pending</span></td></tr>
+        <tr><td>Ukraine's NSDC sanctions register</td><td>Ukraine's own sanctions, split into legal entities, individuals and vessels</td><td><span class="tag wait">Verified, awaiting decision</span></td></tr>
+        <tr><td>Territorial-control maps</td><td>Two independent maps of the front line</td><td><span class="tag wait">Verified, awaiting decision</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">"Verified" means we have checked the exact download address, the file
+    format and the contents by hand. "Collected" means files have been downloaded and
+    preserved on the archive server. So far every collection run has ended with zero
+    failed files.</p>
+  </section>
+
+  <section id="safeguards">
+    <h2>Safeguards, and why the pace is deliberate</h2>
+    <p>An evidence archive is only as good as its discipline, so we built and tested
+    the rules before collecting anything. The code that enforces them is tested
+    against a real database and real storage, and each test suite has been shown to fail
+    when the rule it checks is broken.</p>
+    <h3>What the archive will not do</h3>
     <ul>
-      <li>Five more sanctions-list sources are identified and ready, but not yet turned on
-      — each one is switched on individually, by a named human decision, not
-      automatically.</li>
-      <li>Broader collection is paused until an external legal review of how we handle
-      personal data is complete. We chose to wait rather than move fast and risk
-      mishandling anyone's data.</li>
+      <li><strong>No general web crawling.</strong> Material comes only from sources that
+      have been registered one at a time. We will not harvest the open web or social
+      media in bulk, either now or later.</li>
+      <li><strong>No conclusions from collection.</strong> Collection creates no claims
+      about anyone. Every collection run so far has produced zero conclusions, as
+      designed.</li>
+      <li><strong>No automatic profiling of people.</strong> Software never extracts
+      personal data into structured records. A person is entered only by a reviewer,
+      by hand.</li>
+      <li><strong>Source ratings are for sorting only.</strong> A source's reliability
+      grade helps decide what to review first. It never decides what is true.</li>
+    </ul>
+    <h3>A legal review first</h3>
+    <p>Broader collection is paused until independent legal counsel has reviewed how
+    the project handles personal data under European data-protection law. The
+    question has been sent to counsel and we are waiting for the answer. Until the
+    review is formally recorded, the archive collects only from individually approved
+    sources. We chose to wait rather than risk mishandling anyone's data.</p>
+    <h3>A legal home</h3>
+    <p>The project has started forming a French non-profit association (an
+    <em>association loi 1901</em>) to take on its long-term governance and
+    responsibilities.</p>
+  </section>
+
+  <section id="civilian-harm">
+    <h2>Civilian harm, war crimes and a memorial</h2>
+    <p>On 2026-09-24 the project added a new subject area: civilian harm and war crimes
+    committed in Russia's war against Ukraine. Alongside it we plan a memorial website
+    for the people killed.</p>
+    <ul>
+      <li><strong>Every fact on the memorial comes from the archive.</strong> The
+      memorial adds no facts of its own. Every detail links back to an archive record
+      and the evidence behind it.</li>
+      <li><strong>Incidents come first, then people.</strong> Each incident is recorded
+      with each source's own count, and children are counted separately. The unnamed
+      dead are always counted. A person is named only when a source names them, and
+      only after a reviewer has checked the entry by hand.</li>
+      <li><strong>No names are published before the legal review is recorded.</strong>
+      After that, names are published only under the project's personal-data
+      policy.</li>
+      <li><strong>Remembering someone is not a legal verdict.</strong> Each record shows
+      honestly whether a death is alleged to be a crime, under investigation, or
+      established by a court.</li>
+      <li><strong>The most sensitive areas wait for their own decisions.</strong> The
+      deportation of children, sexual violence and torture will each need a separate,
+      stricter decision before any material on them is collected.</li>
+      <li><strong>Sources come in stages.</strong> First the UN monitoring mission and
+      Ukraine's Prosecutor General, then regional administrations, then sources that
+      name victims and existing memorial projects, which we will approach as
+      partners.</li>
     </ul>
   </section>
 
-  <section>
+  <section id="timeline">
+    <h2>Timeline</h2>
+    <ul class="timeline">
+      <li><div class="d">Summer 2026</div>Requirements and standards phases completed. The
+      archive's method, data model and personal-data policy were decided and written
+      down.</li>
+      <li><div class="d">2026-08-26</div>All three gates of the pipeline built and tested.
+      The first candidate sources, seven sanctions authorities, were drafted.</li>
+      <li><div class="d">2026-09-08</div>Rule adopted: no large-scale collection before the
+      legal review. The first two sources were approved.</li>
+      <li><div class="d">2026-09-09</div><strong>First real collection</strong>: the EU and
+      US sanctions lists. Five files, about 211 MB, zero failures.</li>
+      <li><div class="d">2026-09-10</div>Permanent public identifiers designed and
+      built.</li>
+      <li><div class="d">2026-09-15</div>Jurisdiction settled for now as France. The brief
+      for the legal review was completed and later sent to counsel.</li>
+      <li><div class="d">2026-09-20</div>Formation of a French non-profit association
+      begun.</li>
+      <li><div class="d">2026-09-21</div>Four more sanctions sources registered and
+      collected: EUR-Lex, UK, US BIS and Switzerland.</li>
+      <li><div class="d">2026-09-22</div>The two Ukrainian military channels were
+      registered, and their first collection ran.</li>
+      <li><div class="d">2026-09-22/23</div>Ukraine's own sanctions register became
+      reachable after a website block was cleared by hand, and was verified in
+      full.</li>
+      <li><div class="d">2026-09-24</div>Full history of both military channels preserved
+      back to the first post, with no failed pages. Civilian harm and the memorial
+      were adopted as a subject area. The UN civilian-casualty source was
+      approved.</li>
+    </ul>
+  </section>
+
+  <section id="next">
     <h2>What's next</h2>
-    <p>Registering the remaining sanctions sources, commissioning that legal review, and
-    continuing to expand what the archive can take in — always with the same rule: build
-    the discipline first, then use it.</p>
+    <ul>
+      <li>Run the first collection of the UN monthly civilian-casualty updates.</li>
+      <li>Decide on Ukraine's own sanctions register and the two front-line maps, one
+      source at a time.</li>
+      <li>Receive and record the legal review. That is the step that allows broader,
+      carefully scoped collection.</li>
+      <li>Design the data model for incidents and harm that the memorial will be built
+      on.</li>
+      <li>Complete the association's formation, which will then take over the project's
+      legal responsibilities.</li>
+    </ul>
+    <p>The same rule applies throughout: build the discipline first, then use it.</p>
+  </section>
+
+  <section id="glossary">
+    <h2>A few terms</h2>
+    <dl class="gloss">
+      <dt>Source registration</dt>
+      <dd>The formal, recorded act of approving a specific publisher and address for
+      collection. Without it, nothing is collected.</dd>
+      <dt>Quarantine</dt>
+      <dd>A holding area where downloaded files wait until safety and integrity checks
+      are done.</dd>
+      <dt>Checksum (fixity)</dt>
+      <dd>A digital fingerprint of a file. If even one byte changes, the fingerprint
+      changes, so stored files can be re-checked indefinitely.</dd>
+      <dt>OCFL</dt>
+      <dd>Oxford Common File Layout, an open standard for storing digital objects so
+      that any future system can read them without special software.</dd>
+      <dt>Decision Record</dt>
+      <dd>A short document recording one decision, the options considered and the
+      reasons for the choice. There are 110 so far.</dd>
+      <dt>Backfill</dt>
+      <dd>Going back through a channel's history to preserve posts made before
+      collection began.</dd>
+    </dl>
   </section>
 
   <footer>
-    <p>This page is an informal briefing, not a project decision record or evidentiary
-    publication. AI-assisted draft, reviewed before publication.</p>
+    <p>This page is an informal briefing. It is not a project decision record or an
+    evidentiary publication, and it is not the eventual public archive website.
+    AI-assisted draft, reviewed before publication.</p>
   </footer>
 </main>
 </body>
