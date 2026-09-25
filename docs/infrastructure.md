@@ -90,7 +90,7 @@ archive holds material at every access tier (SEC-004).
 | Part | What it does | Source |
 |---|---|---|
 | Repository | Code and all governance documents. Changes go through `claude/<topic>` branches and founder-merged pull requests | CLAUDE.md "Git and pull requests" |
-| GitHub Pages | Publishes `site/`, and only `site/`, on every push to `main` that touches it. **It is the project's only public web presence** | [`site/README.md`](../site/README.md), `.github/workflows/deploy-pages.yml` |
+| GitHub Pages | Publishes `site/`, and only `site/`, on every push to `main` that touches it, to <https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/>. The Pages source is set to "GitHub Actions" (a one-time UI setting; see `site/README.md`). **It is the project's only public web presence** | [`site/README.md`](../site/README.md), `.github/workflows/deploy-pages.yml` |
 | [Project board](https://github.com/users/louisbaudry/projects/7) and issues | The single home for project **status**: one card per open item, labelled `kind:`/`epic:`/`size:`. Infrastructure items carry `epic:infrastructure`. This page records how things are set up, not their status | CLAUDE.md "Where state lives" |
 | Monthly reminder workflow | On the 17th of each month (07:47 UTC), posts a reminder on issue #82 mentioning the founder, with the newest UN HRMMU edition's links, status, size and SHA-256 prepared for `un-hrmmu-protection-of-civilians`'s `run_locators` (DR-0110 Decision 3). Reads the UN site and the candidate file; **edits nothing, registers nothing, collects nothing**. Runs on GitHub, not on the archive server | `.github/workflows/hrmmu-monthly-reminder.yml`, `.github/scripts/hrmmu_monthly_reminder.py` |
 

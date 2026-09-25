@@ -68,6 +68,16 @@ said so plainly. Three files, one fact, two of them wrong, and the wrong ones
 were the two a session is told to read first. That is the failure this split
 exists to prevent, which is why status now has exactly one home.
 
+**The one deliberate exception is the public briefing page,**
+[`site/index.html`](site/README.md), live at
+<https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/>. It restates
+counts and progress in plain language for readers who will never open the
+board. It is a copy, so it drifts: it went two weeks out of date before
+2026-09-25's rewrite. A session that lands a milestone the page mentions (a
+source registered or collected, a DR approved, a legal step taken) updates
+the page in the same session. `site/README.md` lists which parts go stale
+first and what must never appear there.
+
 ## Starting a session
 
 1. Read this file, then **the [board](https://github.com/users/louisbaudry/projects/7)** — it is the living
