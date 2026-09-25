@@ -1,0 +1,35 @@
+name: Monthly reminder — UN HRMMU run locators
+
+# DR-0110 Decision 3: each month's run of `un-hrmmu-protection-of-civilians`
+# happens only after a person has read that month's landing page, put its
+# links into `run_locators` and committed them. Nothing else prompts that
+# step, so this posts a reminder on issue #82 on the 17th of every month
+# (the UN mission posts mid-month), mentioning the founder so GitHub emails
+# him. It prepares the links; it edits no file, registers nothing and
+# collects nothing.
+#
+# Chosen 2026-09-25 over a Claude routine, whose notifications only go out
+# when a run is judged noteworthy: its test run succeeded and nobody was told.
+
+on:
+  schedule:
+    - cron: "47 7 17 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare the reminder
+        # The script never fails on a network problem: it writes the
+        # failure into the comment, so the reminder always goes out.
+        run: python3 .github/scripts/hrmmu_monthly_reminder.py > reminder.md
+      - name: Post it on issue #82
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh issue comment 82 --repo "$GITHUB_REPOSITORY" --body-file reminder.md
