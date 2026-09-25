@@ -92,6 +92,7 @@ archive holds material at every access tier (SEC-004).
 | Repository | Code and all governance documents. Changes go through `claude/<topic>` branches and founder-merged pull requests | CLAUDE.md "Git and pull requests" |
 | GitHub Pages | Publishes `site/`, and only `site/`, on every push to `main` that touches it. **It is the project's only public web presence** | [`site/README.md`](../site/README.md), `.github/workflows/deploy-pages.yml` |
 | [Project board](https://github.com/users/louisbaudry/projects/7) and issues | The single home for project **status**: one card per open item, labelled `kind:`/`epic:`/`size:`. Infrastructure items carry `epic:infrastructure`. This page records how things are set up, not their status | CLAUDE.md "Where state lives" |
+| Monthly reminder workflow | On the 17th of each month (07:47 UTC), posts a reminder on issue #82 mentioning the founder, with the newest UN HRMMU edition's links, status, size and SHA-256 prepared for `un-hrmmu-protection-of-civilians`'s `run_locators` (DR-0110 Decision 3). Reads the UN site and the candidate file; **edits nothing, registers nothing, collects nothing**. Runs on GitHub, not on the archive server | `.github/workflows/hrmmu-monthly-reminder.yml`, `.github/scripts/hrmmu_monthly_reminder.py` |
 
 There is **no CI test workflow**. The suites run only inside sessions and
 on the server during install. Nothing on GitHub runs them on a push.
@@ -138,6 +139,7 @@ channel's collection stops, not only the backfill
 | Collection runs (`collector/run.py`, `collector/telegram_backfill.py`) | OPS-001 wants automatic collection. DR-0093 §3 makes the first runs manual, with a person as agent of record | **No** — every run on record, including the DR-0106/DR-0107 Telegram backfills, was started by hand |
 | Fixity checks (`storage/fixity_schedule.py --run`) | Every 180 days for `permanent`, every 365 for `medium-term` (PRES-003) | **Unknown** — no cron job or timer is recorded |
 | Backups | OPS-005: independent backups, an annual restore test | **No** — deferred by decision (board issue #65), see §3.3 |
+| `un-hrmmu-protection-of-civilians` run-locator update (DR-0110 Decision 3) | Monthly, by a person, after the UN posts mid-month | **Reminder only** — a GitHub Actions workflow comments on issue #82 on the 17th; the update and the run stay manual |
 
 ### 3.2 Schema changes on a live database
 
