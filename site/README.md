@@ -40,10 +40,13 @@ open internet, not restricted to any particular audience, unless the GitHub
 organization has Enterprise Cloud's private-Pages feature enabled. Treat
 anything added here as public before it's published, not after.
 
-Keep it current with development: when a milestone lands (a source registered,
-a phase closes, a review completes), update the relevant section and the "Last
-updated" date in `index.html` in the same session, so the page never drifts far
-from `README.md`'s "Where things stand, plainly" section.
+Keep it current, but **only when the founder says so** (ruling of 2026-09-25,
+recorded in `CLAUDE.md`, "Where state lives"). When a milestone lands (a source
+registered, a phase closes, a review completes), the session asks whether the
+page should be updated, naming what a public reader would notice. On a yes, it
+updates the relevant section and the "Last updated" date in `index.html`. It
+never changes the page unasked, because the page is the project's only public
+voice.
 
 ## What the page contains
 
