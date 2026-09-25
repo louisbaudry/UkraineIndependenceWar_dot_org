@@ -498,6 +498,35 @@ change could break:
   provenance block's "AI assistant (Anthropic Claude Code agent session)" is
   the established form.
 
+## This repository is public
+
+The repository is **public on GitHub**, and so are its issues and project
+board. Everything committed, including every commit on every branch and
+every commit's author metadata, is readable by anyone and stays in the
+history even after a later commit deletes it. A 2026-09-25 audit of the full
+history found no credentials, IP addresses or collected material, and the
+founder ruled (option A of three) to keep it public. Keeping it that way
+depends on these never entering a commit, an issue or a PR:
+
+- **Credentials of any kind**: passwords, API keys, tokens, private keys,
+  session cookies (including `cf_clearance` or anything copied from DevTools
+  during human-assisted access), `.env` files.
+- **The archive server's hostname, IP address, SSH user or login details**.
+  `docs/infrastructure.md` records what the server is, not how to reach it.
+  Those details belong somewhere private.
+- **Collected material**: fetched bytes, WARCs, OCFL objects, database dumps,
+  and **rows** from any source. A verification record may quote column
+  headers and row counts, as `docs/sources/verification-ua-nsdc-sanctions.md`
+  does. It must never quote a row, above all a row about a natural person
+  (DR-0071(b), POL-0001, DR-0109's ruling that no name is published before
+  DR-0072's successor).
+- **Real people's personal data in test fixtures**. Fixtures use synthetic
+  names only.
+
+When you are unsure whether something is safe to commit, leave it out and
+ask. A commit can be reverted, but the published history cannot be recalled
+without a rewrite.
+
 ## Reporting work
 
 State what was verified and what was not. A test suite that has never been
