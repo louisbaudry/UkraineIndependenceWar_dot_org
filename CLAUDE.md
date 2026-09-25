@@ -491,6 +491,11 @@ change could break:
   archived or not** — and why: e.g. everything is pushed and merged and
   nothing is in flight (safe), or there is unpushed work, an open PR still
   being driven, a running job or a pending founder question (not safe).
+- **After each merge, ask Louis if the public GitHub website is worth
+  updating with the new developments** — the briefing page under `site/`,
+  published via GitHub Pages (see `site/README.md`). Ask it as any other
+  question (options and a recommendation), naming what the merge changed
+  that a public reader would notice; never update the site unasked.
 - Commit messages say what changed and why, cite the DRs and record sections
   involved, and state what was verified and what was not. The message is part
   of the project's memory.
