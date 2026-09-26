@@ -548,6 +548,8 @@ without a rewrite.
 
 ## Reporting work
 
+Be concise. Skip explanations unless asked. No summaries after routine edits.
+
 State what was verified and what was not. A test suite that has never been
 seen to fail proves nothing — when a suite is added, check that it fails when
 the thing it tests is broken, and say so. Where something could not be
