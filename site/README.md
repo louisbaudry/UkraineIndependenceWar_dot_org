@@ -63,7 +63,57 @@ directly (for example `#sources`).
 - the **What is collected** table: a candidate that gets registered moves to
   "Collected", and a new candidate gets a row once it is verified;
 - the **Timeline** and **What's next** lists;
-- the **Last updated** date.
+- the **Last updated** date;
+- the **Ukrainian and Russian pages**, which repeat all of the above and go
+  stale whenever the English page changes without them (see "Languages").
+
+## Languages
+
+Added 2026-09-26 at the founder's direction (option B of four: Ukrainian and
+Russian only, for now).
+
+| Language | File | Address |
+|---|---|---|
+| English (reference) | `index.html` | `/` |
+| Ukrainian | `uk/index.html` | `/uk/` |
+| Russian | `ru/index.html` | `/ru/` |
+
+English stays at the root so existing links keep working. Each file is a
+complete, standalone page, with no build step, as before. Each has the same
+section `id`s, so `#sources` works in every language. The stylesheet is
+copied into each file, so a style change has to be made three times.
+
+**English is the reference version.** Each translation opens with a notice that
+says three things: it was translated with AI help, it has not yet been
+reviewed by a native speaker, and which English "Last updated" date it
+matches. Change the notice when a native speaker has reviewed a translation.
+Until then, keep it.
+
+**When the founder approves an update to the page:**
+
+1. Update `index.html` first.
+2. Update `uk/index.html` and `ru/index.html` the same way, and change the
+   date their notice says they match.
+3. If a translation can't be updated in the same change, leave it as it is.
+   Its notice still names the older English date, so readers can see it's
+   behind. Never change that date without also changing the text.
+
+Words to handle with care:
+
+- Keep the English meaning exactly. The same "claim vs. fact" line applies in
+  every language.
+- In Ukrainian, use Ukrainian terms, not Russian loan words.
+- In Russian, write "в Украине" (the UN's form) and "Вторая война Украины за
+  независимость". The page names Russia's war against Ukraine as plainly as the
+  English does.
+- In both translations, source names stay in their original form where
+  readers would look them up: EUR-Lex, OFAC, SECO, "Denied Persons List",
+  "Entity List". The Ukrainian register is written РНБО in Ukrainian and СНБО
+  in Russian.
+
+**Not yet done, and deliberately deferred:** French, German, Polish and
+Crimean Tatar. Crimean Tatar would need a native reviewer and a choice of
+script (Ukraine's official Latin alphabet). It waits on the founder.
 
 ## What must never appear on it
 
@@ -77,7 +127,9 @@ row counts are fine. Rows are not.
 
 ## Checking a change before merging
 
-There is no build step, so open `index.html` in a browser. Check it at phone
+There is no build step, so open `index.html`, `uk/index.html` and
+`ru/index.html` in a browser. Check the language switcher links work in every
+direction. Check it at phone
 width (375px) as well as desktop, and in both light and dark mode. At 375px
 there should be no sideways scrolling: `document.documentElement.scrollWidth`
 should equal the window width. After merging, the deploy takes about a
