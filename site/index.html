@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ukraine's Second War of Independence — Project Briefing</title>
 <meta name="description" content="A plain-language briefing on a long-term evidence archive about Russia's war against Ukraine: what it is, how it works, what has been collected, and what comes next.">
+<link rel="alternate" hreflang="en" href="https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/">
+<link rel="alternate" hreflang="uk" href="https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/uk/">
+<link rel="alternate" hreflang="ru" href="https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/ru/">
+<link rel="alternate" hreflang="x-default" href="https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/">
 <style>
   :root {
     color-scheme: light dark;
@@ -119,6 +123,18 @@
   dl.gloss dt { font-weight: 700; margin-top: 0.6rem; }
   dl.gloss dd { margin: 0.1rem 0 0; }
 
+  nav.langs {
+    display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.3rem 0.9rem;
+    font-size: 0.85rem; margin: 0 0 1rem;
+  }
+  nav.langs a { color: var(--muted); text-decoration: none; }
+  nav.langs a:hover { color: var(--accent); }
+  nav.langs a[aria-current="page"] { color: var(--fg); font-weight: 700; }
+  .translation {
+    background: var(--soft); border-left: 3px solid var(--accent-2); border-radius: 6px;
+    padding: 0.6rem 0.9rem; margin: 0 0 1.5rem; font-size: 0.9rem;
+  }
+
   footer {
     margin-top: 2.5rem; font-size: 0.8rem; color: var(--muted);
     border-top: 1px solid var(--border); padding-top: 1rem;
@@ -132,6 +148,11 @@
 <body>
 <div class="bar"></div>
 <main>
+  <nav class="langs" aria-label="Language">
+    <a href="./" hreflang="en" lang="en" aria-current="page">English</a>
+    <a href="uk/" hreflang="uk" lang="uk">Українська</a>
+    <a href="ru/" hreflang="ru" lang="ru">Русский</a>
+  </nav>
   <h1>Ukraine's Second War of Independence — Project Briefing</h1>
   <p class="subtitle">A plain-language guide to the evidence archive project: what it is,
   how it works, what it has collected so far, and what comes next.</p>
