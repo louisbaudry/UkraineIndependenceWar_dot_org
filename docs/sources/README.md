@@ -50,7 +50,13 @@ real output rather than preliminary assessment.
   `DR-0098`.
 - [`verification-un-hrmmu-civilian-casualties.md`](verification-un-hrmmu-civilian-casualties.md)
   — `un-hrmmu-protection-of-civilians`, the UN monitoring mission's monthly
-  civilian-casualty update, DR-0109 Decision 5 step 1. Not registered.
+  civilian-casualty update, DR-0109 Decision 5 step 1. Registered by
+  DR-0110.
+- [`verification-ua-prosecutor-general.md`](verification-ua-prosecutor-general.md)
+  — `ua-pgo-crime-statistics`, the Prosecutor General's monthly crime
+  report with its war-crimes rows, DR-0109 Decision 5 step 1. Verified
+  through the archive server because the office's site blocks sessions.
+  Not registered.
 - [`TEMPLATE-a7-measurement-results.md`](TEMPLATE-a7-measurement-results.md)
   — not a record itself but the fill-in shape for one: WP 3.4 Track A item
   A7's storage-and-bandwidth measurement, covering both the two A1 sources
