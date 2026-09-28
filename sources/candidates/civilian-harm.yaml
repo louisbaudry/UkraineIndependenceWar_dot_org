@@ -8,14 +8,21 @@
 # the DR-0067 source-registry schema. DR-0109 Decision 5 orders this area's
 # sources in three steps, each source a separate decision; this file opens
 # step 1 ("UN monitoring ... and Ukraine's Prosecutor General — counts, with
-# almost no names") with the UN half only. The Prosecutor General is a
-# separate candidate, not drafted here.
+# almost no names"): the UN half first (2026-09-24), the Prosecutor General
+# second (2026-09-27), each its own candidate and its own decision.
 #
 # VERIFICATION STATUS (2026-09-24). `un-hrmmu-protection-of-civilians` was
 # fetched live and rehearsed end to end through the real collector into a
 # throwaway database. See docs/sources/verification-un-hrmmu-civilian-casualties.md
 # for the full record. Registered on the archive server 2026-09-25 and the
 # August 2026 edition collected: see DR-0110's Executed section.
+#
+# `ua-pgo-crime-statistics` was verified 2026-09-27 through the archive
+# server, not from a session: every gp.gov.ua host blocks sessions outright
+# (Cloudflare "Sorry, you have been blocked", US edge) and answers the
+# server in Spain normally; it passes the collector's own User-Agent too.
+# Not rehearsed through the collector. See
+# docs/sources/verification-ua-prosecutor-general.md. Not registered.
 
 classes:
 
@@ -51,6 +58,40 @@ classes:
       the legal brief (§14, POL-0001 §10).
     expects_graphic_content: false
     grade_source_reliability: A
+    grade_item_credibility: "2"
+
+  UA-state-civilian-harm:
+    # Jurisdiction first, topic second (2026-09-17 ruling). Kept apart from
+    # UA-state-investigations (the NSDC sanctions register): same state,
+    # different topic, different rights basis (official statistics) and a
+    # different cadence.
+    collection_method: http
+    collection_cadence: monthly
+    # A spreadsheet file and a server-rendered listing page; a bare body
+    # loses nothing (DR-0006, DR-0067).
+    capture_format: http
+    default_retention_tier: permanent
+    default_access_tier: public
+    rights_permission: may-preserve
+    rights_basis: >
+      UNVERIFIED — NOT LEGALLY REVIEWED. Ukraine's Law No. 2811-IX "On
+      Copyright and Related Rights" (edition of 31.07.2026, read on
+      zakon.rada.gov.ua 2026-09-27), Art. 8(1)(3), excludes from copyright
+      "official documents of a political, legislative, administrative and
+      judicial nature". A prosecutor's statistical report is plausibly such
+      a document, but Art. 8(1)(6) also names non-original databases as
+      subject to a sui generis right, and which one applies to a statistics
+      workbook was not established. The site states no reuse terms that
+      were found. Preservation is the floor claimed; citing figures with
+      attribution is DR-0109 Decision 7 stage 2's plan; anything more waits
+      for Part B of the legal brief (§14, POL-0001 §10).
+    expects_graphic_content: false
+    # B: a state party to the conflict reporting on its adversary's crimes,
+    # read with care commensurate to that (the same reasoning as the NSDC
+    # candidates). "2": the figures count registered proceedings, which the
+    # office itself produces; what a registration proves is the thing to
+    # read carefully, not whether the count is accurate.
+    grade_source_reliability: B
     grade_item_credibility: "2"
 
 sources:
@@ -122,3 +163,64 @@ sources:
       recovery is a separate retrospective question (WP 3.4). The 2016-2021
       OCHA-compiled spreadsheet on HDX is pre-invasion and a different
       publisher.
+
+  - key: ua-pgo-crime-statistics
+    class: UA-state-civilian-harm
+    source_type: court-prosecutor
+    name: Office of the Prosecutor General of Ukraine — Unified report on criminal offences (monthly, Form 1)
+    # The listing page is on new.gp.gov.ua; the files are served from a
+    # third host, old.gp.gov.ua, through a download script whose file_id
+    # changes every month. So run_locators name one month's report and must
+    # be re-read from the listing before every run, the same manual
+    # obligation as un-hrmmu-protection-of-civilians (DR-0110 Decision 3).
+    # The `&amp;` in the page's links must be written as `&`: the escaped
+    # form returns a 26 275-byte HTML page, not the file.
+    locator: https://new.gp.gov.ua/ua/posts/pro-zareyestrovani-kriminalni-pravoporushennya-ta-rezultati-yih-dosudovogo-rozsliduvannya-2
+    locator_verified: 2026-09-27
+    run_locators:
+      - https://new.gp.gov.ua/ua/posts/pro-zareyestrovani-kriminalni-pravoporushennya-ta-rezultati-yih-dosudovogo-rozsliduvannya-2
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=292316"
+    verification_note: >
+      Verified 2026-09-27 through the archive server (Madrid Cloudflare
+      edge), because every gp.gov.ua host returns a hard Cloudflare block
+      to this project's sessions (US edge). Listing page 200, 83 082 bytes,
+      linking 20 reports: January to January-August 2026 (8) and January to
+      January-December 2025 (12). Newest file (file_id 292316): 200,
+      application/octet-stream, served as "Forma_1_serpen_2026.xlsx",
+      418 672 bytes, Last-Modified 4 Sep 2026, SHA-256
+      7c5a33a89a7ec2d5d573e54d1b7c6fb67697aeb73c1b08cbf10d329fb4057936. A
+      ten-sheet workbook of aggregate counts; its Table 1.20 covers
+      offences against peace, the security of mankind and the international
+      legal order, with rows for war crimes (Art. 438) and war crimes
+      causing death (Art. 438(2)). Re-fetched 2026-09-28 with the
+      collector's own User-Agent and with a browser's: both 200 and
+      byte-identical to the first fetch. Not rehearsed through the
+      collector. Record in
+      docs/sources/verification-ua-prosecutor-general.md.
+    publisher: Office of the Prosecutor General of Ukraine
+    jurisdiction: UA
+    primary_languages: [uk]
+    # The earliest report linked from the listing is January 2025. Earlier
+    # years exist elsewhere on the office's sites and were not looked for.
+    coverage_start: 2025-01-01
+    scope_rules: >
+      The office's monthly unified report on registered criminal offences
+      and the results of their pre-trial investigation (Form 1), which is
+      cumulative from January of the reporting year: the listing page and
+      that month's workbook, as named in run_locators and re-read from the
+      listing before each run. The whole workbook is kept; the war-crimes
+      rows (Table 1.20, Chapter XX of the Criminal Code) are the reason for
+      collecting it. No other page or file.
+    exclusions: >
+      The office's news posts and its Telegram channel (per-incident posts,
+      named suspects and victims, ordinary criminal cases; a different
+      candidate if ever), the evidence-submission portal warcrimes.gov.ua,
+      and every other statistical report on the office's statistics page.
+      Its report on prosecuting conflict-related sexual violence is
+      excluded by DR-0109 Decision 2 until its own decision. The children's
+      counts the office supplies to childrenofwar.gov.ua are a different
+      publisher's page, bundled with deportation and sexual-violence
+      counts and missing children's names and photographs, and are not
+      part of this candidate. Reports for 2025 and earlier years are not
+      in run_locators; the January-December 2025 report (file_id 279658)
+      is the obvious first backfill and is a separate decision.

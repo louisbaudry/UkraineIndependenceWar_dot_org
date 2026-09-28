@@ -613,6 +613,35 @@ monthly updates do this, so each edition is its own dated claim about the
 whole war to date, and the archive keeps every edition rather than
 replacing the old with the new.
 
+**Unified report on criminal offences (Form 1)**
+The Prosecutor General of Ukraine's monthly statistical report on criminal
+offences registered for investigation, and what became of them, counted by
+article of the Criminal Code and by region. It is an Excel workbook. Each
+edition runs from January to the reporting month (*year to date*), so the
+January–December edition is the year's final figure.
+
+**Article 438 (war crimes)**
+The article of Ukraine's Criminal Code on violating the laws and customs of
+war: cruelty to civilians or prisoners, deportation, plunder, attacks on
+protected targets. Part 2 covers such acts when they caused a death. It
+belongs to Chapter XX, on offences against peace, the security of mankind
+and the international legal order.
+
+**Registered criminal proceeding**
+In Ukraine, an investigation starts by entering an alleged offence in the
+Unified Register of Pre-trial Investigations. A count of registered
+proceedings says how many investigations were opened. It is not a count of
+victims (one strike can be one proceeding or many), and it is not a count
+of proven crimes. Each is an allegation under investigation until a court
+rules.
+
+**Regional block (geo-blocking)**
+A website that refuses visitors according to where their connection comes
+from. Ukraine's Prosecutor General's site blocks this project's cloud
+sessions, which connect through the United States, but answers the archive
+server in Spain and a browser in France. Verifying such a site means asking
+a person to look, or running the check on the server.
+
 **Prisoner of war (POW) — "public curiosity"**
 Geneva Convention III Art. 13 protects prisoners of war against insults and
 public curiosity. The project applies it to imagery and details of POWs,

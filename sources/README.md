@@ -501,9 +501,9 @@ through the real collector (3 acquired, 0 failed, 0 documentary assertions),
 then **registered and its August 2026 edition collected on 2026-09-25**
 (DR-0110, *Executed*). The verification record is in
 [`verification-un-hrmmu-civilian-casualties.md`](../docs/sources/verification-un-hrmmu-civilian-casualties.md).
-Ukraine's Prosecutor General, the other half of step 1, is a separate
-candidate that has not been drafted yet. The judgment calls, so you can
-disagree with them:
+Ukraine's Prosecutor General, the other half of step 1, is the separate
+candidate `ua-pgo-crime-statistics`, described after this list. The judgment
+calls on the UN source, so you can disagree with them:
 
 - **Which host.** The series lives on the mission's own site,
   `ukraine.ohchr.org`, not on `www.ohchr.org` (behind a Cloudflare
@@ -566,6 +566,64 @@ disagree with them:
   grounds to believe"). Credibility "2" rather than "1" because each figure
   is the mission's own claim, not independently confirmed, and the mission
   says it is an undercount that it revises.
+
+**`ua-pgo-crime-statistics`**, drafted 2026-09-27, is the office's monthly
+"Unified report on criminal offences" (Form 1). It is an Excel workbook of
+counts that includes war crimes (Article 438) and war crimes causing death
+(Article 438(2)). It is **not registered**. The record is
+[`verification-ua-prosecutor-general.md`](../docs/sources/verification-ua-prosecutor-general.md).
+The judgment calls:
+
+- **Verified through the archive server, not from a session.** Every
+  `gp.gov.ua` host blocks this project's sessions outright ("Sorry, you
+  have been blocked", from a US Cloudflare edge) and answers the server in
+  Spain normally. The founder ran short read-only scripts there, and the
+  session read their output. So future re-verification also goes through
+  the server or a browser, and the GitHub-hosted reminder that serves the
+  UN source probably cannot read this site.
+- **Why this report and not the other routes.** The office's Telegram
+  channel is a news feed with no recurring count, and it names suspects,
+  fallen prosecutors and victims of ordinary crimes.
+  `warcrimes.gov.ua` is an evidence-submission form with no figures.
+  `childrenofwar.gov.ua` shows the office's child casualty counts, but it
+  is another publisher's page. It sits beside deportation and
+  sexual-violence counts (held back by DR-0109 Decision 2) and missing
+  children's names and photographs. Form 1 is the one route that is the
+  office's own, periodic, and counts only.
+- **What the count is.** It counts registered criminal proceedings: offences
+  entered for investigation, not victims and not proven crimes. Any
+  structuring must carry that meaning with the number.
+- **Cumulative within a year; keep every file.** Each report runs from
+  January to the reporting month, and January–December closes the year.
+  Every month is its own file with a new `file_id`, kept beside the others.
+- **`run_locators` are re-read every month, by a person.** The listing page
+  is on `new.gp.gov.ua`, and the files come from `old.gp.gov.ua` through a
+  download script whose `file_id` cannot be predicted. The page writes its
+  links with `&amp;`, which must become `&`, or the server returns an HTML
+  page instead of the file. One run takes the listing page (the only place
+  that says which month a `file_id` is) and that month's workbook.
+- **Narrow scope.** One report out of the statistics section's dozen. The
+  conflict-related sexual-violence report on the same menu was not opened
+  (DR-0109 Decision 2). The January–December 2025 report is the obvious
+  first backfill, and it is a separate decision.
+- **`capture_format: http`, new class `UA-state-civilian-harm`.** The class
+  keeps jurisdiction first, topic second, and it is kept apart from the NSDC
+  class `UA-state-investigations`, whose topic, rights basis and cadence
+  differ. `source_type: court-prosecutor`.
+- **`may-preserve`, `UNVERIFIED`.** Ukraine's copyright law (No. 2811-IX,
+  Art. 8(1)(3)) leaves official administrative documents unprotected, which
+  plausibly covers this report. Art. 8(1)(6)'s database right may apply
+  instead, so nothing above preservation is claimed.
+- **Personal data: none expected, not checked row by row.** The workbook is
+  aggregate counts, but only the war-crimes lines were printed. The first
+  collection should include a look before anything is structured.
+- **Grades B / "2"** (triage only, DR-0027). B, for a state party to the
+  conflict reporting on its adversary, as with the NSDC candidates. "2",
+  because the count is the office's accurate record of its own
+  registrations, while what a registration proves needs care.
+- **Checked 2026-09-28:** the server gets the file with the collector's
+  own User-Agent, byte-identical across three fetches. There has been no
+  collector rehearsal.
 
 ## Census tooling (`census.py`, WP 3.4 §4.1 Track A item A2)
 
