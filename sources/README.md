@@ -621,9 +621,9 @@ The judgment calls:
   conflict reporting on its adversary, as with the NSDC candidates. "2",
   because the count is the office's accurate record of its own
   registrations, while what a registration proves needs care.
-- **Open before or at registration:** whether Cloudflare lets the
-  collector's own User-Agent through from the server, and whether the file
-  is byte-stable across fetches. There has been no collector rehearsal.
+- **Checked 2026-09-28:** the server gets the file with the collector's
+  own User-Agent, byte-identical across three fetches. There has been no
+  collector rehearsal.
 
 ## Census tooling (`census.py`, WP 3.4 §4.1 Track A item A2)
 

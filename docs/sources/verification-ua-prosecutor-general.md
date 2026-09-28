@@ -34,11 +34,15 @@ registered by DR-0110.
 4. Ukraine's copyright law was read on `zakon.rada.gov.ua`, which this
    session can reach (§7).
 
+5. On 2026-09-28 the newest file was fetched twice more on the archive
+   server, once with the collector's own User-Agent
+   (`UIW-collector/0.1 (+https://github.com/…)`) and once with a browser's:
+   both returned 200, 418 672 bytes, and the same SHA-256 as the first
+   fetch.
+
 **Not done:** no rehearsal through the real collector, because a throwaway
 database and archive on the archive server were not set up for this, and
-this session cannot reach the files. The file was not fetched with the
-collector's own User-Agent (`UIW-collector/0.1 (+…)`), and was fetched only
-once, so digest stability is unchecked. See §9.
+this session cannot reach the files. See §9.
 
 ## 2. Routes tried from this session (2026-09-25)
 
@@ -221,12 +225,12 @@ vocabulary's term for exactly this publisher. Grades B / "2", triage only
 
 **Not settled, and worth doing before or at registration:**
 
-1. **The collector's User-Agent.** Cloudflare passed a browser-like
-   User-Agent from the server. Whether it passes `UIW-collector/0.1 (+…)`
-   is untested. `collector/run.py` has a `--user-agent` option if it does
-   not, but using it would be a deliberate choice to record.
-2. **Digest stability and a collector rehearsal.** The file was fetched
-   once. The registration's `--dry-run` and first run will show more.
+1. ~~The collector's User-Agent~~ and ~~digest stability~~: **settled
+   2026-09-28.** The server fetched the file with `UIW-collector/0.1 (+…)`
+   and with a browser User-Agent, and both got 200, 418 672 bytes, SHA-256
+   `7c5a33a8…7936`. That makes three identical fetches over three days.
+2. **A collector rehearsal.** None was run. The registration's `--dry-run`
+   and first run will be the first time the collector itself sees it.
 3. **A row-by-row look at the workbook** for personal data (§6).
 4. **Children's counts.** Issue #70 also names children killed and injured.
    The office publishes those on `childrenofwar.gov.ua`, bundled as §2

@@ -20,7 +20,8 @@
 # `ua-pgo-crime-statistics` was verified 2026-09-27 through the archive
 # server, not from a session: every gp.gov.ua host blocks sessions outright
 # (Cloudflare "Sorry, you have been blocked", US edge) and answers the
-# server in Spain normally. Not rehearsed through the collector. See
+# server in Spain normally; it passes the collector's own User-Agent too.
+# Not rehearsed through the collector. See
 # docs/sources/verification-ua-prosecutor-general.md. Not registered.
 
 classes:
@@ -191,9 +192,10 @@ sources:
       ten-sheet workbook of aggregate counts; its Table 1.20 covers
       offences against peace, the security of mankind and the international
       legal order, with rows for war crimes (Art. 438) and war crimes
-      causing death (Art. 438(2)). Fetched once, with a browser
-      User-Agent; not rehearsed through the collector and not fetched with
-      the collector's own User-Agent. Record in
+      causing death (Art. 438(2)). Re-fetched 2026-09-28 with the
+      collector's own User-Agent and with a browser's: both 200 and
+      byte-identical to the first fetch. Not rehearsed through the
+      collector. Record in
       docs/sources/verification-ua-prosecutor-general.md.
     publisher: Office of the Prosecutor General of Ukraine
     jurisdiction: UA
