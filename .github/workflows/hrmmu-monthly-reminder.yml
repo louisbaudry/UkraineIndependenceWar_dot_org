@@ -8,7 +8,7 @@ name: Monthly reminder — civilian-harm run locators
 # them an email. It prepares the links; it edits no file, registers nothing
 # and collects nothing.
 #
-# DR-pending-ua-pgo-registration adds `ua-pgo-crime-statistics` to the same
+# DR-0111 adds `ua-pgo-crime-statistics` to the same
 # comment. The Prosecutor General's site blocks GitHub's US runners, so that
 # section reads nothing remote and gives a command to run on the archive
 # server instead.

@@ -1,6 +1,6 @@
-# DR-pending-ua-pgo-registration — Register the Prosecutor General's monthly crime report
+# DR-0111 — Register the Prosecutor General's monthly crime report
 
-**Category:** operations / preservation | **Status:** Proposed | **Decided:** —
+**Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-09-29 by founder/principal editor
 **Origin:** the founder's rulings of 2026-09-28 on three questions: collect all 20 listed reports (option C of three), prompt the monthly step through the existing reminder (A of three), and skip a separate collector rehearsal (A of three) | **Supersedes:** — | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted 2026-09-29 by an AI assistant (Anthropic
@@ -8,8 +8,9 @@
 > are the founder's. Each was put as a question with three options and a
 > recommendation. On the first question, the founder chose differently from
 > the recommendation (B, January–August 2026 plus January–December 2025).
-> The wording, reasons and consequences below are the drafter's. **This
-> record is a proposal until the founder approves it.** Approval authorises
+> The wording, reasons and consequences below are the drafter's. The
+> founder approved the record as drafted on 2026-09-29 (option A of three:
+> approve; read first; amend). Approval authorises
 > the registration and runs described below. **Both are executed on the
 > archive server by the founder, per *How to execute*, and have not been
 > executed by this record.** This session cannot reach the office's site or

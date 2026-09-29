@@ -177,7 +177,7 @@ sources:
     # form returns a 26 275-byte HTML page, not the file.
     locator: https://new.gp.gov.ua/ua/posts/pro-zareyestrovani-kriminalni-pravoporushennya-ta-rezultati-yih-dosudovogo-rozsliduvannya-2
     locator_verified: 2026-09-27
-    # First run (DR-pending-ua-pgo-registration Decision 2, the founder's
+    # First run (DR-0111 Decision 2, the founder's
     # ruling of 2026-09-28): every report the listing linked on 2026-09-27.
     # Only file_id 292316 has been fetched; the other 19 ids and their months
     # were read off the listing's link titles, and How to execute checks all

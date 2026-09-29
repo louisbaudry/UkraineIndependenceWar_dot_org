@@ -2,7 +2,7 @@
 """Write the monthly reminder for the civilian-harm sources' run locators.
 
 Covers `un-hrmmu-protection-of-civilians` (DR-0110) and
-`ua-pgo-crime-statistics` (DR-pending-ua-pgo-registration).
+`ua-pgo-crime-statistics` (DR-0111).
 
 Prints a Markdown comment body to stdout, for the scheduled workflow
 `.github/workflows/hrmmu-monthly-reminder.yml` to post on issue #82.
