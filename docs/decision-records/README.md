@@ -141,6 +141,7 @@ merely another renumbering.
 | [DR-0108](DR-0108-backup-deferral.md) | Independent backups (OPS-005) deferred until the association exists | operations / preservation | Approved — OPS-005 knowingly unmet until the trigger | 2026-09-24 |
 | [DR-0109](DR-0109-civilian-harm-and-memorial.md) | Civilian harm and war crimes as a subject area, and a memorial site built on the archive | scope / publication / personal data | Approved — authorises no collection, registration or publication | 2026-09-24 |
 | [DR-0110](DR-0110-un-hrmmu-registration.md) | Register the UN monitoring mission's monthly civilian-casualty update (`un-hrmmu-protection-of-civilians`) | operations / preservation | Approved — registration and runs executed on the archive server by the founder, not by this record | 2026-09-24 |
+| [DR-0111](DR-0111-ua-pgo-registration.md) | Register the Prosecutor General's monthly crime report, with its war-crimes rows (`ua-pgo-crime-statistics`): first run all 20 reports for 2025–2026, then one a month | operations / preservation | Approved — registration and runs to be executed on the archive server by the founder, not by this record | 2026-09-29 |
 
 ## Provenance of decisions
 
@@ -414,6 +415,14 @@ after merging `origin/main` into `claude/awesome-einstein-7fa782` on
 2026-09-24: DR-0109 was then the highest record on `origin/main`, and the
 only other unmerged branch (`claude/register-strike-tracking`) drafts no
 new record.
+
+DR-0111 was numbered at merge, from `DR-pending-ua-pgo-registration`, after
+merging `origin/main` into `claude/register-prosecutor-general` on
+2026-09-29. DR-0110 was then the highest record on `origin/main`, and no
+other unmerged branch drafted a record. The same rename replaced
+`DR-pending-ua-pgo-registration` with `DR-0111` in the candidate file, the
+reminder script and workflow, `docs/infrastructure.md` and
+`sources/README.md`.
 
 **Both records were also revised in place before merge, on 2026-09-24, under
 DR-0102 Decision 7 — and only three of its four conditions held.** Neither had
