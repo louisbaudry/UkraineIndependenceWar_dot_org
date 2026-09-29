@@ -1,5 +1,10 @@
 # Working instructions for Claude
 
+> Shared rules for working with Louis live in the public repo
+> [`louisbaudry/claude-shared`](https://github.com/louisbaudry/claude-shared/blob/main/CLAUDE.md).
+> Read that file at the start of every session. Where this file contradicts it,
+> the shared file wins. This file only adds what is specific to this repo.
+
 This file governs every AI-assisted session in this repository. Read it whole
 before doing anything; it is short relative to what it prevents.
 [`AGENTS.md`](AGENTS.md) exists only as a pointer to this file, for tools
@@ -495,9 +500,9 @@ change could break:
 
 ## Git and pull requests
 
-- Work on a `claude/<topic>` branch from the latest `main`. The founder opens
-  pull requests from the Claude Code UI and merges them; **do not open a PR
-  unless asked**, and do not merge unless asked.
+- Work on a `claude/<topic>` branch from the latest `main`. Push the branch and
+  open the PR (`Closes #NN`); the founder merges it. **Do not merge unless
+  asked.**
 - Once a branch's PR is merged, follow-up work goes on a **new** branch from
   `main`; never stack commits on merged history.
 - Merge commits, never rebase or force-push a branch the founder has seen.
