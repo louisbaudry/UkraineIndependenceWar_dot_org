@@ -604,8 +604,10 @@ The judgment calls:
   that says which month a `file_id` is) and that month's workbook.
 - **Narrow scope.** One report out of the statistics section's dozen. The
   conflict-related sexual-violence report on the same menu was not opened
-  (DR-0109 Decision 2). The January–December 2025 report is the obvious
-  first backfill, and it is a separate decision.
+  (DR-0109 Decision 2). The founder ruled on 2026-09-28 that the first run
+  takes all 20 reports the listing links (2025 and 2026), keeping each
+  monthly snapshot. Later runs take one new report a month
+  (DR-pending-ua-pgo-registration).
 - **`capture_format: http`, new class `UA-state-civilian-harm`.** The class
   keeps jurisdiction first, topic second, and it is kept apart from the NSDC
   class `UA-state-investigations`, whose topic, rights basis and cadence

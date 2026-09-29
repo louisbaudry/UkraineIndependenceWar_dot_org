@@ -177,9 +177,34 @@ sources:
     # form returns a 26 275-byte HTML page, not the file.
     locator: https://new.gp.gov.ua/ua/posts/pro-zareyestrovani-kriminalni-pravoporushennya-ta-rezultati-yih-dosudovogo-rozsliduvannya-2
     locator_verified: 2026-09-27
+    # First run (DR-pending-ua-pgo-registration Decision 2, the founder's
+    # ruling of 2026-09-28): every report the listing linked on 2026-09-27.
+    # Only file_id 292316 has been fetched; the other 19 ids and their months
+    # were read off the listing's link titles, and How to execute checks all
+    # 20 on the archive server before registering. From the second run on,
+    # this list is the listing page plus the newest report only.
     run_locators:
       - https://new.gp.gov.ua/ua/posts/pro-zareyestrovani-kriminalni-pravoporushennya-ta-rezultati-yih-dosudovogo-rozsliduvannya-2
-      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=292316"
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277620"   # January 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277619"   # January-February 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277618"   # January-March 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277621"   # January-April 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277622"   # January-May 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277623"   # January-June 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277616"   # January-July 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277617"   # January-August 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277614"   # January-September 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277615"   # January-October 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=277516"   # January-November 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=279658"   # January-December 2025
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=281310"   # January 2026
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=283040"   # January-February 2026
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=284670"   # January-March 2026
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=286622"   # January-April 2026
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=288218"   # January-May 2026
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=290165"   # January-June 2026
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=291321"   # January-July 2026
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=292316"   # January-August 2026
     verification_note: >
       Verified 2026-09-27 through the archive server (Madrid Cloudflare
       edge), because every gp.gov.ua host returns a hard Cloudflare block
@@ -208,7 +233,10 @@ sources:
       and the results of their pre-trial investigation (Form 1), which is
       cumulative from January of the reporting year: the listing page and
       that month's workbook, as named in run_locators and re-read from the
-      listing before each run. The whole workbook is kept; the war-crimes
+      listing before each run. The first run alone also takes every
+      earlier 2025 and 2026 report the listing linked on 2026-09-27, each
+      month's cumulative snapshot kept as its own file. The whole workbook
+      is kept; the war-crimes
       rows (Table 1.20, Chapter XX of the Criminal Code) are the reason for
       collecting it. No other page or file.
     exclusions: >
@@ -221,6 +249,6 @@ sources:
       counts the office supplies to childrenofwar.gov.ua are a different
       publisher's page, bundled with deportation and sexual-violence
       counts and missing children's names and photographs, and are not
-      part of this candidate. Reports for 2025 and earlier years are not
-      in run_locators; the January-December 2025 report (file_id 279658)
-      is the obvious first backfill and is a separate decision.
+      part of this candidate. Reports for years before 2025 are not
+      in run_locators and were not looked for; collecting them is a
+      separate decision.

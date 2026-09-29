@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Write the monthly reminder for `un-hrmmu-protection-of-civilians` (DR-0110).
+"""Write the monthly reminder for the civilian-harm sources' run locators.
+
+Covers `un-hrmmu-protection-of-civilians` (DR-0110) and
+`ua-pgo-crime-statistics` (DR-pending-ua-pgo-registration).
 
 Prints a Markdown comment body to stdout, for the scheduled workflow
 `.github/workflows/hrmmu-monthly-reminder.yml` to post on issue #82.
@@ -16,6 +19,14 @@ The reminder is the point, so it must go out whatever happens: any failure
 to reach the site or read the page is written into the comment, never
 raised (the §28/PRES-007 habit of recording failures as outcomes). Standard
 library only, so it runs on a bare GitHub runner.
+
+The Prosecutor General's site blocks connections from the United States,
+where GitHub's runners are, and answers the archive server in Spain
+(docs/sources/verification-ua-prosecutor-general.md §3). So its section
+never reads the site: it prints a read-only command for the person to run
+on the archive server, which names the newest report and its fingerprint.
+Chosen by the founder over a server-side scheduled job, which would need a
+credential on the server.
 """
 
 from __future__ import annotations
@@ -87,11 +98,74 @@ def describe(url: str) -> str:
     return f"| `{url}` | {status or '—'} | — | {error or 'empty body'} |"
 
 
+PGO_LISTING = ("https://new.gp.gov.ua/ua/posts/pro-zareyestrovani-kriminalni-"
+               "pravoporushennya-ta-rezultati-yih-dosudovogo-rozsliduvannya-2")
+
+# Run on the archive server, never here. The listing orders reports by year
+# and month, not by upload, and the 2025 file ids were uploaded as a batch,
+# so the newest report is taken as the highest file_id and shown with its
+# served file name, which names the month, for the person to confirm.
+PGO_SERVER_COMMAND = f"""cd ~/uiw && python3 - <<'EOF'
+import hashlib, html, re, urllib.request
+UA = {{"User-Agent": "UIW-collector/0.1 (+https://github.com/louisbaudry/UkraineIndependenceWar_dot_org)"}}
+get = lambda u: urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=90)
+page = get("{PGO_LISTING}").read().decode("utf-8", "replace")
+links = {{int(i): html.unescape(u) for u, i in re.findall(r'href="([^"]*file_downloader[^"]*file_id=(\\d+))"', page)}}
+newest = links[max(links)]
+r = get(newest); b = r.read()
+print(newest); print(r.status, r.headers.get("Content-Disposition"), len(b), hashlib.sha256(b).hexdigest())
+EOF"""
+
+
+def pgo_section(today: str) -> list[str]:
+    """The Prosecutor General's part of the reminder. Reads nothing remote."""
+    return [
+        "",
+        "---",
+        "",
+        "### `ua-pgo-crime-statistics` (Prosecutor General, monthly Form 1)",
+        "",
+        "The report for the previous month usually appears around the 4th. "
+        "GitHub cannot reach the site, so on the archive server run:",
+        "",
+        "```bash",
+        PGO_SERVER_COMMAND,
+        "```",
+        "",
+        "It prints the newest report's address, then its status, file name, "
+        "size and SHA-256. Check the file name names the expected month "
+        "(`Forma_1_<month>_<year>.xlsx`). If that address is already in "
+        "`run_locators`, there is nothing new this month. Otherwise paste "
+        "into `sources/candidates/civilian-harm.yaml` under "
+        "`ua-pgo-crime-statistics`, replacing its current values:",
+        "",
+        "```yaml",
+        f"    locator_verified: {today}",
+        "    run_locators:",
+        f"      - {PGO_LISTING}",
+        '      - "<the address the command printed>"',
+        "```",
+        "",
+        "Then: `python3 sources/register.py --check`, commit, merge; on the "
+        "archive server `git pull` and run `collector/run.py --source "
+        "ua-pgo-crime-statistics` with `--dry-run` first.",
+        "",
+        "_This section reads nothing from the Prosecutor General's site._",
+    ]
+
+
 def main() -> int:
     today = datetime.date.today().isoformat()
+    print("\n".join(hrmmu_section(today) + pgo_section(today)))
+    return 0
+
+
+def hrmmu_section(today: str) -> list[str]:
     out: list[str] = [
-        f"{MENTION} monthly reminder for `un-hrmmu-protection-of-civilians` "
-        f"(DR-0110), {today}.",
+        f"{MENTION} monthly reminder for the civilian-harm sources' run "
+        f"locators, {today}.",
+        "",
+        "### `un-hrmmu-protection-of-civilians` (UN HRMMU, DR-0110)",
         "",
     ]
     try:
@@ -109,8 +183,7 @@ def main() -> int:
             "",
             "Open that page yourself and follow the steps in this issue.",
         ]
-        print("\n".join(out))
-        return 0
+        return out
 
     month = edition.rsplit("Armed-Conflict-", 1)[-1].replace("-", " ")
     if edition in current:
@@ -121,8 +194,7 @@ def main() -> int:
             "Nothing to do this month unless it appears in the next few "
             "days. Check " + LISTING + " again later in the month.",
         ]
-        print("\n".join(out))
-        return 0
+        return out
 
     page_status, page, page_error = fetch(edition)
     links = pdf_links(page.decode("utf-8", "replace")) if page else []
@@ -170,8 +242,7 @@ def main() -> int:
         "_Prepared by the scheduled workflow; it changes no file, "
         "registers nothing and collects nothing (DR-0110 Decision 3)._",
     ]
-    print("\n".join(out))
-    return 0
+    return out
 
 
 if __name__ == "__main__":
