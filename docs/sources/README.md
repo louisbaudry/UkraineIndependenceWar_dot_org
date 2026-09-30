@@ -56,7 +56,7 @@ real output rather than preliminary assessment.
   — `ua-pgo-crime-statistics`, the Prosecutor General's monthly crime
   report with its war-crimes rows, DR-0109 Decision 5 step 1. Verified
   through the archive server because the office's site blocks sessions.
-  Not registered.
+  Registered by DR-0111.
 - [`TEMPLATE-a7-measurement-results.md`](TEMPLATE-a7-measurement-results.md)
   — not a record itself but the fill-in shape for one: WP 3.4 Track A item
   A7's storage-and-bandwidth measurement, covering both the two A1 sources
