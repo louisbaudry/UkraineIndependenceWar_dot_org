@@ -195,5 +195,55 @@ the server, then repeat step 3.
 
 ## Executed
 
-Not yet. To be filled in when the founder runs *How to execute* on the
-archive server.
+**2026-09-29, on the archive server**, by the founder, per *How to
+execute*, step by step with an AI assistant (Anthropic Claude Code agent
+session) reading each output before the next step. The server was on `main`
+at `7ca6471`. The person agent was `442c1d13-a3e3-4e87-a856-f278e5063b47`,
+the one DR-0093 created.
+
+1. **Read-only check of the 20 reports.** Every report returned 200, and
+   every served file name named the month its comment in the candidate file
+   gives. The names run `Forma_1_sichen_2025.xlsx` (January) through
+   `Forma_1_gruden_2025.xlsx` (December), then `Forma_1_sichen_2026.xlsx`
+   through `Forma_1_serpen_2026.xlsx` (August). None was removed (Decision
+   3). `292316` was 418 672 bytes, SHA-256 `7c5a33a8…7936`, which is its
+   fourth identical fetch since 2026-09-27. Together the reports come to
+   9 441 615 bytes. The 2025 files grow from about 410 KB to about 620 KB
+   from the January–July edition onward, which suggests the office added
+   tables mid-year. This was not examined.
+2. **Registration.** `register.py --check`: 15 candidates validate. The
+   `--dry-run` listed the 21 run locators. `--commit` was run once and
+   registered source **`97f3275b-f61a-486f-9e6d-768e01b9cdb5`**,
+   `lifecycle_state` `active`, `capture_format` `http`, created 2026-09-29
+   16:36:19 UTC.
+3. **First run.** `collector/run.py --dry-run` was clean, with the
+   collector's own User-Agent. The real run was
+   **`474926a2-b033-491f-bdf2-95086309c938`**: 21 discovered, 21 acquired,
+   0 skipped, 0 failed, **9 524 697 bytes** in 31.2 s, 0 documentary
+   assertions. That total is exactly the 20 reports plus the listing page
+   (83 082 bytes, SHA-256 `b988c8bc…8438`). The software agent on its
+   preservation events is `collector-pipeline` 0.1.0 (DR-0097).
+4. **Digests.** The SHA-256 and size of each of the 20 quarantined reports
+   were compared with step 1's, and all 20 are identical.
+5. **Checks.**
+   - `SELECT count(*) FROM documentary_assertion` = 0, so DR-0066 held.
+   - `storage/measure.py`: the archive's total preserved grew from
+     1 043 721 127 to **1 053 245 824** bytes, an increase equal to this
+     run. There are now ten sources, and quarantine gained 21 files. The
+     duplication ratio is still 2.01x (the known undischarged-quarantine
+     gap).
+   - `release/baseline.py --check` is unchanged, with only
+     `dataset_snapshot` unpinned.
+   - The first attempt at the last two checks failed with
+     `No module named 'psycopg'`, because the shell had lost `.venv`.
+     They passed after re-activating it.
+
+The expected size in *How to execute* ("about 8 MB") was an underestimate
+made before the 19 other files had been fetched. The actual size is
+9.5 MB.
+
+**Not done:** nothing was structured or published. No one has yet looked
+through the workbooks for personal data. That look is owed before any
+structuring (Decision 7). From the next month on, `run_locators` must be
+cut back to the listing page plus the newest report (Decision 4), prompted
+by the reminder on #82.

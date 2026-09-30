@@ -22,7 +22,9 @@
 # (Cloudflare "Sorry, you have been blocked", US edge) and answers the
 # server in Spain normally; it passes the collector's own User-Agent too.
 # Not rehearsed through the collector. See
-# docs/sources/verification-ua-prosecutor-general.md. Not registered.
+# docs/sources/verification-ua-prosecutor-general.md. Registered on the
+# archive server 2026-09-29, with all 20 reports collected: see DR-0111's
+# Executed section.
 
 classes:
 

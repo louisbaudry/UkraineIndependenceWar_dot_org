@@ -570,7 +570,8 @@ calls on the UN source, so you can disagree with them:
 **`ua-pgo-crime-statistics`**, drafted 2026-09-27, is the office's monthly
 "Unified report on criminal offences" (Form 1). It is an Excel workbook of
 counts that includes war crimes (Article 438) and war crimes causing death
-(Article 438(2)). It is **not registered**. The record is
+(Article 438(2)). It was **registered on 2026-09-29, with all 20 reports
+for 2025–2026 collected** (DR-0111, *Executed*). The verification record is
 [`verification-ua-prosecutor-general.md`](../docs/sources/verification-ua-prosecutor-general.md).
 The judgment calls:
 
