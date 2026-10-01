@@ -265,6 +265,16 @@ when, etc.) is kept as a labeled *claim*, stored separately from anything
 the project itself later concludes about the material — so a submitter's
 story is never confused with an established project finding (DR-0069).
 
+**Response headers (ETag, Last-Modified)**
+Small labels a web server sends along with a file: when it last changed
+(`Last-Modified`), a fingerprint of that version (`ETag`), sometimes the
+publisher's own filename. They are the *publisher's* statement about the file,
+they exist only at the moment of download, and the archive keeps them on the
+acquisition record so a later reader can tell what the origin said from what
+the archive observed. They are also what makes a polite "has it changed since
+last time?" request possible, which is why they matter for not storing
+unchanged files again (issue #74; issue #50).
+
 **Acquisition source vs. original publisher**
 A distinction this project always keeps: bytes recovered *from* an
 external archive (e.g., the Wayback Machine) record that archive and its

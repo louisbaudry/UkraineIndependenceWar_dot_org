@@ -157,6 +157,20 @@ CREATE TABLE acquisition_attempt (
     external_record_id text,            -- e.g. WARC-Record-ID
     external_payload_digest text,       -- as declared by the archive, e.g. sha1:BASE32
 
+    -- The HTTP response headers that came with the bytes (issue #74): what the
+    -- origin itself said about the thing acquired -- Last-Modified, ETag, its
+    -- own filename and dates. They exist only at fetch time and cannot be
+    -- recovered afterwards. §28: these are the *origin's* statements as
+    -- received, and must stay distinguishable from what we observed
+    -- (attempted_at, the sha256 on the quarantine item). Read them with
+    -- acquisition_route: for 'live-fetch' we received them at attempted_at;
+    -- for 'external-archive' they are what the archive recorded at
+    -- original_captured_at. Names are lower-cased, repeated headers joined
+    -- (collector/fetch.py record_headers). NULL means none were recorded
+    -- (the request failed before a response); a recorded response with no
+    -- headers is not distinguished from that.
+    response_headers jsonb,
+
     CONSTRAINT failures_explain_themselves
         CHECK (outcome = 'success' OR error_detail IS NOT NULL),
     CONSTRAINT external_acquisitions_name_their_source CHECK (
@@ -166,6 +180,12 @@ CREATE TABLE acquisition_attempt (
     CONSTRAINT archived_captures_carry_their_capture_time CHECK (
         acquisition_route <> 'external-archive'
         OR original_captured_at IS NOT NULL
+    ),
+    -- A header block is a name->value map. The code builds it that way; the
+    -- database refuses anything else, so a bug cannot store a list or a bare
+    -- string where a later reader expects `response_headers->>'etag'`.
+    CONSTRAINT response_headers_are_a_map CHECK (
+        response_headers IS NULL OR jsonb_typeof(response_headers) = 'object'
     )
 );
 

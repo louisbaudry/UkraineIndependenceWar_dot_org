@@ -37,8 +37,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import psycopg
+from psycopg.types.json import Jsonb
 
-from fetch import FetchResult, Fetcher
+from fetch import FetchResult, Fetcher, record_headers
 from warc import (
     WarcFormatError,
     WarcRecord,
@@ -363,25 +364,33 @@ class Collector:
             external_record_id=record.record_id,
             external_payload_digest=record.headers.get("warc-payload-digest"),
         )
-        status, _, _ = record.http()
+        status, http_headers, _ = record.http()
         digest_status, digest_detail = verify_payload_digest(record)
         captured = record.date.isoformat() if record.date else "an unknown time"
 
         if digest_status == "mismatch":
             result = FetchResult(locator, attempted_at, "failure",
-                                 error_detail=f"{digest_detail} (captured {captured})")
+                                 error_detail=f"{digest_detail} (captured {captured})",
+                                 response_headers=http_headers)
         elif status in (404, 410):
             result = FetchResult(locator, attempted_at, "not-found",
-                                 error_detail=f"archive holds HTTP {status} captured {captured}")
+                                 error_detail=f"archive holds HTTP {status} captured {captured}",
+                                 response_headers=http_headers)
         elif status is None or not 200 <= status < 300:
             result = FetchResult(locator, attempted_at, "refused",
-                                 error_detail=f"archive holds HTTP {status} captured {captured}")
+                                 error_detail=f"archive holds HTTP {status} captured {captured}",
+                                 response_headers=http_headers)
         else:
             result = FetchResult(
                 locator, attempted_at, "success",
                 content=record.raw,  # the whole record: headers and all (DR-0006)
                 media_type="application/warc",
-                response_headers=dict(record.headers),
+                # The HTTP headers the archive recorded for the origin's
+                # response -- not the WARC record's own headers (WARC-Record-ID,
+                # WARC-Date, ...), which are the archive's statements about
+                # its capture and are already in `acquisition_attempt`'s
+                # external_record_id / original_captured_at (§28).
+                response_headers=http_headers,
             )
         self._admit(source, locator, run_id, totals, result, acquisition,
                     content_name="original.warc",
@@ -511,18 +520,21 @@ class Collector:
         acquisition: Acquisition,
     ) -> str:
         attempt_id = _uuid()
+        headers = record_headers(result.response_headers)
         self.conn.execute(
             """
             INSERT INTO acquisition_attempt
                 (id, source_id, collector_run_id, locator, attempted_at,
                  outcome, error_detail, acquisition_route, acquisition_source,
-                 original_captured_at, external_record_id, external_payload_digest)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                 original_captured_at, external_record_id, external_payload_digest,
+                 response_headers)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (attempt_id, source.id, run_id, locator, result.attempted_at,
              result.outcome, result.error_detail, acquisition.route,
              acquisition.acquisition_source, acquisition.original_captured_at,
-             acquisition.external_record_id, acquisition.external_payload_digest),
+             acquisition.external_record_id, acquisition.external_payload_digest,
+             Jsonb(headers) if headers is not None else None),
         )
         return attempt_id
 
