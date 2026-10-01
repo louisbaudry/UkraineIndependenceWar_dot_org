@@ -394,6 +394,28 @@ missing value must never be silently read as "no" — e.g.,
 completely different, and equally recordable, fact from "not-researched"
 (we haven't looked yet) (DR-0029).
 
+**Incident (world-event)**
+In the civilian-harm work, one thing that happened — a strike, an execution,
+a deportation — held as an entity that carries no facts of its own. When and
+where it happened, what harm it caused and how a court or prosecutor
+characterises it are each separate, sourced claims attached to it, so two
+sources that disagree never overwrite each other (WP 3.8, DR-0109, DR-0012).
+
+**Legal-status lifecycle (allegation → judgment)**
+The stages through which the legal description of an act can pass:
+allegation, investigation, charge, indictment, trial, judgment, appeal,
+conviction or acquittal. The archive records which authority said what at
+each stage and never rewrites an earlier stage when a later one arrives —
+"investigated" is not "convicted", and "not convicted" is not "shown not to
+have happened" (Phase I record §62–63; WP 3.8).
+
+**Gated vocabulary entry**
+A category the data model is built to hold but that may not be used for any
+person-level record until a separate decision approves it — for example
+deportation of children, sexual violence or torture. The marker lets the
+model be built for every category without any of them being collected by
+default (DR-0109 Decision 2; WP 3.8 candidate).
+
 ## Sanctions and compliance domain
 
 **Sanctions authority**

@@ -90,3 +90,15 @@ supersession never in-place (§77).
 | Inputs | WP 3.4 §6 (the bottleneck) and §8 CDR-P3-32; DR-0067 (registry schema); OPS-001 (registration as authorisation); `sources/register.py` and `sources/candidates/sanctions-authorities.yaml` as they stood before this paper; `sources/README.md` |
 | Status | Its one candidate decision is **CDR-P3-32** (already deposited in WP 3.4 §8, 2026-09-08) — this paper is the founder-approved design (Option A) that discharges it, enacted as [DR-0103](../../decision-records/DR-0103-registration-classes.md), 2026-09-15/16 |
 | SHA-256 after renumbering | `e25be98d4cb6cda0c262995ca2b042c8412e9852f9f8c5ddeea3c60aefce2f45` (2026-09-16) — filed as "WP 3.5" at deposit, colliding with the already-taken WP 3.5 (identifier design). Renumbered to WP 3.7 when DR-0103 was enacted: title, filename and the §8 candidate-DR reference corrected to cite CDR-P3-32 instead of an unassigned `CDR-pending-A5–class-mechanism`; no reasoning, comparison, or decision content changed. Both hashes retained per §77. See `docs/decision-records/README.md`'s provenance note on DR-0103 for the full account |
+
+## wp-3.8-civilian-harm-incident-model.md
+
+| Field | Value |
+|---|---|
+| Title | Phase III / Study 8 — Incident, Harm and Person Model for Civilian Harm and War Crimes (Working Paper 3.8) |
+| Version | 3.8 (draft 0.1) |
+| SHA-256 at deposit | **Not yet computed.** The paper's candidate records are named `CDR-pending-*` (DR-0102); the real `CDR-P3-nn` numbers are assigned at merge, and the hash is computed after that so it covers the text as merged |
+| Deposited | Drafted 2026-10-01 on branch `claude/wp-civilian-harm-model`; deposit completes at merge |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, as build card #71; not an upload |
+| Inputs | DR-0109 (all decisions), DR-0106, DR-0030, DR-0042, DR-0086, DR-0028, DR-0066, DR-0071; SPEC-0001, SPEC-0002; POL-0001 §5.4–5.9, §8; Phase I record §62–63; `schema/02-core.sql`, `schema/04-epistemic.sql`; the access-tier, quantity and classification-system vocabularies. **No external source retrieved**; every reference to an external legal instrument is unverified background knowledge and is marked as such in the paper |
+| Status | Candidate — five candidate DRs (`CDR-pending-harm-model-shape`, `-counts`, `-person-layer`, `-reconciliation`, `-vocabulary`) awaiting founder review |
