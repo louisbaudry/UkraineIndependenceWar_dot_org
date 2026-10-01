@@ -74,7 +74,11 @@ class FetchResult:
 
     locator: str
     attempted_at: datetime
-    outcome: str  # 'success' | 'failure' | 'refused' | 'not-found'
+    # 'not-modified' is the origin's answer to a conditional request (HTTP 304):
+    # the bytes are unchanged since the capture the validators came from, and
+    # none were sent (issue #50). It carries no content and needs no
+    # explanation, because it is not a failure.
+    outcome: str  # 'success' | 'failure' | 'refused' | 'not-found' | 'not-modified'
     content: bytes | None = None
     media_type: str | None = None
     error_detail: str | None = None
@@ -92,7 +96,7 @@ class FetchResult:
     def __post_init__(self) -> None:
         if self.outcome == "success" and self.content is None:
             raise ValueError("a successful fetch must carry content")
-        if self.outcome != "success" and not self.error_detail:
+        if self.outcome not in ("success", "not-modified") and not self.error_detail:
             raise ValueError("a failed fetch must explain itself (§28)")
 
     @property
@@ -103,9 +107,29 @@ class FetchResult:
 
 
 class Fetcher(Protocol):
-    """How the collector obtains bytes. The seam that keeps the network out."""
+    """How the collector obtains bytes. The seam that keeps the network out.
+
+    A fetcher that can make a conditional request sets `supports_conditional`
+    and accepts `validators` (issue #50); one that cannot is simply called
+    without it and the collector still skips unchanged bytes by comparing
+    digests after the fetch.
+    """
 
     def fetch(self, locator: str) -> FetchResult: ...
+
+
+def validators_from(headers: Mapping[str, str] | None) -> dict[str, str] | None:
+    """The cache validators in a recorded header block, or None if it has none.
+
+    `etag` and `last-modified` are what an origin offers so that a client can
+    ask "has this changed since the copy I hold?" (issue #50). They are read
+    from the *recorded* headers (`record_headers`, lower-cased names), so the
+    answer is the same whichever case the origin used.
+    """
+    if not headers:
+        return None
+    found = {k: headers[k] for k in ("etag", "last-modified") if headers.get(k)}
+    return found or None
 
 
 def _header_dict(message) -> dict[str, str]:
@@ -138,12 +162,18 @@ class FixtureFetcher:
     and real OCFL storage.
     """
 
+    supports_conditional = True
+
     def __init__(self, fixtures: dict[str, Path | Exception | FetchResult]):
         self.fixtures = fixtures
         self.calls: list[str] = []
+        # What the collector asked, so a test can see whether a conditional
+        # request was made and against which validators (issue #50).
+        self.validators_seen: list[tuple[str, dict[str, str] | None]] = []
 
-    def fetch(self, locator: str) -> FetchResult:
+    def fetch(self, locator: str, validators: dict[str, str] | None = None) -> FetchResult:
         self.calls.append(locator)
+        self.validators_seen.append((locator, validators))
         entry = self.fixtures.get(locator)
 
         if entry is None:
@@ -186,17 +216,24 @@ class HttpFetcher:
     the caller; this class does one request.
     """
 
+    supports_conditional = True
+
     def __init__(self, user_agent: str, timeout: float = 30.0):
         self.user_agent = user_agent
         self.timeout = timeout
 
-    def fetch(self, locator: str) -> FetchResult:
+    def fetch(self, locator: str, validators: dict[str, str] | None = None) -> FetchResult:
         import urllib.error
         import urllib.request
 
-        request = urllib.request.Request(
-            locator, headers={"User-Agent": self.user_agent}
-        )
+        request_headers = {"User-Agent": self.user_agent}
+        if validators:
+            # A conditional request (issue #50): "send it only if it changed".
+            if validators.get("etag"):
+                request_headers["If-None-Match"] = validators["etag"]
+            if validators.get("last-modified"):
+                request_headers["If-Modified-Since"] = validators["last-modified"]
+        request = urllib.request.Request(locator, headers=request_headers)
         attempted_at = _now()
         try:
             with urllib.request.urlopen(request, timeout=self.timeout) as response:
@@ -219,6 +256,17 @@ class HttpFetcher:
                     final_locator=final if final != locator else None,
                 )
         except urllib.error.HTTPError as exc:
+            if exc.code == 304 and validators:
+                # Not a failure and not an error: the origin says the bytes are
+                # the ones we already hold. Only meaningful when we asked.
+                return FetchResult(
+                    locator=locator,
+                    attempted_at=attempted_at,
+                    outcome="not-modified",
+                    response_headers=_header_dict(exc.headers) if exc.headers else {},
+                    http_status=304,
+                    http_reason=str(exc.reason),
+                )
             # A refusal or a 404 is a response too: its headers (Retry-After,
             # Server, Date) are coverage facts about the failure (§28).
             return FetchResult(

@@ -39,7 +39,7 @@ from pathlib import Path
 import psycopg
 from psycopg.types.json import Jsonb
 
-from fetch import FetchResult, Fetcher, record_headers
+from fetch import FetchResult, Fetcher, record_headers, validators_from
 from warc import (
     WarcFormatError,
     WarcRecord,
@@ -442,12 +442,127 @@ class Collector:
             ),
         )
 
+    # -- unchanged captures (issue #50) --------------------------------------
+
+    def _prior_capture(self, source: Source, locator: str) -> dict | None:
+        """The latest preserved capture of this locator, if it is still the
+        right thing to compare a new response against.
+
+        Only for `http` capture-format sources: a `warc` capture stores a
+        record that carries its own capture time, so its bytes are never equal
+        to a later capture's even when the page is identical, and a digest of
+        the stored record says nothing about whether the page changed. Only
+        for stored retention tiers. And only while the source's retention,
+        access and rights settings are what the existing holding was made
+        under: a changed policy is a reason to capture again, not to confirm.
+
+        Captures made before the capture series existed (the two 2026-09-09
+        holdings) have no series row, so they are not found: the next capture
+        is stored once and joins the series, and later ones compare against it.
+        """
+        if source.capture_format != "http":
+            return None
+        if source.default_retention_tier in ("discard", "metadata-only"):
+            return None
+        row = self.conn.execute(
+            """
+            SELECT h.id, po.sha256, h.retention_tier, h.access_tier, h.rights_permission
+              FROM capture_series_member csm
+              JOIN holding h ON h.id = csm.holding_id
+              JOIN holding_representation hr
+                ON hr.holding_id = h.id AND hr.role = 'original'
+              JOIN preserved_object po ON po.id = hr.object_id
+             WHERE csm.series_id = %s
+             ORDER BY csm.captured_at DESC, h.created_at DESC
+             LIMIT 1
+            """,
+            (capture_series_id(source.id, locator),),
+        ).fetchone()
+        if row is None:
+            return None
+        holding_id, sha256, retention, access, rights = row
+        if (retention != source.default_retention_tier
+                or access != source.default_access_tier
+                or rights != source.rights_permission):
+            return None
+        return {"holding_id": str(holding_id), "sha256": bytes(sha256)}
+
+    def _validators_for(self, source: Source, locator: str) -> dict[str, str] | None:
+        """The cache validators to ask against: those of the latest response
+        that either produced the latest holding or confirmed it unchanged.
+
+        Never a response whose bytes were rejected or not admitted: asking
+        against its validators would let a 304 "confirm" a holding the origin
+        has already moved on from.
+        """
+        row = self.conn.execute(
+            """
+            SELECT a.response_headers
+              FROM acquisition_attempt a
+              LEFT JOIN quarantine_item q ON q.acquisition_attempt_id = a.id
+             WHERE a.source_id = %s AND a.locator = %s
+               AND a.acquisition_route = 'live-fetch'
+               AND a.response_headers IS NOT NULL
+               AND (a.outcome = 'unchanged'
+                    OR (a.outcome = 'success' AND q.gate1_decision = 'admitted'))
+             ORDER BY a.attempted_at DESC
+             LIMIT 1
+            """,
+            (source.id, locator),
+        ).fetchone()
+        return validators_from(row[0]) if row else None
+
+    def _record_unchanged(
+        self, source: Source, locator: str, run_id: str, totals: RunTotals,
+        result: FetchResult, prior: dict, basis: str,
+    ) -> None:
+        """Record that this locator was looked at again and is the same.
+
+        Nothing is quarantined, stored or admitted: the bytes are identical to
+        a holding that already passed Gate 1, so there is nothing new for the
+        gate to decide. The attempt, with the origin's headers, is the record.
+        """
+        self._record_attempt(source, locator, run_id, result, Acquisition(),
+                             unchanged=(prior["holding_id"], basis))
+        self._skip(totals, "unchanged")
+
     # -- one item, from acquisition result to Gate 1 -------------------------
 
     def _collect_one(
         self, source: Source, locator: str, run_id: str, totals: RunTotals
     ) -> None:
-        result = self.fetcher.fetch(locator)
+        # Issue #50: what the archive already holds for this (source, locator),
+        # so unchanged bytes are neither fetched again (when the origin offers
+        # validators) nor stored again (whatever the origin offers).
+        prior = self._prior_capture(source, locator)
+        validators = (
+            self._validators_for(source, locator)
+            if prior is not None and getattr(self.fetcher, "supports_conditional", False)
+            else None
+        )
+        result = (self.fetcher.fetch(locator, validators=validators)
+                  if validators else self.fetcher.fetch(locator))
+
+        if result.outcome == "not-modified":
+            if prior is None or not validators:
+                # A 304 to a request we did not make conditional, or with
+                # nothing held to be unchanged against, is the origin
+                # misbehaving. Recorded as a failure, never as a confirmation.
+                result = FetchResult(
+                    locator=locator, attempted_at=result.attempted_at, outcome="failure",
+                    error_detail="HTTP 304 Not Modified, but no conditional request was made",
+                    response_headers=result.response_headers,
+                    http_status=result.http_status, http_reason=result.http_reason)
+            else:
+                self._record_unchanged(source, locator, run_id, totals, result,
+                                       prior, "not-modified")
+                return
+        if (result.outcome == "success" and prior is not None
+                and result.sha256 == prior["sha256"]):
+            self._record_unchanged(source, locator, run_id, totals, result,
+                                   prior, "digest-match")
+            return
+
         content_name = "original.bin"
         if result.outcome == "success" and source.capture_format == "warc":
             # The registry said WARC (DR-0006, DR-0067); honour it. The record
@@ -517,24 +632,30 @@ class Collector:
 
     def _record_attempt(
         self, source: Source, locator: str, run_id: str, result: FetchResult,
-        acquisition: Acquisition,
+        acquisition: Acquisition, unchanged: tuple[str, str] | None = None,
     ) -> str:
+        """Record one attempt. `unchanged` is (holding id, basis) when the bytes
+        were established to be those of an existing holding (issue #50); the
+        attempt is then recorded with outcome 'unchanged'."""
         attempt_id = _uuid()
         headers = record_headers(result.response_headers)
+        outcome = "unchanged" if unchanged else result.outcome
+        holding_id, basis = unchanged if unchanged else (None, None)
         self.conn.execute(
             """
             INSERT INTO acquisition_attempt
                 (id, source_id, collector_run_id, locator, attempted_at,
                  outcome, error_detail, acquisition_route, acquisition_source,
                  original_captured_at, external_record_id, external_payload_digest,
-                 response_headers)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                 response_headers, unchanged_of_holding_id, unchanged_basis)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (attempt_id, source.id, run_id, locator, result.attempted_at,
-             result.outcome, result.error_detail, acquisition.route,
+             outcome, result.error_detail, acquisition.route,
              acquisition.acquisition_source, acquisition.original_captured_at,
              acquisition.external_record_id, acquisition.external_payload_digest,
-             Jsonb(headers) if headers is not None else None),
+             Jsonb(headers) if headers is not None else None,
+             holding_id, basis),
         )
         return attempt_id
 

@@ -275,6 +275,17 @@ the archive observed. They are also what makes a polite "has it changed since
 last time?" request possible, which is why they matter for not storing
 unchanged files again (issue #74; issue #50).
 
+**Unchanged capture / conditional request**
+When the archive asks a publisher for a file it already holds, it can ask "has
+this changed since the copy I have?" (a *conditional request*, using the
+publisher's `ETag` / `Last-Modified` labels) and the server may answer "no, same
+as before" without resending it. Whether or not the server supports that, the
+archive also compares the downloaded bytes with its latest copy. If they are
+identical it does not store them again; it records that it looked again at that
+time and found *no change*, pointing at the copy it confirmed. That record is
+evidence the page stayed the same between two dates (issue #50; the design is in
+`collector/README.md`).
+
 **Acquisition source vs. original publisher**
 A distinction this project always keeps: bytes recovered *from* an
 external archive (e.g., the Wayback Machine) record that archive and its

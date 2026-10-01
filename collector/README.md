@@ -31,12 +31,14 @@ Everything from that rehearsal was destroyed. The archive now holds the
 [DR-0093](../docs/decision-records/DR-0093-first-source-registrations.md).
 
 What the rehearsal did **not** exercise: behaviour under a slow or
-rate-limiting origin, conditional requests (none are made — an unchanged
-file is fetched and stored again), and the security check (the stand-in
+rate-limiting origin, conditional requests (none were made then — an
+unchanged file was fetched and stored again; that is now fixed, issue #50,
+[below](#unchanged-captures-are-not-stored-again-issue-50)), and the security check (the stand-in
 scanner ran, and recorded that it ran). It also showed gaps in the
 pipeline. One is still open: quarantine copies are never removed after Gate 1
-admits them, so the archive directory holds every capture twice. One is
-closed (issue #74, [below](#response-headers-are-preserved-issue-74)): the
+admits them, so the archive directory holds every capture twice. Two are
+closed: unchanged bytes are no longer stored again (issue #50, below), and
+(issue #74, [below](#response-headers-are-preserved-issue-74)): the
 response headers a publisher sends — `Last-Modified`, `ETag`, filenames,
 OFAC's publication metadata — were received by the fetcher and then discarded
 by the acquisition record, and are now kept. **The 2026-09-09 captures
@@ -355,17 +357,103 @@ bytes alone (PRES-009); `http_status` is still not recorded for successful
 attempts; the exact order and casing of the origin's headers is not kept. Each
 is a candidate follow-up, not a defect of this change.
 
-**Live archive database:** the schema is rebuilt from DDL, and the live
-database has no migration mechanism (issue #57). **Until this is applied to
-the archive server's database, `collector/run.py` fails on the first insert**,
-because it now names a column that is not there. Apply once, by a person,
-before the next real run:
+**Live archive database:** see "Applying this to the live archive database"
+below, which covers this change and issue #50's together.
+
+## Unchanged captures are not stored again (issue #50)
+
+A source fetched on a schedule whose bytes have not changed used to be
+preserved again anyway. Now the pipeline looks at what the archive already
+holds for the same `(source, locator)` and, when the origin's bytes are the
+same, **records that it looked and found no change instead of storing again**.
+
+**The design is the drafter's recommendation, assumed pending the founder's
+ruling at review.** The choices, and why:
+
+- **Two rules, one outcome.** `not-modified`: the pipeline sends the validators
+  it holds (`If-None-Match` / `If-Modified-Since`, from #74's recorded headers)
+  and the origin answers 304 with no bytes. `digest-match`: the bytes were
+  fetched (the origin offered no validators, or ignored them) and their SHA-256
+  equals the latest capture's. Digest-match is the rule that always works; the
+  conditional request additionally saves the transfer where the origin
+  supports it. Both are recorded as an `acquisition_attempt` with a new
+  **outcome `unchanged`**, plus `unchanged_of_holding_id` (the holding it
+  confirmed) and `unchanged_basis`. A DDL check holds the three together.
+- **"Looked again, same" is a recorded observation, not a new capture.** It is
+  evidence the page was unchanged at that time, which a historian can use, so it
+  is kept as an attempt rather than dropped. Nothing is quarantined, stored or
+  admitted: the bytes equal a holding that already passed Gate 1, so there is
+  nothing new for the gate to decide (DR-0069). The run's coverage counts it as
+  skipped with reason `unchanged`, never as acquired.
+- **Only the *latest* capture is compared.** If a page goes A → B → A, the
+  second A is a change and is captured, so the series (DR-0074) tells the
+  truth about history.
+- **Only `http` capture-format sources.** A `warc` capture stores a record that
+  carries its own capture time, so its bytes are never equal to the next
+  capture's even when the page is identical; deduplicating those needs a
+  payload digest and is **not done** here.
+- **Only while retention, access and rights are what the holding was made
+  under.** A policy change is a reason to capture again, not to confirm.
+- **Validators come only from a response that was admitted or confirmed.** A
+  rejected response's validators are never used: asking against them would let a
+  304 "confirm" a holding the origin has already moved on from.
+- **A 304 that was not asked for, or with nothing held, is a failure**,
+  recorded as such (§28), never as a confirmation.
+- **A fetcher that cannot make a conditional request** (the Telegram backfill's
+  caching wrapper) is simply called without validators; the digest rule still
+  applies.
+
+**Not done, deliberately:** the two 2026-09-09 holdings predate the capture
+series (see above) and have no series row, so they are not found; the next
+capture is stored once, joins the series, and later ones compare against it.
+`warc` sources are not deduplicated. `HttpFetcher` has been exercised against a
+loopback server only, not a live publisher, so whether a given publisher
+honours conditional requests is **unknown until a real run**; the digest rule
+does not depend on it.
+
+## Applying this to the live archive database
+
+The schema is rebuilt from DDL and the live database has no migration
+mechanism (issue #57). **Until the statements below are applied to the archive
+server's database, `collector/run.py` fails on its first insert** (it names
+columns and an outcome that are not there). Apply once, by a person, before
+the next real run, in one transaction. It combines issue #74's two statements
+and issue #50's, and is safe to run on a database that has neither:
 
 ```sql
+BEGIN;
+-- issue #74
 ALTER TABLE acquisition_attempt ADD COLUMN response_headers jsonb;
 ALTER TABLE acquisition_attempt ADD CONSTRAINT response_headers_are_a_map
     CHECK (response_headers IS NULL OR jsonb_typeof(response_headers) = 'object');
+-- issue #50
+ALTER TABLE acquisition_attempt DROP CONSTRAINT acquisition_attempt_outcome_check;
+ALTER TABLE acquisition_attempt ADD CONSTRAINT acquisition_attempt_outcome_check
+    CHECK (outcome IN ('success', 'failure', 'refused', 'not-found', 'unchanged'));
+ALTER TABLE acquisition_attempt
+    ADD COLUMN unchanged_of_holding_id uuid,
+    ADD COLUMN unchanged_basis text;
+ALTER TABLE acquisition_attempt ADD CONSTRAINT acquisition_attempt_unchanged_basis_check
+    CHECK (unchanged_basis IN ('not-modified', 'digest-match'));
+ALTER TABLE acquisition_attempt DROP CONSTRAINT failures_explain_themselves;
+ALTER TABLE acquisition_attempt ADD CONSTRAINT failures_explain_themselves
+    CHECK (outcome IN ('success', 'unchanged') OR error_detail IS NOT NULL);
+ALTER TABLE acquisition_attempt ADD CONSTRAINT unchanged_names_what_it_confirms CHECK (
+    (outcome = 'unchanged')
+    = (unchanged_of_holding_id IS NOT NULL AND unchanged_basis IS NOT NULL)
+    AND (outcome = 'unchanged' OR (unchanged_of_holding_id IS NULL AND unchanged_basis IS NULL))
+);
+ALTER TABLE acquisition_attempt ADD CONSTRAINT unchanged_points_at_a_holding
+    FOREIGN KEY (unchanged_of_holding_id) REFERENCES holding(id);
+COMMIT;
 ```
+
+**Verified here:** applied to a database built from the schema as it stood
+before #74, it produces exactly the constraints and columns of a database built
+from the current DDL (compared by `pg_get_constraintdef` and
+`information_schema`). **Not verified:** against the archive server's real
+database, which this session cannot reach; take a backup first, as for any
+change to it.
 
 ## Tests
 
@@ -379,6 +467,30 @@ Suites below, each test naming the requirement or Decision Record it verifies.
   `DR-0066 — collection creates no canonical knowledge by itself` red;
 - ignoring the registry's capture format turns seven `DR-0006` checks red —
   the `warc` source gets a bare body.
+
+**`test_unchanged_captures.py` — 32 tests** on issue #50, against the real
+pipeline, a real PostgreSQL database and real OCFL storage, with a loopback
+`http.server` for `HttpFetcher`'s conditional request. Verified to fail
+honestly, sabotaging one rule at a time:
+
+- disabling the digest comparison turns ten checks red (a duplicate holding,
+  object and quarantine file are created; the attempt is not recorded as
+  unchanged);
+- not honouring a 304 turns the two not-modified checks red;
+- dropping the retention/access/rights equivalence turns the two policy
+  checks red;
+- taking validators from any attempt, not only admitted or confirmed ones,
+  turns the rejected-response check red;
+- deduplicating `warc` sources turns the `warc` check red;
+- comparing against any earlier capture instead of the latest turns the
+  revert-to-an-older-version check red;
+- accepting a 304 with nothing held as "unchanged" turns the failure check red;
+- removing the DDL shape constraint turns three "database refuses" checks red;
+- `HttpFetcher` sending no conditional headers turns two checks red.
+
+One existing check, in `test_run.py`, changed on purpose: it expected a re-fetch
+of identical bytes to count as `items_acquired == 1`, which was the duplicate
+store this issue removes, and now expects `0`.
 
 **`test_response_headers.py` — 33 tests** on issue #74, against the real
 pipeline, a real PostgreSQL database and a loopback `http.server` that

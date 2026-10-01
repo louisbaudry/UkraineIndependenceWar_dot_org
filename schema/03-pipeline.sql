@@ -135,8 +135,12 @@ CREATE TABLE acquisition_attempt (
     collector_run_id uuid REFERENCES collector_run(id),
     locator         text NOT NULL,
     attempted_at    timestamptz NOT NULL,
+    -- 'unchanged' (issue #50): the origin's bytes are the ones the archive
+    -- already holds, so nothing new was preserved. It is a recorded
+    -- observation -- "looked again at this time, same as holding H" -- not a
+    -- failure and not a new capture; see unchanged_of_holding_id below.
     outcome         text NOT NULL
-        CHECK (outcome IN ('success', 'failure', 'refused', 'not-found')),
+        CHECK (outcome IN ('success', 'failure', 'refused', 'not-found', 'unchanged')),
     error_detail    text,
     retry_of_id     uuid REFERENCES acquisition_attempt(id),
     -- Set when the loss is established as permanent rather than pending retry.
@@ -171,8 +175,21 @@ CREATE TABLE acquisition_attempt (
     -- headers is not distinguished from that.
     response_headers jsonb,
 
+    -- Set exactly when outcome = 'unchanged': the existing holding this attempt
+    -- confirmed, and how. 'not-modified' = the origin answered a conditional
+    -- request with HTTP 304 and sent no bytes; 'digest-match' = the bytes were
+    -- fetched and their SHA-256 equals the latest preserved capture's. Either
+    -- way no quarantine item, no object and no holding were created.
+    unchanged_of_holding_id uuid,   -- FK added below, once `holding` exists
+    unchanged_basis text CHECK (unchanged_basis IN ('not-modified', 'digest-match')),
+
     CONSTRAINT failures_explain_themselves
-        CHECK (outcome = 'success' OR error_detail IS NOT NULL),
+        CHECK (outcome IN ('success', 'unchanged') OR error_detail IS NOT NULL),
+    CONSTRAINT unchanged_names_what_it_confirms CHECK (
+        (outcome = 'unchanged')
+        = (unchanged_of_holding_id IS NOT NULL AND unchanged_basis IS NOT NULL)
+        AND (outcome = 'unchanged' OR (unchanged_of_holding_id IS NULL AND unchanged_basis IS NULL))
+    ),
     CONSTRAINT external_acquisitions_name_their_source CHECK (
         acquisition_route = 'live-fetch'
         OR (acquisition_source IS NOT NULL)
@@ -317,6 +334,12 @@ CREATE TABLE holding (
         retention_tier <> 'metadata-only' OR completeness = 'metadata-only'
     )
 );
+
+-- acquisition_attempt precedes holding in this file, so the reference from an
+-- 'unchanged' attempt to the holding it confirmed (issue #50) is added here.
+ALTER TABLE acquisition_attempt
+    ADD CONSTRAINT unchanged_points_at_a_holding
+    FOREIGN KEY (unchanged_of_holding_id) REFERENCES holding(id);
 
 CREATE TABLE holding_representation (
     holding_id  uuid NOT NULL REFERENCES holding(id),
