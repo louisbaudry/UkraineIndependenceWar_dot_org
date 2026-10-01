@@ -40,6 +40,13 @@ rule at a time: the base-ref test disabled (3 failures), the base ignored so
 every numbered file is flagged (failures on the prose-citation and
 renamed-back cases), and the exit status forced to 0 (2 failures).
 
+**No Decision Record names this mechanism, by the founder's ruling of
+2026-10-01** (option A of three: no record; B was to supersede DR-0102, C to
+amend its provenance note). The check only enforces what DR-0095 and DR-0102
+already decided, so it carries no authority of its own; if the rule it
+enforces changes, DR-0102 is superseded in the usual way and the check
+follows.
+
 ## Register
 
 | ID | Title | Category | Status | Decided |
