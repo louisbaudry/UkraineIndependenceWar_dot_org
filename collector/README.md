@@ -33,12 +33,15 @@ Everything from that rehearsal was destroyed. The archive now holds the
 What the rehearsal did **not** exercise: behaviour under a slow or
 rate-limiting origin, conditional requests (none are made — an unchanged
 file is fetched and stored again), and the security check (the stand-in
-scanner ran, and recorded that it ran). It also showed two gaps in the
-pipeline that still stand: the response headers a publisher sends —
-`Last-Modified`, `ETag`, filenames, OFAC's publication metadata — are
-received by the fetcher and then discarded by the acquisition record; and
-quarantine copies are never removed after Gate 1 admits them, so the archive
-directory holds every capture twice. A third gap the rehearsal found —
+scanner ran, and recorded that it ran). It also showed gaps in the
+pipeline. One is still open: quarantine copies are never removed after Gate 1
+admits them, so the archive directory holds every capture twice. One is
+closed (issue #74, [below](#response-headers-are-preserved-issue-74)): the
+response headers a publisher sends — `Last-Modified`, `ETag`, filenames,
+OFAC's publication metadata — were received by the fetcher and then discarded
+by the acquisition record, and are now kept. **The 2026-09-09 captures
+predate that and have no headers on their attempts; they cannot be recovered,
+because the headers existed only at fetch time.** A third gap the rehearsal found —
 successive captures of one locator not linked through
 `capture_series_member` (DR-0074) — was independently fixed by the
 public-identifiers work merged the next day: `_admit()` now writes a series
@@ -301,9 +304,72 @@ request count for a complete `kpszsu` backfill (2 500-4 000 requests) is
 an estimate from its live post-id range at verification time, not
 confirmed by actually walking it to the bottom.
 
+## Response headers are preserved (issue #74)
+
+What the origin sends *with* the bytes — `Last-Modified`, `ETag`, the
+publisher's own filename and dates — is a statement by the origin about the
+thing acquired, and it exists only at fetch time. `FetchResult` always carried
+it; the acquisition record dropped it. It is now stored on the attempt, in
+`acquisition_attempt.response_headers` (jsonb), by `record_headers()` in
+`fetch.py`.
+
+**Placement is the drafter's recommendation, assumed pending the founder's
+ruling at review** (issue #74 left it open: `acquisition_attempt`,
+`FetchResult`, or alongside DR-0094's third-party-capture provenance, #52).
+It went on the attempt because a header describes one response, so it is
+per-attempt, and the attempt already carries `acquisition_route` and
+`original_captured_at`, which is what lets a reader tell the origin's
+statement from our own observation (§28). If the founder rules otherwise,
+this section and `test_response_headers.py` change with it.
+
+How the headers are kept, and why:
+
+- **Names are lower-cased.** HTTP names are case-insensitive, JSON keys are
+  not; stored as received, a lookup for `ETag` would miss `Etag`. This is what
+  conditional requests (#50) will read: `response_headers->>'etag'`.
+- **Repeated headers are joined with `, `** (RFC 9110 §5.3). `dict(headers)`
+  keeps only the *first* repeat, so `HttpFetcher` now joins at capture.
+- **Cookies are not recorded** (`Set-Cookie`, `Set-Cookie2`): session state
+  between the origin and one client, not a statement about the document, and
+  the nearest a response comes to carrying a credential. A deliberate drop,
+  named in `UNRECORDED_HEADERS`, reversible by changing one constant.
+- **A refusal or a 404 keeps its headers too** (`Retry-After`, `Date`,
+  `Server`): they are coverage facts about the failure. `HttpFetcher` now
+  captures them from `HTTPError`.
+- **A bad value is repaired, never raised** (§28, PRES-007): NUL and lone
+  surrogates, which jsonb cannot hold, become U+FFFD, and a malformed header
+  must not turn a successful acquisition into a crash.
+- **`NULL` means none recorded** — the request failed before a response. A
+  block holding only cookies is also `NULL`, not a JSON `null`.
+- **WARC recovery records the archived response's HTTP headers**, not the
+  WARC record's own (`WARC-Record-ID`, …). The old code passed the WARC
+  headers through as "response headers"; they are the archive's statements
+  about its capture and already live in `external_record_id` /
+  `original_captured_at`.
+- The database refuses anything but a name→value map
+  (`response_headers_are_a_map`), so the code and the DDL both hold the rule.
+
+**Not done, deliberately:** the headers live in the database only, not in a
+sidecar inside the OCFL object, so they are not yet reconstructible from the
+bytes alone (PRES-009); `http_status` is still not recorded for successful
+attempts; the exact order and casing of the origin's headers is not kept. Each
+is a candidate follow-up, not a defect of this change.
+
+**Live archive database:** the schema is rebuilt from DDL, and the live
+database has no migration mechanism (issue #57). **Until this is applied to
+the archive server's database, `collector/run.py` fails on the first insert**,
+because it now names a column that is not there. Apply once, by a person,
+before the next real run:
+
+```sql
+ALTER TABLE acquisition_attempt ADD COLUMN response_headers jsonb;
+ALTER TABLE acquisition_attempt ADD CONSTRAINT response_headers_are_a_map
+    CHECK (response_headers IS NULL OR jsonb_typeof(response_headers) = 'object');
+```
+
 ## Tests
 
-Two suites, each test naming the requirement or Decision Record it verifies.
+Suites below, each test naming the requirement or Decision Record it verifies.
 
 **`test_pipeline.py` — 40 tests** on the live path. Verified to fail honestly:
 
@@ -313,6 +379,25 @@ Two suites, each test naming the requirement or Decision Record it verifies.
   `DR-0066 — collection creates no canonical knowledge by itself` red;
 - ignoring the registry's capture format turns seven `DR-0006` checks red —
   the `warc` source gets a bare body.
+
+**`test_response_headers.py` — 33 tests** on issue #74, against the real
+pipeline, a real PostgreSQL database and a loopback `http.server` that
+exercises `HttpFetcher`'s header capture (not a live publisher). Verified to
+fail honestly, sabotaging one rule at a time:
+
+- not storing the headers turns nine checks red (the ETag, `Last-Modified`
+  and filename checks, the refusal's headers, both WARC checks, …);
+- recording cookies turns five red;
+- not lower-casing names turns sixteen red;
+- not repairing a NUL byte turns two red;
+- removing the `response_headers_are_a_map` constraint turns the two
+  "database refuses" checks red;
+- recording the WARC record's own headers instead of the archived HTTP headers
+  turns both WARC checks red;
+- reverting `HttpFetcher` to `dict(headers)` turns the repeated-header check
+  red;
+- dropping the headers of a refusal turns the two `HttpFetcher` refusal and
+  404 checks red.
 
 **`test_warc_ingest.py` — 57 tests** on the WARC reader and writer and on
 retrospective recovery, including the warcio cross-check in both directions
