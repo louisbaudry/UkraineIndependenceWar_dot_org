@@ -210,9 +210,13 @@ def run() -> int:
         last = conn.execute(
             "SELECT items_acquired, items_failed FROM collector_run "
             "ORDER BY started_at DESC LIMIT 1").fetchone()
+        # Issue #50: the one locator that did succeed serves bytes identical to the
+        # first run's, so it is confirmed unchanged rather than stored again. This
+        # check used to expect items_acquired == 1 -- the duplicate store that
+        # issue #50 removes -- and now expects 0; the failures are unchanged.
         check("PRES-007", "a run with failed acquisitions records them and exits "
               "non-zero without crashing",
-              code == 1 and last == (1, len(ofac["run_locators"]) - 1)
+              code == 1 and last == (0, len(ofac["run_locators"]) - 1)
               and "failed:" in out)
 
         # -- a paused source does not collect -------------------------------
