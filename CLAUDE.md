@@ -136,6 +136,11 @@ go stale first and what must never appear there.
    branch already holds the file you are about to create, the working paper
    you are about to deposit, or the Track A item you are about to start,
    **say so and ask before duplicating it**.
+
+   Then run `python3 docs/decision-records/check_numbering.py` (also before
+   opening a PR). It exits non-zero if the branch holds a numbered
+   `DR-nnnn-*.md` that `origin/main` does not carry — a number taken while
+   drafting (DR-0095, DR-0102; issue #86). Citing existing DRs never trips it.
 4. If the founder's request touches collection scope, personal data, legal
    posture or a document's status, re-read the "Standing rulings" below
    before proposing anything.

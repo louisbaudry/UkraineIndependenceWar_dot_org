@@ -27,6 +27,26 @@ guessed a number while drafting and collided with a concurrent branch;
 DR-0095 exists so a third collision is structurally impossible rather than
 merely another renumbering.
 
+**The rule has a check** (issue #86, after the number `DR-0108` was written
+into an unmerged branch on 2026-09-24 and nothing noticed):
+`python3 docs/decision-records/check_numbering.py` flags any numbered
+`DR-nnnn-*.md` file that `origin/main` does not carry, and exits non-zero.
+The test is the file's presence on `main`, never a mention of a number, so
+citations of existing records do not trip it. It covers DR filenames only;
+`CDR-P3-nn` numbers live inside working papers and are not checked.
+`docs/decision-records/tests/test_check_numbering.py` runs against real git
+repositories (6 checks) and was shown to fail under three sabotages, one
+rule at a time: the base-ref test disabled (3 failures), the base ignored so
+every numbered file is flagged (failures on the prose-citation and
+renamed-back cases), and the exit status forced to 0 (2 failures).
+
+**No Decision Record names this mechanism, by the founder's ruling of
+2026-10-01** (option A of three: no record; B was to supersede DR-0102, C to
+amend its provenance note). The check only enforces what DR-0095 and DR-0102
+already decided, so it carries no authority of its own; if the rule it
+enforces changes, DR-0102 is superseded in the usual way and the check
+follows.
+
 ## Register
 
 | ID | Title | Category | Status | Decided |
