@@ -352,6 +352,14 @@ commits to.
   not an approval, and a merge is not an enactment.
 - AI-drafted documents carry an **AI provenance** note per §80 and remain
   candidates until the founder approves them.
+- **This project has downstream consumers it cannot see.** Private
+  work of the founder's profiles this project's ontology (DR-0010 to
+  DR-0065), its vocabularies, and its identifier scheme (DR-0087 to
+  DR-0091), and cites its holdings by ARK. Before superseding one of
+  those records, changing a vocabulary's identifiers, or altering how
+  an ARK is formed, say so and ask the founder, with options. The
+  consumers are not named here and nothing about them belongs in this
+  repository.
 
 ## Documents: where things go and how they are made
 
