@@ -97,8 +97,8 @@ supersession never in-place (§77).
 |---|---|
 | Title | Phase III / Study 8 — Incident, Harm and Person Model for Civilian Harm and War Crimes (Working Paper 3.8) |
 | Version | 3.8 (draft 0.1) |
-| SHA-256 at deposit | **Not yet computed.** The paper's candidate records are named `CDR-pending-*` (DR-0102); the real `CDR-P3-nn` numbers are assigned at merge, and the hash is computed after that so it covers the text as merged |
-| Deposited | Drafted 2026-10-01 on branch `claude/wp-civilian-harm-model`; deposit completes at merge |
+| SHA-256 at deposit | `e7242074bb1ebd5b475b344ccf37210fb526ea3f376b22b5dec51f1e7b5bb4a8` — computed after the candidate records were numbered CDR-P3-47…51 at merge (DR-0102), so it covers the text as merged |
+| Deposited | 2026-10-01 (drafted and deposited the same day; the founder's interim ruling on named minors, 2026-10-01, is in §5 and open question 1) |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, as build card #71; not an upload |
 | Inputs | DR-0109 (all decisions), DR-0106, DR-0030, DR-0042, DR-0086, DR-0028, DR-0066, DR-0071; SPEC-0001, SPEC-0002; POL-0001 §5.4–5.9, §8; Phase I record §62–63; `schema/02-core.sql`, `schema/04-epistemic.sql`; the access-tier, quantity and classification-system vocabularies. **No external source retrieved**; every reference to an external legal instrument is unverified background knowledge and is marked as such in the paper |
-| Status | Candidate — five candidate DRs (`CDR-pending-harm-model-shape`, `-counts`, `-person-layer`, `-reconciliation`, `-vocabulary`) awaiting founder review |
+| Status | Candidate — five candidate DRs (`CDR-P3-47`, `-counts`, `-person-layer`, `-reconciliation`, `-vocabulary`) awaiting founder review |
