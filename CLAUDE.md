@@ -5,6 +5,8 @@
 > Read that file at the start of every session. Where this file contradicts it,
 > the shared file wins. This file only adds what is specific to this repo.
 
+Also read the shared [coding rules](https://github.com/louisbaudry/claude-shared/blob/main/CODING.md) and [non-coding rules](https://github.com/louisbaudry/claude-shared/blob/main/NON-CODING.md): this repo holds both code and an archive.
+
 This file governs every AI-assisted session in this repository. Read it whole
 before doing anything; it is short relative to what it prevents.
 [`AGENTS.md`](AGENTS.md) exists only as a pointer to this file, for tools
