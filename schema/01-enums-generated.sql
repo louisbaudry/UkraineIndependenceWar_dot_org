@@ -151,6 +151,7 @@ CREATE TYPE match_states AS ENUM (
 -- premis-event-types (authorised by DR-0060)
 CREATE TYPE premis_event_types AS ENUM (
     'capture',
+    'deletion',
     'fixity-check',
     'format-identification',
     'ingestion',

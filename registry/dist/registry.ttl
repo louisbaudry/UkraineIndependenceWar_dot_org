@@ -1055,6 +1055,13 @@ uiw:premis-event-types--migration-normalization
     skos:prefLabel "migration / normalization"@en ;
     skos:definition "Producing a preservation-motivated derivative. The derivative is a distinct object with its own PROV lineage (DR-0003) and may live as a later version of the same OCFL object (DR-0074)."@en .
 
+uiw:premis-event-types--deletion
+    a skos:Concept ;
+    skos:inScheme uiw:premis-event-types ;
+    skos:topConceptOf uiw:premis-event-types ;
+    skos:prefLabel "deletion"@en ;
+    skos:definition "Removing a file the project holds outside the archive. Used to discharge a quarantine copy once Gate 1 has admitted the item and the archive's own OCFL copy has been verified to carry the same bytes (DR-0069, issue #51). It never applies to archival content: redaction is the sole exception to OCFL immutability and is a separate, governed act (DR-0055)."@en .
+
 uiw:quantity-semantic-types
     a skos:ConceptScheme ;
     skos:prefLabel "quantity semantic type"@en ;

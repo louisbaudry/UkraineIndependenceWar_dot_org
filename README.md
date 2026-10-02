@@ -73,10 +73,10 @@ tested against a real database and real storage. But:
   file from Common Crawl or the Wayback Machine has been parsed against a live
   archive yet — the WARC reader is exercised only against files the test suite
   writes itself. [`collector/README.md`](collector/README.md) says exactly what is
-  and is not verified. The first run's rehearsal exposed gaps: one still
-  stands (quarantine copies never removed), two have since been fixed
-  (response headers are kept, issue #74; unchanged bytes are no longer stored
-  again, issue #50), and one that unrelated work fixed the next day (captures now join a capture
+  and is not verified. The first run's rehearsal exposed gaps: all
+  three since fixed (response headers are kept, issue #74; unchanged bytes are
+  no longer stored again, issue #50; quarantine copies are removed after
+  admission, issue #51), and one that unrelated work fixed the next day (captures now join a capture
   series on every admission) before the two branches were even aware of each
   other — see [DR-0093](docs/decision-records/DR-0093-first-source-registrations.md)
   for the residual it left.

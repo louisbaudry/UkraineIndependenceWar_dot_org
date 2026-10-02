@@ -254,8 +254,10 @@ acquired file lands first — whether fetched automatically or submitted by
 a third party — before Gate 1. While quarantined, material gets malware
 and format checks, and its provenance and privacy/legal exposure are
 assessed; critically, **none of the archive's integrity guarantees apply
-to it yet**. Undischarged quarantine copies (material sitting in
-quarantine rather than admitted or discarded) factor into the project's
+to it yet**. Once an item is admitted and the archive holds its bytes, the
+quarantine copy is *discharged*: removed, and the removal recorded as a
+`deletion` preservation event. Quarantine copies still sitting there (those
+left by earlier runs, and rejected material) factor into the project's
 storage/duplication accounting (`storage/measure.py`, A7; DR-0069).
 
 **Submitter claim**
