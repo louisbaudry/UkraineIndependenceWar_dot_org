@@ -42,9 +42,10 @@ projection, never folded into the measured total) — nothing about
 `ua-nsdc-sanctions` will need once identified.
 
 The measured duplication ratio (on-disk bytes ÷ `bytes_preserved`) gives a
-real number for the open gap `collector/README.md` documents — quarantine
-copies are never removed after Gate 1 admits them — instead of leaving it
-as an un-sized caveat.
+real number for the gap `collector/README.md` documents: quarantine copies
+were never removed after Gate 1 admitted them. New admissions now discharge
+their copy (issue #51), so the ratio measures what earlier runs left behind
+and any rejected material, instead of leaving it as an un-sized caveat.
 
 ## Library or direct implementation — WP 3.3 §8 Q1, resolved
 

@@ -624,7 +624,9 @@ class Collector:
 
         self._decide_gate1(quarantine_id, "admitted", "passed security check")
         captured_at = acquisition.original_captured_at or result.attempted_at
-        self._preserve(source, quarantine_id, locator, result, captured_at, content_name)
+        archived_sha256 = self._preserve(
+            source, quarantine_id, locator, result, captured_at, content_name)
+        self._discharge_quarantine(quarantine_id, result, archived_sha256)
         totals.acquired += 1
         totals.bytes_preserved += len(result.content or b"")
 
@@ -701,8 +703,9 @@ class Collector:
     def _preserve(
         self, source: Source, quarantine_id: str, locator: str, result: FetchResult,
         captured_at: datetime, content_name: str,
-    ) -> None:
-        """Gate 1 admission: quarantine -> OCFL -> canonical store -> series."""
+    ) -> str:
+        """Gate 1 admission: quarantine -> OCFL -> canonical store -> series.
+        Returns the sha256 (hex) the OCFL inventory records for the object."""
         tier = source.default_retention_tier
         root = self.roots.get(tier)
         if root is None:
@@ -769,6 +772,40 @@ class Collector:
                            f"admitted from quarantine {quarantine_id}")
         self._record_event("message-digest-calculation", object_id, None,
                            "success", "sha512 content address, sha256 fixity")
+        return fixity_digest
+
+    def _discharge_quarantine(
+        self, quarantine_id: str, result: FetchResult, archived_sha256: str,
+    ) -> None:
+        """Remove the quarantine copy of an admitted item (issue #51, DR-0069).
+
+        Runs only after `_preserve` has written the OCFL object and the
+        database rows. The file is removed only if three digests agree: the
+        one recorded at receipt, the one the OCFL inventory holds, and a fresh
+        hash of the file on disk. Disagreement means the quarantine copy is
+        not what was admitted, so it is kept for a person to examine. Any
+        failure is a recorded `deletion` event with the file kept, never an
+        exception that aborts the run (§28, PRES-007): the admission stands.
+        """
+        path = self.quarantine_dir / quarantine_id
+        received = result.sha256.hex()
+        try:
+            on_disk = hashlib.sha256(path.read_bytes()).hexdigest()
+            if not (on_disk == received == archived_sha256):
+                self._record_event(
+                    "deletion", None, quarantine_id, "failure",
+                    f"digests disagree (on disk {on_disk}, received {received}, "
+                    f"archive {archived_sha256}); quarantine copy kept")
+                return
+            path.unlink()
+        except OSError as exc:
+            self._record_event("deletion", None, quarantine_id, "failure",
+                               f"quarantine copy not removed: {exc}")
+            return
+        self._record_event(
+            "deletion", None, quarantine_id, "success",
+            f"quarantine copy removed after admission; sha256 {on_disk} "
+            "agrees across the file, the receipt record and the OCFL inventory")
 
     def _record_event(
         self, event_type: str, object_id: str | None,

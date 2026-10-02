@@ -35,9 +35,10 @@ rate-limiting origin, conditional requests (none were made then — an
 unchanged file was fetched and stored again; that is now fixed, issue #50,
 [below](#unchanged-captures-are-not-stored-again-issue-50)), and the security check (the stand-in
 scanner ran, and recorded that it ran). It also showed gaps in the
-pipeline. One is still open: quarantine copies are never removed after Gate 1
-admits them, so the archive directory holds every capture twice. Two are
-closed: unchanged bytes are no longer stored again (issue #50, below), and
+pipeline. All are now closed. Quarantine copies were never removed after
+Gate 1 admitted them, so the archive directory held every capture twice; they
+are now ([issue #51](#quarantine-copies-are-discharged-issue-51)). Unchanged
+bytes are no longer stored again (issue #50, below), and
 (issue #74, [below](#response-headers-are-preserved-issue-74)): the
 response headers a publisher sends — `Last-Modified`, `ETag`, filenames,
 OFAC's publication metadata — were received by the fetcher and then discarded
@@ -360,6 +361,46 @@ is a candidate follow-up, not a defect of this change.
 **Live archive database:** see "Applying this to the live archive database"
 below, which covers this change and issue #50's together.
 
+## Quarantine copies are discharged (issue #51)
+
+Gate 1 admission wrote the OCFL object and left the quarantine file where it
+was, so the archive directory held every admitted capture twice (the
+duplication `storage/measure.py` walks the quarantine directory to measure).
+Now, after `_preserve` has written the OCFL object and the database rows, the
+pipeline removes the quarantine copy and records it.
+
+**The design was the founder's ruling of 2026-10-02 (option A of three):** the
+removal is a `deletion` **preservation event** on the quarantine item, a new
+member of the `premis-event-types` vocabulary. Not a reuse of `fixity-check`
+(it would say "checked" when the thing that happened was "removed"), and not a
+`discharged_at` column (it would put the removal outside the event trail every
+other action on bytes sits in).
+
+- **Three digests must agree** before the file goes: a fresh SHA-256 of the
+  file on disk, the digest recorded at receipt, and the SHA-256 in the OCFL
+  inventory. If they disagree the file is **kept**: a quarantine copy that is
+  not what was admitted is something a person should look at, not delete.
+- **Storage-first, failures recorded not raised** (§26, §28, PRES-007). The
+  discharge runs only after the archive holds the bytes. A refusal or an
+  `OSError` is a `deletion` event with outcome `failure` and a stated reason,
+  the file stays, and the run carries on: the admission stands either way.
+- **The event names the software agent**, as the other mechanical events do
+  (DR-0097).
+- **Only admitted *and preserved* items are discharged.** A rejected item
+  (failed security check) stays in quarantine as the evidence of what was
+  refused. An item admitted under a `discard`/`metadata-only` tier is also
+  left: nothing was preserved, so no copy is duplicated, but the quarantine
+  file does persist. **Not done here:** deciding when rejected or unstored
+  quarantine material is finally disposed of; that is a retention question,
+  not this card's.
+- **The captures already on the archive server are not discharged.** The
+  2026-09-09…2026-09-29 runs left their quarantine copies, and this change
+  does not go back for them. Removing those is a one-off operation that
+  deserves its own verification against the real OCFL objects, by a person.
+  `storage/measure.py` will show how much it is.
+
+**Live archive database:** one statement, below.
+
 ## Unchanged captures are not stored again (issue #50)
 
 A source fetched on a schedule whose bytes have not changed used to be
@@ -417,8 +458,8 @@ The schema is rebuilt from DDL and the live database has no migration
 mechanism (issue #57). **Until the statements below are applied to the archive
 server's database, `collector/run.py` fails on its first insert** (it names
 columns and an outcome that are not there). Apply once, by a person, before
-the next real run, in one transaction. It combines issue #74's two statements
-and issue #50's, and is safe to run on a database that has neither:
+the next real run, in one transaction. It combines issue #74's two statements,
+issue #50's and issue #51's, and is safe to run on a database that has none of them:
 
 ```sql
 BEGIN;
@@ -445,6 +486,8 @@ ALTER TABLE acquisition_attempt ADD CONSTRAINT unchanged_names_what_it_confirms 
 );
 ALTER TABLE acquisition_attempt ADD CONSTRAINT unchanged_points_at_a_holding
     FOREIGN KEY (unchanged_of_holding_id) REFERENCES holding(id);
+-- issue #51
+ALTER TYPE premis_event_types ADD VALUE IF NOT EXISTS 'deletion';
 COMMIT;
 ```
 
@@ -467,6 +510,18 @@ Suites below, each test naming the requirement or Decision Record it verifies.
   `DR-0066 — collection creates no canonical knowledge by itself` red;
 - ignoring the registry's capture format turns seven `DR-0006` checks red —
   the `warc` source gets a bare body.
+
+**`test_quarantine_discharge.py` — 15 tests** on issue #51, against the real
+pipeline, a real PostgreSQL database and real OCFL storage. Verified to fail
+honestly, sabotaging one rule at a time:
+
+- not calling the discharge turns five checks red (the file stays; no event);
+- removing the digest comparison turns the two kept-on-mismatch checks red;
+- ignoring the OCFL inventory's digest (comparing only disk and receipt)
+  turns the archive-disagrees check red, which is why that case has its own
+  test;
+- catching the wrong exception turns the OSError-is-recorded check red;
+- discharging a rejected item too turns the rejected-stays check red.
 
 **`test_unchanged_captures.py` — 32 tests** on issue #50, against the real
 pipeline, a real PostgreSQL database and real OCFL storage, with a loopback

@@ -1597,6 +1597,15 @@
               "prefLabel": "migration / normalization"
             }
           }
+        },
+        {
+          "definition": "Removing a file the project holds outside the archive. Used to discharge a quarantine copy once Gate 1 has admitted the item and the archive's own OCFL copy has been verified to carry the same bytes (DR-0069, issue #51). It never applies to archival content: redaction is the sole exception to OCFL immutability and is a separate, governed act (DR-0055).\n",
+          "id": "deletion",
+          "labels": {
+            "en": {
+              "prefLabel": "deletion"
+            }
+          }
         }
       ],
       "satisfies_requirements": [
@@ -3142,6 +3151,7 @@
       "closed": true,
       "values": [
         "capture",
+        "deletion",
         "fixity-check",
         "format-identification",
         "ingestion",
