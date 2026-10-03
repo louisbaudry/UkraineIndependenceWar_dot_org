@@ -1,4 +1,4 @@
-# DR-pending-civilian-harm-incident-model — The incident, harm and person model for civilian harm and war crimes
+# DR-0112 — The incident, harm and person model for civilian harm and war crimes
 
 **Category:** data model / personal data / legal characterisation | **Status:** **Approved**
 **Decided:** 2026-10-03 by founder/principal editor — five rulings made one at a time, and this record's text approved the same session. One of them (Decision 3's minors point) was first ruled 2026-10-01.

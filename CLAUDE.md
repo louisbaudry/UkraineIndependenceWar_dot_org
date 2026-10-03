@@ -21,7 +21,7 @@ A durable historical evidence and knowledge repository about Ukraine's Second
 War of Independence — an archive first, a website last (record §1, Principle
 18). Its founding requirements are the immutable
 [Phase I record](docs/discovery/phase-1-requirements-discovery-record.md);
-every enacted decision since is a Decision Record (DR-0001…0111); the design
+every enacted decision since is a Decision Record (DR-0001…0112); the design
 lives in SPEC, POL, REQ and METH documents under DR-0046 document control;
 the code under `schema/`, `registry/`, `storage/`, `collector/`, `editorial/`,
 `publication/`, `export/` and `release/` implements those documents and is
@@ -324,7 +324,7 @@ commits to.
   each source is still verified and registered one at a time, by the
   founder, in three steps (UN monitoring and the Prosecutor General
   first).
-- **2026-10-03 — the civilian-harm model is ruled** ([`DR-pending-civilian-harm-incident-model`](docs/decision-records/DR-pending-civilian-harm-incident-model.md),
+- **2026-10-03 — the civilian-harm model is ruled** ([`DR-0112`](docs/decision-records/DR-0112-civilian-harm-incident-model.md),
   approved; the five candidates of [WP 3.8](docs/phase-3/working-papers/wp-3.8-civilian-harm-incident-model.md),
   option A each). Do not reopen without the founder. The ones most likely to
   be crossed by accident: an incident carries **no facts of its own** and no
