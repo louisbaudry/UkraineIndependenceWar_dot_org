@@ -77,7 +77,7 @@ Three external resources deal with history and could be adopted, mapped to, or c
 
 ## 7. Candidate decision records
 
-### CDR-pending-external-place-period-vocabularies
+### CDR-P3-52
 **Recommended: A now, with C reconsidered when the `place` entity is designed or PLATO publishes a stable release, whichever is first; B only when a place or period entity first needs an external identifier.** HISTO is not adopted. PeriodO is cited only as an `identifier-assignment`, never as a definition and never as a merge basis (SPEC-0002). *Alternatives:* B now (the identifier types before any entity uses them); C now (a mapping against a draft ontology whose file has not been read).
 
 **Steps before any of this is built:** the `place` work card, [#109](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/109); the PLATO ontology file and a PeriodO sample read directly; PeriodO's licence confirmed on its live site.

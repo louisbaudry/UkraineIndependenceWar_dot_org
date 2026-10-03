@@ -109,8 +109,8 @@ supersession never in-place (§77).
 |---|---|
 | Title | Phase III / Study 9 — External Place and Period Vocabularies: PLATO, PeriodO and HISTO (Working Paper 3.9) |
 | Version | 3.9 (draft 0.1) |
-| SHA-256 at deposit | To be computed at merge, after the candidate record is numbered (DR-0102), so the hash covers the text as merged |
+| SHA-256 at deposit | `33ef15f416b8a6d38c0fecd6bcc9ca991bb5d25fc17b10cb3dc787f1a3f3b797` — computed after the candidate record was numbered CDR-P3-52 at merge (DR-0102), so it covers the text as merged |
 | Deposited | 2026-10-03 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, answering a founder question of 2026-10-03; not an upload |
 | Inputs | SPEC-0001, SPEC-0002, DR-0010, DR-0012, DR-0044, DR-0045, `registry/vocabularies/identifier-types.yaml`, WP 3.5 §2.3, WP 3.8 §2; web search and page summaries of PLATO, PeriodO and HISTO retrieved 2026-10-03. **No primary ontology file was read**; items not confirmed are marked as such in the paper |
-| Status | Candidate — one candidate DR (`CDR-pending-external-place-period-vocabularies`) awaiting founder review |
+| Status | Candidate — one candidate DR (`CDR-P3-52`) awaiting founder review |
