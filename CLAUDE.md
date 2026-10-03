@@ -323,16 +323,17 @@ commits to.
   each source is still verified and registered one at a time, by the
   founder, in three steps (UN monitoring and the Prosecutor General
   first).
-- **2026-10-01 — no named minor is entered as a person until the founder or
-  counsel rules** (option A of three, the recommendation, put during review of
-  [WP 3.8](docs/phase-3/working-papers/wp-3.8-civilian-harm-incident-model.md)).
-  POL-0001 §5.7 says a minor is not structured unless the child's identity is
-  "legally significant and unavoidable"; whether a child killed in a strike
-  meets that is the question. The incident-level child count is unaffected.
-  **A ruling on this one point only**: it is not yet in a Decision Record,
-  which follows when WP 3.8's person-layer candidate (CDR-P3-49) is ruled on
-  as a whole. Do not reopen it without the founder, and do not enter a named
-  minor in the meantime.
+- **2026-10-03 — the civilian-harm model is ruled** ([`DR-pending-civilian-harm-incident-model`](docs/decision-records/DR-pending-civilian-harm-incident-model.md),
+  approved; the five candidates of [WP 3.8](docs/phase-3/working-papers/wp-3.8-civilian-harm-incident-model.md),
+  option A each). Do not reopen without the founder. The ones most likely to
+  be crossed by accident: an incident carries **no facts of its own** and no
+  new top-level tables; **counts are per source with no default roll-up**;
+  the person layer is **deceased adult victims only**, and **no named minor is
+  entered until the founder or counsel rules** (first ruled 2026-10-01); a
+  legal characterisation is **always attributed** and never a bare "war
+  crime"; legal-system vocabulary entries are registered only after being
+  checked against primary text. The record authorises no schema change,
+  collection, entry or publication.
 - **A person, not software, is the agent of record for a collection run**
   (DR-0093 §3) — deliberately, at the founder's direction, for the first
   runs. Unchanged. As of 2026-09-12
