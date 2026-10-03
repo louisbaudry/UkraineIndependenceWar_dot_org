@@ -4,7 +4,7 @@
 **Project:** Ukraine's Second War of Independence
 **Status:** CANDIDATE — AI-drafted, awaiting founder review.
 **Version:** 3.9 (draft 0.1)
-**Mandate:** founder question of 2026-10-03 — whether the archive should integrate HISTO (Aalto University's Semantic Computing Research Group), PeriodO, and/or the World Historical Gazetteer's PLATO ontology; the founder asked for a short evaluation mapped against SPEC-0001 (option 2 of three put to the founder: do nothing now / this paper / a decision record). No issue card exists yet; one is needed before a build step follows (§7).
+**Mandate:** founder question of 2026-10-03 — whether the archive should integrate HISTO (Aalto University's Semantic Computing Research Group), PeriodO, and/or the World Historical Gazetteer's PLATO ontology; the founder asked for a short evaluation mapped against SPEC-0001 (option 2 of three put to the founder: do nothing now / this paper / a decision record). The follow-on design work is carded as [#109](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/109).
 **Constraints inherited:** DR-0010 and DR-0012 (CIDOC-CRM world layer; identifiers and names as assertions); DR-0044 (territorial status as typed relations on period phenomena); DR-0045 (external identifiers); DR-0080 (registry process for open vocabularies); DR-0004 (nothing external becomes a project assertion by being cited); SPEC-0001 §2.1, §4; SPEC-0002 (identifier agreement never confirms identity on its own); WP 3.5 §2.3 (external identifiers are opaque and issuer-scoped).
 
 ### AI provenance (record §80)
@@ -80,7 +80,7 @@ Three external resources deal with history and could be adopted, mapped to, or c
 ### CDR-pending-external-place-period-vocabularies
 **Recommended: A now, with C reconsidered when the `place` entity is designed or PLATO publishes a stable release, whichever is first; B only when a place or period entity first needs an external identifier.** HISTO is not adopted. PeriodO is cited only as an `identifier-assignment`, never as a definition and never as a merge basis (SPEC-0002). *Alternatives:* B now (the identifier types before any entity uses them); C now (a mapping against a draft ontology whose file has not been read).
 
-**Steps before any of this is built:** a card on the board for the `place` work (none exists in this repository's issues as far as this session checked, which was not exhaustive); the PLATO ontology file and a PeriodO sample read directly; PeriodO's licence confirmed on its live site.
+**Steps before any of this is built:** the `place` work card, [#109](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/109); the PLATO ontology file and a PeriodO sample read directly; PeriodO's licence confirmed on its live site.
 
 ## 8. Open questions raised
 
