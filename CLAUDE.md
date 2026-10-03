@@ -7,6 +7,8 @@
 
 Also read the shared [coding rules](https://github.com/louisbaudry/claude-shared/blob/main/CODING.md) and [non-coding rules](https://github.com/louisbaudry/claude-shared/blob/main/NON-CODING.md): this repo holds both code and an archive.
 
+Continuous mode: true
+
 This file governs every AI-assisted session in this repository. Read it whole
 before doing anything; it is short relative to what it prevents.
 [`AGENTS.md`](AGENTS.md) exists only as a pointer to this file, for tools
@@ -190,8 +192,7 @@ Louis is the founder/principal editor. When anything needs a decision from the f
    should be answerable on its own terms.
 
 This applies to Decision Records, specification choices, policy rulings,
-methodology questions, branch and merge decisions, and ordinary implementation
-forks alike. It is not reserved for large decisions.
+methodology questions and ordinary implementation forks alike. It is not reserved for large decisions.
 
 ### Why
 
