@@ -292,7 +292,15 @@ evidence the page stayed the same between two dates (issue #50; the design is in
 A distinction this project always keeps: bytes recovered *from* an
 external archive (e.g., the Wayback Machine) record that archive and its
 capture time, separately from the original publisher and its own
-publication time (record §28).
+publication time (record §28). It also records *where in the archive* the
+record lives, so anyone can go back to the archive's own copy (DR-0094).
+
+**Truncated capture**
+A capture the archive itself cut short: Common Crawl, for instance, stops
+storing a page after about 1 MB, and says so in the record (`WARC-Truncated`).
+The project keeps such a capture rather than refusing it, records why it is
+short and how many bytes it holds, and files it as a *fragment*, never as an
+original, so it cannot be mistaken for the whole page (DR-0094, record §26).
 
 **Two-system write / storage-first**
 The rule that a preserved object is written to storage (OCFL) *before* its
