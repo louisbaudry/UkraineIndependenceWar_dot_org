@@ -102,3 +102,15 @@ supersession never in-place (§77).
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, as build card #71; not an upload |
 | Inputs | DR-0109 (all decisions), DR-0106, DR-0030, DR-0042, DR-0086, DR-0028, DR-0066, DR-0071; SPEC-0001, SPEC-0002; POL-0001 §5.4–5.9, §8; Phase I record §62–63; `schema/02-core.sql`, `schema/04-epistemic.sql`; the access-tier, quantity and classification-system vocabularies. **No external source retrieved**; every reference to an external legal instrument is unverified background knowledge and is marked as such in the paper |
 | Status | Candidate — five candidate DRs (CDR-P3-47 model shape, 48 counts, 49 person layer, 50 reconciliation, 51 vocabulary) awaiting founder review; one point of CDR-P3-49 (named minors) has an interim founder ruling, 2026-10-01 |
+
+## wp-3.9-external-place-and-period-vocabularies.md
+
+| Field | Value |
+|---|---|
+| Title | Phase III / Study 9 — External Place and Period Vocabularies: PLATO, PeriodO and HISTO (Working Paper 3.9) |
+| Version | 3.9 (draft 0.1) |
+| SHA-256 at deposit | To be computed at merge, after the candidate record is numbered (DR-0102), so the hash covers the text as merged |
+| Deposited | 2026-10-03 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, answering a founder question of 2026-10-03; not an upload |
+| Inputs | SPEC-0001, SPEC-0002, DR-0010, DR-0012, DR-0044, DR-0045, `registry/vocabularies/identifier-types.yaml`, WP 3.5 §2.3, WP 3.8 §2; web search and page summaries of PLATO, PeriodO and HISTO retrieved 2026-10-03. **No primary ontology file was read**; items not confirmed are marked as such in the paper |
+| Status | Candidate — one candidate DR (`CDR-pending-external-place-period-vocabularies`) awaiting founder review |
