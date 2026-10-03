@@ -117,6 +117,13 @@ class Acquisition:
     original_captured_at: datetime | None = None
     external_record_id: str | None = None
     external_payload_digest: str | None = None
+    # DR-0094 §3: where the record lives in the archive (file path/URL, or a
+    # Wayback timestamped URL). Required for the 'external-archive' route.
+    external_record_locator: str | None = None
+    # DR-0094 §5: set when the archive itself cut the payload short
+    # (WARC-Truncated); `captured_payload_bytes` is what was actually held.
+    truncation_reason: str | None = None
+    captured_payload_bytes: int | None = None
 
 
 def capture_series_id(source_id: str, locator: str) -> str:
@@ -274,6 +281,7 @@ class Collector:
         warc_path: Path | str,
         acquisition_source: str,
         configuration: dict,
+        archive_locator: str | None = None,
     ) -> str:
         """Recover a registered source's captures from an external archive's WARC.
 
@@ -292,7 +300,14 @@ class Collector:
           the payload held, or the acquisition is a recorded failure (DR-0075);
         - the complete WARC record is what is quarantined and preserved
           (DR-0006), with the archive as acquisition source and its capture
-          time kept distinct from our own (§28).
+          time kept distinct from our own (§28);
+        - `archive_locator` is where the file lives *in the archive* (a
+          Common Crawl path, a URL), recorded on every attempt so the
+          archive's own copy can be found again (DR-0094 §3); it defaults to
+          the local file's name, which says less;
+        - a record the archive cut short (WARC-Truncated) is admitted as a
+          fragment with the reason and the bytes held recorded, never refused
+          for being incomplete and never read as the whole page (DR-0094 §5).
         """
         source = self._active_source(source_id)
         if not source.locator:
@@ -310,6 +325,7 @@ class Collector:
             "acquisition_route": "external-archive",
             "acquisition_source": acquisition_source,
             "warc_file": warc_path.name,
+            "archive_locator": archive_locator or warc_path.name,
             "warc_file_sha256": hashlib.sha256(warc_path.read_bytes()).hexdigest(),
         }
         run_id = self._open_run(source, configuration)
@@ -330,7 +346,8 @@ class Collector:
                     self._skip(totals, "scope:outside-registered-source")
                     continue
                 try:
-                    self._ingest_record(source, record, run_id, totals, acquisition_source)
+                    self._ingest_record(source, record, run_id, totals, acquisition_source,
+                                        archive_locator or warc_path.name)
                 except PolicyViolation:
                     raise
                 except Exception as exc:  # noqa: BLE001
@@ -353,20 +370,39 @@ class Collector:
 
     def _ingest_record(
         self, source: Source, record: WarcRecord, run_id: str,
-        totals: RunTotals, acquisition_source: str,
+        totals: RunTotals, acquisition_source: str, archive_locator: str,
     ) -> None:
         attempted_at = _now()
         locator = record.target_uri or "(no WARC-Target-URI)"
+        status, http_headers, body = record.http()
+        digest_status, digest_detail = verify_payload_digest(record)
+        captured = record.date.isoformat() if record.date else "an unknown time"
+
+        # DR-0094 §5. The archive's own statement that it cut the payload
+        # short. An empty header value is still a statement that it did.
+        truncated = record.headers.get("warc-truncated")
+        truncation_reason = None
+        if truncated is not None:
+            truncation_reason = truncated.strip().lower()
+            if truncation_reason not in ("length", "time", "disconnect"):
+                truncation_reason = "unspecified"
         acquisition = Acquisition(
             route="external-archive",
             acquisition_source=acquisition_source,
             original_captured_at=record.date or attempted_at,
             external_record_id=record.record_id,
             external_payload_digest=record.headers.get("warc-payload-digest"),
+            external_record_locator=archive_locator,
+            truncation_reason=truncation_reason,
+            captured_payload_bytes=len(body) if truncation_reason else None,
         )
-        status, http_headers, _ = record.http()
-        digest_status, digest_detail = verify_payload_digest(record)
-        captured = record.date.isoformat() if record.date else "an unknown time"
+        if truncation_reason and digest_status == "mismatch":
+            # A digest the archive declared for the whole payload cannot match
+            # a payload it cut short; that is what truncation means, not a
+            # corrupted capture. Kept as a note on the fixity event.
+            digest_status = "truncated"
+            digest_detail = (f"payload truncated by the archive ({truncation_reason}); "
+                             f"{digest_detail}, as expected for a truncated record")
 
         if digest_status == "mismatch":
             result = FetchResult(locator, attempted_at, "failure",
@@ -394,7 +430,8 @@ class Collector:
             )
         self._admit(source, locator, run_id, totals, result, acquisition,
                     content_name="original.warc",
-                    digest_note=(digest_detail if digest_status == "verified" else None))
+                    digest_note=(digest_detail if digest_status in ("verified", "truncated")
+                                 else None))
 
     # -- run bookkeeping -----------------------------------------------------
 
@@ -625,7 +662,8 @@ class Collector:
         self._decide_gate1(quarantine_id, "admitted", "passed security check")
         captured_at = acquisition.original_captured_at or result.attempted_at
         archived_sha256 = self._preserve(
-            source, quarantine_id, locator, result, captured_at, content_name)
+            source, quarantine_id, locator, result, captured_at, content_name,
+            completeness="fragment" if acquisition.truncation_reason else "original")
         self._discharge_quarantine(quarantine_id, result, archived_sha256)
         totals.acquired += 1
         totals.bytes_preserved += len(result.content or b"")
@@ -649,13 +687,16 @@ class Collector:
                 (id, source_id, collector_run_id, locator, attempted_at,
                  outcome, error_detail, acquisition_route, acquisition_source,
                  original_captured_at, external_record_id, external_payload_digest,
+                 external_record_locator, truncation_reason, captured_payload_bytes,
                  response_headers, unchanged_of_holding_id, unchanged_basis)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (attempt_id, source.id, run_id, locator, result.attempted_at,
              outcome, result.error_detail, acquisition.route,
              acquisition.acquisition_source, acquisition.original_captured_at,
              acquisition.external_record_id, acquisition.external_payload_digest,
+             acquisition.external_record_locator, acquisition.truncation_reason,
+             acquisition.captured_payload_bytes,
              Jsonb(headers) if headers is not None else None,
              holding_id, basis),
         )
@@ -702,7 +743,7 @@ class Collector:
 
     def _preserve(
         self, source: Source, quarantine_id: str, locator: str, result: FetchResult,
-        captured_at: datetime, content_name: str,
+        captured_at: datetime, content_name: str, completeness: str = "original",
     ) -> str:
         """Gate 1 admission: quarantine -> OCFL -> canonical store -> series.
         Returns the sha256 (hex) the OCFL inventory records for the object."""
@@ -747,9 +788,9 @@ class Collector:
             INSERT INTO holding
                 (id, completeness, retention_tier, access_tier,
                  rights_permission, ocfl_object_id)
-            VALUES (%s, 'original', %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s)
             """,
-            (holding_id, tier, source.default_access_tier,
+            (holding_id, completeness, tier, source.default_access_tier,
              source.rights_permission, ocfl_object_id),
         )
         self.conn.execute(

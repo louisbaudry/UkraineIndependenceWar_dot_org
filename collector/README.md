@@ -239,6 +239,27 @@ What it does, and why:
   `not-found` attempt whose detail says when the archive saw it. A file that
   is truncated or malformed part-way stops the run there, keeps what was
   admitted, and records the fault in the run's `failure_details`.
+- **Where the record lives, and truncated captures (issue #52, DR-0094 §3,
+  §5).** Each attempt records `external_record_locator`: where the record is
+  *in the archive* (a Common Crawl file path, a URL, later a Wayback
+  timestamped URL), given to `ingest_warc` as `archive_locator` and defaulting
+  to the local file's name, which says less. WARC-Record-ID names a record
+  and does not say where to find it, so the two are kept apart; the schema
+  refuses an external-archive attempt without a locator. A record the archive
+  itself cut short (`WARC-Truncated`: Common Crawl stops near 1 MB) is
+  **admitted, not refused**, with `truncation_reason` as the archive stated it
+  (`length`, `time`, `disconnect`, anything else recorded as `unspecified`)
+  and `captured_payload_bytes`, the payload actually held. Its holding is a
+  `fragment`, never an `original`, so it cannot read as the whole page (§26).
+  A digest the archive declared for the whole payload cannot match a payload
+  cut short, so on a *truncated* record a mismatch is noted on the fixity
+  event as expected; on an untruncated record it is still a failure. The
+  schema ties the reason and the bytes together and allows them only on an
+  external-archive attempt. **Not done, deliberately:** DR-0094's optional
+  registry backfill-scope field and the automatic loss-triggered recovery
+  attempt are separate pieces of work; retrieving anything from an archive is
+  still not implemented, and the truncation handling has been tested only on
+  records this suite writes, not on a real Common Crawl truncation.
 - **Revisit records** (the archive saw the page unchanged) are counted as
   `warc:revisit` and not admitted. Whether they should become evidence of
   "unchanged at date" is WP 3.4 §9's open question, deliberately unresolved
@@ -459,7 +480,7 @@ mechanism (issue #57). **Until the statements below are applied to the archive
 server's database, `collector/run.py` fails on its first insert** (it names
 columns and an outcome that are not there). Apply once, by a person, before
 the next real run, in one transaction. It combines issue #74's two statements,
-issue #50's and issue #51's, and is safe to run on a database that has none of them:
+issue #50's, #52's and #51's, and is safe to run on a database that has none of them:
 
 ```sql
 BEGIN;
@@ -486,6 +507,18 @@ ALTER TABLE acquisition_attempt ADD CONSTRAINT unchanged_names_what_it_confirms 
 );
 ALTER TABLE acquisition_attempt ADD CONSTRAINT unchanged_points_at_a_holding
     FOREIGN KEY (unchanged_of_holding_id) REFERENCES holding(id);
+-- issue #52
+ALTER TABLE acquisition_attempt
+    ADD COLUMN external_record_locator text,
+    ADD COLUMN truncation_reason text
+        CHECK (truncation_reason IN ('length', 'time', 'disconnect', 'unspecified')),
+    ADD COLUMN captured_payload_bytes bigint CHECK (captured_payload_bytes >= 0);
+ALTER TABLE acquisition_attempt ADD CONSTRAINT archived_captures_say_where_they_live CHECK (
+    acquisition_route <> 'external-archive' OR external_record_locator IS NOT NULL);
+ALTER TABLE acquisition_attempt ADD CONSTRAINT truncation_names_what_was_held CHECK (
+    (truncation_reason IS NULL) = (captured_payload_bytes IS NULL));
+ALTER TABLE acquisition_attempt ADD CONSTRAINT only_archive_captures_are_truncated CHECK (
+    truncation_reason IS NULL OR acquisition_route = 'external-archive');
 -- issue #51
 ALTER TYPE premis_event_types ADD VALUE IF NOT EXISTS 'deletion';
 COMMIT;
@@ -522,6 +555,21 @@ honestly, sabotaging one rule at a time:
   test;
 - catching the wrong exception turns the OSError-is-recorded check red;
 - discharging a rejected item too turns the rejected-stays check red.
+
+**`test_archive_capture_provenance.py` — 17 tests** on issue #52, against the
+real pipeline, PostgreSQL and OCFL, with WARC files the suite writes. Verified
+to fail honestly, one rule at a time:
+
+- not recording the archive locator crashes the suite (the database refuses
+  the row, so no attempt exists to read; both layers are in play);
+- removing the truncation exemption turns four checks red (a truncated capture
+  is refused instead of admitted);
+- always holding as `original` turns the fragment check red;
+- making the exemption blanket (any digest mismatch tolerated) turns the
+  untruncated-mismatch-still-fails check red;
+- dropping each of the four DDL checks in turn (locator required,
+  reason-and-bytes together, archive-only truncation, the reason set) turns
+  its own `rejects` check red.
 
 **`test_unchanged_captures.py` — 32 tests** on issue #50, against the real
 pipeline, a real PostgreSQL database and real OCFL storage, with a loopback

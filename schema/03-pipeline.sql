@@ -160,6 +160,18 @@ CREATE TABLE acquisition_attempt (
                                         -- attempted_at is when *we* obtained it
     external_record_id text,            -- e.g. WARC-Record-ID
     external_payload_digest text,       -- as declared by the archive, e.g. sha1:BASE32
+    -- DR-0094 §3: where in the archive the record lives -- its file's path or
+    -- URL there, or a Wayback timestamped URL -- so a reader can go back to
+    -- the archive's own copy. Distinct from external_record_id, which names
+    -- the record but does not say where to find it.
+    external_record_locator text,
+    -- DR-0094 §5: a capture the archive itself cut short (Common Crawl stops
+    -- at about 1 MB; WARC-Truncated says why). Admitted, never refused, and
+    -- never read as the whole page: the reason and the payload bytes actually
+    -- held are recorded together, and the holding is a 'fragment'.
+    truncation_reason text
+        CHECK (truncation_reason IN ('length', 'time', 'disconnect', 'unspecified')),
+    captured_payload_bytes bigint CHECK (captured_payload_bytes >= 0),
 
     -- The HTTP response headers that came with the bytes (issue #74): what the
     -- origin itself said about the thing acquired -- Last-Modified, ETag, its
@@ -193,6 +205,16 @@ CREATE TABLE acquisition_attempt (
     CONSTRAINT external_acquisitions_name_their_source CHECK (
         acquisition_route = 'live-fetch'
         OR (acquisition_source IS NOT NULL)
+    ),
+    CONSTRAINT archived_captures_say_where_they_live CHECK (
+        acquisition_route <> 'external-archive'
+        OR external_record_locator IS NOT NULL
+    ),
+    CONSTRAINT truncation_names_what_was_held CHECK (
+        (truncation_reason IS NULL) = (captured_payload_bytes IS NULL)
+    ),
+    CONSTRAINT only_archive_captures_are_truncated CHECK (
+        truncation_reason IS NULL OR acquisition_route = 'external-archive'
     ),
     CONSTRAINT archived_captures_carry_their_capture_time CHECK (
         acquisition_route <> 'external-archive'
