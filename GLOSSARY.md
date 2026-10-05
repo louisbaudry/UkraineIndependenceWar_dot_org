@@ -700,6 +700,35 @@ Geneva Convention III Art. 13 protects prisoners of war against insults and
 public curiosity. The project applies it to imagery and details of POWs,
 including those who died in captivity.
 
+## Places and periods (WP 3.9, WP 3.10)
+
+**Gazetteer**
+A list of places with names, locations and identifiers, such as GeoNames or
+the World Historical Gazetteer. The archive may cite a gazetteer's identifier
+for a place, but never treats it as the project's own conclusion.
+
+**Attestation (PLATO)**
+In the Place Attestation Ontology, one claim that a place had a given name,
+shape or type during a given time, according to a given source. The archive's
+nearest equivalent is an assertion; PLATO bundles several facets in one
+node, the archive keeps one assertion family per kind of fact.
+
+**Period-phenomenon**
+A *happening* with a place and a time-span, such as an occupation or a phase
+of the war. Not the same as a named era ("Early Modern"), which is just a
+label an authority defines. PeriodO and PLATO hold the labels; the archive's
+period-phenomenon is the happening.
+
+**PeriodO**
+A public-domain collection of scholars' definitions of historical period
+labels (who says "Early Bronze Age" starts when, where). It holds nothing
+for Ukraine from 2014 onward, so it is of little use for this war.
+
+**Territorial extent**
+The area a control, claim or occupation relationship points at (for example
+the area a source maps as held by one side on a date). WP 3.10 proposes
+treating it as a kind of place whose shape is a source's claim.
+
 ## Suggested next terms
 
 The sections above now cover governance/process, archival/preservation
