@@ -121,7 +121,7 @@ supersession never in-place (§77).
 |---|---|
 | Title | Phase III / Study 10 — The `place` and `period-phenomenon` Entities (Working Paper 3.10) |
 | Version | 3.10 (draft 0.1) |
-| SHA-256 at deposit | computed at merge, after the five candidate records are numbered (DR-0102), so the hash covers the text as merged |
+| SHA-256 at deposit | `de1c09d94ac529e6144a0de66deb6daccbbcfdd0bb9598dbda360a8d1668ec41` — computed after the candidate records were numbered CDR-P3-53…57 at merge (DR-0102), so it covers the text as merged |
 | Deposited | 2026-10-05 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, as build card #109; not an upload |
 | Inputs | SPEC-0001, SPEC-0002, DR-0004, DR-0010, DR-0012, DR-0044, DR-0045, DR-0080, DR-0112, WP 3.8, WP 3.9; **primary files read 2026-10-05:** the PLATO ontology (Turtle, v0.9.0-alpha.1) with its README and CITATION.cff, and PeriodO's full dataset (`d.jsonld`: 501 authorities, 9,446 periods). Ukrainian place-code and renaming statements are unverified background knowledge and marked so in the paper |

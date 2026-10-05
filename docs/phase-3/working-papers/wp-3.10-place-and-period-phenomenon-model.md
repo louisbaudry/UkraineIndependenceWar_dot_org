@@ -117,19 +117,19 @@ Ukrainian places have, within living memory, been renamed (including by the deco
 
 Drafted as `CDR-pending-<slug>` and **numbered at merge** (DR-0102): each takes the next free `CDR-P3-nn`, in the order listed. Each is put to the founder separately.
 
-### CDR-pending-place-model
+### CDR-P3-53 (place-model)
 **Recommended:** `place` carries identity and entity status only; names, geometry (with a declared role and precision and its own `valid_time`), type, containment and external identifiers are assertion families; sovereignty is never a place attribute (§3.1). PLATO is a **concept-level design reference** (geometry roles, the separation of confidence, fuzziness and precision) and **no formal mapping to it is published** until it reaches a stable release (§2). *Alternatives:* adopt PLATO's attestation bundle wholesale (a different granularity from SPEC-0001, and bound to a draft ontology that changed four times in a week); a flat place table with columns (rejected by DR-0012's pattern).
 
-### CDR-pending-period-phenomenon-model
+### CDR-P3-54 (period-phenomenon-model)
 **Recommended:** `period-phenomenon` is a CRM E4 happening carrying identity and entity status only, grounding DR-0044's relations; a named era defined by an authority is a documentary assertion, never a `period-phenomenon` (§3.2). *Alternatives:* model every named era as a period entity (conflates a definition with a happening, contrary to DR-0044 and C-11).
 
-### CDR-pending-territorial-extent
+### CDR-P3-55 (territorial-extent)
 **Recommended: A.** An extent that a territorial-status relation points at is a `place` of type `territorial-extent`, whose identity is a source's series and whose geometry versions are `place-geometry` assertions with `valid_time`; two sources' extents are never merged (§3.3). *Alternatives:* B (geometry on the relation); C (a new entity).
 
-### CDR-pending-time-semantics
+### CDR-P3-56 (time-semantics)
 **Recommended:** `valid_time` is the world-time of what is asserted, for places and periods as for every family; a source's own date is held on the source; a span of documents mentioning something is a distinct labelled claim and never `valid_time`; PLATO's four-bound timespan is accepted as compatible and not adopted as a field (§2, §3.4). *Alternatives:* adopt PLATO's "no wider than the source can witness" as a stored rule (redundant with the existing `basis` discipline).
 
-### CDR-pending-gazetteer-identifier-types
+### CDR-P3-57 (gazetteer-identifier-types)
 **Recommended:** register **no** external place or period identifier types now; add `geonames`, and a Ukrainian official administrative code only after it is verified against its issuer, at the moment the first `place` needs one; **do not register `periodo`** unless a project concept later matches one of its definitions; registering `whg`, or publishing any alignment to WHG or PeriodO, is a separate outward-facing decision (§3.5). This supersedes WP 3.9's CDR-P3-52 only in closing its three "steps before this is built". *Alternatives:* register them now (unused vocabulary, and unverified codes); never register any (loses T3 batch confirmation for places).
 
 ## 7. Open questions raised
