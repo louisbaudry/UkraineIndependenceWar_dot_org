@@ -141,3 +141,55 @@ sources:
     exclusions: >
       The interactive map's UI/rendering layer itself (not evidentiary
       content); any donation/funding pages on the same site.
+
+  - key: liveuamap
+    class: war-facts-territorial-control
+    source_type: news-media
+    name: Liveuamap (Ukraine regional page)
+    # Added 2026-10-05, as a third candidate in the territorial-control /
+    # operations category, after the 403 that stopped its first check on
+    # 2026-09-21 cleared. Unlike the two above it is neither a geometry
+    # series nor an analytical narrative: it is a rolling feed of
+    # individually geolocated event reports (strikes, explosions, movements)
+    # aggregated from social media by crawlers and edited by the publisher.
+    # That makes it closer to the strike-tracking sources' subject than to
+    # territorial control; the class is kept only because it supplies the
+    # conservative may-preserve/UNVERIFIED rights default, and moving it is
+    # a registration-time question (see the verification record, section 5).
+    locator: https://ukraine.liveuamap.com/
+    locator_verified: 2026-10-05
+    run_locators:
+      - https://ukraine.liveuamap.com/
+    verification_note: >
+      Reachable 2026-10-05 (200, served through Cloudflare; the 403 seen
+      2026-09-21 did not recur). The page is server-rendered HTML carrying
+      a rolling window of roughly 30 recent event items plus a world-wide
+      banner (non-Ukraine items appear on it), so one capture is a
+      snapshot of the latest items only, not a history: a record needs
+      captures often enough that items are not lost, which the project
+      has no scheduler for. robots.txt names only a sitemap. The Terms of
+      Use (https://liveuamap.com/about#terms) say a user "may use our data
+      and maps ... partially, or in the whole in your work, with reference
+      to liveuamap.com", and that text and images from third-party social
+      networks stay under those networks' own terms; they do not mention
+      automated access. The publisher also sells a paid API ($150 a month,
+      200 requests a day, GeoJSON), which is the sanctioned structured
+      route; no undocumented data endpoint was probed. Rehearsed through
+      the real collector: see the verification record. UNVERIFIED as a
+      legal matter (POL-0001 section 10): the attribution grant is not
+      reviewed, and its relation to the paid API is unclear.
+    publisher: Liveuamap LLC
+    jurisdiction: US
+    primary_languages: [en]
+    coverage_start: 2014-01-01        # the publisher's own regional Ukraine map; UNVERIFIED, not checked
+    scope_rules: >
+      The Ukraine regional page's event items as served in the HTML:
+      report text, location, time and the link to the original social-media
+      source. The page body only.
+    exclusions: >
+      The map tiles and interface; the other regions' subdomains; the
+      third-party images, videos and posts the items link to (their own
+      terms apply and they are not fetched); advertising and subscription
+      notices; the paid API (not used).
+    grade_source_reliability: C
+    grade_item_credibility: "3"
