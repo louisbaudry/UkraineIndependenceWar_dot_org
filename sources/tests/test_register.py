@@ -117,6 +117,37 @@ def run() -> int:
             graphic, [], "expects graphic content but defaults to public")
 
     duplicated = copy.deepcopy(sources) + [copy.deepcopy(sources[0])]
+    # ---- registry-backed fields (issue #115, DR-0078) -------------------
+    # Each of these used to pass validate() and fail only at commit(), on
+    # the archive server, as a foreign-key or enum error.
+
+    check("DR-0078", "every shipped candidate's registry-backed fields are "
+          "registry members",
+          not [p for p in validate(sources, dependence)
+               if "registry (valid:" in p])
+    for field, bad in (
+            ("source_type", "media-aggregator"),
+            ("default_retention_tier", "forever"),
+            ("default_access_tier", "world"),
+            ("rights_permission", "may-do-anything"),
+            ("grade_source_reliability", "Z"),
+            ("grade_item_credibility", "9")):
+        mutated = copy.deepcopy(sources)
+        mutated[0][field] = bad
+        rejects("DR-0078", f"an unregistered {field} is refused at "
+                "validation, naming the value and the valid ones",
+                mutated, dependence, f"{field} {bad!r} is not a member")
+    mutated = copy.deepcopy(sources)
+    mutated[0]["capture_format"] = "pdf"
+    rejects("DR-0006", "a capture_format the collector cannot act on is "
+            "refused", mutated, dependence, "capture_format 'pdf'")
+    mutated = copy.deepcopy(sources)
+    mutated[0].pop("source_type")
+    problems = validate(mutated, dependence)
+    check("DR-0067", "a missing source_type is reported once, as missing, "
+          "not also as an unregistered value",
+          sum("source_type" in p for p in problems) == 1)
+
     rejects("DR-0067", "duplicate source keys are refused",
             duplicated, [], "duplicate source key")
 
