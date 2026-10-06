@@ -81,6 +81,16 @@ sources:
       each new day's URL before every run, the same manual-re-verification
       obligation eur-lex-sanctions carries for its own reason (DR-0105).
       Record in docs/sources/verification-war-facts-first-two.md.
+      2026-10-06: ISW publishes a Fair Use and Attribution Policy (last
+      revised 2026-01-08, linked from every report's footer) that limits use
+      to viewing and sharing in published form and quoting with attribution,
+      requires prior written permission for "incorporation of ISW Materials
+      into other datasets ... or systems", and bars redistribution "in bulk,
+      via API, or through automated means". Whether a private preserved copy
+      is "incorporation" is a legal question (POL-0001 section 10). HELD by
+      the founder's ruling of 2026-10-06 until ISW answers a written
+      permission request; see docs/sources/verification-war-facts-first-two.md
+      section 5.
     publisher: Institute for the Study of War
     jurisdiction: US
     primary_languages: [en]
@@ -105,11 +115,18 @@ sources:
     # on the page: the site is a JS-rendered SPA with no visible API link
     # in its raw HTML.
     locator: https://deepstatemap.live/
-    locator_verified: 2026-09-21
+    locator_verified: 2026-10-06
     run_locators:
       - https://deepstatemap.live/api/history/last
     verification_note: >
-      Fetched twice, 40 seconds apart: 627 479 bytes both times, same
+      Re-verified 2026-10-06: reachable, 200, 627 364 bytes both times (two
+      fetches 20 seconds apart, identical), map id 1791147415, 525 features,
+      content-type application/json, and the body's own `datetime` field
+      reads "04.10 22:56", so the map is republished when DeepState updates
+      it, not on every request; a run made between updates re-captures
+      identical bytes. Still no licence or terms text found on the site
+      (/terms, /privacy, /about, /license and /api return 404).
+      Original verification, 2026-09-21: fetched twice, 40 seconds apart: 627 479 bytes both times, same
       map id (1789884551), 525 features — stable within that window,
       though this is a genuinely live front-line dataset, so byte
       stability across longer gaps (a day, a week) is not expected the
