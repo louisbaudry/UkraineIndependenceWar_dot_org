@@ -466,7 +466,10 @@ has the full account, including what is not yet settled: DeepStateMap's
 actual licensing (not found anywhere on the site), ISW's daily
 re-verification burden (a new dated URL every day, more demanding than
 `eur-lex-sanctions`'s monthly cadence), and a third candidate in the same
-category (LiveUAmap) that this session's network could not reach (403).
+category (LiveUAmap), which a later session reached and verified on
+2026-10-05 — see [its verification record](../docs/sources/verification-liveuamap.md)
+(an event feed, not geometry; rights unreviewed beside a paid API; rehearsed,
+not registered).
 
 ## Strike-tracking candidates (`strike-tracking.yaml`, started 2026-09-21)
 
