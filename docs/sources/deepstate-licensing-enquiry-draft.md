@@ -23,7 +23,8 @@ and check it is genuinely theirs before sending.
 **Language.** The project's team is Ukrainian-speaking, so a Ukrainian version
 is included. **It was written by an AI assistant and has not been reviewed by
 a native speaker** (the same open item as issue #93 for the briefing pages).
-A native speaker should read it before it is sent.
+A native speaker should read it before it is sent, **including the
+Ukrainian spelling of your name in the signature, which is a guess.**
 
 **Before sending, the founder may want to decide:** whether to write as an
 individual (the controller today, DR-0100) or wait for the association
