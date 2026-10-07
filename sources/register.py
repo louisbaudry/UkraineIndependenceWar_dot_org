@@ -24,6 +24,8 @@ with its own record (DR-0070).
 from __future__ import annotations
 
 import argparse
+import functools
+import json
 import sys
 import uuid
 from datetime import date
@@ -56,6 +58,39 @@ POLICY_FIELDS = (
 # the date those were last fetched successfully; `verification_note` says
 # where the record of that fetch lives.
 VERIFICATION_FIELDS = ("locator_verified", "run_locators", "verification_note")
+
+# Candidate fields whose value must be a member of a registry vocabulary
+# (DR-0078): field -> (vocabulary id, axis for a two-axis vocabulary). The
+# database refuses a bad value too (an enum type, or a foreign key for the
+# open `source-types`), but only inside `commit()`, which runs on the archive
+# server against the real database. Checking here lets `--check` and
+# `--dry-run` catch it at review time (issue #115). Found 2026-10-05, when a
+# first draft's `source_type: media-aggregator` passed `--check` and was
+# refused only by the foreign key at commit.
+REGISTRY_FIELDS = {
+    "source_type": ("source-types", None),
+    "default_retention_tier": ("retention-tiers", None),
+    "default_access_tier": ("access-tiers", None),
+    "rights_permission": ("rights-permissions", None),
+    "grade_source_reliability": ("source-grades", "source-reliability"),
+    "grade_item_credibility": ("source-grades", "item-credibility"),
+}
+
+# `capture_format` is free text in the DDL, but the collector only knows how
+# to act on these two (DR-0006, DR-0067; collector/pipeline.py). Mirrored
+# here, not read from the registry, because no vocabulary holds it.
+CAPTURE_FORMATS = ("http", "warc")
+
+
+@functools.lru_cache(maxsize=1)
+def registry_values() -> dict:
+    """Vocabulary id -> member ids (or axis -> member ids), from the compiled
+    registry, the same file `schema/gen_enums.py` builds the database types
+    from. It is committed, so this needs no database and no network."""
+    compiled = json.loads(
+        (ROOT / "registry" / "dist" / "registry.json").read_text())
+    return {vocab: body["values"]
+            for vocab, body in compiled["enumerations"].items()}
 
 
 class RegistrationError(Exception):
@@ -173,6 +208,27 @@ def validate(
         for field in REQUIRED:
             if not source.get(field):
                 problems.append(f"{key}: missing required field {field!r}")
+
+        # DR-0078: a registry-backed field must hold a registry member. The
+        # missing-field check above has already reported an absent value, so
+        # only a present one is checked here.
+        for field, (vocab, axis) in REGISTRY_FIELDS.items():
+            value = source.get(field)
+            if value is None or value == "":
+                continue
+            members = registry_values()[vocab]
+            if axis is not None:
+                members = members[axis]
+            if str(value) not in members:
+                problems.append(
+                    f"{key}: {field} {value!r} is not a member of the "
+                    f"{vocab}{'/' + axis if axis else ''} registry "
+                    f"(valid: {', '.join(sorted(members))}) (DR-0078)")
+        capture = source.get("capture_format")
+        if capture is not None and capture not in CAPTURE_FORMATS:
+            problems.append(
+                f"{key}: capture_format {capture!r} is not one the collector "
+                f"handles (valid: {', '.join(CAPTURE_FORMATS)}) (DR-0006)")
 
         # PRES-012 / POL-0001 §5.9, mirrored from the schema constraint so the
         # failure is caught at review time rather than at insert time.
