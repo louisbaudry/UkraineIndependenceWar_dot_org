@@ -74,3 +74,6 @@ nothing was fetched from a candidate host, and nothing here registers anything.
 - [`census-a2-academic-bibliographies.md`](census-a2-academic-bibliographies.md)
   — hosts cited by Ukraine-titled papers in Crossref's reference metadata
   (2026-10-07, first of the four non-tooling A2 sources, issue #53).
+- [`census-a2-sanctions-link-graph.md`](census-a2-sanctions-link-graph.md)
+  — hosts linked from the registered sanctions authorities' own pages
+  (2026-10-07, second A2 source; reads those pages in memory, stores nothing).
