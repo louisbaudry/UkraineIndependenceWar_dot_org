@@ -1,4 +1,4 @@
-# DR-pending-telegram-egress-timing — No egress service for Telegram collection until a named trigger
+# DR-0113 — No egress service for Telegram collection until a named trigger
 
 **Category:** operations / preservation | **Status:** **Approved**
 **Decided:** 2026-10-07 by founder/principal editor, choosing option A of three put to them (rules `CDR-P3-59` of [WP 3.11](../phase-3/working-papers/wp-3.11-telegram-egress-options.md))

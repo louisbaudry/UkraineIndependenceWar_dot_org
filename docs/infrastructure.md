@@ -201,7 +201,7 @@ Only items 3 and 7 have been ruled on. Status for each lives on the board, not h
    decision, board issue #57).
 6. No CI: tests do not run on GitHub.
 7. One IP address for all Telegram collection (runbook risk). **Accepted
-   with named triggers** (DR-pending-telegram-egress-timing, WP 3.11): no
+   with named triggers** (DR-0113, WP 3.11): no
    egress service until a recorded signal from Telegram, a large new
    backfill, or unattended collection.
 8. **Planned, not in place: the memorial site** (DR-0109 Decisions 8 and

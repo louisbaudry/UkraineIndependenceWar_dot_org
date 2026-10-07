@@ -163,6 +163,7 @@ follows.
 | [DR-0110](DR-0110-un-hrmmu-registration.md) | Register the UN monitoring mission's monthly civilian-casualty update (`un-hrmmu-protection-of-civilians`) | operations / preservation | Approved — registration and runs executed on the archive server by the founder, not by this record | 2026-09-24 |
 | [DR-0111](DR-0111-ua-pgo-registration.md) | Register the Prosecutor General's monthly crime report, with its war-crimes rows (`ua-pgo-crime-statistics`): first run all 20 reports for 2025–2026, then one a month | operations / preservation | Approved — registration and runs to be executed on the archive server by the founder, not by this record | 2026-09-29 |
 | [DR-0112](DR-0112-civilian-harm-incident-model.md) | The incident, harm and person model for civilian harm and war crimes (rules CDR-P3-47…51) | data model / personal data / legal characterisation | Approved — authorises no schema change, collection, person entry or publication | 2026-10-03 |
+| [DR-0113](DR-0113-telegram-egress-timing.md) | No egress service for Telegram collection until a named trigger (rules CDR-P3-59) | operations / preservation | Approved — nothing bought, contracted or built; three triggers return the question to the founder | 2026-10-07 |
 
 ## Provenance of decisions
 
@@ -467,3 +468,8 @@ is recorded.
 DR-0112 was numbered at merge, from `DR-pending-civilian-harm-incident-model`,
 on 2026-10-03. DR-0111 was then the highest record on `origin/main`, and no
 unmerged branch drafted a new one. `CDR-P3-47…51` are discharged by it.
+
+DR-0113 was numbered at merge, from `DR-pending-telegram-egress-timing`,
+on 2026-10-07. DR-0112 was then the highest record on `origin/main`, and no
+unmerged branch drafted a new one. `CDR-P3-59` is discharged by it;
+`CDR-P3-58` and `CDR-P3-60` of WP 3.11 are still unruled.
