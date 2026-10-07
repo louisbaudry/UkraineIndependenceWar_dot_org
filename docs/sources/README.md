@@ -65,3 +65,12 @@ real output rather than preliminary assessment.
   [`docs/runbooks/A7-storage-bandwidth-measurement.md`](../runbooks/A7-storage-bandwidth-measurement.md)
   is actually run on the archive server, and list the result here
   alongside the entries above.
+
+## Census notes (A2)
+
+Evidence-source notes for WP 3.4 Track A item A2. Index-derived rankings only;
+nothing was fetched from a candidate host, and nothing here registers anything.
+
+- [`census-a2-academic-bibliographies.md`](census-a2-academic-bibliographies.md)
+  — hosts cited by Ukraine-titled papers in Crossref's reference metadata
+  (2026-10-07, first of the four non-tooling A2 sources, issue #53).
