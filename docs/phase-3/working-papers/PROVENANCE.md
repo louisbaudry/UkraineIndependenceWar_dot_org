@@ -126,3 +126,15 @@ supersession never in-place (§77).
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, as build card #109; not an upload |
 | Inputs | SPEC-0001, SPEC-0002, DR-0004, DR-0010, DR-0012, DR-0044, DR-0045, DR-0080, DR-0112, WP 3.8, WP 3.9; **primary files read 2026-10-05:** the PLATO ontology (Turtle, v0.9.0-alpha.1) with its README and CITATION.cff, and PeriodO's full dataset (`d.jsonld`: 501 authorities, 9,446 periods). Ukrainian place-code and renaming statements are unverified background knowledge and marked so in the paper |
 | Status | Candidate — five candidate DRs awaiting founder review |
+
+## wp-3.11-telegram-egress-options.md
+
+| Field | Value |
+|---|---|
+| Title | Phase III / Study 11 — Reaching Telegram Without a Single Point of Failure: Egress Options (Working Paper 3.11) |
+| Version | 3.11 (draft 0.1) |
+| SHA-256 at deposit | `147e8646ef7a3772d226851b2cbab0435254385143458d38959079d093a57c6a` — computed after the candidate records were numbered CDR-P3-58…60 (DR-0102), so it covers the text as merged |
+| Deposited | 2026-10-07 |
+| Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, answering a founder question of 2026-10-07; not an upload |
+| Inputs | `collector/telegram_backfill.py`, `collector/fetch.py`, `docs/runbooks/telegram-channel-backfill.md`, `docs/infrastructure.md`, DR-0067, DR-0071, DR-0072, DR-0093, DR-0094, DR-0100, DR-0102, DR-0106, DR-0107, DR-0109, POL-0001, `docs/legal/legal-review-brief.md`. **No external source retrieved and no provider evaluated**; statements about how a proxy or fetch service behaves are unverified background knowledge and marked so in the paper |
+| Status | Three candidate DRs. `CDR-P3-59` (timing) ruled option A by the founder 2026-10-07 and enacted in `DR-0113`; `CDR-P3-58` (requirements) and `CDR-P3-60` (scope) still awaiting founder review. The paper's text is unchanged, so its hash is too |
