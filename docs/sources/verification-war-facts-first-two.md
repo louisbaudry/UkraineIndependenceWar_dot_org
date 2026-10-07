@@ -127,7 +127,7 @@ which is the expected behaviour of a dated URL.
 `verification_note`): reachable, 627 364 bytes, two fetches identical, and the
 body's own `datetime` shows the map is republished when DeepState updates it.
 Still no licence text. It is registered by
-[a decision record](../decision-records/DR-pending-deepstatemap-registration.md).
+[a decision record](../decision-records/DR-0114-deepstatemap-registration.md).
 
 ## Sources
 

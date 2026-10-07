@@ -1,4 +1,4 @@
-# DR-pending-deepstatemap-registration — Register DeepStateMap's front-line snapshot
+# DR-0114 — Register DeepStateMap's front-line snapshot
 
 **Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-10-06 by founder/principal editor
 **Origin:** the founder's ruling of 2026-10-06 (option 1 of three: register `deepstatemap` now and hold `isw-orca` until ISW answers a written permission request), answering the question that closed the verification of issue #47 | **Supersedes:** — | **Superseded by:** —
