@@ -101,6 +101,34 @@ against them succeeds cleanly with zero documentary assertions.
 - Registration itself, per the standing ruling that this is the founder's
   act, per source.
 
+## 5. Update, 2026-10-06: ISW's use policy, and DeepStateMap re-verified
+
+**ISW.** The 2026-09-21 check read only the footer's "ALL RIGHTS RESERVED".
+ISW also publishes a *Fair Use and Attribution Policy* (last revised
+2026-01-08, linked from every report's footer at
+`https://understandingwar.org/fair-use-and-attribution-policy/`). Read in
+full on 2026-10-06, it says: use is limited, unless otherwise agreed in
+writing, to viewing and sharing materials in their published form for
+non-commercial purposes and quoting with attribution; **"incorporation of ISW
+Materials into other datasets, mapping platforms, analytic products or
+systems requires prior written permission from ISW"**; users may not
+"redistribute ISW Materials to third parties in bulk, via API, or through
+automated means"; attribution must read "Source: Institute for the Study of
+War". Archiving is not mentioned. Whether a private preserved copy counts as
+"incorporation" is a legal question this record does not answer
+(POL-0001 §10). **The founder ruled on 2026-10-06 to hold `isw-orca` until
+ISW answers a written permission request**; a draft is in
+[`isw-permission-request-draft.md`](isw-permission-request-draft.md). The
+index and the 2026-10-04 and 2026-10-05 reports were reachable on
+2026-10-06, and the 2026-10-06 report returned 404 before it was published,
+which is the expected behaviour of a dated URL.
+
+**DeepStateMap.** Re-verified 2026-10-06 (see the candidate's
+`verification_note`): reachable, 627 364 bytes, two fetches identical, and the
+body's own `datetime` shows the map is republished when DeepState updates it.
+Still no licence text. It is registered by
+[a decision record](../decision-records/DR-0114-deepstatemap-registration.md).
+
 ## Sources
 
 - [`sources/candidates/war-facts.yaml`](../../sources/candidates/war-facts.yaml) — both candidate entries
