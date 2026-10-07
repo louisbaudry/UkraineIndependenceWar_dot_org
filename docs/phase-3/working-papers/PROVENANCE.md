@@ -137,4 +137,4 @@ supersession never in-place (§77).
 | Deposited | 2026-10-07 |
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, answering a founder question of 2026-10-07; not an upload |
 | Inputs | `collector/telegram_backfill.py`, `collector/fetch.py`, `docs/runbooks/telegram-channel-backfill.md`, `docs/infrastructure.md`, DR-0067, DR-0071, DR-0072, DR-0093, DR-0094, DR-0100, DR-0102, DR-0106, DR-0107, DR-0109, POL-0001, `docs/legal/legal-review-brief.md`. **No external source retrieved and no provider evaluated**; statements about how a proxy or fetch service behaves are unverified background knowledge and marked so in the paper |
-| Status | Candidate — three candidate DRs (`CDR-P3-58` requirements, `CDR-P3-59` timing, `CDR-P3-60` scope) awaiting founder review |
+| Status | Three candidate DRs. `CDR-P3-59` (timing) ruled option A by the founder 2026-10-07 and enacted in `DR-pending-telegram-egress-timing`; `CDR-P3-58` (requirements) and `CDR-P3-60` (scope) still awaiting founder review. The paper's text is unchanged, so its hash is too |

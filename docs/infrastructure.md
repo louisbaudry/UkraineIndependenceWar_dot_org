@@ -187,7 +187,7 @@ section.
 ## 4. Gaps, in one list
 
 Each of these is either unknown to the repository or known not to be done.
-Only item 3 has been ruled on. Status for each lives on the board, not here.
+Only items 3 and 7 have been ruled on. Status for each lives on the board, not here.
 
 1. Server facts not recorded: OS version, PostgreSQL version, whether a
    control panel is present. The hostname and IP belong somewhere
@@ -200,7 +200,10 @@ Only item 3 has been ruled on. Status for each lives on the board, not here.
 5. No runbook for schema changes on the live database (DR-0105 open
    decision, board issue #57).
 6. No CI: tests do not run on GitHub.
-7. One IP address for all Telegram collection (runbook risk).
+7. One IP address for all Telegram collection (runbook risk). **Accepted
+   with named triggers** (DR-pending-telegram-egress-timing, WP 3.11): no
+   egress service until a recorded signal from Telegram, a large new
+   backfill, or unattended collection.
 8. **Planned, not in place: the memorial site** (DR-0109 Decisions 8 and
    10). A static site on its own IONOS Spain hosting package, separate from
    the archive server, generated from Gate 3-approved records and pushed
