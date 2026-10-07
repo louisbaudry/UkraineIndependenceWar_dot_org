@@ -729,6 +729,28 @@ The area a control, claim or occupation relationship points at (for example
 the area a source maps as held by one side on a date). WP 3.10 proposes
 treating it as a kind of place whose shape is a source's claim.
 
+## Reaching a source from the server (WP 3.11)
+
+**Egress**
+The address the server's outgoing requests appear to come from, as seen by
+the site that receives them. All collection leaves the archive server by
+one egress today, which is why a block of that address by Telegram would
+stop every Telegram channel at once (`docs/infrastructure.md` §2.5).
+
+**Provider**
+The company that would sell a service to the project (here, an egress or
+fetch service). Used in place of the trade word "vendor"; the meaning is the
+same.
+
+**Tunnel proxy**
+A service the archive's own program connects through to reach a site. For an
+HTTPS site the connection stays encrypted from the program to the site, so
+the provider carries the bytes without altering them (general behaviour,
+unverified against any provider; WP 3.11 §2). Distinct from a
+*fetch-on-your-behalf service*, which fetches the page itself and hands
+back its own copy, and which the archive cannot use without losing "the
+preserved bytes are what the origin served" (WP 3.11 §3, option B).
+
 ## Suggested next terms
 
 The sections above now cover governance/process, archival/preservation
