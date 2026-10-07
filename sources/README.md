@@ -451,6 +451,50 @@ source exists at the address given or that the formats are as assumed;
 for all seven, that the rights positions are correct — that is a legal
 question (POL-0001 §10), not a network one.
 
+## Registry-backed fields are checked at validation (issue #115, DR-0078)
+
+Until 2026-10-06 `register.py --check` and `--dry-run` accepted any value in
+`source_type`, the two tiers, `rights_permission` and the two grades. Only
+`commit()` refused a bad one, on a foreign key or an enum type, and
+`commit()` is what runs on the archive server against the real database.
+The rehearsal of `liveuamap` caught it by accident: a first draft's
+`source_type: media-aggregator` passed `--check` and was refused only at
+commit. `validate()` now checks each of these against the compiled registry
+(`registry/dist/registry.json`, the file `schema/gen_enums.py` builds the
+database types from) and names the value and the valid ones.
+
+**Audit of the candidate fields that reach the `source` table:**
+
+| Field | Backed by | Checked at validation |
+|---|---|---|
+| `source_type` | `source-types` (open, foreign key) | **yes, new** |
+| `default_retention_tier` | `retention-tiers` (closed, enum) | **yes, new** |
+| `default_access_tier` | `access-tiers` (closed, enum) | **yes, new** |
+| `rights_permission` | `rights-permissions` (closed, enum) | **yes, new** |
+| `grade_source_reliability`, `grade_item_credibility` | `source-grades`, one axis each | **yes, new** |
+| `capture_format` | no vocabulary; the collector acts on `http` and `warc` only | **yes, new**, as a list mirrored from the collector |
+| `collection_method`, `collection_cadence`, `default_sensitivity`, `jurisdiction` | free text in the DDL, no vocabulary | no. Nothing to check against; a vocabulary would be a founder decision |
+
+Not changed: the DDL still refuses the same values, so this adds the code
+half of "policy is enforced in code and in the database" and removes nothing.
+It reads the committed registry file, so a vocabulary edited without
+recompiling is not seen until `registry/compile.py` is run.
+
+`sources/tests/test_register.py` is now 48 checks, up from 39: the shipped
+candidates pass, each of the six registry-backed fields refuses a bad value,
+a bad `capture_format` is refused, and a missing `source_type` is reported
+once, as missing. Verified by sabotage, one rule at a time:
+
+| Sabotage | Result |
+|---|---|
+| the membership comparison replaced with `if False` | 6 checks red, one per field |
+| the `capture_format` check replaced with `if False` | 1 check red |
+| the two-axis lookup (`members[axis]`) removed | 5 checks red |
+
+The new check also found two bad fixtures: `test_register_classes.py` used
+`source_type: "list"`, which is not in the registry. They now use
+`government`.
+
 ## War-fact candidates (`war-facts.yaml`, started 2026-09-21)
 
 The first candidates outside the sanctions/export-control thematic area,
