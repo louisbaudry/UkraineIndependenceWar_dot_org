@@ -1,3 +1,10 @@
+<!-- claude-shared:begin (managed by claude-shared sync; do not edit) -->
+
+@.claude/shared/UNIVERSAL.md
+@.claude/shared/CODING.md
+
+<!-- claude-shared:end -->
+
 # Working instructions for Claude
 
 > Shared rules for working with Louis live in the public repo
