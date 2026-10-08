@@ -1,3 +1,10 @@
+<!-- claude-shared:begin (managed by claude-shared sync; do not edit) -->
+
+@.claude/shared/UNIVERSAL.md
+@.claude/shared/CODING.md
+
+<!-- claude-shared:end -->
+
 # AGENTS.md
 
 This file exists for tools that look for `AGENTS.md` specifically. The
