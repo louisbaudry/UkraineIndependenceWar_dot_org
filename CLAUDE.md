@@ -2,6 +2,7 @@
 
 @.claude/shared/UNIVERSAL.md
 @.claude/shared/CODING.md
+@.claude/shared/NON-CODING.md
 
 <!-- claude-shared:end -->
 
