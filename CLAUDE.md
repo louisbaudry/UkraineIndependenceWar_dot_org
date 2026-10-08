@@ -7,12 +7,9 @@
 
 # Working instructions for Claude
 
-> Shared rules for working with Louis live in the public repo
-> [`louisbaudry/claude-shared`](https://github.com/louisbaudry/claude-shared/blob/main/CLAUDE.md).
-> Read that file at the start of every session. Where this file contradicts it,
-> the shared file wins. This file only adds what is specific to this repo.
+> Shared rules for working with Louis are imported at the top of this file (the managed block above, synced from `louisbaudry/claude-shared`). Do not edit the synced copies in `.claude/shared/`; change the rules in `shared/` of `claude-shared`. This file only adds what is specific to this repo.
 
-Also read the shared [coding rules](https://github.com/louisbaudry/claude-shared/blob/main/CODING.md) and [non-coding rules](https://github.com/louisbaudry/claude-shared/blob/main/NON-CODING.md): this repo holds both code and an archive.
+Also read the shared [coding rules](.claude/shared/CODING.md); the non-coding rules (`shared/NON-CODING.md` in the private `claude-shared` repo) also apply: this repo holds both code and an archive.
 
 Continuous mode: true
 
