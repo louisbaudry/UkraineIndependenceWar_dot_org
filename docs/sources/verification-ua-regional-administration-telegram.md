@@ -1,19 +1,19 @@
 # Verification record — regional administration Telegram channels (DR-0109 step 2)
 
-**Status:** Verification record for six candidate registrations. Nothing here
+**Status:** Verification record for seven candidate registrations. Nothing here
 is registered, nothing is collected into the project's archive, and nothing is
 enacted by this document. Registering any one candidate is the founder's act,
 per source, on the archive server (DR-0067, DR-0093 §3); no Decision Record
 acts on this yet. **AI provenance (record §80):** drafted by an AI assistant
 (Anthropic Claude Code agent session); nothing has been reviewed by the founder.
-**Verified:** 2026-10-09, from a session.
-**Candidates:** the six `ua-oda-*-telegram` keys in
+**Verified:** 2026-10-09, from a session (first pass: six channels; second pass the same day: Odesa added, the remaining unconfirmed ones re-tried).
+**Candidates:** the seven `ua-oda-*-telegram` keys in
 [`sources/candidates/civilian-harm.yaml`](../../sources/candidates/civilian-harm.yaml).
 **Mandate:** [DR-0109](../decision-records/DR-0109-civilian-harm-and-memorial.md)
 Decision 5, step 2 ("regional administration (oblast) Telegram channels —
 per-incident reports"), issue #61. DR-0109 sizes step 2 at about two dozen
 channels and says it is weighed against the suspension of collection at scale
-(DR-0072) when put to the founder. Six of about two dozen are verified here;
+(DR-0072) when put to the founder. Seven of about two dozen are verified here;
 the rest are not.
 
 ## 1. Why every handle needs its provenance
@@ -49,6 +49,9 @@ videos were not inspected; no history was paged.
 | Kyiv Oblast | `koda.gov.ua` | `kyivoda` | 20 | 13 | 0 |
 | Poltava | `poda.gov.ua` | `poltavskaoda` (same as `poltavskaODA`) | 11 | 3 | 0 |
 | Vinnytsia | `vin.gov.ua` | `VinnytsiaODA` | 17 | 6 | 0 |
+| Odesa (second pass) | `oda.od.gov.ua` | `odesaoda` | 6 | 0 | 0 |
+
+Odesa's channel is small (834 subscribers) and showed no strike vocabulary in its 6 visible posts, so its yield is low. The larger `odeskaODA` (38.5K subscribers) is titled for the head of the administration by name and is not the channel the site links; it is left out.
 
 The Kharkiv site also links `synegubov`, whose description calls it the head of
 the administration's official channel. That is a person's channel, not the
@@ -64,12 +67,23 @@ founder's call.
 - `sumy_oda`: a Russian-language channel ("Sumy — Russia"), one post. **An
   impostor.** `kherson_oda` (one post, 2023) and `kyivregion` (15 subscribers,
   last post 2020) are dead lookalikes.
-- Channels that exist and look official but whose administration site could not
-  be reached or showed no link, so **provenance is not established**:
-  `chernigivskaODA` (site 403), `dnipropetrovskaODA` (403), `odeskaODA` (site
-  unreachable), `donetskaODA` (site 200, no link), `cherkaskaODA` (403),
-  `kirovohradskaODA` (403), `volynskaODA` (site 200, no link). Candidates for a
-  later pass from the archive server, which reaches hosts sessions cannot.
+- Channels that exist and look official but whose provenance **still is not
+  established after a second pass** (2026-10-09): from a session the only
+  route is the administration's own site, and these cannot be completed there.
+  - Sites that block sessions with a 403 even with a browser User-Agent and
+    the bare domain: Chernihiv (`cg.gov.ua`), Dnipropetrovsk (`dp.gov.ua`),
+    Cherkasy (`ck-oda.gov.ua`), Kirovohrad (`kr-admin.gov.ua`). The archive
+    server reaches hosts sessions cannot (as with gp.gov.ua), so these are
+    one short read-only check each there.
+  - Sites that load but show no Telegram link: Donetsk (`dn.gov.ua`, only
+    Facebook) and Volyn (`voladm.gov.ua`, only Facebook).
+  - The channel-side evidence, which is weaker because a channel can claim
+    anything: `chernigivskaODA`, `donetskaODA` and `kirovohradskaODA` name the
+    administration's site in their descriptions; `dnipropetrovskaODA`,
+    `cherkaskaODA` and `volynskaODA` are titled for the head of the
+    administration by name and carry no description. A reverse link alone does
+    not make a handle official, which is the lesson of `sumy_oda`.
+  - Wikidata, tried as an independent index, answered 429 from this session.
 - No channel was found for Luhansk, Sumy (real), Zhytomyr, Rivne, Lviv,
   Ivano-Frankivsk, Ternopil, Zakarpattia, Chernivtsi or the Donetsk head's
   personal channel under the handles tried; the handles tried were guesses, so
@@ -93,11 +107,12 @@ founder's call.
   `strike-tracking.yaml`). A daily run keeps new posts and nothing earlier.
 - **Impostors.** The rejected handles show the risk is real. Any registration
   must re-check that the site still links the handle.
-- **Scale decision.** Six candidates is step 2 begun, not step 2 done, and
+- **Scale decision.** Seven candidates is step 2 begun, not step 2 done, and
   registering any of them is collection under the DR-0072 suspension's scale
   question that DR-0109 says to put to the founder.
 
 ## 5. Not verified
 
 Reachability from the archive server; whether the channels have changed
-handle; image and video content; rights; the other ~18 oblasts.
+handle; image and video content; rights; the other ~17 oblasts. The six
+unconfirmed look-official channels above, which need the archive server.

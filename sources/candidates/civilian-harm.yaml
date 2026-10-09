@@ -488,3 +488,37 @@ sources:
       Every other channel of this administration or its head, and every
       channel not confirmed by an administration's own site (see the
       verification record for the handles rejected).
+
+  - key: ua-oda-odesa-telegram
+    class: UA-regional-administration-telegram
+    source_type: telegram-channel
+    name: Odesa Regional (Military) Administration (Telegram)
+    locator: https://t.me/s/odesaoda
+    locator_verified: 2026-10-09
+    run_locators:
+      - https://t.me/s/odesaoda
+    verification_note: >
+      Verified 2026-10-09 from a session, on a second pass. Provenance:
+      oda.od.gov.ua (200) lists https://t.me/odesaoda in its own link
+      block, so the handle is the administration's own. Channel preview 200
+      with 6 posts visible, none mentioning strikes, casualties or damage
+      and none carrying age-like victim detail: the channel is small (834
+      subscribers) and, on this sample, mostly not a strike-reporting feed.
+      The much larger channel odeskaODA (38.5K subscribers) is titled for the
+      head of the administration by name and is not what the site links, so
+      it is left out. Not rehearsed through the collector. Same ~20-post
+      preview limit as the other six. Record in
+      docs/sources/verification-ua-regional-administration-telegram.md.
+    publisher: Одеська обласна військова адміністрація
+    jurisdiction: UA
+    primary_languages: [uk]
+    coverage_start: 2022-02-24
+    scope_rules: >
+      The channel's posts as shown by Telegram's public preview, as named in
+      run_locators. The posts are preserved as published; nothing is
+      structured, and no victim named in a post is entered as a person
+      (DR-0071(b), DR-0109 Decision 4).
+    exclusions: >
+      Every other channel of this administration or its head, and every
+      channel not confirmed by an administration's own site (see the
+      verification record for the handles rejected).
