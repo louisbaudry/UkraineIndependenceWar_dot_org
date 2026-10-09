@@ -8,6 +8,9 @@
 
 ## Before calling work done
 
+- **Pass the docs gate in `UNIVERSAL.md`** before the PR: the `Docs:` line
+  in the PR body. Content changes most often leave stale indexes, READMEs,
+  glossaries and the backlog entry.
 - There is no test suite, so review is the check. Re-read the whole change
   as a diff and report what you checked: facts against sources, figures
   against the data, links that resolve, formatting that renders.
