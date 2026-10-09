@@ -96,6 +96,42 @@ classes:
     grade_source_reliability: B
     grade_item_credibility: "2"
 
+  UA-regional-administration-telegram:
+    # Jurisdiction first, topic second (2026-09-17 ruling). DR-0109 Decision 5
+    # step 2: the regional (oblast) administrations' own Telegram channels,
+    # which carry per-incident reports of strikes and casualties. Kept apart
+    # from UA-state-civilian-harm (monthly statistics workbooks, no names):
+    # these are daily news feeds in which victims can be named, so the
+    # personal-data profile is different even though the publisher is the
+    # same state.
+    collection_method: http
+    collection_cadence: daily
+    # Telegram's public preview is a rendered page, not a bare API body; the
+    # same reasoning as kpszsu and generalstaffzsu (DR-0006, DR-0067).
+    capture_format: warc
+    default_retention_tier: permanent
+    # Preserved, not exposed: these channels post photographs and videos of
+    # strike sites that were not inspected for this candidate, and PRES-012
+    # (POL-0001 §5.9) forbids a public default for sources expecting graphic
+    # material. private-preservation is the conservative placeholder; the
+    # tier is the founder's call at registration.
+    default_access_tier: private-preservation
+    rights_permission: may-preserve
+    rights_basis: >
+      UNVERIFIED — NOT LEGALLY REVIEWED. Official Ukrainian government
+      channels with no reuse terms found on the channel pages or on the
+      administrations' sites. Ukraine's Law No. 2811-IX Art. 8(1)(3)
+      excludes official administrative documents from copyright, but
+      whether a news post, with its photographs, is such a document was not
+      established. Preservation is the floor claimed; any reuse of text or
+      photographs waits for Part B of the legal brief (POL-0001 §10).
+    expects_graphic_content: true
+    # B: a state party to the conflict reporting on its adversary's strikes,
+    # read with care. "3": posts are first reports, often revised; the
+    # administration's figure at the time is the claim, not the final count.
+    grade_source_reliability: B
+    grade_item_credibility: "3"
+
 sources:
 
   - key: un-hrmmu-protection-of-civilians
@@ -254,3 +290,201 @@ sources:
       part of this candidate. Reports for years before 2025 are not
       in run_locators and were not looked for; collecting them is a
       separate decision.
+
+  - key: ua-oda-kharkiv-telegram
+    class: UA-regional-administration-telegram
+    source_type: telegram-channel
+    name: Kharkiv Regional (Military) Administration (Telegram)
+    locator: https://t.me/s/kharkivoda
+    locator_verified: 2026-10-09
+    run_locators:
+      - https://t.me/s/kharkivoda
+    verification_note: >
+      Verified 2026-10-09 from a session. Provenance: kharkivoda.gov.ua links t.me/kharkivoda, fetched 200 the
+      same day, so the handle is the administration's own and not a
+      lookalike. Channel preview 200 with 12 posts visible; 5 of them
+      mention strikes, casualties or damage, and 0 carry an age-like
+      detail that may identify a victim. Not rehearsed through the collector.
+      Only the newest ~20 posts are visible per fetch; history is reachable
+      through ?before=<message_id> but is not what a normal run retrieves
+      (see strike-tracking.yaml's header on the kpszsu backfill gap). Record
+      in docs/sources/verification-ua-regional-administration-telegram.md.
+    publisher: Харківська обласна військова адміністрація
+    jurisdiction: UA
+    primary_languages: [uk]
+    # Not looked up per channel; the channel's start date is unknown.
+    coverage_start: 2022-02-24
+    scope_rules: >
+      The channel's posts as shown by Telegram's public preview, as named in
+      run_locators. The posts are preserved as published; nothing is
+      structured, and no victim named in a post is entered as a person
+      (DR-0071(b), DR-0109 Decision 4).
+    exclusions: >
+      Every other channel of this administration or its head, and every
+      channel not confirmed by an administration's own site (see the
+      verification record for the handles rejected).
+
+  - key: ua-oda-kherson-telegram
+    class: UA-regional-administration-telegram
+    source_type: telegram-channel
+    name: Kherson Regional (Military) Administration (Telegram)
+    locator: https://t.me/s/khersonskaODA
+    locator_verified: 2026-10-09
+    run_locators:
+      - https://t.me/s/khersonskaODA
+    verification_note: >
+      Verified 2026-10-09 from a session. Provenance: khoda.gov.ua links t.me/khersonskaODA, fetched 200 the
+      same day, so the handle is the administration's own and not a
+      lookalike. Channel preview 200 with 7 posts visible; 4 of them
+      mention strikes, casualties or damage, and 2 carry an age-like
+      detail that may identify a victim. Not rehearsed through the collector.
+      Only the newest ~20 posts are visible per fetch; history is reachable
+      through ?before=<message_id> but is not what a normal run retrieves
+      (see strike-tracking.yaml's header on the kpszsu backfill gap). Record
+      in docs/sources/verification-ua-regional-administration-telegram.md.
+    publisher: Херсонська обласна військова адміністрація
+    jurisdiction: UA
+    primary_languages: [uk]
+    # Not looked up per channel; the channel's start date is unknown.
+    coverage_start: 2022-02-24
+    scope_rules: >
+      The channel's posts as shown by Telegram's public preview, as named in
+      run_locators. The posts are preserved as published; nothing is
+      structured, and no victim named in a post is entered as a person
+      (DR-0071(b), DR-0109 Decision 4).
+    exclusions: >
+      Every other channel of this administration or its head, and every
+      channel not confirmed by an administration's own site (see the
+      verification record for the handles rejected).
+
+  - key: ua-oda-zaporizhzhia-telegram
+    class: UA-regional-administration-telegram
+    source_type: telegram-channel
+    name: Zaporizhzhia Regional (Military) Administration (Telegram)
+    locator: https://t.me/s/zoda_gov_ua
+    locator_verified: 2026-10-09
+    run_locators:
+      - https://t.me/s/zoda_gov_ua
+    verification_note: >
+      Verified 2026-10-09 from a session. Provenance: zoda.gov.ua links t.me/zoda_gov_ua, fetched 200 the
+      same day, so the handle is the administration's own and not a
+      lookalike. Channel preview 200 with 8 posts visible; 8 of them
+      mention strikes, casualties or damage, and 1 carry an age-like
+      detail that may identify a victim. Not rehearsed through the collector.
+      Only the newest ~20 posts are visible per fetch; history is reachable
+      through ?before=<message_id> but is not what a normal run retrieves
+      (see strike-tracking.yaml's header on the kpszsu backfill gap). Record
+      in docs/sources/verification-ua-regional-administration-telegram.md.
+    publisher: Запорізька обласна військова адміністрація
+    jurisdiction: UA
+    primary_languages: [uk]
+    # Not looked up per channel; the channel's start date is unknown.
+    coverage_start: 2022-02-24
+    scope_rules: >
+      The channel's posts as shown by Telegram's public preview, as named in
+      run_locators. The posts are preserved as published; nothing is
+      structured, and no victim named in a post is entered as a person
+      (DR-0071(b), DR-0109 Decision 4).
+    exclusions: >
+      Every other channel of this administration or its head, and every
+      channel not confirmed by an administration's own site (see the
+      verification record for the handles rejected).
+
+  - key: ua-oda-kyiv-oblast-telegram
+    class: UA-regional-administration-telegram
+    source_type: telegram-channel
+    name: Kyiv Oblast Regional (Military) Administration (Telegram)
+    locator: https://t.me/s/kyivoda
+    locator_verified: 2026-10-09
+    run_locators:
+      - https://t.me/s/kyivoda
+    verification_note: >
+      Verified 2026-10-09 from a session. Provenance: koda.gov.ua links t.me/kyivoda, fetched 200 the
+      same day, so the handle is the administration's own and not a
+      lookalike. Channel preview 200 with 20 posts visible; 13 of them
+      mention strikes, casualties or damage, and 0 carry an age-like
+      detail that may identify a victim. Not rehearsed through the collector.
+      Only the newest ~20 posts are visible per fetch; history is reachable
+      through ?before=<message_id> but is not what a normal run retrieves
+      (see strike-tracking.yaml's header on the kpszsu backfill gap). Record
+      in docs/sources/verification-ua-regional-administration-telegram.md.
+    publisher: Київська обласна військова адміністрація
+    jurisdiction: UA
+    primary_languages: [uk]
+    # Not looked up per channel; the channel's start date is unknown.
+    coverage_start: 2022-02-24
+    scope_rules: >
+      The channel's posts as shown by Telegram's public preview, as named in
+      run_locators. The posts are preserved as published; nothing is
+      structured, and no victim named in a post is entered as a person
+      (DR-0071(b), DR-0109 Decision 4).
+    exclusions: >
+      Every other channel of this administration or its head, and every
+      channel not confirmed by an administration's own site (see the
+      verification record for the handles rejected).
+
+  - key: ua-oda-poltava-telegram
+    class: UA-regional-administration-telegram
+    source_type: telegram-channel
+    name: Poltava Regional (Military) Administration (Telegram)
+    locator: https://t.me/s/poltavskaoda
+    locator_verified: 2026-10-09
+    run_locators:
+      - https://t.me/s/poltavskaoda
+    verification_note: >
+      Verified 2026-10-09 from a session. Provenance: poda.gov.ua links t.me/poltavskaoda (the same channel as poltavskaODA; Telegram handles are case-insensitive), fetched 200 the
+      same day, so the handle is the administration's own and not a
+      lookalike. Channel preview 200 with 11 posts visible; 3 of them
+      mention strikes, casualties or damage, and 0 carry an age-like
+      detail that may identify a victim. Not rehearsed through the collector.
+      Only the newest ~20 posts are visible per fetch; history is reachable
+      through ?before=<message_id> but is not what a normal run retrieves
+      (see strike-tracking.yaml's header on the kpszsu backfill gap). Record
+      in docs/sources/verification-ua-regional-administration-telegram.md.
+    publisher: Полтавська обласна військова адміністрація
+    jurisdiction: UA
+    primary_languages: [uk]
+    # Not looked up per channel; the channel's start date is unknown.
+    coverage_start: 2022-02-24
+    scope_rules: >
+      The channel's posts as shown by Telegram's public preview, as named in
+      run_locators. The posts are preserved as published; nothing is
+      structured, and no victim named in a post is entered as a person
+      (DR-0071(b), DR-0109 Decision 4).
+    exclusions: >
+      Every other channel of this administration or its head, and every
+      channel not confirmed by an administration's own site (see the
+      verification record for the handles rejected).
+
+  - key: ua-oda-vinnytsia-telegram
+    class: UA-regional-administration-telegram
+    source_type: telegram-channel
+    name: Vinnytsia Regional (Military) Administration (Telegram)
+    locator: https://t.me/s/VinnytsiaODA
+    locator_verified: 2026-10-09
+    run_locators:
+      - https://t.me/s/VinnytsiaODA
+    verification_note: >
+      Verified 2026-10-09 from a session. Provenance: vin.gov.ua links t.me/VinnytsiaODA, fetched 200 the
+      same day, so the handle is the administration's own and not a
+      lookalike. Channel preview 200 with 17 posts visible; 6 of them
+      mention strikes, casualties or damage, and 0 carry an age-like
+      detail that may identify a victim. Not rehearsed through the collector.
+      Only the newest ~20 posts are visible per fetch; history is reachable
+      through ?before=<message_id> but is not what a normal run retrieves
+      (see strike-tracking.yaml's header on the kpszsu backfill gap). Record
+      in docs/sources/verification-ua-regional-administration-telegram.md.
+    publisher: Вінницька обласна військова адміністрація
+    jurisdiction: UA
+    primary_languages: [uk]
+    # Not looked up per channel; the channel's start date is unknown.
+    coverage_start: 2022-02-24
+    scope_rules: >
+      The channel's posts as shown by Telegram's public preview, as named in
+      run_locators. The posts are preserved as published; nothing is
+      structured, and no victim named in a post is entered as a person
+      (DR-0071(b), DR-0109 Decision 4).
+    exclusions: >
+      Every other channel of this administration or its head, and every
+      channel not confirmed by an administration's own site (see the
+      verification record for the handles rejected).
