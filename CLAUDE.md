@@ -8,15 +8,7 @@
 
 # Working instructions for Claude
 
-> How to work with Louis is shared across all his repos and lives once, in
-> the public [`louisbaudry/claude-shared`](https://github.com/louisbaudry/claude-shared).
-> A sync copies the rules into `.claude/shared/` and imports them at the top
-> of this file (the managed block above), so every session loads them
-> without fetching anything. Never edit those copies here; change the rules
-> in `shared/` of `claude-shared`. Where this file contradicts them, the
-> shared rules win. This file only adds what is specific to this repo: this
-> repo holds both code and an archive, so both the coding and non-coding
-> rules apply.
+> Shared rules for working with Louis are imported at the top of this file (the managed block above, synced from `louisbaudry/claude-shared`). Do not edit the synced copies in `.claude/shared/`; change the rules in `shared/` of `claude-shared`. This file only adds what is specific to this repo.
 
 Continuous mode: true
 
