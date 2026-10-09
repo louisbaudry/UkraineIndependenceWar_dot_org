@@ -44,8 +44,9 @@
 
 - Change what was asked. Don't rewrite tone, terminology or structure
   beyond the brief; flag what you would change and let Louis decide.
-- Keep terminology consistent with the repo's glossary or existing usage.
-  Where two terms collide, ask; don't pick silently.
+- Keep terminology consistent with the repo's `GLOSSARY.md` (rule in
+  `UNIVERSAL.md`) or existing usage. Where two terms collide, ask; don't
+  pick silently.
 - Translations and summaries keep meaning first: flag ambiguities and
   omissions in the PR instead of smoothing them over.
 
