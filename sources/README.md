@@ -542,11 +542,13 @@ independently verified Russian-side sources too.
 
 ### Step 2 begun: six regional administration Telegram candidates (2026-10-09)
 
-`civilian-harm.yaml` now also holds six `ua-oda-*-telegram` candidates
-(Kharkiv, Kherson, Zaporizhzhia, Kyiv Oblast, Poltava, Vinnytsia) in a new
+`civilian-harm.yaml` now also holds seven `ua-oda-*-telegram` candidates
+(Kharkiv, Kherson, Zaporizhzhia, Kyiv Oblast, Poltava, Vinnytsia, Odesa) in a new
 class `UA-regional-administration-telegram`. A handle was accepted only where
 the administration's own site links it; impostor and for-sale handles were
-rejected and about seven look-official channels remain unconfirmed. Drafted
+rejected and six look-official channels remain unconfirmed (four sites
+block sessions with a 403, two show no Telegram link; the archive server can
+finish them). Drafted
 at `private-preservation` because `register.py --check` refuses a public
 default for graphic-content sources (PRES-012) and the channels' media were
 not inspected: the tier is the founder's call. Nothing registered; each is a
