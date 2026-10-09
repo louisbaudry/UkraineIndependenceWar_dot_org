@@ -540,6 +540,20 @@ independently verified Russian-side sources too.
 
 ## Civilian-harm candidates (`civilian-harm.yaml`, started 2026-09-24)
 
+### Step 2 begun: six regional administration Telegram candidates (2026-10-09)
+
+`civilian-harm.yaml` now also holds six `ua-oda-*-telegram` candidates
+(Kharkiv, Kherson, Zaporizhzhia, Kyiv Oblast, Poltava, Vinnytsia) in a new
+class `UA-regional-administration-telegram`. A handle was accepted only where
+the administration's own site links it; impostor and for-sale handles were
+rejected and about seven look-official channels remain unconfirmed. Drafted
+at `private-preservation` because `register.py --check` refuses a public
+default for graphic-content sources (PRES-012) and the channels' media were
+not inspected: the tier is the founder's call. Nothing registered; each is a
+separate decision and, per DR-0109, step 2 is weighed against the DR-0072
+suspension of collection at scale. Record:
+[`verification-ua-regional-administration-telegram.md`](../docs/sources/verification-ua-regional-administration-telegram.md).
+
 DR-0109 Decision 5 fills this area in three steps, each source a separate
 decision. This file opens step 1 with **`un-hrmmu-protection-of-civilians`**:
 the UN Human Rights Monitoring Mission in Ukraine's monthly "Protection of
