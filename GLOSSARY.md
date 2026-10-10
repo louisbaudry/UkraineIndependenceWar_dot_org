@@ -189,6 +189,18 @@ backfill.md`). Both are Telegram's own **public web preview** — no
 account, login, or API access involved, the same page anyone's browser
 gets for that URL.
 
+**Regional administration channel** (oblast ODA / OVA)
+The official Telegram channel of a Ukrainian oblast's state administration
+(*oblasna derzhavna administratsiia*, ODA; *oblasna viiskova administratsiia*,
+OVA, once martial law made it military). DR-0109 Decision 5 step 2 treats
+these as per-incident civilian-harm feeds. A channel counts as the
+administration's own **only if the administration's own website links its
+handle**: guessed handles turned up for-sale and impostor channels, and a
+head of administration's personal channel is a different source from the
+administration's (`docs/sources/verification-ua-regional-administration-
+telegram.md`). The first one approved for registration is Kyiv Oblast
+(DR-0115).
+
 **OCFL**
 Oxford Common File Layout — the on-disk object storage layout this project
 uses for archival storage, versioned and self-describing independent of any
