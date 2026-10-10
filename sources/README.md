@@ -553,7 +553,9 @@ at `private-preservation` because `register.py --check` refuses a public
 default for graphic-content sources (PRES-012) and the channels' media were
 not inspected: the tier is the founder's call. Nothing registered; each is a
 separate decision and, per DR-0109, step 2 is weighed against the DR-0072
-suspension of collection at scale. Record:
+suspension of collection at scale. The first, Kyiv Oblast, was approved for registration by
+[DR-0115](../docs/decision-records/DR-0115-kyiv-oblast-telegram-registration.md)
+(2026-10-10; to be executed on the archive server); the other six are not. Record:
 [`verification-ua-regional-administration-telegram.md`](../docs/sources/verification-ua-regional-administration-telegram.md).
 
 DR-0109 Decision 5 fills this area in three steps, each source a separate

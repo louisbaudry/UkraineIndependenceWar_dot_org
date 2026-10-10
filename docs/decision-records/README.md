@@ -165,6 +165,7 @@ follows.
 | [DR-0112](DR-0112-civilian-harm-incident-model.md) | The incident, harm and person model for civilian harm and war crimes (rules CDR-P3-47…51) | data model / personal data / legal characterisation | Approved — authorises no schema change, collection, person entry or publication | 2026-10-03 |
 | [DR-0113](DR-0113-telegram-egress-timing.md) | No egress service for Telegram collection until a named trigger (rules CDR-P3-59) | operations / preservation | Approved — nothing bought, contracted or built; three triggers return the question to the founder | 2026-10-07 |
 | [DR-0114](DR-0114-deepstatemap-registration.md) | Register DeepStateMap's front-line snapshot (`deepstatemap`); `isw-orca` held pending ISW's written permission | operations / preservation | Approved — registration and first run to be executed on the archive server by the founder, not by this record | 2026-10-06 |
+| [DR-0115](DR-0115-kyiv-oblast-telegram-registration.md) | Register the Kyiv Oblast administration's Telegram channel (`ua-oda-kyiv-oblast-telegram`), `private-preservation`, first run plus a one-off backfill; DR-0109 step 2's first channel | operations / preservation | Approved — registration and runs to be executed on the archive server by the founder, not by this record | 2026-10-10 |
 
 ## Provenance of decisions
 
@@ -477,4 +478,8 @@ unmerged branch drafted a new one. `CDR-P3-59` is discharged by it;
 
 DR-0114 was numbered at merge, from `DR-pending-deepstatemap-registration`,
 on 2026-10-07. DR-0113 was then the highest record on `origin/main`, and no
+unmerged branch drafted a new one.
+
+DR-0115 was numbered at merge, from `DR-pending-kyiv-oblast-telegram-registration`,
+on 2026-10-10. DR-0114 was then the highest record on `origin/main`, and no
 unmerged branch drafted a new one.
