@@ -1,13 +1,15 @@
 # DR-pending-kyiv-oblast-telegram-registration — Register the Kyiv Oblast administration's Telegram channel
 
-**Category:** operations / preservation | **Status:** Proposed — AI-drafted, awaiting founder rulings on the two open questions below; nothing is enacted | **Decided:** — 
+**Category:** operations / preservation | **Status:** Proposed — both rulings made 2026-10-10; the record itself awaits the founder's approval; nothing is enacted | **Decided:** — 
 **Origin:** DR-0109 Decision 5, step 2; the founder chose Kyiv Oblast as the first channel on 2026-10-09 | **Supersedes:** — | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted 2026-10-09 by an AI assistant (Anthropic
 > Claude Code agent session). The only founder ruling behind it is the choice
-> of Kyiv Oblast as the first channel. The Decision section is the drafter's
-> proposal; two points (A and B below) need the founder's ruling before this
-> can be approved. Approval would authorise the registration and runs
+> of Kyiv Oblast as the first channel (2026-10-09) and, on 2026-10-10, the
+> two rulings below, each put as a question with three options and a
+> recommendation; on both the founder chose the recommended option. The
+> wording, reasons and consequences are the drafter's. The record itself is
+> not yet approved. Approval would authorise the registration and runs
 > described, **executed on the archive server by the founder** per *How to
 > execute*; this record executes nothing and this session cannot reach the
 > archive server.
@@ -52,7 +54,7 @@ person is entered (DR-0109 Decisions 4 and 7).
 `register.py --check` refuses a public default for a source expecting graphic
 content and the channel's media were not inspected):
 
-1. **`private-preservation`** (proposed). Preserved, not exposed. Costs nothing
+1. **`private-preservation`** (chosen). Preserved, not exposed. Costs nothing
    now; a tier can be changed later by a recorded decision.
 2. **`public`.** Refused by the registry while graphic content is expected;
    would need the expectation dropped after the media are inspected.
@@ -63,7 +65,7 @@ content and the channel's media were not inspected):
 
 1. **Daily preview run only** (cheapest). Keeps roughly the newest 20 posts a
    day. The archive would hold a thin sample while looking like a record.
-2. **Daily preview run plus a one-off paginated backfill** (proposed), done as
+2. **Daily preview run plus a one-off paginated backfill** (chosen), done as
    for DR-0106/0107. The backfill needs a person on the archive server and an
    operator-written loop (the project has none for this class), and its volume
    was not measured for this channel.
@@ -71,16 +73,17 @@ content and the channel's media were not inspected):
    backfill, but needs a scheduled job on the server (`docs/infrastructure.md`
    records none for collection; a credential question).
 
-## Decision (proposed; A and B open)
+## Decision
 
 On approval:
 
 1. **`ua-oda-kyiv-oblast-telegram` is registered** with its candidate field
    values at approval, by `register.py --commit --only ua-oda-kyiv-oblast-telegram`.
-2. **Access tier per A** (proposed: `private-preservation`).
-3. **Collection per B** (proposed: a first preview run, then a paginated
-   backfill whose depth the founder sets; the backfill start and volume are
-   recorded in *Executed*, not guessed here).
+2. **Access tier: `private-preservation`** (ruling A, 2026-10-10).
+3. **Collection: a first preview run, then a one-off paginated backfill**
+   (ruling B, 2026-10-10). The founder sets the backfill's depth when it is
+   run; its start, depth and volume are recorded in *Executed*, not guessed
+   here.
 4. **Scope:** the one locator `https://t.me/s/kyivoda` and its `?before=`
    pages. No other channel of this administration or its head, no media
    downloads beyond what the preview page itself carries, no link-following.
@@ -127,19 +130,18 @@ Expected: step 1 shows `t.me/kyivoda` and 200; step 3 is 1 discovered,
 
 1. The archive gains the first regional per-incident feed, beside the national
    counts of DR-0110 and DR-0111. Counts stay per source (DR-0112).
-2. **Under proposal B1 the record would be a sample, not a record.** B2 or B3
-   is needed for the source to serve the project's stated purpose.
+2. **The backfill is what makes this a record.** Without it, a daily preview
+   run would keep a sample of each day's posts (alternative B1).
 3. Posts may carry victims' names and media. Preserved privately; the legal
    position is untested (§14, POL-0001 §10).
-4. **A dated monthly or daily manual step may appear** if B1 or B3 is chosen;
-   the board, not this record, tracks it.
+4. **The backfill needs a loop the project does not yet have for this class,**
+   written and run by a person on the archive server; the board, not this
+   record, tracks it.
 5. Rights stay unverified. A channel can change its handle or be replaced; the
    provenance re-check (Decision 7) is part of every run.
 
 ## Open questions for the founder
 
-1. **A:** which access tier? Proposed: `private-preservation`.
-2. **B:** how to capture beyond the newest ~20 posts? Proposed: first run plus
-   a one-off paginated backfill.
+None. Both rulings are made; what remains is approving this record.
 
 *Executed:* not executed.
