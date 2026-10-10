@@ -1,15 +1,16 @@
-# DR-pending-kyiv-oblast-telegram-registration — Register the Kyiv Oblast administration's Telegram channel
+# DR-0115 — Register the Kyiv Oblast administration's Telegram channel
 
-**Category:** operations / preservation | **Status:** Proposed — both rulings made 2026-10-10; the record itself awaits the founder's approval; nothing is enacted | **Decided:** — 
-**Origin:** DR-0109 Decision 5, step 2; the founder chose Kyiv Oblast as the first channel on 2026-10-09 | **Supersedes:** — | **Superseded by:** —
+**Category:** operations / preservation | **Status:** Approved | **Decided:** 2026-10-10 by founder/principal editor
+**Origin:** DR-0109 Decision 5, step 2; the founder chose Kyiv Oblast as the first channel on 2026-10-09 and made the two rulings on 2026-10-10 | **Supersedes:** — | **Superseded by:** —
 
 > **AI provenance (§80).** Drafted 2026-10-09 by an AI assistant (Anthropic
 > Claude Code agent session). The only founder ruling behind it is the choice
 > of Kyiv Oblast as the first channel (2026-10-09) and, on 2026-10-10, the
 > two rulings below, each put as a question with three options and a
 > recommendation; on both the founder chose the recommended option. The
-> wording, reasons and consequences are the drafter's. The record itself is
-> not yet approved. Approval would authorise the registration and runs
+> wording, reasons and consequences are the drafter's. The founder approved
+> the record as drafted on 2026-10-10 (option A of three: approve and merge;
+> read first; amend). Approval would authorise the registration and runs
 > described, **executed on the archive server by the founder** per *How to
 > execute*; this record executes nothing and this session cannot reach the
 > archive server.
