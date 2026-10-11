@@ -219,6 +219,8 @@ When a live database's table structure falls behind the DDL files in
 exist yet. This project rebuilds databases from DDL instead of migrating
 them, so drift on a database with real data is fixed by backing up,
 rebuilding and reloading (DR-0105 *Executed*), not by running a migration.
+`schema/check_drift.py` reports it; `docs/runbooks/schema-reload.md` is the
+procedure.
 
 **Restore test**
 Actually restoring a backup somewhere and checking that it is complete,
