@@ -20,6 +20,7 @@ import subprocess
 import sys
 import tempfile
 import uuid
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -35,6 +36,7 @@ from register import commit, load_candidates, merge_class_defaults  # noqa: E402
 PASSES: list[str] = []
 FAILURES: list[str] = []
 DB = "uiw_run_test"
+date_today = runner.today
 
 
 def check(req: str, what: str, condition: bool) -> None:
@@ -249,6 +251,73 @@ def run() -> int:
         check("PRES-007", "a registered source whose candidate lists no verified "
               "run locators cannot be run",
               code == 2 and "no run_locators" in err and not fetcher.calls[len(ofac["run_locators"]) * 2:])
+
+        # -- a source with a per-run locator re-check (issue #58) -------------
+
+        eur = next(s for s in sources if s["key"] == "eur-lex-sanctions")
+        check("issue #58", "the eur-lex-sanctions candidate declares a per-run "
+              "re-check", bool(eur.get("recheck_before_run")))
+        commit(conn, [copy.deepcopy(eur)], [], person)
+        eur_files = {}
+        for i, locator in enumerate(eur["run_locators"]):
+            path = fixtures / f"eur-{i}.html"
+            path.write_text(f"<html><!-- eur fixture {i} --></html>")
+            eur_files[locator] = path
+        eur_fetcher = FixtureFetcher(eur_files)
+        eur_base = ["--source", "eur-lex-sanctions", *base]
+        runs_before = conn.execute("SELECT count(*) FROM collector_run").fetchone()[0]
+
+        runner.today = lambda: date(2026, 10, 11)
+        try:
+            code, out, _ = invoke([*eur_base, "--dry-run"], eur_fetcher)
+            check("issue #58", "a dry run needs no re-check date, but prints what "
+                  "to re-check before a real run",
+                  code == 0 and "before a real run, re-check" in out
+                  and "--locator-checked" in out)
+
+            code, _, err = invoke(eur_base, eur_fetcher)
+            check("issue #58", "a real run without --locator-checked is refused "
+                  "before any fetch and says what to check",
+                  code == 2 and "re-checked before every run" in err
+                  and "Consolidated texts" in err and not eur_fetcher.calls)
+
+            for bad, why, needle in (
+                ("2026-13-45", "a malformed date", "not an ISO date"),
+                ("tomorrow", "a non-date", "not an ISO date"),
+                ("2026-10-12", "a date in the future", "in the future"),
+                ("2026-10-08", "a date three days old", "more than 2 days old"),
+                ("2025-01-01", "a long-stale date", "more than 2 days old"),
+            ):
+                code, _, err = invoke([*eur_base, "--locator-checked", bad], eur_fetcher)
+                check("issue #58", f"{why} is refused before any fetch",
+                      code == 2 and needle in err and not eur_fetcher.calls)
+            check("issue #58", "no refused attempt left a run behind",
+                  conn.execute("SELECT count(*) FROM collector_run").fetchone()[0]
+                  == runs_before)
+
+            code, _, err = invoke(["--source", "ofac-sdn", *base,
+                                   "--locator-checked", "not-a-date"], fetcher)
+            check("issue #58", "a malformed date is refused even for a source "
+                  "that does not require a re-check", code == 2 and "not an ISO date" in err)
+
+            code, out, err = invoke([*eur_base, "--locator-checked", "2026-10-09"],
+                                    eur_fetcher)
+            check("issue #58", "a date two days old is accepted and the run completes",
+                  code == 0 and eur_fetcher.calls == list(eur["run_locators"]))
+            cfg = conn.execute(
+                "SELECT configuration FROM collector_run c JOIN source s "
+                "ON s.id = c.source_id WHERE s.name = %s", (eur["name"],)
+            ).fetchone()[0]
+            check("issue #58", "the run records the date the locators were checked",
+                  cfg.get("locator_checked") == "2026-10-09")
+            other = conn.execute(
+                "SELECT configuration FROM collector_run c JOIN source s "
+                "ON s.id = c.source_id WHERE s.name = %s LIMIT 1", (ofac["name"],)
+            ).fetchone()[0]
+            check("issue #58", "a source that does not require a re-check runs "
+                  "without the flag and records none", other.get("locator_checked") is None)
+        finally:
+            runner.today = date_today
 
     finally:
         conn.close()

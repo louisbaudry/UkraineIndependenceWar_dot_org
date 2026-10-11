@@ -307,7 +307,9 @@ claim. `eur-lex-sanctions` is the one exception worth flagging even so:
 its `run_locators` carry a dated CELEX suffix that advances roughly
 monthly, so `locator_verified` records when it was last checked, not a
 promise it stays current (see its candidate comment and verification
-record).
+record). Since 2026-10-11 the candidate also carries `recheck_before_run`
+and `collector/run.py` refuses a real run without `--locator-checked`
+(issue #58; `docs/runbooks/eur-lex-sanctions-run.md`).
 
 That is expected and handled. A 404 on first collection is a **recorded failed
 acquisition** (PRES-007), not a system fault, and the coverage record will say

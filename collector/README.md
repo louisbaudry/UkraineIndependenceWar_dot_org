@@ -76,9 +76,21 @@ invocation — candidate key, locators, verification date, User-Agent, code
 commit — is recorded in the run's configuration (DR-0070), and a run with
 failed acquisitions exits 1 after recording them (PRES-007).
 
-21 tests in `collector/tests/test_run.py`. The registration refusal and the
+A candidate may declare `recheck_before_run`, a check a person makes against
+the live publisher before every run (today only `eur-lex-sanctions`, whose
+dated-CELEX locators go stale; DR-0105 Decision 4, DR-0116,
+issue #58). A real run of such a source is refused unless `--locator-checked
+YYYY-MM-DD` is given, and the date must be today or at most two days back.
+The date is recorded on the run as `locator_checked`. The gate cannot tell
+whether the check was done, only that skipping it is no longer silent; a dry
+run does not need it. Steps: `docs/runbooks/eur-lex-sanctions-run.md`.
+
+34 tests in `collector/tests/test_run.py`. The registration refusal and the
 person-agent refusal were each removed in turn and the suite was seen to
-fail. The full sequence was also rehearsed live against both approved
+fail. For the locator gate (2026-10-11) five rules were removed one at a
+time and the suite went red each time: the required-date refusal, the
+future-date refusal, the stale-date refusal, recording the date on the run,
+and the whole call to the check. The full sequence was also rehearsed live against both approved
 sources in a throwaway database on 2026-09-08 (verification record §7).
 
 ## Two agents per run

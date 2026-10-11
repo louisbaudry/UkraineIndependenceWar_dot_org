@@ -176,12 +176,22 @@ sources:
     # acts"), not the Regulation alone. Re-verification cadence for the
     # dated CELEX suffix also ruled 2026-09-21: manual, before each run --
     # a person re-fetches eur-lex.europa.eu and updates run_locators, same
-    # as every other source (a person as agent of record, DR-0093 §3), no
-    # new tooling built for this. locator_verified below is a fetch date,
-    # not a promise the dated CELEX stays current until then. See
-    # verification_note and docs/sources/verification-eur-lex-sanctions.md.
+    # as every other source (a person as agent of record, DR-0093 §3). The
+    # check stays manual, but since 2026-10-11 (issue #58) collector/run.py
+    # refuses a real run without --locator-checked, so a skipped check shows
+    # in the record instead of passing silently (see recheck_before_run).
+    # locator_verified below is a fetch date, not a promise the dated CELEX
+    # stays current until then. See verification_note and
+    # docs/sources/verification-eur-lex-sanctions.md.
     locator: https://eur-lex.europa.eu/
     locator_verified: 2026-09-20
+    recheck_before_run: >
+      Open the base CELEX pages for Regulation 269/2014 (CELEX:32014R0269)
+      and Decision 2014/145/CFSP (CELEX:32014D0145) on eur-lex.europa.eu,
+      follow each "Consolidated texts" link, and confirm the newest dated
+      consolidated version is still the date in run_locators (currently
+      20260807). If the Council has amended the regime since, update both
+      dated CELEX suffixes in run_locators first.
     run_locators:
       - https://eur-lex.europa.eu/legal-content/EN/AUTO/?uri=CELEX:02014R0269-20260807
       - https://eur-lex.europa.eu/legal-content/EN/AUTO/?uri=CELEX:02014D0145-20260807
