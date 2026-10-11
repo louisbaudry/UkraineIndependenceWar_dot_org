@@ -1,4 +1,4 @@
-# DR-pending-locator-recheck-gate — The per-run locator check on `eur-lex-sanctions` becomes a recorded gate
+# DR-0116 — The per-run locator check on `eur-lex-sanctions` becomes a recorded gate
 
 **Category:** operations / preservation | **Status:** **Approved**
 **Decided:** 2026-10-11 by founder/principal editor, choosing the first of four options put to them

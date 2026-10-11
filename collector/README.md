@@ -78,7 +78,7 @@ failed acquisitions exits 1 after recording them (PRES-007).
 
 A candidate may declare `recheck_before_run`, a check a person makes against
 the live publisher before every run (today only `eur-lex-sanctions`, whose
-dated-CELEX locators go stale; DR-0105 Decision 4, DR-pending-locator-recheck-gate,
+dated-CELEX locators go stale; DR-0105 Decision 4, DR-0116,
 issue #58). A real run of such a source is refused unless `--locator-checked
 YYYY-MM-DD` is given, and the date must be today or at most two days back.
 The date is recorded on the run as `locator_checked`. The gate cannot tell

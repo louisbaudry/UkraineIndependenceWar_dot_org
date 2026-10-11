@@ -3,7 +3,7 @@
 **Status:** Operator runbook, not a Decision Record and not a controlled
 document under DR-0046. It enacts nothing; it is the steps for a person on
 the archive server. The rule it carries is DR-0105 Decision 4, enforced by
-DR-pending-locator-recheck-gate (issue #58).
+DR-0116 (issue #58).
 **Author:** AI assistant (Anthropic Claude Code agent session), 2026-10-11.
 **Not verified:** a real run of this source with the gate. The gate was
 tested against fixtures in a throwaway database (`collector/tests/test_run.py`).
