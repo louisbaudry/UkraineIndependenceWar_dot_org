@@ -22,6 +22,16 @@ before it fetches anything, and refuses at the first one that fails:
 
 `--dry-run` does all four and stops, printing what a run would attempt.
 
+A candidate may also carry `recheck_before_run`, the plain-language check a
+person must make against the live publisher before each run (today only
+`eur-lex-sanctions`, whose dated-CELEX locators go stale as the Council amends
+the regime; DR-0105 Decision 4, issue #58). For such a source a real run is
+refused unless `--locator-checked YYYY-MM-DD` says when that check was made,
+and the date must be recent. The date is recorded on the run. The gate cannot
+tell whether the check was *done*, or done well; it makes skipping it a
+visible act in the record instead of a silent one. A dry run does not require
+it but prints what to check.
+
 For a real run, it also ensures a versioned **software** `pipeline_agent`
 exists (self-registered by name and version, no human step) and passes it
 to `Collector` separately from `--agent`: the software agent names every
@@ -40,6 +50,7 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 import psycopg
@@ -65,6 +76,17 @@ DEFAULT_USER_AGENT = (
 
 class Refused(Exception):
     """The run must not proceed, and the message says why."""
+
+
+# A locator check is "immediately before the run" (DR-0105 Decision 4). Two
+# days tolerates a check made the evening before and a clock in another
+# timezone; a week-old date means the check was not part of this run.
+LOCATOR_CHECK_MAX_AGE_DAYS = 2
+
+
+def today() -> date:
+    """Today's date; a function so tests can move the clock."""
+    return date.today()
 
 
 # -- the four checks --------------------------------------------------------
@@ -129,6 +151,41 @@ def check_agent(conn: psycopg.Connection, agent_id: str,
     return kind, name
 
 
+def check_locator_recheck(candidate: dict, checked: str | None) -> date | None:
+    """Enforce the per-run locator re-check for a candidate that requires one.
+
+    Returns the date the operator says they checked, or None if none was given
+    and none is required. Refuses when one is required and missing, malformed,
+    in the future, or older than LOCATOR_CHECK_MAX_AGE_DAYS. A date given for
+    a source that does not require one is still validated and recorded, so a
+    typo is caught rather than stored.
+    """
+    required = candidate.get("recheck_before_run")
+    if checked is None:
+        if required:
+            raise Refused(
+                f"{candidate['key']} requires its locators to be re-checked "
+                "before every run (DR-0105 Decision 4):\n  "
+                + " ".join(str(required).split())
+                + "\n  Make that check, update run_locators if it moved, then "
+                "pass --locator-checked YYYY-MM-DD with today's date")
+        return None
+    try:
+        when = date.fromisoformat(checked)
+    except ValueError as exc:
+        raise Refused(f"--locator-checked {checked!r} is not an ISO date "
+                      "(YYYY-MM-DD)") from exc
+    now = today()
+    if when > now:
+        raise Refused(f"--locator-checked {checked} is in the future")
+    if now - when > timedelta(days=LOCATOR_CHECK_MAX_AGE_DAYS):
+        raise Refused(
+            f"--locator-checked {checked} is more than "
+            f"{LOCATOR_CHECK_MAX_AGE_DAYS} days old. The check is made "
+            "immediately before the run; make it again")
+    return when
+
+
 def open_root(path: Path, tier: str) -> StorageRoot:
     root = StorageRoot(path, tier)
     if root.namaste.exists():
@@ -174,6 +231,10 @@ def main(argv: list[str] | None = None, fetcher: Fetcher | None = None) -> int:
     parser.add_argument("--timeout", type=float, default=300.0,
                         help="per-request timeout in seconds")
     parser.add_argument("--allow-software-agent", action="store_true")
+    parser.add_argument("--locator-checked", metavar="YYYY-MM-DD",
+                        help="the date you re-checked this source's locators "
+                        "against the live publisher; required for a real run "
+                        "of a source that declares recheck_before_run")
     parser.add_argument("--dry-run", action="store_true",
                         help="check everything, fetch nothing, write nothing")
     args = parser.parse_args(argv)
@@ -198,9 +259,16 @@ def main(argv: list[str] | None = None, fetcher: Fetcher | None = None) -> int:
             print(f"user-agent {args.user_agent}")
             print(f"archive    {args.archive_root}")
 
+            recheck = candidate.get("recheck_before_run")
             if args.dry_run:
+                if recheck:
+                    print("\nbefore a real run, re-check: "
+                          + " ".join(str(recheck).split()))
+                    print("then pass --locator-checked YYYY-MM-DD")
                 print("\ndry run: nothing fetched, nothing written")
                 return 0
+
+            locator_checked = check_locator_recheck(candidate, args.locator_checked)
 
             roots, quarantine = open_roots(args.archive_root)
             # DR-0097: --agent stays the run's agent of record (DR-0093 §3);
@@ -216,6 +284,8 @@ def main(argv: list[str] | None = None, fetcher: Fetcher | None = None) -> int:
                 "candidate_key": args.source,
                 "candidate_file": candidate.get("_file"),
                 "locator_verified": verified.isoformat() if verified else None,
+                "locator_checked": (locator_checked.isoformat()
+                                    if locator_checked else None),
                 "run_locators": locators,
                 "user_agent": args.user_agent,
                 "timeout_seconds": args.timeout,

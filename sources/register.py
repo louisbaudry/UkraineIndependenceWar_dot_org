@@ -56,8 +56,12 @@ POLICY_FIELDS = (
 # fetched and which are still claims. `run_locators` lists the exact URLs a
 # first collection run would pass to the collector; `locator_verified` is
 # the date those were last fetched successfully; `verification_note` says
-# where the record of that fetch lives.
-VERIFICATION_FIELDS = ("locator_verified", "run_locators", "verification_note")
+# where the record of that fetch lives. `recheck_before_run` is the check a
+# person must make against the live publisher before every run, for a source
+# whose locators go stale between runs; collector/run.py then refuses a real
+# run without `--locator-checked` (issue #58).
+VERIFICATION_FIELDS = ("locator_verified", "run_locators", "verification_note",
+                       "recheck_before_run")
 
 # Candidate fields whose value must be a member of a registry vocabulary
 # (DR-0078): field -> (vocabulary id, axis for a two-axis vocabulary). The
