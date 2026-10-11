@@ -238,9 +238,11 @@ commits to.
   Resolved by a full backup-then-reload, verified lossless — see DR-0105's
   *Executed* section. The archive server's schema is now current, so this
   specific blocker will not recur for `uk-ofsi-consolidated`/
-  `bis-entity-list`/`seco-sanctions`'s eventual execution, but **writing an
-  actual runbook for schema drift is an open founder decision** —
-  [#57](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/57).
+  `bis-entity-list`/`seco-sanctions`'s eventual execution. The runbook for
+  schema drift is now written
+  ([`docs/runbooks/schema-reload.md`](docs/runbooks/schema-reload.md), with
+  `schema/check_drift.py`; founder ruling 2026-10-11, issue #57: runbook now,
+  migration mechanism later).
   **`ua-nsdc-sanctions`'s Cloudflare block was cleared 2026-09-22/23** by
   human-assisted (founder) browser access — its register
   (`drs.nsdc.gov.ua`) now has a confirmed bulk-export API, and all three

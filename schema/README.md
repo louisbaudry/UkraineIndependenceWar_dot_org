@@ -20,7 +20,8 @@ data exists would be speculation, not design.
 | `04-epistemic.sql` | Propositions, documentary assertions, evidence relations, the cross-family view |
 | `08-identifiers.sql` | Public identifiers (SPEC-0007): the identifier-assignment family, the register and its dispositions, `resolve_identifier()` |
 | `gen_enums.py` | Generates `01-` from `registry/dist/registry.json` |
-| `tests/` | Test suite and runner |
+| `check_drift.py` | Read-only report of how far a live database is behind these files (issue #57) |
+| `tests/` | Test suite and runner; `test_check_drift.py` tests `check_drift.py` |
 
 ## Running
 
@@ -32,6 +33,33 @@ python3 schema/gen_enums.py          # dist/ -> 01-enums-generated.sql
 
 `gen_enums.py --check` and `run.sh` exit non-zero on failure, so both can gate
 a release baseline (DR-0048).
+
+## Checking a live database for drift
+
+```bash
+python3 schema/check_drift.py --dbname uiw      # exit 0 none, 1 drift, 2 could not run
+PGUSER=... python3 schema/tests/test_check_drift.py   # 16 checks, needs CREATEDB
+```
+
+`check_drift.py` builds a scratch database from `0*.sql`, compares the
+catalogs of `public` (tables, columns, constraints, indexes, triggers,
+functions, views, enum values) with the live database's, and drops the
+scratch one. It reads the live database's catalogs, never its rows, and it
+does not compare row data, so a changed seed row is invisible to it. Exit 0
+means identical on those objects only. What to do on exit 1 is
+`docs/runbooks/schema-reload.md`; the project still has no migration
+mechanism.
+
+**Shown to fail** (2026-10-11): one rule removed at a time, the suite went
+red each time and was restored by `cp`. Constraints left out of the compared
+kinds (`source_identity_unique` no longer reported); column nullability and
+default left out of the comparison (a re-added column of the wrong type read
+as clean); `extra-in-live` reporting removed; the exit-2 path changed to exit
+0 (an unreachable database read as clean); the `differs` branch removed
+(three checks failed). It was also run once against the DDL as of
+`7e45c5a` (the 2026-09-21 reload), where it reported 20 differences: the
+DR-0094 `acquisition_attempt` columns and their constraints,
+`source_identity_unique`, and one enum.
 
 ## How the registry reaches the database
 

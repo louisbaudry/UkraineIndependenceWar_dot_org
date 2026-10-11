@@ -437,7 +437,8 @@ schema and a founder decision, not a side effect of closing #62.
 **Outstanding, and it matters:** this is a DDL change, and the project has no
 schema-migration mechanism for a live database — only "drop and rebuild from
 DDL," which the suites do and the archive server cannot
-([#57](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/57)).
+([#57](https://github.com/louisbaudry/UkraineIndependenceWar_dot_org/issues/57);
+the procedure is now `docs/runbooks/schema-reload.md`).
 **The archive server's `source` table therefore still has no such
 constraint**, so until someone adds it there the store-side half of this fix
 protects the test databases only. Unlike most schema changes this one needs no

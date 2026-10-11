@@ -150,13 +150,20 @@ holds real data. The one time the server needed a schema change (2026-09-21),
 it was done as a full backup and reload: `pg_dump` full and data-only,
 rebuild from DDL as `postgres`, reload the data, and compare row counts
 before and after. [DR-0105 *Executed* §2](decision-records/DR-0105-eur-lex-sanctions-registration.md)
-records every step and both obstacles. **A written runbook for next time
-is an open founder decision**, not done (board issue #57).
+records every step and both obstacles. The procedure for next time is
+[`runbooks/schema-reload.md`](runbooks/schema-reload.md) (issue #57, founder
+ruling 2026-10-11: a runbook now, a migration mechanism later as its own
+card). It builds the new database alongside the old one and swaps by
+rename, so the old one is the rollback.
 
-Practical rule until then: **before running anything on the server after
-pulling `main`, check whether `schema/` changed since the server's last
-reload.** If it did, the server needs the same procedure before any
-collection run.
+Practical rule: **before running anything on the server after pulling
+`main`, run `python3 schema/check_drift.py --dbname uiw`** (read-only; exit
+0 means no structural difference, 1 means differences, 2 means the check
+could not run). If it reports any, the server needs the runbook before any
+collection run. Not recorded as done: no drift check has yet been run
+against the real server; from the commit log it is behind `main` by at
+least `source_identity_unique` and the DR-0094 `acquisition_attempt`
+columns (issues #50-#52, #74).
 
 ### 3.3 Backups
 
@@ -180,7 +187,8 @@ approved 2026-09-24). OPS-005 is **knowingly unmet** until then.
 
 Operator instructions for the server live in [`docs/runbooks/`](runbooks/):
 [A7 storage/bandwidth measurement](runbooks/A7-storage-bandwidth-measurement.md)
-(written, not executed) and [Telegram backfill](runbooks/telegram-channel-backfill.md).
+(written, not executed), [Telegram backfill](runbooks/telegram-channel-backfill.md)
+and [schema reload](runbooks/schema-reload.md) (rehearsed on a scratch cluster, not run on the server).
 Each DR that authorises a registration has its own *How to execute*
 section.
 
@@ -197,8 +205,10 @@ Only items 3 and 7 have been ruled on. Status for each lives on the board, not h
    **deferred by decision** until the association exists
    (DR-0108, board issue #65).
 4. No fixity schedule recorded as actually running (PRES-003).
-5. No runbook for schema changes on the live database (DR-0105 open
-   decision, board issue #57).
+5. The live schema is probably behind `main` (§3.2) and no drift check has
+   been run against it. The reload procedure exists
+   ([`runbooks/schema-reload.md`](runbooks/schema-reload.md)); a migration
+   mechanism does not.
 6. No CI: tests do not run on GitHub.
 7. One IP address for all Telegram collection (runbook risk). **Accepted
    with named triggers** (DR-0113, WP 3.11): no
