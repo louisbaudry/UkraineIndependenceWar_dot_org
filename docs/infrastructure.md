@@ -188,7 +188,9 @@ approved 2026-09-24). OPS-005 is **knowingly unmet** until then.
 Operator instructions for the server live in [`docs/runbooks/`](runbooks/):
 [A7 storage/bandwidth measurement](runbooks/A7-storage-bandwidth-measurement.md)
 (written, not executed), [Telegram backfill](runbooks/telegram-channel-backfill.md)
-and [schema reload](runbooks/schema-reload.md) (rehearsed on a scratch cluster, not run on the server).
+[schema reload](runbooks/schema-reload.md) (rehearsed on a scratch cluster, not run on the server)
+and [one sitting at the server](runbooks/archive-server-sitting.md), which orders the
+server-side steps from several cards into one trip.
 Each DR that authorises a registration has its own *How to execute*
 section.
 
