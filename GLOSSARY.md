@@ -597,6 +597,15 @@ inferred from Git: **draft → proposed → approved → effective → supersede
 / withdrawn**. Approval authority and date, effective date, and
 supersession links are recorded alongside the status itself.
 
+**Database right (sui generis)**
+A right, separate from copyright, that protects the *investment* in building a database, in the EU under Directive 96/9/EC. It can restrict copying a whole dataset even when each entry is a bare fact. Part B's Q7(b) asks whether it restricts copying the sanctions lists whole; it is a legal question, not settled by this project.
+
+**Legal-review brief, Part A and Part B**
+The brief for the external legal review POL-0001 §10 requires (`docs/legal/legal-review-brief.md`). **Part A** (Q1–Q6) is the personal-data questions, for French data-protection counsel; it alone discharges §10. **Part B** (Q7–Q12) is copyright, database right, archive and platform terms, `robots.txt` and hosting, for IP/media counsel; its answers move neither DR-0072 nor LEGAL-009 but still decide the acquisition steps behind Q8, Q9 and Q10. The sendable form of Part B is `docs/legal/part-b-engagement-pack.md`.
+
+**robots.txt**
+A plain-text file at the root of a website in which its owner asks automated visitors to stay out of some paths. It is a request, not a technical barrier. Whether it carries legal weight in France is Part B's Q9. The project's collector fetches only registered locators and does not read `robots.txt` today.
+
 ## Civilian harm, war crimes and the memorial (DR-0109)
 
 **Incident**
