@@ -688,6 +688,14 @@ document; it is withdrawn from the retainer. §6's preamble says so in terms.
 If the founder prefers Part B excised from the sent copy instead, that is a
 one-line change here.
 
+**Update 2026-10-12 (issue #42).** Part A has been out since about 2026-09-19
+with no reply. The founder ruled that Part B is **commissioned in parallel**,
+not after Part A. The sendable form, with the facts refreshed (ten sources are
+now registered and collected, and platform capture began on 2026-09-21), is
+[`part-b-engagement-pack.md`](part-b-engagement-pack.md). This section's
+reasoning otherwise stands; choosing the counsel and sending the pack remain
+the founder's acts.
+
 ---
 
 ## 10. Materials to supply with the brief
