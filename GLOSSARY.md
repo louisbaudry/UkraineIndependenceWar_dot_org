@@ -322,6 +322,9 @@ corresponding database rows are written, so an orphaned storage object is
 detectable, rather than a database row pointing at bytes that do not exist
 (record §26).
 
+**Capture series**
+The chain of successive captures of one locator from one source, each a separate holding, related through `capture_series_member` (DR-0074). Its identity is derived from the source and the locator, so it does not depend on which capture arrived first. The collector compares a new fetch with the latest member to decide whether anything changed. Holdings from before 2026-09-10 have no row until `collector/backfill_series.py` is run (issue #75).
+
 ## Data model and epistemics
 
 **CIDOC CRM**

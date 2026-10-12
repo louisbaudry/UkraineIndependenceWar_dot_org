@@ -50,9 +50,23 @@ successive captures of one locator not linked through
 public-identifiers work merged the next day: `_admit()` now writes a series
 row for every admission, live fetch or WARC recovery alike, keyed
 deterministically by `(source_id, locator)`. **The two 2026-09-09 holdings
-predate that fix and have no series row of their own**; the next capture of
-either locator will start a new series that does not include them, until
-someone backfills one row per holding.
+predate that fix and have no series row of their own**, so the next capture of
+either locator would start a new series that does not include them.
+`collector/backfill_series.py` (issue #75) links each such holding into the
+series `_admit()` would have put it in: a plan by default, `--commit` to write,
+all-or-nothing, and it refuses rather than guess when a holding's source cannot
+be established. It is built and tested against fixtures; running it on the real
+database is issue #75's remaining step, a person's act on the archive server
+(`python3 collector/backfill_series.py --dbname uiw`, read the plan, then
+`--commit`).
+
+12 tests in `collector/tests/test_backfill_series.py` (real PostgreSQL, real
+OCFL): the rows it writes equal the ones `_admit()` wrote, byte for byte; without
+it the same bytes are stored again and with it they are confirmed unchanged; a
+recovered capture takes the archive's capture time; an unplaceable or ambiguous
+holding writes nothing. Six rules were removed one at a time and the suite went
+red each time (five by failed checks, the "only holdings without a row" filter
+by a unique-key crash), then restored by `cp`.
 
 This is the reason the fetch layer is the only place that touches the
 network. The seam is not for testing convenience; it is so the untested part
