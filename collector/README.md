@@ -58,7 +58,10 @@ all-or-nothing, and it refuses rather than guess when a holding's source cannot
 be established. It is built and tested against fixtures; running it on the real
 database is issue #75's remaining step, a person's act on the archive server
 (`python3 collector/backfill_series.py --dbname uiw`, read the plan, then
-`--commit`).
+`--commit`). It was run on the archive server on 2026-10-13: the plan named
+five holdings (the five files of 2026-09-09, three OFAC and two EU), `--commit`
+wrote five rows, and a second run found none left. Whether the next capture of
+those locators joins the series is confirmed at the next real collection run.
 
 12 tests in `collector/tests/test_backfill_series.py` (real PostgreSQL, real
 OCFL): the rows it writes equal the ones `_admit()` wrote, byte for byte; without
