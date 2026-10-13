@@ -54,7 +54,7 @@ if step 1 reports a difference:
 
 - `git log` on the server's checkout shows a commit touching `schema/`
   since the last reload (`git log --oneline <last-reload-commit>..HEAD -- schema`).
-  The last reload on record is `7e45c5a`, 2026-09-21 (DR-0105).
+  The last reload on record is `26fe205` (the merge of PR #148), 2026-10-13; the one before was `7e45c5a`, 2026-09-21 (DR-0105).
 - A collection run or `register.py` fails with `UndefinedColumn`,
   `UndefinedTable`, or an enum value the database does not know.
 - Before executing any registration or first collection run after pulling
@@ -208,7 +208,8 @@ database. Stop; `uiw` is untouched. Drop `uiw_new` and report the file.
 ## Step 6 — reload, then prove it
 
 ```bash
-sudo -u postgres psql -d uiw_new -v ON_ERROR_STOP=1 -q -f "$B/data-1.sql" > reload.log 2>&1; echo "rc=$?"
+cd /tmp    # the postgres user cannot enter /root, so it cannot read files there by name
+sudo -u postgres psql -d uiw_new -v ON_ERROR_STOP=1 -q < "$B/data-1.sql" > "$B/reload.log" 2>&1; echo "rc=$?"
 grep -c ERROR reload.log      # expect: 0
 ```
 
@@ -220,7 +221,7 @@ Do not edit the dump by hand to get past it; that needs a decision.
 Then three checks, all of which must pass before the swap:
 
 ```bash
-sudo -u postgres psql -d uiw_new -At -F' ' -f counts.sql > counts-after.txt
+psql -d uiw_new -At -F' ' -f counts.sql > counts-after.txt    # as root; it owns the new database
 diff counts-before.txt counts-after.txt && echo "COUNTS IDENTICAL"
 python3 schema/check_drift.py --dbname uiw_new          # expect exit 0
 psql -d uiw_new -Atc "SELECT count(*) FROM source"     # spot check against counts-before
@@ -267,6 +268,24 @@ the old database, so it is exactly the state step 3 counted.
   *This repository is public*).
 - Run a dry collection (`collector/run.py --dry-run`) before the next
   real run.
+
+## First use, 2026-10-13
+
+Run on the archive server (PostgreSQL 15.19, a 23 MB database, 108 GB free) by
+the founder, step by step with an assistant. Every step passed.
+
+| Step | Result |
+|---|---|
+| Drift check (1) | exit 1, 20 differences: the DR-0094 `acquisition_attempt` columns and their constraints, `source_identity_unique`, one enum |
+| Backup (4) | full dump 13 MB, data dump 26 MB; both pairs identical |
+| Build and reload (5, 6) | `rc=0`, 0 errors; row counts identical for every table; drift check on the new database exit 0 |
+| Swap (7) | old database kept as `uiw_prev_20261013`; drift check on `uiw` exit 0, 10 sources |
+
+What the real server taught, now folded into the steps above:
+- **`/root` is private.** The `postgres` user cannot read `/root/uiw-backups/...` by name, so the reload reads the dump through the shell (`< file`) and the counts run as `root`, not `postgres`. Its "could not change directory" warning is harmless.
+- **A new SSH session has no Python environment.** `source .venv/bin/activate` is needed again before `check_drift.py`, or it fails with `No module named 'psycopg'`. That is not a database fault.
+- `pg_dump` 15 prints no `\restrict` lines, so the comparison filter in step 4 was harmless but unneeded there.
+- The reload took a minute or two with no output.
 
 ## If something looks wrong
 
