@@ -205,6 +205,16 @@ measures them. The plan sizes storage after the first retrospective pull,
 not before. Record §7's demand for independent backups (OPS-005) means every
 stored terabyte is at least two.
 
+> **Update 2026-10-14 (A7 step 1 measured).** On the archive server, ten
+> registered sources hold 1,053,245,824 bytes preserved (5,970 items); the
+> permanent OCFL root is 1,066,895,304 bytes (1.3% above the preserved bytes),
+> and the quarantine copies double the footprint (2.01x) because every item
+> still has one: the post-admission discharge (issue #51) postdates every run
+> measured. Single-file government downloads ran at 0.3-7.8 MB/s. Not yet
+> measured: the retrospective pull (#55), database size, backup cost, and
+> whether the discharge works on the real server. Figures and caveats:
+> [`docs/sources/a7-measurement-results-2026-10-14.md`](../../sources/a7-measurement-results-2026-10-14.md).
+
 ## 6. The human bottleneck, stated plainly
 
 Every registration is a founder decision (registering "is the act that
