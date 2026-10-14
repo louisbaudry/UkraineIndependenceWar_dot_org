@@ -52,6 +52,7 @@ supersession never in-place (§77).
 | Origin | **AI-drafted** in-repository by an AI assistant (Anthropic Claude Code agent session) at the founder's direction, following the founder's 2026-09-08 ruling (option C: no collection scale-up before the POL-0001 §10 legal review is recorded); not an upload |
 | Inputs | Record §8–§9, §13–§14, §25–§28, §57, §78–§80; DR-0006, DR-0027, DR-0028, DR-0066…0072, DR-0074; SPEC-0003; POL-0001; REQ-AI/LEGAL/OPS; collector/, sources/ READMEs. **No external service, index, or tool was reached from the drafting environment**; model list prices from a reference cached 2026-06-24 |
 | Status | Candidate — five candidate DRs (CDR-P3-31…35) awaiting founder review |
+| SHA-256 after A7 measurement note | `eabe6ae0762bed4bae3c02aa9b718284446c35216c6fabc06fa08fe74332de51` (2026-10-14) — a dated update note added under §5.3 citing the measured storage and bandwidth figures; no reasoning, comparison, or decision content changed. Deposit hash retained per §77 |
 
 ## wp-3.5-identifier-design.md
 

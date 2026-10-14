@@ -175,8 +175,9 @@ puts to you.
 Steps 0, 1 and 2 were done by the founder with an assistant: the drift check
 found 20 differences, the full reload followed `schema-reload.md` and passed
 every check, and the backfill linked **five** holdings (the five files of
-2026-09-09: three OFAC, two EU), not two as issue #75 said. Steps 3 and 4 were
-not done that day. What the server taught is folded into `schema-reload.md`
+2026-09-09: three OFAC, two EU), not two as issue #75 said. Step 3 was done on 2026-10-14
+(results: [`a7-measurement-results-2026-10-14.md`](../sources/a7-measurement-results-2026-10-14.md)); step 4 was
+not done. What the server taught is folded into `schema-reload.md`
 ("First use, 2026-10-13"). One more thing from this sitting: a new SSH session
 needs `source .venv/bin/activate` again before any `python3` command here.
 
