@@ -38,6 +38,13 @@ CREATE TABLE source (
     expects_graphic_content boolean NOT NULL DEFAULT false,
     rights_permission       rights_permissions NOT NULL,
     rights_basis            text,
+    -- Whether the rights position has been legally reviewed, as a declared
+    -- field rather than a marker buried in `rights_basis` prose (CDR-P3-45,
+    -- candidate). Defaults to the safe value: silence must never read as
+    -- "checked and fine" (§14). Gate 3 refuses to publish a holding whose
+    -- state is 'unreviewed' (07-publication.sql).
+    rights_review_state     text NOT NULL DEFAULT 'unreviewed'
+        CHECK (rights_review_state IN ('unreviewed', 'reviewed')),
 
     -- Triage only. Barred from determining truth (DR-0027, EVID-008).
     grade_source_reliability source_grades_source_reliability,
@@ -335,6 +342,12 @@ CREATE TABLE holding (
     retention_tier      retention_tiers NOT NULL,
     access_tier         access_tiers NOT NULL,
     rights_permission   rights_permissions NOT NULL,
+    -- Snapshot of the source's rights_review_state at admission, like
+    -- rights_permission beside it: a holding has no direct link back to its
+    -- source, and the rights position it was admitted under is part of what it
+    -- is (CDR-P3-45, candidate).
+    rights_review_state text NOT NULL DEFAULT 'unreviewed'
+        CHECK (rights_review_state IN ('unreviewed', 'reviewed')),
 
     -- §26: external custodians' copies are holdings with a non-project
     -- custodian and no preserved representation of their own.

@@ -49,7 +49,13 @@ REQUIRED = (
 POLICY_FIELDS = (
     "scope_rules", "exclusions", "default_retention_tier",
     "default_access_tier", "rights_permission", "rights_basis",
+    "rights_review_state",
 )
+
+# Declared rights-review state (CDR-P3-45, candidate). Optional in a candidate
+# file and absent means 'unreviewed': silence must never read as "checked and
+# fine" (§14). Gate 3 refuses to publish a holding admitted as 'unreviewed'.
+RIGHTS_REVIEW_STATES = ("unreviewed", "reviewed")
 
 # Optional verification fields. None of these is stored in the registry;
 # they exist so the dry-run can say which locators have actually been
@@ -253,6 +259,21 @@ def validate(
                 f"{key}: claims {source['rights_permission']!r} without "
                 "flagging that the basis is unreviewed. Either record the "
                 "review or say it has not happened (§14, POL-0001 §10)")
+
+        # CDR-P3-45: the declared review state must be a known value, and
+        # 'reviewed' must not sit beside prose saying it has not been.
+        review_state = source.get("rights_review_state", "unreviewed")
+        if review_state not in RIGHTS_REVIEW_STATES:
+            problems.append(
+                f"{key}: rights_review_state {review_state!r} is not one of "
+                f"{', '.join(RIGHTS_REVIEW_STATES)} (CDR-P3-45)")
+        elif review_state == "reviewed" and (
+                "NOT LEGALLY REVIEWED" in basis.upper()
+                or "UNVERIFIED" in basis.upper()):
+            problems.append(
+                f"{key}: rights_review_state is 'reviewed' but rights_basis "
+                "still says the position is unreviewed; they cannot both be "
+                "true (CDR-P3-45, §14)")
 
         # DR-0071(a): scope must be human-configured, not open-ended.
         scope = (source.get("scope_rules") or "").lower()
@@ -486,9 +507,10 @@ def commit(conn, sources: list[dict], dependence: list[dict],
                      capture_format, default_retention_tier,
                      default_access_tier, default_sensitivity,
                      expects_graphic_content, rights_permission, rights_basis,
+                     rights_review_state,
                      grade_source_reliability, grade_item_credibility)
                 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                        %s,%s,%s,%s)
+                        %s,%s,%s,%s,%s)
                 """,
                 (source_id, source["source_type"], source["name"],
                  source.get("locator"), source.get("publisher"),
@@ -502,6 +524,7 @@ def commit(conn, sources: list[dict], dependence: list[dict],
                  source.get("default_sensitivity"),
                  bool(source.get("expects_graphic_content")),
                  source["rights_permission"], source.get("rights_basis"),
+                 source.get("rights_review_state", "unreviewed"),
                  source.get("grade_source_reliability"),
                  source.get("grade_item_credibility")),
             )
