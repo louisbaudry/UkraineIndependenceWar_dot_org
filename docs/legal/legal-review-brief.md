@@ -770,6 +770,10 @@ with a named trigger rather than open-ended.
   by reading the code, not imagined — which is why it is held with a trigger
   rather than dropped.
 
+  *Note, 2026-10-14: the founder asked for the build card (#60) to be taken
+  now, ahead of this trigger. It is implemented as a candidate — see
+  `publication/README.md` "Rights review". The proposal above is unchanged.*
+
 ---
 
 ## 12. Open questions raised

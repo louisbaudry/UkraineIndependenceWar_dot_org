@@ -214,6 +214,18 @@ Scope, for now: classes are defined per candidate file (WP 3.7 §7 sub-Q3),
 not shared across files; if a future file's classes duplicate one here,
 harmonizing is a later, visible decision, not an automatic one.
 
+## Rights review state (CDR-P3-45, candidate)
+
+A candidate may declare `rights_review_state: reviewed|unreviewed`. Absent
+means `unreviewed`, so no shipped candidate changes. `validate()` refuses an
+unknown value and refuses `reviewed` beside a `rights_basis` that still says
+"NOT LEGALLY REVIEWED" or "UNVERIFIED"; `commit()` stores the declared value.
+The existing §14 check (a redistribution claim must flag an unreviewed basis)
+is kept as it was. Sabotaged one rule at a time: dropping the value check, the
+contradiction check, or storing a constant each turned exactly the expected
+test red. A schema change: a live database needs the reload in
+`docs/runbooks/schema-reload.md`.
+
 ## What registering these commits you to
 
 `--dry-run` prints this; it is repeated here because each item is a real

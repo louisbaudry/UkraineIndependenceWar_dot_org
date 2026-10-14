@@ -77,6 +77,7 @@ def seed_source(conn, **overrides) -> str:
         "default_retention_tier": "permanent",
         "default_access_tier": "public",
         "rights_permission": "may-preserve",
+        "rights_review_state": "unreviewed",
         "lifecycle_state": "active",
         "expects_graphic_content": False,
         "capture_format": "http",
@@ -86,10 +87,12 @@ def seed_source(conn, **overrides) -> str:
         """
         INSERT INTO source (id, source_type, name, locator, collection_method,
             default_retention_tier, default_access_tier, rights_permission,
+            rights_review_state,
             lifecycle_state, expects_graphic_content, capture_format)
         VALUES (%(id)s, %(source_type)s, %(name)s, %(locator)s,
                 %(collection_method)s, %(default_retention_tier)s,
                 %(default_access_tier)s, %(rights_permission)s,
+                %(rights_review_state)s,
                 %(lifecycle_state)s, %(expects_graphic_content)s, %(capture_format)s)
         """,
         {"id": source_id, **values},
@@ -231,6 +234,13 @@ def run() -> int:
               holding[1] == "original")
         check("DR-0067", "the holding inherits the source's access and rights defaults",
               holding[3] == "public" and holding[4] == "may-preserve")
+
+        # -- CDR-P3-45 (candidate): the rights-review state travels with the
+        #    holding, because a holding has no direct link back to its source.
+        check("CDR-P3-45", "a holding admitted from an unreviewed source is "
+              "unreviewed", conn.execute(
+                  "SELECT rights_review_state FROM holding LIMIT 1"
+              ).fetchone()[0] == "unreviewed")
 
         # -- DR-0073/0075: the bytes are in OCFL with both digests -----------
 
@@ -383,6 +393,17 @@ def run() -> int:
             message="simulating a failed database transaction", user="test")
         check("SPEC-0003", "an object written before a failed transaction is detectable",
               find_orphaned_objects(conn, roots) == ["holding-orphan"])
+
+        # -- CDR-P3-45 (candidate), continued: a reviewed source's holding.
+        #    Last in the run so its extra holding disturbs no earlier count.
+        reviewed_src = seed_source(conn, name="Reviewed-rights source",
+                                   rights_review_state="reviewed")
+        collector.run(reviewed_src, ["https://example.invalid/reg-269"],
+                      configuration={})
+        check("CDR-P3-45", "a holding admitted from a reviewed source is "
+              "reviewed", conn.execute(
+                  "SELECT rights_review_state FROM holding "
+                  "ORDER BY created_at DESC LIMIT 1").fetchone()[0] == "reviewed")
 
     finally:
         conn.close()

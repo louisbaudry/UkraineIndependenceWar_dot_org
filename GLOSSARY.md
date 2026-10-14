@@ -105,6 +105,13 @@ A named, reusable set of policy defaults (capture format, rights
 permission, etc.) that a source record inherits from and can override,
 reducing per-source authorization decisions to per-class ones (DR-0103).
 
+**Rights review state** (`rights_review_state`)
+A declared field, `unreviewed` or `reviewed`, on a source and copied onto each
+holding admitted from it, saying whether its rights position has been legally
+reviewed. It is deliberately not read out of the free-text `rights_basis`, and
+Gate 3 refuses to show any holding that is not `reviewed` (CDR-P3-45,
+candidate).
+
 ## Archival and preservation
 
 **OAIS**

@@ -426,8 +426,9 @@ def run() -> int:  # noqa: C901 — one linear scenario, read top to bottom
         holding_id = str(uuid.uuid4())
         conn.execute(
             "INSERT INTO holding (id, access_tier, retention_tier, "
-            "completeness, rights_permission, ocfl_object_id) "
-            "VALUES (%s,'public','permanent','original','may-display',%s)",
+            "completeness, rights_permission, rights_review_state, "
+            "ocfl_object_id) VALUES (%s,'public','permanent','original',"
+            "'may-display','reviewed',%s)",
             (holding_id, f"holding-{holding_id}"))
 
         check("DR-0088", "nothing is minted before publication",

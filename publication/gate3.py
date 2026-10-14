@@ -145,6 +145,9 @@ class Publisher:
                 "rested on"
             )
 
+        if holding_id is not None:
+            self._require_reviewed_rights(holding_id)
+
         decision_id = _uuid()
         self.conn.execute(
             """
@@ -165,6 +168,22 @@ class Publisher:
                    {"publication_decision": decision_id})
         self._mint("holding", holding_id, {"publication_decision": decision_id})
         return decision_id
+
+    def _require_reviewed_rights(self, holding_id: str) -> None:
+        """Refuse early, with the reason, what the schema refuses for any
+        writer: a holding whose rights position has not been legally reviewed
+        (CDR-P3-45, candidate). The free-text rights_basis cannot stand in for
+        that review (POL-0001 §10)."""
+        row = self.conn.execute(
+            "SELECT rights_review_state FROM holding WHERE id = %s",
+            (holding_id,),
+        ).fetchone()
+        if row is not None and row[0] != "reviewed":
+            raise PublicationError(
+                f"holding {holding_id} has rights_review_state {row[0]!r}: "
+                "its rights position has not been legally reviewed (CDR-P3-45, "
+                "POL-0001 §10)"
+            )
 
     def withdraw(self, *, decision_id: str, ground: str) -> None:
         """Withdraw a publication decision. The row stays.
@@ -223,6 +242,9 @@ class Publisher:
             raise PublicationError(
                 f"{kind!r} is not a revision kind: {', '.join(REVISION_KINDS)}"
             )
+
+        for holding_id in holdings or []:
+            self._require_reviewed_rights(holding_id)
 
         with self.conn.transaction():
             row = self.conn.execute(

@@ -110,6 +110,20 @@ def run() -> int:
     rejects("§14", "a redistribution claim with an unflagged basis is refused",
             unflagged, [], "without flagging that the basis is unreviewed")
 
+    # CDR-P3-45 (candidate): the review state is declared, not read out of prose.
+    check("CDR-P3-45", "no shipped candidate claims a reviewed rights position",
+          all(s.get("rights_review_state", "unreviewed") == "unreviewed"
+              for s in sources))
+    bad_state = copy.deepcopy(sources)
+    bad_state[0]["rights_review_state"] = "probably-fine"
+    rejects("CDR-P3-45", "an unknown rights_review_state is refused",
+            bad_state, [], "rights_review_state 'probably-fine' is not one of")
+    contradictory = copy.deepcopy(sources)
+    contradictory[0]["rights_review_state"] = "reviewed"
+    contradictory[0]["rights_basis"] = "Public sector. NOT LEGALLY REVIEWED."
+    rejects("CDR-P3-45", "'reviewed' beside a basis that says unreviewed is "
+            "refused", contradictory, [], "they cannot both be true")
+
     graphic = copy.deepcopy(sources)
     graphic[0]["expects_graphic_content"] = True
     graphic[0]["default_access_tier"] = "public"
@@ -244,6 +258,11 @@ def run() -> int:
                   "SELECT count(*) FROM source_dependence WHERE "
                   "asserter_id = %s AND note IS NOT NULL", (agent,)
               ).fetchone()[0] == len(dependence))
+        check("CDR-P3-45", "registration stores every source as unreviewed "
+              "unless it declares otherwise",
+              conn.execute(
+                  "SELECT count(*) FROM source WHERE rights_review_state "
+                  "<> 'unreviewed'").fetchone()[0] == 0)
         check("DR-0027", "triage grades are stored and are not truth values",
               conn.execute(
                   "SELECT count(*) FROM source WHERE "
@@ -296,6 +315,20 @@ def run() -> int:
                   "JOIN source s ON s.id = sd.dependent_id "
                   "WHERE s.name = %s", (ofsi[0]["name"],)
               ).fetchone()[0] == len(ofsi_dep))
+
+        # -- CDR-P3-45 (candidate): a declared 'reviewed' state is stored as
+        #    declared, and not silently reset to the default ---------------
+
+        conn.execute("DELETE FROM source_dependence")
+        conn.execute("DELETE FROM source")
+        declared = copy.deepcopy(eu)
+        declared[0]["rights_review_state"] = "reviewed"
+        declared[0]["rights_basis"] = "Reviewed by counsel (synthetic fixture)."
+        commit(conn, declared, [], agent)
+        check("CDR-P3-45", "commit() stores a declared 'reviewed' state",
+              conn.execute(
+                  "SELECT rights_review_state FROM source").fetchone()[0]
+              == "reviewed")
 
         # -- and the reverse: nothing is inserted, and nothing crashes, when
         #    the other end is not registered anywhere at all --------------

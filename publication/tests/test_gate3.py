@@ -62,6 +62,20 @@ def refuses(req: str, what: str, fn) -> None:
     FAILURES.append(f"FAIL  {req} — {what}: accepted but must be refused")
 
 
+def refuses_in_code(req: str, what: str, fn) -> None:
+    """The refusal must come from gate3.py itself, not from the database
+    catching it afterwards — otherwise removing the code check goes unseen."""
+    try:
+        fn()
+    except PublicationError:
+        PASSES.append(f"PASS  {req} — {what}")
+        return
+    except psycopg.Error:
+        FAILURES.append(f"FAIL  {req} — {what}: only the database refused it")
+        return
+    FAILURES.append(f"FAIL  {req} — {what}: accepted but must be refused")
+
+
 def build_database() -> None:
     subprocess.run(["psql", "-q", "-c", f"DROP DATABASE IF EXISTS {DB}",
                     "-c", f"CREATE DATABASE {DB}", "postgres"],
@@ -93,13 +107,17 @@ def run() -> int:
                      "software_version) VALUES (%s,'software','renderer',"
                      "'0.1.0')", (robot,))
 
-        def holding(tier: str) -> str:
+        def holding(tier: str, review: str = "reviewed") -> str:
+            # Reviewed by default: the fixtures below test other rules, and an
+            # unreviewed holding is refused by CDR-P3-45 before they are
+            # reached. The refusal itself is tested explicitly further down.
             hid = str(uuid.uuid4())
             conn.execute(
                 """INSERT INTO holding (id, access_tier, retention_tier,
-                   completeness, rights_permission, ocfl_object_id)
-                   VALUES (%s,%s,'permanent','original','may-display',%s)""",
-                (hid, tier, f"urn:uiw:{hid}"))
+                   completeness, rights_permission, rights_review_state,
+                   ocfl_object_id)
+                   VALUES (%s,%s,'permanent','original','may-display',%s,%s)""",
+                (hid, tier, review, f"urn:uiw:{hid}"))
             return hid
 
         def proposition(text: str) -> str:
@@ -175,6 +193,62 @@ def run() -> int:
                     page_id=orphan_page, person_id=editor,
                     rendered_text="Something we never decided to publish.",
                     versions=V, assertions=[undecided]))
+
+        # ---- CDR-P3-45 (candidate): unreviewed rights cannot reach Gate 3 ---
+
+        unreviewed_holding = holding("public", review="unreviewed")
+        check("CDR-P3-45", "a holding is unreviewed unless stated otherwise",
+              conn.execute(
+                  "SELECT rights_review_state FROM holding WHERE id = %s",
+                  (unreviewed_holding,)).fetchone()[0] == "unreviewed")
+        refuses_in_code("CDR-P3-45", "the code refuses a publication decision on an "
+                "unreviewed holding",
+                lambda: pub.decide(
+                    person_id=editor, holding_id=unreviewed_holding,
+                    access_tier="public",
+                    rights_basis="may-redistribute (NOT LEGALLY REVIEWED)",
+                    rationale="Would rest on unreviewed rights."))
+        refuses("CDR-P3-45", "the DDL refuses the same decision when the code "
+                "is bypassed",
+                lambda: conn.execute(
+                    "INSERT INTO publication_decision (id, holding_id, "
+                    "decided_by, access_tier, rights_basis, rationale) "
+                    "VALUES (%s,%s,%s,'public','x','x')",
+                    (str(uuid.uuid4()), unreviewed_holding, editor)))
+        pub.decide(person_id=editor, holding_id=public_holding,
+                   access_tier="public", rights_basis="Reviewed by counsel",
+                   rationale="Rights position reviewed.")
+        check("CDR-P3-45", "a reviewed holding can still be decided",
+              conn.execute(
+                  "SELECT count(*) FROM publication_decision "
+                  "WHERE holding_id = %s", (public_holding,)
+              ).fetchone()[0] == 1)
+        unreviewed_page = pub.create_page(path="/unreviewed", language="en")
+        refuses_in_code("CDR-P3-45", "the code refuses a page showing an unreviewed "
+                "holding",
+                lambda: pub.publish(
+                    page_id=unreviewed_page, person_id=editor,
+                    rendered_text="With a source whose rights are unreviewed.",
+                    versions=V, assertions=[routine],
+                    holdings=[unreviewed_holding]))
+
+        def bypass_code():
+            # Straight to the tables, as a migration or import would.
+            with conn.transaction():
+                rid = str(uuid.uuid4())
+                conn.execute(
+                    "INSERT INTO page_revision (id, page_id, revision, kind, "
+                    "published_by, rendered_text, text_digest, "
+                    "methodology_version, terminology_version, "
+                    "template_version) VALUES (%s,%s,1,'initial',%s,'t',%s,"
+                    "'1','1','1')",
+                    (rid, unreviewed_page, editor, digest("t")))
+                conn.execute("INSERT INTO revision_assertion VALUES (%s,%s)",
+                             (rid, routine))
+                conn.execute("INSERT INTO revision_holding VALUES (%s,%s)",
+                             (rid, unreviewed_holding))
+        refuses("CDR-P3-45", "the DDL refuses a page showing an unreviewed "
+                "holding when the code is bypassed", bypass_code)
 
         # ---- SEC-004: no tier leak ------------------------------------------
 

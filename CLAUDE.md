@@ -481,6 +481,9 @@ it"), so nobody mistakes built for decided.
 Whatever you build, these hold, and a test should prove each one that your
 change could break:
 
+- **Unreviewed rights never reach Gate 3** (CDR-P3-45, candidate): a holding
+  is shown, by decision or on a page, only when its `rights_review_state` is
+  `reviewed`; the free-text `rights_basis` is never read as a review.
 - **Registered, active sources only** (DR-0071(a), DR-0067). An unregistered
   locator is out of policy, not merely unknown. Out-of-scope material is
   counted and **not written down**.

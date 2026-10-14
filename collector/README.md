@@ -132,6 +132,14 @@ already querying `pipeline_agent` for a software agent named like
 "collector"/"pipeline" — it had no software agent to find until now, not a
 design gap of its own.
 
+**Rights review state (CDR-P3-45, candidate).** Admission copies the source's
+`rights_review_state` onto the holding next to `rights_permission`. It is
+deliberately not part of the unchanged-capture comparison: an identical
+re-capture of a source reviewed in the meantime is still "unchanged", and
+marking old holdings reviewed is a separate, human act that does not exist yet.
+Sabotage: making admission write a constant `unreviewed` fails the
+reviewed-source holding check.
+
 Verified by sabotage: reverting `_record_event` to name the run's human
 agent of record turns three checks red, two in `test_pipeline.py` and one
 in `test_run.py`, each asserting that a preservation event is never

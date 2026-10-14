@@ -69,7 +69,7 @@ CREATE TABLE publication_decision (
 -- reason, at the point where the consequences leave the building.
 CREATE FUNCTION publication_is_decided_by_a_person() RETURNS trigger
 LANGUAGE plpgsql AS $$
-DECLARE agent_kind text; gate2_state text;
+DECLARE agent_kind text; gate2_state text; review_state text;
 BEGIN
     SELECT kind INTO agent_kind FROM pipeline_agent WHERE id = NEW.decided_by;
     IF agent_kind <> 'person' THEN
@@ -94,6 +94,23 @@ BEGIN
                 'assertion % was adopted from a proposal with no confirming '
                 'Gate 2 acceptance; no path runs from Gate 1 to a public '
                 'surface without both gates (OPS-001)', NEW.assertion_id;
+        END IF;
+    END IF;
+
+    -- CDR-P3-45 (candidate): a preserved holding is shown as source material
+    -- only if its rights position has been legally reviewed. 'unreviewed' is
+    -- the default and the state of every holding admitted so far, so this
+    -- refuses by default; reviewing a rights position is a human act recorded
+    -- on the holding, never inferred from the free-text rights_basis.
+    IF NEW.holding_id IS NOT NULL THEN
+        SELECT h.rights_review_state INTO review_state
+          FROM holding h WHERE h.id = NEW.holding_id;
+        IF review_state IS DISTINCT FROM 'reviewed' THEN
+            RAISE EXCEPTION
+                'holding % has rights_review_state %; Gate 3 does not publish '
+                'material whose rights position has not been legally reviewed '
+                '(CDR-P3-45, POL-0001 §10)',
+                NEW.holding_id, coalesce(review_state, 'unknown');
         END IF;
     END IF;
     RETURN NEW;
@@ -237,6 +254,7 @@ $$;
 CREATE FUNCTION revision_respects_tiers() RETURNS trigger
 LANGUAGE plpgsql AS $$
 DECLARE leak record; page_tier access_tiers; rev uuid; live integer;
+        unreviewed record;
 BEGIN
     rev := NEW.revision_id;
 
@@ -279,6 +297,25 @@ BEGIN
             'holding % is classified % and cannot appear on a % surface; a '
             'tier leak in any layer blocks release (SEC-004)',
             leak.id, leak.access_tier, page_tier;
+    END IF;
+
+    -- CDR-P3-45 (candidate): preserved material is shown only on a rights
+    -- position that has been legally reviewed. Checked here as well as on
+    -- publication_decision because this is the path that actually puts a
+    -- holding on a page; a decision row is not required to render one.
+    SELECT h.id, h.rights_review_state INTO unreviewed
+      FROM revision_holding rh
+      JOIN holding h ON h.id = rh.holding_id
+     WHERE rh.revision_id = rev
+       AND h.rights_review_state <> 'reviewed'
+     LIMIT 1;
+
+    IF FOUND THEN
+        RAISE EXCEPTION
+            'holding % has rights_review_state %; a page cannot show material '
+            'whose rights position has not been legally reviewed '
+            '(CDR-P3-45, POL-0001 §10)', unreviewed.id,
+            unreviewed.rights_review_state;
     END IF;
     RETURN NULL;
 END;

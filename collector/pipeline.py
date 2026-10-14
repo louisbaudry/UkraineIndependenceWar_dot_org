@@ -81,6 +81,9 @@ class Source:
     capture_format: str
     lifecycle_state: str
     expects_graphic_content: bool
+    # CDR-P3-45 (candidate): defaults to the safe value so a Source built
+    # without it can never carry a reviewed rights position into a holding.
+    rights_review_state: str = "unreviewed"
 
 
 @dataclass
@@ -216,7 +219,8 @@ class Collector:
             """
             SELECT id, name, source_type, locator, default_retention_tier,
                    default_access_tier, rights_permission, capture_format,
-                   lifecycle_state, expects_graphic_content
+                   lifecycle_state, expects_graphic_content,
+                   rights_review_state
               FROM source WHERE id = %s
             """,
             (source_id,),
@@ -787,11 +791,12 @@ class Collector:
             """
             INSERT INTO holding
                 (id, completeness, retention_tier, access_tier,
-                 rights_permission, ocfl_object_id)
-            VALUES (%s, %s, %s, %s, %s, %s)
+                 rights_permission, rights_review_state, ocfl_object_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             """,
             (holding_id, completeness, tier, source.default_access_tier,
-             source.rights_permission, ocfl_object_id),
+             source.rights_permission, source.rights_review_state,
+             ocfl_object_id),
         )
         self.conn.execute(
             "INSERT INTO holding_representation VALUES (%s, %s, 'original')",

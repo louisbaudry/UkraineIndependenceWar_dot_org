@@ -55,6 +55,7 @@ archive, never substituted for it.
 | History from the first publication | `first_revision_is_initial` | §90, DR-0052 |
 | Corrections and retractions say what changed | `corrections_explain_themselves` | §77 |
 | Nothing is edited in place | `make_append_only` | DR-0055 |
+| A holding whose rights position is unreviewed is not published, by decision or on a page | `publication_person_check`, `revision_respects_tiers`, `Publisher._require_reviewed_rights` | CDR-P3-45 (candidate), POL-0001 §10 |
 
 ## The §62 check is deliberately crude
 
@@ -103,9 +104,26 @@ from "this revision is very restricted", and a revision rendering no holdings
 would have slipped through. The two are now checked separately — DR-0029's
 rule (a missing value never quietly means something) applied to tiers.
 
+## Rights review (CDR-P3-45, candidate)
+
+`rights_basis` on a decision is free text, and registered sources carried
+`may-redistribute` on a basis whose own words said "NOT LEGALLY REVIEWED".
+Nothing stopped a publication resting on it. The review state is now a
+declared field (`rights_review_state`, `unreviewed` by default) on `source`
+and on `holding`, copied at admission because a holding has no direct link
+back to its source. Two schema checks refuse an unreviewed holding: the
+`publication_decision` trigger and `revision_respects_tiers`, the latter
+because `revision_holding` is the path that actually puts a holding on a page
+and needs no decision row. `Publisher` refuses the same early, with the
+reason. Every holding admitted so far is `unreviewed`, so no holding can be
+published until a person records a review; **there is no code path that marks
+a holding reviewed yet** — that act is for whoever takes the first counsel
+advice (POL-0001 §10) and is a follow-up, not part of this change. If the
+founder amends the candidate, this changes with it.
+
 ## Verification
 
-45 tests. Every enforcement checked by sabotage:
+51 tests (45 before CDR-P3-45). Every enforcement checked by sabotage:
 
 | Sabotage | Tests that failed |
 |---|---|
@@ -114,6 +132,9 @@ rule (a missing value never quietly means something) applied to tiers.
 | `most_restrictive_tier` reverted to min() semantics | 1 |
 | Review-qualification check removed | 1 |
 | Legal-finding check removed | 3 |
+| CDR-P3-45: decision-trigger guard removed | 1 |
+| CDR-P3-45: `revision_respects_tiers` guard removed | 1 |
+| CDR-P3-45: `_require_reviewed_rights` neutered | 2 |
 
 Removing the `revision_holding` tier trigger alone changed nothing, because
 `revision_assertion`'s trigger calls the same function — genuine redundancy,
