@@ -55,10 +55,16 @@ and what to do with the numbers — it does not re-explain the tool itself.
 No new collection. Reads `collector_run` and walks the existing archive
 root. Safe to run at any time, as often as wanted.
 
+`storage/measure.py` takes no `--dbname`; it reads the database from the libpq
+environment, so set `PGDATABASE`. (This runbook said `--dbname` until
+2026-10-14; DR-0110's *Executed* section had recorded the same slip.) In a
+new shell, activate the environment first: `source .venv/bin/activate`.
+
 ```bash
-python3 storage/measure.py --dbname uiw --archive-root ~/uiw-archive --json \
-    > /tmp/a7-baseline-$(date +%F).json
-python3 storage/measure.py --dbname uiw --archive-root ~/uiw-archive
+export PGDATABASE=uiw
+python3 storage/measure.py --archive-root ~/uiw-archive --json \
+    > ~/uiw-backups/a7-baseline-$(date +%F).json
+python3 storage/measure.py --archive-root ~/uiw-archive
 ```
 
 Read the text output for:
@@ -222,7 +228,7 @@ psql -d uiw -c "SELECT id, source_id, bytes_preserved, items_acquired, \
     configuration->>'acquisition_route' FROM collector_run \
     ORDER BY started_at DESC LIMIT 1"
 
-python3 storage/measure.py --dbname uiw --archive-root ~/uiw-archive \
+PGDATABASE=uiw python3 storage/measure.py --archive-root ~/uiw-archive \
     --source-id "$SOURCE_ID"
 ```
 

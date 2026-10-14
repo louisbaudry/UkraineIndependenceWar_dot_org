@@ -122,9 +122,10 @@ Read-only. Follow step 1 of
 [`A7-storage-bandwidth-measurement.md`](A7-storage-bandwidth-measurement.md):
 
 ```bash
-python3 storage/measure.py --dbname uiw --archive-root ~/uiw-archive --json \
+export PGDATABASE=uiw      # measure.py takes no --dbname; it reads the libpq environment
+python3 storage/measure.py --archive-root ~/uiw-archive --json \
     > ~/uiw-backups/a7-baseline-$(date +%F).json
-python3 storage/measure.py --dbname uiw --archive-root ~/uiw-archive
+python3 storage/measure.py --archive-root ~/uiw-archive
 ```
 
 The runbook was written for **two** sources; the numbers now cover ten. Its
