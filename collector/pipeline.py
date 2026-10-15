@@ -826,32 +826,12 @@ class Collector:
         """Remove the quarantine copy of an admitted item (issue #51, DR-0069).
 
         Runs only after `_preserve` has written the OCFL object and the
-        database rows. The file is removed only if three digests agree: the
-        one recorded at receipt, the one the OCFL inventory holds, and a fresh
-        hash of the file on disk. Disagreement means the quarantine copy is
-        not what was admitted, so it is kept for a person to examine. Any
-        failure is a recorded `deletion` event with the file kept, never an
-        exception that aborts the run (§28, PRES-007): the admission stands.
+        database rows; the rule itself is `discharge_quarantine_copy`, shared
+        with `collector/discharge_backlog.py`.
         """
-        path = self.quarantine_dir / quarantine_id
-        received = result.sha256.hex()
-        try:
-            on_disk = hashlib.sha256(path.read_bytes()).hexdigest()
-            if not (on_disk == received == archived_sha256):
-                self._record_event(
-                    "deletion", None, quarantine_id, "failure",
-                    f"digests disagree (on disk {on_disk}, received {received}, "
-                    f"archive {archived_sha256}); quarantine copy kept")
-                return
-            path.unlink()
-        except OSError as exc:
-            self._record_event("deletion", None, quarantine_id, "failure",
-                               f"quarantine copy not removed: {exc}")
-            return
-        self._record_event(
-            "deletion", None, quarantine_id, "success",
-            f"quarantine copy removed after admission; sha256 {on_disk} "
-            "agrees across the file, the receipt record and the OCFL inventory")
+        discharge_quarantine_copy(
+            self.conn, self.quarantine_dir, quarantine_id,
+            result.sha256.hex(), archived_sha256, self.software_agent_id)
 
     def _record_event(
         self, event_type: str, object_id: str | None,
@@ -871,6 +851,48 @@ class Collector:
             (_uuid(), event_type, object_id, quarantine_id, self.software_agent_id,
              _now(), outcome, detail),
         )
+
+
+def discharge_quarantine_copy(
+    conn: psycopg.Connection, quarantine_dir: Path, quarantine_id: str,
+    received_sha256: str, archived_sha256: str, software_agent_id: str,
+) -> bool:
+    """Remove one admitted item's quarantine file and record it (issue #51).
+
+    The file is removed only if three digests agree: the one recorded at
+    receipt, the one the OCFL inventory holds, and a fresh hash of the file on
+    disk. Disagreement means the quarantine copy is not what was admitted, so
+    it is kept for a person to examine. Any failure is a recorded `deletion`
+    event with the file kept, never an exception that aborts the caller
+    (§28, PRES-007): the admission stands. Returns True when the file was
+    removed.
+    """
+    def record(outcome: str, detail: str) -> None:
+        conn.execute(
+            """
+            INSERT INTO preservation_event
+                (id, event_type, object_id, quarantine_item_id, agent_id,
+                 occurred_at, outcome, outcome_detail)
+            VALUES (%s, 'deletion', NULL, %s, %s, %s, %s, %s)
+            """,
+            (_uuid(), quarantine_id, software_agent_id, _now(), outcome, detail))
+
+    path = Path(quarantine_dir) / quarantine_id
+    try:
+        on_disk = hashlib.sha256(path.read_bytes()).hexdigest()
+        if not (on_disk == received_sha256 == archived_sha256):
+            record("failure",
+                   f"digests disagree (on disk {on_disk}, received {received_sha256}, "
+                   f"archive {archived_sha256}); quarantine copy kept")
+            return False
+        path.unlink()
+    except OSError as exc:
+        record("failure", f"quarantine copy not removed: {exc}")
+        return False
+    record("success",
+           f"quarantine copy removed after admission; sha256 {on_disk} "
+           "agrees across the file, the receipt record and the OCFL inventory")
+    return True
 
 
 def find_orphaned_objects(

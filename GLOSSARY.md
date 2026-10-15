@@ -277,8 +277,10 @@ and format checks, and its provenance and privacy/legal exposure are
 assessed; critically, **none of the archive's integrity guarantees apply
 to it yet**. Once an item is admitted and the archive holds its bytes, the
 quarantine copy is *discharged*: removed, and the removal recorded as a
-`deletion` preservation event. Quarantine copies still sitting there (those
-left by earlier runs, and rejected material) factor into the project's
+`deletion` preservation event. The copies left by runs before that existed
+are removed by a one-off, `collector/discharge_backlog.py`, run by a person
+after it has checked each against its archived object. Quarantine copies still
+sitting there (those not yet removed, and rejected material) factor into the project's
 storage/duplication accounting (`storage/measure.py`, A7; DR-0069).
 
 **Submitter claim**
