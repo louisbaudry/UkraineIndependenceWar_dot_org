@@ -30,6 +30,7 @@ names only.
 | 2 | Backfill the capture series for the first two holdings | #75 | yes, one table, after a plan |
 | 3 | Baseline storage and bandwidth measurement | #54 | no |
 | 4 | Check six regional Telegram channels' provenance | #61 (DR-0109 step 2) | no |
+| 5 | Discharge the pre-fix quarantine copies | #152 | removes files, after a plan |
 
 The order matters in one place: **step 1 before step 2**, because a schema
 reload rebuilds the tables the backfill writes to, and the backfill is cheaper to
@@ -169,6 +170,35 @@ as a dated section (handles and statuses only; no hostnames of the server). It
 **registers nothing**: registering any of them is a separate founder decision,
 per source, and DR-0072's suspension still frames the scale question the record
 puts to you.
+
+## 5. Discharge the pre-fix quarantine copies (card #152)
+
+Frees the roughly 1.05 GB that the 2026-10-14 measurement found duplicated
+(`docs/sources/a7-measurement-results-2026-10-14.md`). Not urgent. **Do the
+next real collection run first** if one is due: it shows that new captures are
+discharged by the pipeline (issue #51), and this step should only be about the
+old ones. It never touches rejected items or ones admitted but not stored.
+
+```bash
+python3 collector/discharge_backlog.py --dbname uiw --archive-root ~/uiw-archive
+```
+
+Read the first line. Expect about 5,970 copies "verified against the archive",
+`0 problem(s)`, and the number "left" equal to the items admitted under a
+`discard` or `metadata-only` tier (probably 0). Any `PROBLEM` line is a stop:
+the tool exits 2 and has removed nothing; say what it printed on #152 rather
+than working around it. When the plan is what you expected:
+
+```bash
+python3 collector/discharge_backlog.py --dbname uiw --archive-root ~/uiw-archive --commit
+python3 collector/discharge_backlog.py --dbname uiw --archive-root ~/uiw-archive   # expect: 0 quarantine copies verified
+python3 storage/measure.py --archive-root ~/uiw-archive                           # PGDATABASE=uiw; ratio should now read about 1.01x
+```
+
+Each removal is a `deletion` preservation event naming the collector software
+agent. Keep the old database backups until this has run once and `measure.py`
+agrees; the files are gone for good, but every one was checked byte-for-byte
+against the OCFL copy first.
 
 ## First sitting, 2026-10-13
 

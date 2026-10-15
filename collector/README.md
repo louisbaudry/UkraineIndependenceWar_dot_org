@@ -451,12 +451,16 @@ other action on bytes sits in).
   file does persist. **Not done here:** deciding when rejected or unstored
   quarantine material is finally disposed of; that is a retention question,
   not this card's.
-- **The captures already on the archive server are not discharged.** The
-  2026-09-09…2026-09-29 runs left their quarantine copies, and this change
-  does not go back for them. Removing those is a one-off operation that
-  deserves its own verification against the real OCFL objects, by a person.
-  `storage/measure.py` will show how much it is.
-
+- **The captures already on the archive server are not discharged by the
+  pipeline.** The 2026-09-09…2026-09-29 runs left their quarantine copies, and
+  this change does not go back for them. `collector/discharge_backlog.py`
+  (issue #152) is the one-off that does, run by a person: plan first, then
+  `--commit`. Per item it requires the OCFL object to pass its fixity check and
+  the file on disk, the quarantine row, the object row and the inventory to
+  agree on the SHA-256 (the pipeline's rule, `discharge_quarantine_copy`,
+  plus the fixity check). If **any** candidate fails, it removes nothing. A
+  rejected item, and one admitted but never stored, are left. `storage/measure.py`
+  shows how much it is.
 **Live archive database:** one statement, below.
 
 ## Unchanged captures are not stored again (issue #50)
@@ -592,6 +596,25 @@ honestly, sabotaging one rule at a time:
   test;
 - catching the wrong exception turns the OSError-is-recorded check red;
 - discharging a rejected item too turns the rejected-stays check red.
+
+**`test_discharge_backlog.py` — 15 tests** on issue #152, against the real
+pipeline (switched back to its pre-#51 behaviour to make a backlog), PostgreSQL
+and OCFL. Verified to fail honestly, sabotaging one rule at a time:
+
+- skipping the OCFL fixity check turns three checks red (rotted archive bytes
+  would no longer stop the run);
+- removing the digest comparison turns five red;
+- committing despite problems turns five red (nothing may be removed while any
+  candidate fails);
+- treating an admitted item with no ingestion event as a skip turns two red;
+- initialising a missing storage root instead of refusing turns the
+  wrong-directory check red;
+- selecting rejected items too crashes the suite (the rejected item has no
+  ingestion event, which is a problem the run reports; the suite's own index
+  into the result then fails). Detected, but by a crash, not a failed check;
+- ignoring a prior success `deletion` event is **not** caught: the already-gone
+  file is skipped independently, so the second run is still a no-op. Two
+  layers guard it; the sabotage removes one.
 
 **`test_archive_capture_provenance.py` — 17 tests** on issue #52, against the
 real pipeline, PostgreSQL and OCFL, with WARC files the suite writes. Verified
