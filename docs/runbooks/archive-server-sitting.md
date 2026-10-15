@@ -211,6 +211,18 @@ not done. What the server taught is folded into `schema-reload.md`
 ("First use, 2026-10-13"). One more thing from this sitting: a new SSH session
 needs `source .venv/bin/activate` again before any `python3` command here.
 
+## Second sitting, 2026-10-15
+
+Step 5 was done by the founder with an assistant: the plan verified 5,970
+copies with 0 problems, `--commit` removed all of them, a second plan found
+nothing, and `measure.py` read 1.01x. The checkout was updated first
+(`git pull --ff-only` then `source .venv/bin/activate`). Steps 3 and 4 had not
+changed. One thing the pull brought that the sitting did not handle: `main`
+now carries a schema change the server's database does not have (issue #158; the
+`rights_review_state` columns and the Gate 3 checks, #60), so **the drift check
+of step 1 must be run, and the schema brought up to date, before the next
+collection run**; the collector reads the new column.
+
 ## After the sitting
 
 - Close the cards the steps finished (#76, #75, #54) and comment on #61 with the

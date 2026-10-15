@@ -107,3 +107,23 @@ first, by a person. At 1.05 GB with about 108 GB free it is not urgent.
   the database only, not the archive tree.
 - **Concurrent sources under load**; every run here was sequential.
 - **Whether the quarantine discharge works in production** (§2 above).
+
+## 5. Addendum, 2026-10-15: the old quarantine copies were removed
+
+The next morning the founder ran `collector/discharge_backlog.py` on the archive
+server (issue #152), step by step. The plan verified all 5,970 copies
+(1,053,245,824 bytes) against their archived objects with 0 problems; `--commit`
+removed 5,970 and refused none; a second plan found nothing left. Re-measuring
+with `storage/measure.py`:
+
+| | Before (§2) | After |
+|---|---|---|
+| `quarantine/` | 1,053,245,824 bytes, 5,970 files | 0 bytes, 0 files |
+| `permanent` root | 1,066,895,304 bytes, 35,823 files | unchanged |
+| `medium-term` root | 466 bytes, 3 files | unchanged |
+| Duplication ratio | 2.01x | **1.01x** |
+
+The 1.01x is the OCFL overhead of §2 (1.3%). This does not show that the
+pipeline's own discharge works on the server: nothing has been collected since
+issue #51 landed. The first real collection run is the test, and its quarantine
+file count should stay at 0 afterwards.
