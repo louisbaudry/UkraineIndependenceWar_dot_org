@@ -221,7 +221,9 @@ changed. One thing the pull brought that the sitting did not handle: `main`
 now carries a schema change the server's database does not have (issue #158; the
 `rights_review_state` columns and the Gate 3 checks, #60), so **the drift check
 of step 1 must be run, and the schema brought up to date, before the next
-collection run**; the collector reads the new column.
+collection run**; the collector reads the new column. That was done on
+2026-10-21 (`schema-reload.md`, "Second use"): the drift check found exactly
+those six differences and the reload brought the server current.
 
 ## After the sitting
 

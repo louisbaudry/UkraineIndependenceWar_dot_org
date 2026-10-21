@@ -287,6 +287,29 @@ What the real server taught, now folded into the steps above:
 - `pg_dump` 15 prints no `\restrict` lines, so the comparison filter in step 4 was harmless but unneeded there.
 - The reload took a minute or two with no output.
 
+## Second use, 2026-10-21
+
+Run on the archive server (PostgreSQL 15, a 24 MB database, 109 GB free) by the
+founder, step by step with an assistant, six days after the first. `main` had
+gained the `rights_review_state` columns (#60, issue #158).
+
+| Step | Result |
+|---|---|
+| Drift check (1) | exit 1, 6 differences: `rights_review_state` on `source` and `holding` with their two CHECK constraints, and the two changed Gate 3 functions. Missing columns, so Path B |
+| Backup (4) | full dump 15 MB, data dump 30 MB; both pairs identical |
+| Build and reload (5, 6) | `rc=0`, 0 errors; row counts identical for every table (10 sources, 5,970 holdings); drift check on the new database exit 0 |
+| Swap (7) | old database kept as `uiw_prev_20261021`; drift check on `uiw` exit 0 |
+
+What it taught: nothing new in the steps, so the runbook held. The same two
+slips recurred, which is why they are worth repeating: run the scripts from
+`~/uiw` (the first attempt ran from `/root` and the script was not found), and
+`source .venv/bin/activate` again in every new SSH session. `release/baseline.py
+--check` printed `Not ready: 1 item(s) unpinned` (`dataset_snapshot`, "no
+preservation dump supplied"); that is what it says when it is not given a dump,
+not a fault of the database. Six days between uses confirms the cost
+the infrastructure register states: each `schema/` change needs this evening's
+work until the migration mechanism (#142) exists.
+
 ## If something looks wrong
 
 - **Step 1 exits 2.** Usually the role lacks `CREATEDB`, or the database name

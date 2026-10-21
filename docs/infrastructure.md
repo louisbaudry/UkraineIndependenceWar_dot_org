@@ -156,9 +156,10 @@ ruling 2026-10-11: a runbook now, a migration mechanism later as its own
 card). It builds the new database alongside the old one and swaps by
 rename, so the old one is the rollback.
 
-The server was last brought up to date on 2026-10-13 with this procedure
-(first use: every step passed; the old database is kept as
-`uiw_prev_20261013` until a real collection run has succeeded on the new one).
+The server was last brought up to date on 2026-10-21 with this procedure (its
+second use; the first was 2026-10-13; every step passed both times). The old
+databases are kept as `uiw_prev_20261013` and `uiw_prev_20261021` until a real
+collection run has succeeded on the new one.
 
 Practical rule: **before running anything on the server after pulling
 `main`, run `python3 schema/check_drift.py --dbname uiw`** (read-only; exit
@@ -209,8 +210,8 @@ Only items 3 and 7 have been ruled on. Status for each lives on the board, not h
    (DR-0108, board issue #65).
 4. No fixity schedule recorded as actually running (PRES-003).
 5. No migration mechanism for the live schema (held as board issue #142).
-   The reload procedure exists and was used once successfully
-   ([`runbooks/schema-reload.md`](runbooks/schema-reload.md), 2026-10-13); it
+   The reload procedure exists and was used twice successfully
+   ([`runbooks/schema-reload.md`](runbooks/schema-reload.md), 2026-10-13 and 2026-10-21); it
    is an evening's work each time `schema/` changes.
 6. No CI: tests do not run on GitHub.
 7. One IP address for all Telegram collection (runbook risk). **Accepted
