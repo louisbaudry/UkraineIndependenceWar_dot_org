@@ -461,6 +461,9 @@ other action on bytes sits in).
   plus the fixity check). If **any** candidate fails, it removes nothing. A
   rejected item, and one admitted but never stored, are left. `storage/measure.py`
   shows how much it is.
+- **Seen working on the real server, 2026-10-22**: the first collection after
+  this change (3 files) left `quarantine/` empty and recorded 3 success
+  `deletion` events (`docs/sources/a7-measurement-results-2026-10-14.md` §6).
 **Live archive database:** one statement, below.
 
 ## Unchanged captures are not stored again (issue #50)
