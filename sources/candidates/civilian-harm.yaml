@@ -146,11 +146,11 @@ sources:
     # landing page before every run — the same manual re-verification
     # obligation eur-lex-sanctions (DR-0105) and isw-orca carry.
     locator: https://ukraine.ohchr.org/en/reports/protection-of-civilians
-    locator_verified: 2026-09-24
+    locator_verified: 2026-10-17
     run_locators:
-      - https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-August-2026
-      - https://ukraine.ohchr.org/sites/default/files/2026-09/Ukraine%20-%20protection%20of%20civilians%20in%20armed%20conflict%20%28August%29_ENG.pdf
-      - https://ukraine.ohchr.org/sites/default/files/2026-09/Ukraine_protection_of_civilians_in_armed_conflict_August_UKR.pdf
+      - https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-September-2026
+      - https://ukraine.ohchr.org/sites/default/files/2026-10/Ukraine%20-%20protection%20of%20civilians%20in%20armed%20conflict%20%28September%202026%29_ENG.pdf
+      - https://ukraine.ohchr.org/sites/default/files/2026-10/Ukraine%20-%20protection%20of%20civilians%20in%20armed%20conflict%20%28September%202026%29_UKR.pdf
     verification_note: >
       Fetched live 2026-09-24. Listing page 200 (66 547 bytes), nine
       pages back to 2022, monthly updates on this site from the October 2023 update
