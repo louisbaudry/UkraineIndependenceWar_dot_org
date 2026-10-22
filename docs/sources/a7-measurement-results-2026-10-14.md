@@ -123,7 +123,18 @@ with `storage/measure.py`:
 | `medium-term` root | 466 bytes, 3 files | unchanged |
 | Duplication ratio | 2.01x | **1.01x** |
 
-The 1.01x is the OCFL overhead of §2 (1.3%). This does not show that the
-pipeline's own discharge works on the server: nothing has been collected since
-issue #51 landed. The first real collection run is the test, and its quarantine
-file count should stay at 0 afterwards.
+The 1.01x is the OCFL overhead of §2 (1.3%). This did not show that the
+pipeline's own discharge works on the server: nothing had been collected since
+issue #51 landed. The first real collection run was the test (§6).
+
+## 6. Addendum, 2026-10-22: the pipeline's own discharge seen working
+
+The monthly UN run (issue #82, September 2026 edition) was the first real
+collection since issue #51 landed, on the schema brought up to date the day
+before. It discovered 3, acquired 3, failed 0, preserved 10,407,053 bytes, and
+created 0 documentary assertions. Afterwards: `quarantine/` held 0 files, the
+database recorded 3 `deletion` events with outcome `success` for the run, and
+`storage/measure.py` read the permanent root at 1,077,309,753 bytes in 35,841
+files and a duplication ratio of **1.01x**. So a new capture is discharged by
+the pipeline itself and the footprint no longer doubles. One run, three files:
+a first observation, not a long record.
