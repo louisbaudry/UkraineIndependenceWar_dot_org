@@ -172,6 +172,7 @@ live WARC wrapping are built and tested, and A1 has produced a real first collec
 | 2026-10-15 | **The pre-fix quarantine copies were removed on the archive server** (issue #152), by the founder at the server, step by step: 5,970 copies (1,053,245,824 bytes) verified against their OCFL objects with 0 problems, all removed, none refused; duplication fell from 2.01x to 1.01x. The pipeline's own discharge of a new capture is still unseen on the server | [`docs/sources/a7-measurement-results-2026-10-14.md`](docs/sources/a7-measurement-results-2026-10-14.md) |
 | 2026-10-21 | **The archive server's schema was brought up to date again** (issue #158): the drift check found exactly the six differences from the `rights_review_state` change (#60); the backup-and-reload followed `schema-reload.md` and passed every check (row counts identical for every table, drift 0 on the new database and after the swap), by the founder at the server, step by step. The old database is kept as `uiw_prev_20261021`. The next collection run can use the current code | [`docs/runbooks/schema-reload.md`](docs/runbooks/schema-reload.md) |
 | 2026-10-22 | **The September 2026 UN HRMMU edition was collected** (issue #82, DR-0110): 3 files, 10,407,053 bytes, 0 failed, 0 documentary assertions, by the founder at the server, step by step, after the files were re-read against the UN page. It was also the first real collection since the quarantine discharge (issue #51) and since the schema update: quarantine stayed empty, so a new capture no longer doubles the footprint (1.01x) | [`docs/sources/a7-measurement-results-2026-10-14.md`](docs/sources/a7-measurement-results-2026-10-14.md) |
+| 2026-10-25 | **A read-only MCP server was built** (issue #167) so Claude can check what is registered and collected instead of repeating a status claim from a file: five tools (`list_sources`, `get_source`, `list_decisions`, `get_decision`, `archive_status`), repo tools always, database tools when `PGDATABASE` is set, *unknown* never reported as *no*, and the database session read-only at the server. It registers, collects and writes nothing. 31 checks against real PostgreSQL and a real stdio round trip, seven rules shown to fail. Adds one runtime dependency, the official `mcp` SDK, approved by the founder for this component only. Not run against the archive server's database | [`archive_mcp/`](archive_mcp/README.md), `.mcp.json` |
 
 Track A of WP 3.4 (work permitted now under DR-0071): **A3, A4, A5 and A6 are
 done; A1 is six sources of seven; A2 and A7 have their tooling built and their
@@ -233,6 +234,9 @@ publication/          Gate 3 — publication decision and page history
 identifiers/          Public identifiers (ARK), the register and the resolver
 export/               Durable export and access-tier policy
 release/              Release baselines
+archive_mcp/          Read-only MCP server so Claude can query Decision Records,
+                      candidate sources and (with a database) archive state;
+                      the one component with a dependency beyond the stdlib
 setup/                install.sh — one-command install on Debian/Ubuntu
 site/                 Public-facing progress briefing (not governance content,
                       not the eventual archive website — see site/README.md),
@@ -266,6 +270,7 @@ python3 editorial/tests/test_gate2.py
 python3 publication/tests/test_gate3.py
 python3 export/tests/test_dump.py
 python3 release/tests/test_baseline.py
+python3 archive_mcp/tests/test_tools.py        # read-only MCP server (needs `mcp`)
 python3 registry/validate.py                   # registry consistency
 ```
 

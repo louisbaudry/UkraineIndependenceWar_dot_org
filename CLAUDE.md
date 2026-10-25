@@ -531,6 +531,14 @@ change could break:
 - `warcio` can be pip-installed for the WARC cross-check tests; it is not a
   project dependency and its absence is reported as a skip.
 - Use the session scratchpad for backups and throwaway files, never the repo.
+- **`archive_mcp/` is a read-only MCP server** (`.mcp.json` registers it as
+  `uiw-archive`; issue #167). When a session has its tools, use
+  `archive_status`, `list_sources` and `get_decision` to check state before
+  repeating any claim about it. They report *unknown* without a database
+  (`PGDATABASE`), never *no*, and cannot register, collect or write. It is
+  the one component with a dependency beyond the stdlib, `psycopg` and
+  `PyYAML` (`mcp>=2,<3`, founder-approved 2026-10-25 for that component
+  only); adding a write tool needs its own decision first.
 - `registry/validate.py` runs without arguments and must report
   `0 error(s)` after any vocabulary change; regenerate the enum DDL after it.
 
