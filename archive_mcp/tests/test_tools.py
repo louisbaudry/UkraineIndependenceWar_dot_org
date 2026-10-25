@@ -158,6 +158,61 @@ def run() -> int:
           any(r["id"] == "DR-0072"
               for r in tools.list_decisions(query="personal data policy")))
 
+    # ---- documentation search: deterministic, confined, all-words --------
+
+    hits = tools.search_docs("quarantine zone", scope="decisions", limit=50)
+    check("DR-0069", "search finds the record whose title names the topic",
+          any(h["path"].endswith("DR-0069-quarantine-zone.md") for h in hits))
+    check("DR-0046", "search_docs requires every word, not any",
+          tools.search_docs("quarantine zzzqqqxxx") == [])
+    check("DR-0046", "search_docs is case-insensitive",
+          [h["path"] for h in tools.search_docs("QUARANTINE ZONE", scope="decisions", limit=50)]
+          == [h["path"] for h in hits])
+    check("DR-0046", "the same query always answers the same way",
+          tools.search_docs("legal review") == tools.search_docs("legal review"))
+    check("DR-0046", "scope narrows the search to one directory",
+          hits and all(h["path"].startswith("docs/decision-records/")
+                       for h in hits)
+          and all(h["path"] == "GLOSSARY.md"
+                  for h in tools.search_docs("quarantine", scope="glossary")))
+    check("DR-0046", "limit caps the results and a hit carries its location",
+          len(tools.search_docs("the", limit=3)) == 3
+          and all(h["line"] >= 1 and len(h["snippet"]) <= 250
+                  for h in tools.search_docs("quarantine", limit=5)))
+    check("DR-0046", "a hit names the heading above its line",
+          any(h["heading"] for h in hits))
+    allowed = ("docs/", "GLOSSARY.md")
+    everything = tools.search_docs("source", limit=50)
+    check("DR-0071", "search only ever returns documentation paths",
+          everything and all(h["path"].startswith(allowed)
+                             for h in everything))
+    check("DR-0071", "candidate YAML is not searchable",
+          not any("candidates" in h["path"]
+                  for h in tools.search_docs("run_locators", limit=50)))
+    refuses("DR-0071", "a path-like scope is refused, not followed",
+            lambda: tools.search_docs("x", scope="../../etc"), "unknown scope")
+    refuses("DR-0046", "an empty query is refused",
+            lambda: tools.search_docs("   "), "query is empty")
+    refuses("DR-0046", "a long query is refused",
+            lambda: tools.search_docs("a b c d e f g h i"), "too long")
+
+    # ---- glossary lookup --------------------------------------------------
+
+    dr = tools.lookup_term("decision record (dr)")
+    check("GLOSSARY", "an exact term returns its entry alone, any case",
+          len(dr) == 1 and "founder decision" in dr[0]["definition"]
+          and dr[0]["section"])
+    part = tools.lookup_term("rights review")
+    check("GLOSSARY", "a partial term returns the entries whose name holds it",
+          part and all("rights review" in e["term"].lower() for e in part))
+    check("GLOSSARY", "every glossary entry parses with a definition",
+          len(tools._glossary()) > 100
+          and all(e["definition"] for e in tools._glossary()))
+    refuses("GLOSSARY", "an unknown term is refused, not guessed",
+            lambda: tools.lookup_term("zzzqqqxxx"), "no glossary entry")
+    refuses("GLOSSARY", "an empty term is refused",
+            lambda: tools.lookup_term(""), "term is empty")
+
     # ---- with a database: read from it, and cannot write to it -----------
 
     build_database()
@@ -238,15 +293,24 @@ def run() -> int:
             async with Client(params) as client:
                 listed_tools = await client.list_tools()
                 names = {t.name for t in listed_tools.tools}
-                check("MCP", "the server lists exactly the five read tools",
+                check("MCP", "the server lists exactly the seven read tools",
                       names == {"list_sources", "get_source", "list_decisions",
-                                "get_decision", "archive_status"})
+                                "get_decision", "archive_status",
+                                "search_docs", "lookup_term"})
                 check("MCP", "every tool is annotated read-only",
                       all(t.annotations and t.annotations.read_only_hint
                           for t in listed_tools.tools))
                 res = await client.call_tool("get_decision", {"number": "72"})
                 check("MCP", "a tool call round-trips over stdio",
                       "DR-0072" in res.content[0].text)
+                found = await client.call_tool(
+                    "search_docs", {"query": "quarantine zone",
+                                    "scope": "decisions"})
+                check("MCP", "search_docs round-trips over stdio",
+                      "DR-0069" in found.content[0].text)
+                empty = await client.call_tool("search_docs", {"query": " "})
+                check("MCP", "a search refusal comes back as a tool error",
+                      empty.is_error and "query is empty" in empty.content[0].text)
                 bad = await client.call_tool("get_decision", {"number": "9999"})
                 check("MCP", "a refusal comes back as a tool error, not a crash",
                       bad.is_error and "not in the register" in bad.content[0].text)

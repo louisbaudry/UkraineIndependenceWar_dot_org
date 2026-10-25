@@ -37,8 +37,8 @@ that the founder rules on becomes a real DR.
 A small program Claude launches to call named tools, here a read-only one that
 answers "what is registered, collected and decided *now*" from the Decision
 Record register, the candidate source files and, when a database is
-configured, the archive database. It cannot register, collect or write
-anything. "Unknown" (no database reachable) is never reported as "no". See
+configured, the archive database, and finds words in the documentation and
+the glossary. It cannot register, collect or write anything. "Unknown" (no database reachable) is never reported as "no". See
 [`archive_mcp/README.md`](archive_mcp/README.md).
 
 **Working paper (WP)**

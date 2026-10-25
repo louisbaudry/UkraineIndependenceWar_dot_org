@@ -95,6 +95,24 @@ def get_decision(number: str, include_text: bool = False) -> dict[str, Any]:
 
 
 @server.tool(annotations=READ_ONLY)
+def search_docs(query: str, scope: str | None = None,
+                limit: int = 10) -> list[dict[str, Any]]:
+    """Find where the documentation says something. Every word of `query`
+    must appear in a file (case-insensitive, at most 8 words); results give
+    path, line, nearest heading and a snippet, best first. `scope` is one of
+    decisions, working-papers, sources, runbooks, legal, glossary. Searches
+    published governance text only, never collected material."""
+    return _guard(tools.search_docs, query, scope, limit)
+
+
+@server.tool(annotations=READ_ONLY)
+def lookup_term(term: str) -> list[dict[str, str]]:
+    """The glossary's definition of a term (exact name first, else entries
+    whose name contains it). Use it before naming a domain concept."""
+    return _guard(tools.lookup_term, term)
+
+
+@server.tool(annotations=READ_ONLY)
 def archive_status() -> dict[str, Any]:
     """Aggregate counts from the archive database: sources by lifecycle,
     collector runs, holdings by retention tier and rights-review state, and

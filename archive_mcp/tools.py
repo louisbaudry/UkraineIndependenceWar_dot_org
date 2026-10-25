@@ -302,6 +302,146 @@ def archive_status() -> dict[str, Any]:
         conn.close()
 
 
-__all__ = ["ToolError", "RegistrationError", "archive_status",
-           "database_configured", "get_decision", "get_source",
-           "list_decisions", "list_sources"]
+# ---------------------------------------------------------------------------
+# Documentation search
+# ---------------------------------------------------------------------------
+
+# Only these places are searchable: published governance and working text.
+# Candidate YAML, collected material and anything outside the repository's
+# documentation never enter a result, so a query cannot be used to read them.
+SEARCH_SCOPES: dict[str, tuple[str, ...]] = {
+    "decisions": ("docs/decision-records/DR-*.md",),
+    "working-papers": ("docs/phase-3/working-papers/*.md",),
+    "sources": ("docs/sources/*.md",),
+    "runbooks": ("docs/runbooks/*.md",),
+    "legal": ("docs/legal/*.md",),
+    "glossary": ("GLOSSARY.md",),
+}
+_MAX_WORDS = 8
+_MAX_QUERY = 200
+_SNIPPET = 240
+_HEADING = re.compile(r"^#{1,6}\s+(.*)")
+
+
+def _scope_files(scope: str | None) -> list[Path]:
+    if scope is not None and scope not in SEARCH_SCOPES:
+        raise ToolError(f"unknown scope {scope!r}; choose one of "
+                        f"{', '.join(sorted(SEARCH_SCOPES))}")
+    globs = (SEARCH_SCOPES[scope] if scope
+             else [g for gs in SEARCH_SCOPES.values() for g in gs])
+    return sorted({f for g in globs for f in ROOT.glob(g) if f.is_file()})
+
+
+def _snippet(line: str, words: list[str]) -> str:
+    line = line.strip()
+    if len(line) <= _SNIPPET:
+        return line
+    at = min((i for i in (line.lower().find(w) for w in words) if i >= 0),
+             default=0)
+    start = max(0, at - _SNIPPET // 3)
+    end = min(len(line), start + _SNIPPET)
+    return ("\u2026" if start else "") + line[start:end] + (
+        "\u2026" if end < len(line) else "")
+
+
+def search_docs(query: str, scope: str | None = None,
+                limit: int = 10) -> list[dict[str, Any]]:
+    """All-words, case-insensitive search of the documentation.
+
+    A file matches only if every word of `query` appears in it. Files rank by
+    lines holding every word, then capped occurrences, with a bonus for words
+    in the first line (the title); ties break by path, so the same query always answers the same way. Each
+    hit gives the best line (most distinct query words, earliest on a tie),
+    its number and the nearest heading above it. `scope` narrows to one of
+    `SEARCH_SCOPES`. No index and no state: every call reads the files, so a
+    result can never be staler than the checkout.
+    """
+    words = (query or "").lower().split()
+    if not words:
+        raise ToolError("query is empty")
+    if len(query) > _MAX_QUERY or len(words) > _MAX_WORDS:
+        raise ToolError(f"query too long: at most {_MAX_WORDS} words and "
+                        f"{_MAX_QUERY} characters")
+    limit = max(1, min(int(limit), 50))
+    hits = []
+    for path in _scope_files(scope):
+        lines = path.read_text().splitlines()
+        lowered = [ln.lower() for ln in lines]
+        text = "\n".join(lowered)
+        if not all(w in text for w in words):
+            continue
+        # Words sharing a line say more than words scattered through a long
+        # file, so lines holding every word dominate; raw occurrences are
+        # capped so a long document cannot win on length alone.
+        best_i, best_n, together = 0, -1, 0
+        for i, ln in enumerate(lowered):
+            n = sum(1 for w in words if w in ln)
+            together += n == len(words)
+            if n > best_n:
+                best_i, best_n = i, n
+        score = (10 * together + min(sum(text.count(w) for w in words), 50)
+                 + 20 * sum(1 for w in words if lowered and w in lowered[0]))
+        heading = next((m[1] for ln in reversed(lines[:best_i + 1])
+                        if (m := _HEADING.match(ln))), None)
+        hits.append({"path": str(path.relative_to(ROOT)), "line": best_i + 1,
+                     "heading": heading, "score": score,
+                     "snippet": _snippet(lines[best_i], words)})
+    hits.sort(key=lambda h: (-h["score"], h["path"]))
+    return hits[:limit]
+
+
+# ---------------------------------------------------------------------------
+# Glossary
+# ---------------------------------------------------------------------------
+
+# `**Term**` or `**Term** (`alias`)` alone on a line opens an entry (GLOSSARY.md).
+_TERM_LINE = re.compile(r"^\*\*([^*]+)\*\*(\s*\(.*\))?\s*$")
+
+
+def _glossary() -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    section = ""
+    current: dict[str, Any] | None = None
+    for line in (ROOT / "GLOSSARY.md").read_text().splitlines():
+        if line.startswith("## "):
+            section, current = line[3:].strip(), None
+            continue
+        m = _TERM_LINE.match(line)
+        if m:
+            current = {"term": (m[1] + (m[2] or "")).strip(),
+                       "section": section, "lines": []}
+            entries.append(current)
+        elif current is not None:
+            current["lines"].append(line)
+    return [{"term": e["term"], "section": e["section"],
+             "definition": " ".join(" ".join(e["lines"]).split())}
+            for e in entries]
+
+
+def lookup_term(term: str) -> list[dict[str, str]]:
+    """Glossary entries for `term`.
+
+    An exact (case-insensitive) match on the entry's name wins and is returned
+    alone; otherwise every entry whose name contains `term`, at most five.
+    Refuses an empty term and an unknown one, naming the nearest entries so
+    the caller can retry, rather than answering from memory.
+    """
+    needle = (term or "").strip().lower()
+    if not needle:
+        raise ToolError("term is empty")
+    entries = _glossary()
+    exact = [e for e in entries if e["term"].lower() == needle
+             or e["term"].lower().startswith(needle + " (")]
+    if exact:
+        return exact
+    partial = [e for e in entries if needle in e["term"].lower()][:5]
+    if partial:
+        return partial
+    raise ToolError(f"no glossary entry for {term!r}; search_docs with "
+                    f"scope='glossary' searches the definitions as well")
+
+
+__all__ = ["ToolError", "RegistrationError", "SEARCH_SCOPES",
+           "archive_status", "database_configured", "get_decision",
+           "get_source", "list_decisions", "list_sources", "lookup_term",
+           "search_docs"]
