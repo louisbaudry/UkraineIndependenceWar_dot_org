@@ -1,0 +1,4 @@
+# Runtime dependency for archive_mcp only. Approved by the founder for this
+# component on 2026-10-25 (issue #167); nothing else in the repository
+# imports it, and setup/install.sh does not install it.
+mcp>=2,<3

@@ -33,6 +33,14 @@ A decision proposed inside a working paper but not yet made — written as
 global sequence shared across all working papers (not per-paper). A CDR
 that the founder rules on becomes a real DR.
 
+**MCP server (`archive_mcp/`)**
+A small program Claude launches to call named tools, here a read-only one that
+answers "what is registered, collected and decided *now*" from the Decision
+Record register, the candidate source files and, when a database is
+configured, the archive database. It cannot register, collect or write
+anything. "Unknown" (no database reachable) is never reported as "no". See
+[`archive_mcp/README.md`](archive_mcp/README.md).
+
 **Working paper (WP)**
 A study prepared for the founder's review, filed at
 `docs/phase-3/working-papers/wp-3.N-slug.md`, carrying a header block

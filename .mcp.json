@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "uiw-archive": {
+      "command": "python3",
+      "args": ["archive_mcp/server.py"]
+    }
+  }
+}
