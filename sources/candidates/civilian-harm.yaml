@@ -214,7 +214,7 @@ sources:
     # The `&amp;` in the page's links must be written as `&`: the escaped
     # form returns a 26 275-byte HTML page, not the file.
     locator: https://new.gp.gov.ua/ua/posts/pro-zareyestrovani-kriminalni-pravoporushennya-ta-rezultati-yih-dosudovogo-rozsliduvannya-2
-    locator_verified: 2026-09-27
+    locator_verified: 2026-10-26
     # First run (DR-0111 Decision 2, the founder's
     # ruling of 2026-09-28): every report the listing linked on 2026-09-27.
     # Only file_id 292316 has been fetched; the other 19 ids and their months
@@ -243,6 +243,7 @@ sources:
       - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=290165"   # January-June 2026
       - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=291321"   # January-July 2026
       - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=292316"   # January-August 2026
+      - "https://old.gp.gov.ua/ua/file_downloader.html?_m=fslib&_t=fsfile&_c=download&file_id=294085"   # January-September 2026
     verification_note: >
       Verified 2026-09-27 through the archive server (Madrid Cloudflare
       edge), because every gp.gov.ua host returns a hard Cloudflare block
