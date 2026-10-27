@@ -48,6 +48,7 @@ documentary assertions is the expected result (DR-0066).
 from __future__ import annotations
 
 import argparse
+import signal
 import subprocess
 import sys
 from datetime import date, timedelta
@@ -317,10 +318,23 @@ def main(argv: list[str] | None = None, fetcher: Fetcher | None = None) -> int:
             # but an operator should see it in the exit status.
             return 1 if failed else 0
 
+    except KeyboardInterrupt:
+        # Issue #174: the collector has already closed the run with an outage
+        # note saying how far it got; there is nothing to do here but say so
+        # and exit with the conventional status for an interrupt.
+        print("\ninterrupted: the run was closed with a note saying how far it got "
+              "(see collector_run.outage_note)", file=sys.stderr)
+        return 130
     except (Refused, PolicyViolation, OcflError) as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return 2
 
 
+def _terminate_as_interrupt(signum, frame):  # pragma: no cover - signal glue
+    """Treat SIGTERM like Ctrl-C so `kill` also closes the run (issue #174)."""
+    raise KeyboardInterrupt
+
+
 if __name__ == "__main__":
+    signal.signal(signal.SIGTERM, _terminate_as_interrupt)
     sys.exit(main())

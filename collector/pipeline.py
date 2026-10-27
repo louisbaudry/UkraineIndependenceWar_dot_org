@@ -264,17 +264,25 @@ class Collector:
         run_id = self._open_run(source, configuration)
 
         totals = RunTotals()
-        for locator in locators:
-            totals.discovered += 1
-            try:
-                self._collect_one(source, locator, run_id, totals)
-            except PolicyViolation:
-                raise
-            except Exception as exc:  # noqa: BLE001
-                totals.failed += 1
-                totals.failure_details.append(
-                    {"locator": locator, "error": f"{type(exc).__name__}: {exc}"}
-                )
+        try:
+            for locator in locators:
+                totals.discovered += 1
+                try:
+                    self._collect_one(source, locator, run_id, totals)
+                except PolicyViolation:
+                    raise
+                except Exception as exc:  # noqa: BLE001
+                    totals.failed += 1
+                    totals.failure_details.append(
+                        {"locator": locator, "error": f"{type(exc).__name__}: {exc}"}
+                    )
+        except (KeyboardInterrupt, SystemExit) as exc:
+            # Issue #174: an operator's Ctrl-C or a SIGTERM is not an
+            # `Exception`, so it used to leave the run open with its totals at
+            # zero although attempts had been recorded. Close it with what was
+            # done and why it stopped, then let the interruption continue.
+            self._close_interrupted(run_id, totals, exc, planned=len(locators))
+            raise
 
         self._close_run(run_id, totals)
         return run_id
@@ -360,6 +368,9 @@ class Collector:
                         {"locator": record.target_uri,
                          "error": f"{type(exc).__name__}: {exc}"}
                     )
+        except (KeyboardInterrupt, SystemExit) as exc:
+            self._close_interrupted(run_id, totals, exc, planned=None)
+            raise
         except WarcFormatError as exc:
             # The file itself is bad from here on. What was read stands; the
             # fault is part of the coverage record (§57), not a crash.
@@ -465,13 +476,14 @@ class Collector:
         totals.skipped += 1
         totals.skip_reasons[reason] = totals.skip_reasons.get(reason, 0) + 1
 
-    def _close_run(self, run_id: str, totals: RunTotals) -> None:
+    def _close_run(self, run_id: str, totals: RunTotals,
+                   outage_note: str | None = None) -> None:
         self.conn.execute(
             """
             UPDATE collector_run
                SET ended_at = %s, items_discovered = %s, items_acquired = %s,
                    items_skipped = %s, items_failed = %s, bytes_preserved = %s,
-                   skip_reasons = %s, failure_details = %s
+                   skip_reasons = %s, failure_details = %s, outage_note = %s
              WHERE id = %s
             """,
             (
@@ -479,9 +491,39 @@ class Collector:
                 totals.failed, totals.bytes_preserved,
                 psycopg.types.json.Jsonb(totals.skip_reasons),
                 psycopg.types.json.Jsonb(totals.failure_details),
-                run_id,
+                outage_note, run_id,
             ),
         )
+
+    def _close_interrupted(
+        self, run_id: str, totals: RunTotals, exc: BaseException,
+        planned: int | None,
+    ) -> None:
+        """Close a run that an interruption cut short (issue #174, §57, PRES-007).
+
+        The item in flight was counted as discovered but never settled; it is
+        recorded as skipped with the reason `interrupted`, so discovered still
+        equals acquired + skipped + failed. The note says what stopped it and
+        how much was done. Closing is best effort: if the database is itself
+        what failed, the interruption must still reach the operator, so this
+        never raises.
+        """
+        try:
+            settled = totals.acquired + totals.skipped + totals.failed
+            if totals.discovered > settled:
+                self._skip(totals, "interrupted")
+            where = (f"{totals.discovered - 1} of {planned} locators had finished"
+                     if planned is not None else
+                     f"{max(totals.discovered - 1, 0)} items had finished")
+            tail = (f"; {planned - totals.discovered} were not attempted"
+                    if planned is not None and planned > totals.discovered else "")
+            note = (f"Interrupted ({type(exc).__name__}) while one item was in "
+                    f"progress: {where}{tail}. The counts are those recorded "
+                    "before the interruption; the item in progress is counted as "
+                    "skipped (interrupted).")
+            self._close_run(run_id, totals, outage_note=note)
+        except Exception:  # noqa: BLE001
+            pass
 
     # -- unchanged captures (issue #50) --------------------------------------
 

@@ -466,6 +466,32 @@ other action on bytes sits in).
   `deletion` events (`docs/sources/a7-measurement-results-2026-10-14.md` §6).
 **Live archive database:** one statement, below.
 
+## An interrupted run is closed and says so (issue #174)
+
+An operator's Ctrl-C, or a `kill` (SIGTERM), is not an `Exception`, so
+`Collector.run()` used to leave the run open: no `ended_at`, totals at zero,
+though attempts had been recorded against it. This happened on 2026-10-26,
+during the monthly Prosecutor General run, after 13 of 22 locators. Nothing
+was lost (each item commits on its own, storage first), but the run's own
+record said "0 discovered".
+
+Now `run()` and `ingest_warc()` catch `KeyboardInterrupt` and `SystemExit`,
+close the run, and re-raise:
+
+- the item in flight, counted as discovered but never settled, is recorded as
+  **skipped** with the reason `interrupted`, so discovered still equals
+  acquired + skipped + failed;
+- `ended_at` is set and `outage_note` (§57) says what stopped the run, how
+  many locators had finished, and how many were not attempted;
+- closing is best effort: if the database is what failed, the interruption
+  still reaches the operator, never the closing error;
+- `collector/run.py` turns SIGTERM into the same interrupt, prints that the run
+  was closed with a note, and exits **130**.
+
+This does not make interrupting a good way to retry: a full pass can take a
+minute or two on a slow publisher (the September 2026 pass of 22 files took
+35 s). Re-run instead; the unchanged files are recorded as unchanged.
+
 ## Unchanged captures are not stored again (issue #50)
 
 A source fetched on a schedule whose bytes have not changed used to be
@@ -618,6 +644,19 @@ and OCFL. Verified to fail honestly, sabotaging one rule at a time:
 - ignoring a prior success `deletion` event is **not** caught: the already-gone
   file is skipped independently, so the second run is still a no-op. Two
   layers guard it; the sabotage removes one.
+
+**`test_interrupted_run.py` — 10 tests**, and one in `test_run.py`, on issue
+#174, against the real pipeline, PostgreSQL and OCFL. Verified to fail
+honestly, one rule at a time:
+
+- handling nothing in `run()` turns six checks red (the run stays open);
+- handling Ctrl-C but not `SystemExit` turns the SIGTERM check red;
+- swallowing the interrupt instead of re-raising turns four red;
+- not accounting for the item in flight turns four red (the counts stop adding up);
+- letting a closing failure mask the interruption turns that check red;
+- not storing the outage note turns two red;
+- `run.py` letting the interrupt escape is caught by `test_run.py`, but by a
+  crash: the interrupt propagates through the test script itself.
 
 **`test_archive_capture_provenance.py` — 17 tests** on issue #52, against the
 real pipeline, PostgreSQL and OCFL, with WARC files the suite writes. Verified
