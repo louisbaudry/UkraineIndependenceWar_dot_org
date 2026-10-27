@@ -221,6 +221,25 @@ def run() -> int:
               code == 1 and last == (0, len(ofac["run_locators"]) - 1)
               and "failed:" in out)
 
+        # -- an interrupted run is closed and says so (issue #174) -------------
+
+        class InterruptingFetcher(FixtureFetcher):
+            def fetch(self, locator, validators=None):
+                if locator == ofac["run_locators"][1]:
+                    raise KeyboardInterrupt
+                return super().fetch(locator, validators)
+
+        interrupting = InterruptingFetcher(
+            {l: fixture_files[l] for l in ofac["run_locators"]})
+        code, _, err = invoke(["--source", "ofac-sdn", *base], interrupting)
+        ended, note = conn.execute(
+            "SELECT ended_at, outage_note FROM collector_run "
+            "ORDER BY started_at DESC LIMIT 1").fetchone()
+        check("PRES-007", "an interrupted run exits 130, is closed with an outage note, "
+              "and says so to the operator",
+              code == 130 and ended is not None and note and "Interrupted" in note
+              and "outage_note" in err)
+
         # -- a paused source does not collect -------------------------------
 
         conn.execute("UPDATE source SET lifecycle_state = 'paused', "
