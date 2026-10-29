@@ -75,6 +75,7 @@ archive**:
 | Operating system | Debian-family (required by `setup/install.sh`). **Distribution and version: Unknown** | `setup/install.sh` |
 | Control panel (Plesk/cPanel) | **Unknown.** The installer warns if it finds one | `setup/install.sh` |
 | Hostname / IP address | **Unknown** — deliberately left out of the repository, which is public on GitHub. Record it somewhere private | — |
+| How to connect | `ssh uiw`. `uiw` is a `Host` alias in each PC's own `~/.ssh/config` (on Windows, `%USERPROFILE%\.ssh\config`), which holds the address and the login; the key is served by the 1Password SSH agent, with Windows' own `ssh-agent` service stopped. The address lives only in that local file, never here | Founder, 2026-10-29 |
 | Code checkout | Tracks `main` since 2026-09-21. Before that it was on a stale branch, which caused the schema drift in §3.2 | DR-0105 *Executed* §2 |
 | Python | A `.venv` in the checkout. **It must be activated**, or `psycopg` is missing (`ModuleNotFoundError`, 2026-09-21) | DR-0105 *Executed* §2 |
 | Database | PostgreSQL, database `uiw`. The session role is `root`; `postgres` is the superuser, needed for reloads (§3.2). **PostgreSQL version: Unknown** (14+ required) | DR-0105, `setup/install.sh` |
