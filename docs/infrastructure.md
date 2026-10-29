@@ -157,10 +157,11 @@ ruling 2026-10-11: a runbook now, a migration mechanism later as its own
 card). It builds the new database alongside the old one and swaps by
 rename, so the old one is the rollback.
 
-The server was last brought up to date on 2026-10-21 with this procedure (its
-second use; the first was 2026-10-13; every step passed both times). The old
-databases are kept as `uiw_prev_20261013` and `uiw_prev_20261021` until a real
-collection run has succeeded on the new one.
+The server was last brought up to date on 2026-10-29 with this procedure (its
+third use; the others were 2026-10-13 and 2026-10-21; every step passed each
+time). The old databases are kept as `uiw_prev_20261013`, `uiw_prev_20261021`
+and `uiw_prev_20261029` until a real collection run has succeeded on the newest
+one.
 
 Practical rule: **before running anything on the server after pulling
 `main`, run `python3 schema/check_drift.py --dbname uiw`** (read-only; exit

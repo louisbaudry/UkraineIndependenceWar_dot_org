@@ -54,7 +54,7 @@ if step 1 reports a difference:
 
 - `git log` on the server's checkout shows a commit touching `schema/`
   since the last reload (`git log --oneline <last-reload-commit>..HEAD -- schema`).
-  The last reload on record is `26fe205` (the merge of PR #148), 2026-10-13; the one before was `7e45c5a`, 2026-09-21 (DR-0105).
+  The last reload on record is `d1df75f` (the merge of PR #180), 2026-10-29; before it 2026-10-21 and `26fe205` (the merge of PR #148), 2026-10-13, and before those `7e45c5a`, 2026-09-21 (DR-0105).
 - A collection run or `register.py` fails with `UndefinedColumn`,
   `UndefinedTable`, or an enum value the database does not know.
 - Before executing any registration or first collection run after pulling
@@ -102,6 +102,7 @@ run it as `postgres`. Exit codes:
 
 ```bash
 python3 schema/check_drift.py --dbname uiw | tee ~/uiw-backups/drift-$(date +%F).txt
+echo "exit=${PIPESTATUS[0]}"   # a plain $? here would be tee's, always 0
 ```
 
 Read the list. `missing-in-live` is the usual case: the DDL moved on. Two
@@ -309,6 +310,27 @@ preservation dump supplied"); that is what it says when it is not given a dump,
 not a fault of the database. Six days between uses confirms the cost
 the infrastructure register states: each `schema/` change needs this evening's
 work until the migration mechanism (#142) exists.
+
+## Third use, 2026-10-29
+
+Run on the archive server (PostgreSQL 15, 109 GB free) by the
+founder, step by step with an assistant, eight days after the second. `main` had
+gained the rights-review record (DR-0117, issue #155); this was issue #178.
+
+| Step | Result |
+|---|---|
+| Drift check (1) | 32 differences, all `missing-in-live`, none `extra-in-live` or `differs`: the two new tables with their columns, constraints and indexes, five triggers and three functions. Only additions, so Path B (the card had predicted three triggers; five exist, two of them the append-only guards on the new tables) |
+| Backup (4) | full dump 16 MB, data dump 31 MB; both pairs identical |
+| Build and reload (5, 6) | `rc=0`, 0 errors; row counts identical for every pre-existing table (10 sources, 5,976 holdings), the two new tables empty; drift check on the new database exit 0 |
+| Swap (7) | old database kept as `uiw_prev_20261029`; drift check on `uiw` exit 0, 10 sources |
+
+What it taught: the steps held again. One fault in the runbook itself: step 1's
+`tee` made `echo "exit=$?"` print `tee`'s status (always 0) even with 32
+differences, so the exit code looked clean while the list was not. The step now
+reads `${PIPESTATUS[0]}`; until then, read the printed list, not the number.
+The count diff in step 6 also prints the new tables as extra lines, which is
+expected when a reload adds tables; compare the old tables with the new ones
+filtered out, as was done here, rather than reading a non-empty diff as a loss.
 
 ## If something looks wrong
 
