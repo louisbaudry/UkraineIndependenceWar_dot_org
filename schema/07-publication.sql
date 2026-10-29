@@ -468,3 +468,137 @@ CREATE VIEW published_conclusion AS
       JOIN revision_assertion ra ON ra.assertion_id = pa.id
       JOIN page_revision r ON r.id = ra.revision_id
       JOIN published_page p ON p.id = r.page_id;
+
+-- ---------------------------------------------------------------------------
+-- Rights reviews (CDR-P3-45 candidate; DR-0117)
+-- ---------------------------------------------------------------------------
+--
+-- `rights_review_state` on source and holding is a declared field, and Gate 3
+-- refuses a holding that is not 'reviewed'. This is the one act that sets it:
+-- a person records that a source's rights position has been legally reviewed,
+-- on a named written basis, and the record lists every holding it covered. It
+-- is append-only (§77): a later withdrawal is a new row, never an edit.
+
+CREATE TABLE rights_review (
+    id              uuid PRIMARY KEY,
+    source_id       uuid NOT NULL REFERENCES source(id),
+    action          text NOT NULL CHECK (action IN ('reviewed', 'withdrawn')),
+    recorded_by     uuid NOT NULL REFERENCES pipeline_agent(id),
+    recorded_at     timestamptz NOT NULL DEFAULT now(),
+    -- What the review rests on: written advice from counsel, or a Decision
+    -- Record that relies on it. A review with no named basis is just an
+    -- assertion that someone said so, which is what this field replaces.
+    basis_kind      text NOT NULL
+        CHECK (basis_kind IN ('counsel-advice', 'decision-record')),
+    basis_reference text NOT NULL CHECK (btrim(basis_reference) <> ''),
+    note            text
+);
+
+CREATE INDEX rights_review_by_source ON rights_review (source_id, recorded_at);
+
+-- The holdings one review covered. A holding has no direct link back to its
+-- source (see `holding`), so which holdings belong to the source is resolved
+-- by the caller (publication/rights_review.py) and written down here, which
+-- makes each change of a holding's state traceable to one attributed record.
+CREATE TABLE rights_review_holding (
+    review_id   uuid NOT NULL REFERENCES rights_review(id),
+    holding_id  uuid NOT NULL REFERENCES holding(id),
+    PRIMARY KEY (review_id, holding_id)
+);
+
+CREATE FUNCTION rights_review_is_by_a_person() RETURNS trigger
+LANGUAGE plpgsql AS $$
+DECLARE agent_kind text;
+BEGIN
+    SELECT kind INTO agent_kind FROM pipeline_agent WHERE id = NEW.recorded_by;
+    IF agent_kind IS DISTINCT FROM 'person' THEN
+        RAISE EXCEPTION
+            'a rights review is a human act (§79, POL-0001 §10): agent kind '
+            'was %', coalesce(agent_kind, 'unknown');
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER rights_review_person_check
+    BEFORE INSERT ON rights_review
+    FOR EACH ROW EXECUTE FUNCTION rights_review_is_by_a_person();
+
+SELECT make_append_only('rights_review');
+SELECT make_append_only('rights_review_holding');
+
+-- The state is changed only by `record_rights_review` below, which sets a
+-- transaction-local flag. A plain UPDATE, from a script or a hand-typed
+-- statement, is refused: it would change what Gate 3 permits with no record
+-- of who decided, on what basis. A new source can only start 'unreviewed'.
+CREATE FUNCTION rights_review_state_changes_only_through_a_review()
+RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        IF NEW.rights_review_state <> 'unreviewed' THEN
+            RAISE EXCEPTION
+                'a source starts unreviewed; it is marked reviewed only by a '
+                'recorded rights review (CDR-P3-45)';
+        END IF;
+        RETURN NEW;
+    END IF;
+    IF NEW.rights_review_state IS DISTINCT FROM OLD.rights_review_state
+       AND coalesce(current_setting('uiw.rights_review_act', true), '') <> 'on'
+    THEN
+        RAISE EXCEPTION
+            '% rights_review_state changes only through record_rights_review(), '
+            'which records who decided and on what basis (CDR-P3-45)',
+            TG_TABLE_NAME;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER source_rights_review_guard
+    BEFORE INSERT OR UPDATE OF rights_review_state ON source
+    FOR EACH ROW EXECUTE FUNCTION rights_review_state_changes_only_through_a_review();
+
+CREATE TRIGGER holding_rights_review_guard
+    BEFORE UPDATE OF rights_review_state ON holding
+    FOR EACH ROW EXECUTE FUNCTION rights_review_state_changes_only_through_a_review();
+
+-- Records one review and applies it, atomically: the record, the source's new
+-- state, the listed holdings' new state and the link rows succeed together or
+-- not at all. 'withdrawn' moves them back to 'unreviewed'. Returns the id.
+CREATE FUNCTION record_rights_review(
+    p_source_id uuid, p_action text, p_recorded_by uuid,
+    p_basis_kind text, p_basis_reference text, p_note text,
+    p_holding_ids uuid[]
+) RETURNS uuid LANGUAGE plpgsql AS $$
+DECLARE
+    review_id uuid := gen_random_uuid();
+    new_state text;
+BEGIN
+    new_state := CASE p_action WHEN 'reviewed' THEN 'reviewed'
+                               WHEN 'withdrawn' THEN 'unreviewed' END;
+    IF new_state IS NULL THEN
+        RAISE EXCEPTION 'unknown rights review action %', p_action;
+    END IF;
+
+    INSERT INTO rights_review
+        (id, source_id, action, recorded_by, basis_kind, basis_reference, note)
+    VALUES
+        (review_id, p_source_id, p_action, p_recorded_by, p_basis_kind,
+         p_basis_reference, p_note);
+
+    PERFORM set_config('uiw.rights_review_act', 'on', true);
+    UPDATE source SET rights_review_state = new_state WHERE id = p_source_id;
+    INSERT INTO rights_review_holding (review_id, holding_id)
+        SELECT review_id, h FROM unnest(coalesce(p_holding_ids, '{}')) AS h;
+    UPDATE holding SET rights_review_state = new_state
+     WHERE id = ANY(coalesce(p_holding_ids, '{}'));
+    PERFORM set_config('uiw.rights_review_act', 'off', true);
+    RETURN review_id;
+END;
+$$;
+
+COMMENT ON TABLE rights_review IS
+    'Append-only record of a person marking a source''s rights position '
+    'legally reviewed, or withdrawing that (CDR-P3-45, candidate). The only '
+    'route to rights_review_state = reviewed; Gate 3 reads that state, never '
+    'the free-text rights_basis (POL-0001 §10).';

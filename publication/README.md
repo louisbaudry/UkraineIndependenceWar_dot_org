@@ -116,14 +116,41 @@ back to its source. Two schema checks refuse an unreviewed holding: the
 because `revision_holding` is the path that actually puts a holding on a page
 and needs no decision row. `Publisher` refuses the same early, with the
 reason. Every holding admitted so far is `unreviewed`, so no holding can be
-published until a person records a review; **there is no code path that marks
-a holding reviewed yet** — that act is for whoever takes the first counsel
-advice (POL-0001 §10) and is a follow-up, not part of this change. If the
-founder amends the candidate, this changes with it.
+published until a person records a review. If the founder amends the
+candidate, this changes with it.
+
+### Recording a review (issue #155, DR-0117)
+
+The one act that sets the state, ruled 2026-10-29. `python3
+publication/rights_review.py` plans a review (nothing is written without
+`--commit`) and records it through the database function
+`record_rights_review()`:
+
+- **Per source, one attributed append-only record** (`rights_review`): who, when,
+  which source, `reviewed` or `withdrawn`, and the basis. **Only a person**, and
+  the database refuses one with no named written basis: counsel's advice
+  (`counsel-advice`) or a Decision Record relying on it (`decision-record`).
+- **The source's existing holdings are marked in the same act, and the record
+  lists exactly which** (`rights_review_holding`). Later holdings inherit the
+  source's state at admission. A **withdrawal is its own record** and moves the
+  same holdings back; nothing is edited or deleted (§77).
+- **Nothing else changes the state.** A plain `UPDATE` of `rights_review_state`
+  on `source` or `holding` is refused, a source cannot be inserted already
+  reviewed, and `sources/register.py` refuses a candidate that declares it.
+- **Which holdings are the source's** is worked out from each holding's
+  original locator and the successful acquisition attempts for it (a holding
+  has no direct link to its source). A locator also acquired under another
+  source is **ambiguous**: left out of a review, included in a withdrawal, and
+  reported. A holding no source can be named for is counted and left alone.
+- The two tables are `confidential` in the export tier policy (DR-0084).
+
+No review has been recorded. The archive server's schema does not have this yet
+(it needs `docs/runbooks/schema-reload.md`).
 
 ## Verification
 
-51 tests (45 before CDR-P3-45). Every enforcement checked by sabotage:
+51 tests in `test_gate3.py` (45 before CDR-P3-45), and 33 in
+`test_rights_review.py` (issue #155). Every enforcement checked by sabotage:
 
 | Sabotage | Tests that failed |
 |---|---|
@@ -149,3 +176,24 @@ and the assertions it rendered.
 renderer, no routing, no HTTP. The record of what would be published is
 correct; whether the site built from it reads well is a product question this
 layer does not answer.
+
+**`test_rights_review.py` — 33 tests**, against the real pipeline, PostgreSQL
+and OCFL. Fourteen sabotages, each turning it red (a fifteenth, `record()`
+skipping its own person check, is caught by a crash: the database refuses it):
+
+| Sabotage | Tests that failed |
+|---|---|
+| person check on `rights_review` removed | 7 |
+| the non-empty basis check removed | 7 |
+| `rights_review` made editable | 1 |
+| its holding list made editable | 1 |
+| the guard on `source.rights_review_state` removed | 2 |
+| the guard on `holding.rights_review_state` removed | 2 |
+| a source may be inserted already reviewed | 1 |
+| the function stops updating holdings | 9 |
+| the function stops listing the holdings it covered | 2 |
+| a review reaches ambiguous holdings | 5 |
+| a review reaches another source's holdings | 7 |
+| a withdrawal ignores the current state | 3 |
+| a repeated review is allowed | 2 |
+| the plan-only default removed | 2 |

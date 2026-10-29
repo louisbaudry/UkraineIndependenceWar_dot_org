@@ -204,6 +204,20 @@ TIER_RULES: dict[str, TierRule] = {
         ),
     ),
 
+    "rights_review": TierRule(
+        "fixed", tier="confidential",
+        rationale=(
+            "Names the person who recorded a review and the basis it rests on, "
+            "which can cite counsel's advice. Withheld by default; the fact of "
+            "a review reaches a reader through Gate 3's own decision, not this "
+            "table (CDR-P3-45, POL-0001 §10)."
+        ),
+    ),
+    "rights_review_holding": TierRule(
+        "fixed", tier="confidential",
+        rationale="Which holdings a rights review covered; travels with its review.",
+    ),
+
     # -- internal working data -------------------------------------------
     "collector_run": TierRule(
         "fixed", tier="internal",

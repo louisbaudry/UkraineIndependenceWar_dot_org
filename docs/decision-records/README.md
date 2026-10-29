@@ -167,6 +167,7 @@ follows.
 | [DR-0114](DR-0114-deepstatemap-registration.md) | Register DeepStateMap's front-line snapshot (`deepstatemap`); `isw-orca` held pending ISW's written permission | operations / preservation | Approved — registration and first run to be executed on the archive server by the founder, not by this record | 2026-10-06 |
 | [DR-0115](DR-0115-kyiv-oblast-telegram-registration.md) | Register the Kyiv Oblast administration's Telegram channel (`ua-oda-kyiv-oblast-telegram`), `private-preservation`, first run plus a one-off backfill; DR-0109 step 2's first channel | operations / preservation | Approved — registration and runs to be executed on the archive server by the founder, not by this record | 2026-10-10 |
 | [DR-0116](DR-0116-locator-recheck-gate.md) | The per-run locator check on `eur-lex-sanctions` becomes a recorded gate (refines DR-0105 Decision 4) | operations / preservation | Approved — the check stays manual; `collector/run.py` now refuses a real run without `--locator-checked` | 2026-10-11 |
+| [DR-0117](DR-0117-rights-review-record.md) | A rights review is one attributed, append-only record per source: a person, on a named written basis, marking the source's existing holdings in the same act (refines CDR-P3-45, candidate) | publication / rights | Approved — the mechanism only; no review has been recorded and CDR-P3-45 is not enacted | 2026-10-29 |
 
 ## Provenance of decisions
 
@@ -483,4 +484,8 @@ unmerged branch drafted a new one.
 
 DR-0115 was numbered at merge, from `DR-pending-kyiv-oblast-telegram-registration`,
 on 2026-10-10. DR-0114 was then the highest record on `origin/main`, and no
+unmerged branch drafted a new one.
+
+DR-0117 was numbered at merge, from `DR-pending-rights-review-record`, on
+2026-10-29. DR-0116 was then the highest record on `origin/main`, and no
 unmerged branch drafted a new one.

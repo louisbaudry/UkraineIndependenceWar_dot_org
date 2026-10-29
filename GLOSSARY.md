@@ -118,7 +118,14 @@ A declared field, `unreviewed` or `reviewed`, on a source and copied onto each
 holding admitted from it, saying whether its rights position has been legally
 reviewed. It is deliberately not read out of the free-text `rights_basis`, and
 Gate 3 refuses to show any holding that is not `reviewed` (CDR-P3-45,
-candidate).
+candidate). It is set only by a rights review.
+
+**Rights review** (`rights_review`)
+One attributed, append-only record of a person marking a source's rights
+position legally reviewed, or withdrawing that, on a named written basis
+(counsel's advice or a Decision Record relying on it); it lists the holdings it
+covered. The only way `rights_review_state` becomes `reviewed`
+(DR-0117).
 
 ## Archival and preservation
 

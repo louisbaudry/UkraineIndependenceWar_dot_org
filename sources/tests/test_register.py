@@ -118,11 +118,11 @@ def run() -> int:
     bad_state[0]["rights_review_state"] = "probably-fine"
     rejects("CDR-P3-45", "an unknown rights_review_state is refused",
             bad_state, [], "rights_review_state 'probably-fine' is not one of")
-    contradictory = copy.deepcopy(sources)
-    contradictory[0]["rights_review_state"] = "reviewed"
-    contradictory[0]["rights_basis"] = "Public sector. NOT LEGALLY REVIEWED."
-    rejects("CDR-P3-45", "'reviewed' beside a basis that says unreviewed is "
-            "refused", contradictory, [], "they cannot both be true")
+    claims_reviewed = copy.deepcopy(sources)
+    claims_reviewed[0]["rights_review_state"] = "reviewed"
+    rejects("CDR-P3-45", "a candidate declaring 'reviewed' is refused: only a "
+            "recorded rights review sets it", claims_reviewed, [],
+            "only by a recorded rights review")
 
     graphic = copy.deepcopy(sources)
     graphic[0]["expects_graphic_content"] = True
@@ -316,19 +316,22 @@ def run() -> int:
                   "WHERE s.name = %s", (ofsi[0]["name"],)
               ).fetchone()[0] == len(ofsi_dep))
 
-        # -- CDR-P3-45 (candidate): a declared 'reviewed' state is stored as
-        #    declared, and not silently reset to the default ---------------
+        # -- CDR-P3-45 (candidate): registration cannot create a reviewed
+        #    source, even around validate(): the database refuses it ---------
 
         conn.execute("DELETE FROM source_dependence")
         conn.execute("DELETE FROM source")
         declared = copy.deepcopy(eu)
         declared[0]["rights_review_state"] = "reviewed"
         declared[0]["rights_basis"] = "Reviewed by counsel (synthetic fixture)."
-        commit(conn, declared, [], agent)
-        check("CDR-P3-45", "commit() stores a declared 'reviewed' state",
-              conn.execute(
-                  "SELECT rights_review_state FROM source").fetchone()[0]
-              == "reviewed")
+        try:
+            commit(conn, declared, [], agent)
+            refused = False
+        except psycopg.errors.RaiseException:
+            refused = True
+        check("CDR-P3-45", "commit() cannot register a source as 'reviewed'; "
+              "the database refuses it", refused
+              and conn.execute("SELECT count(*) FROM source").fetchone()[0] == 0)
 
         # -- and the reverse: nothing is inserted, and nothing crashes, when
         #    the other end is not registered anywhere at all --------------
