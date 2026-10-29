@@ -313,7 +313,7 @@ work until the migration mechanism (#142) exists.
 
 ## Third use, 2026-10-29
 
-Run on the archive server (PostgreSQL 15, a 26 MB database, 109 GB free) by the
+Run on the archive server (PostgreSQL 15, 109 GB free) by the
 founder, step by step with an assistant, eight days after the second. `main` had
 gained the rights-review record (DR-0117, issue #155); this was issue #178.
 
