@@ -396,8 +396,13 @@ def run() -> int:
 
         # -- CDR-P3-45 (candidate), continued: a reviewed source's holding.
         #    Last in the run so its extra holding disturbs no earlier count.
-        reviewed_src = seed_source(conn, name="Reviewed-rights source",
-                                   rights_review_state="reviewed")
+        # A source is reviewed only by a recorded rights review (a person, on a
+        # named basis); inserting it as reviewed is refused by the database.
+        reviewed_src = seed_source(conn, name="Reviewed-rights source")
+        conn.execute(
+            "SELECT record_rights_review(%s::uuid, 'reviewed', %s::uuid, "
+            "'decision-record', 'DR-fixture (synthetic)', NULL, '{}')",
+            (reviewed_src, person_agent_id))
         collector.run(reviewed_src, ["https://example.invalid/reg-269"],
                       configuration={})
         check("CDR-P3-45", "a holding admitted from a reviewed source is "

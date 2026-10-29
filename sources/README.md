@@ -216,14 +216,14 @@ harmonizing is a later, visible decision, not an automatic one.
 
 ## Rights review state (CDR-P3-45, candidate)
 
-A candidate may declare `rights_review_state: reviewed|unreviewed`. Absent
-means `unreviewed`, so no shipped candidate changes. `validate()` refuses an
-unknown value and refuses `reviewed` beside a `rights_basis` that still says
-"NOT LEGALLY REVIEWED" or "UNVERIFIED"; `commit()` stores the declared value.
+A candidate's `rights_review_state` is `unreviewed` or absent, which means the
+same. **A candidate cannot declare `reviewed`** (changed 2026-10-29,
+DR-0117): `validate()` refuses it, and the database
+refuses to insert a source already reviewed. A source becomes reviewed only by
+a recorded rights review, made by a person on a named written basis
+(`publication/rights_review.py`). `validate()` still refuses an unknown value.
 The existing §14 check (a redistribution claim must flag an unreviewed basis)
-is kept as it was. Sabotaged one rule at a time: dropping the value check, the
-contradiction check, or storing a constant each turned exactly the expected
-test red. A schema change: a live database needs the reload in
+is kept as it was. A schema change: a live database needs the reload in
 `docs/runbooks/schema-reload.md`.
 
 ## What registering these commits you to

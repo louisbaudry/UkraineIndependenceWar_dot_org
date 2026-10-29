@@ -260,20 +260,20 @@ def validate(
                 "flagging that the basis is unreviewed. Either record the "
                 "review or say it has not happened (§14, POL-0001 §10)")
 
-        # CDR-P3-45: the declared review state must be a known value, and
-        # 'reviewed' must not sit beside prose saying it has not been.
+        # CDR-P3-45: the declared review state must be a known value, and a
+        # candidate may not claim 'reviewed': that state is reached only by a
+        # recorded rights review (publication/rights_review.py,
+        # DR-0117), never by a field in this file.
         review_state = source.get("rights_review_state", "unreviewed")
         if review_state not in RIGHTS_REVIEW_STATES:
             problems.append(
                 f"{key}: rights_review_state {review_state!r} is not one of "
                 f"{', '.join(RIGHTS_REVIEW_STATES)} (CDR-P3-45)")
-        elif review_state == "reviewed" and (
-                "NOT LEGALLY REVIEWED" in basis.upper()
-                or "UNVERIFIED" in basis.upper()):
+        elif review_state == "reviewed":
             problems.append(
-                f"{key}: rights_review_state is 'reviewed' but rights_basis "
-                "still says the position is unreviewed; they cannot both be "
-                "true (CDR-P3-45, §14)")
+                f"{key}: a candidate cannot declare rights_review_state "
+                "'reviewed'; a source is marked reviewed only by a recorded "
+                "rights review made by a person (CDR-P3-45, POL-0001 §10)")
 
         # DR-0071(a): scope must be human-configured, not open-ended.
         scope = (source.get("scope_rules") or "").lower()

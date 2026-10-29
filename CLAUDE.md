@@ -483,7 +483,10 @@ change could break:
 
 - **Unreviewed rights never reach Gate 3** (CDR-P3-45, candidate): a holding
   is shown, by decision or on a page, only when its `rights_review_state` is
-  `reviewed`; the free-text `rights_basis` is never read as a review.
+  `reviewed`; the free-text `rights_basis` is never read as a review. That
+  state is set only by a recorded rights review (`publication/rights_review.py`,
+  a person, on a named written basis, append-only; DR-0117),
+  never by a plain `UPDATE` or a registration candidate.
 - **Registered, active sources only** (DR-0071(a), DR-0067). An unregistered
   locator is out of policy, not merely unknown. Out-of-scope material is
   counted and **not written down**.
