@@ -46,6 +46,10 @@ new acquisition), and any collection run.
 
 ## 0. Preconditions
 
+Connect with `ssh uiw` (a `Host` alias in your own `~/.ssh/config`; see
+[`docs/infrastructure.md`](../infrastructure.md) §2.1). The address stays in that
+file, not in the repository.
+
 ```bash
 cd ~/UkraineIndependenceWar_dot_org          # the server's checkout; adjust
 git fetch origin main && git status -sb      # expect: on main, not behind
