@@ -111,8 +111,41 @@ founder's call.
   registering any of them is collection under the DR-0072 suspension's scale
   question that DR-0109 says to put to the founder.
 
+## 4b. Second attempt from the archive server, 2026-11-03
+
+Run by the founder at the archive server, step by step
+(`docs/runbooks/archive-server-sitting.md` step 4): one request to each
+administration's front page with the project's declared User-Agent, listing any
+`t.me` links in the returned HTML, nothing kept. Handles and statuses only.
+
+| Oblast | Candidate handle | Front page | Telegram link found |
+|---|---|---|---|
+| Chernihiv | `chernigivskaODA` | **blocked (403)** | not established |
+| Dnipropetrovsk | `dnipropetrovskaODA` | **blocked (403)** | not established |
+| Cherkasy | `cherkaskaODA` | **blocked (403)** | not established |
+| Kirovohrad | `kirovohradskaODA` | **blocked (403)** | not established |
+| Donetsk | `donetskaODA` | **loads (200)** | **none** |
+| Volyn | `volynskaODA` | **blocked (403)** | not established |
+
+What this does and does not show:
+
+- **Five of six sites refuse the archive server with a 403**, as they refused
+  the earlier sessions' networks. Reaching them from the server's address does
+  not change the outcome, so provenance for those five is **still not
+  established**. Getting past a block is not attempted: the standing rule is
+  that a wall ends the attempt (the same rule the social-platform tiers use).
+  Human-assisted browser access, as for `ua-nsdc-sanctions`, is the route if
+  the founder wants them confirmed.
+- **Donetsk's front page loads and links no Telegram handle.** That is one
+  front page read with a pattern for `t.me` addresses. It does not rule out a
+  link behind a script, on another page, or written as `telegram.me`/`tg://`,
+  so it is "no link found here", not "no official channel". `donetskaODA`
+  stays unconfirmed.
+- Nothing here changes the six candidates' status, registers anything or
+  collects anything.
+
 ## 5. Not verified
 
-Reachability from the archive server; whether the channels have changed
+Reachability of five of the six unconfirmed sites (blocked, see 4b); whether the channels have changed
 handle; image and video content; rights; the other ~17 oblasts. The six
 unconfirmed look-official channels above, which need the archive server.
