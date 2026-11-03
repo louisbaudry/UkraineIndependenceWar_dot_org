@@ -144,8 +144,48 @@ What this does and does not show:
 - Nothing here changes the six candidates' status, registers anything or
   collects anything.
 
+## 4c. Human-assisted browser check, 2026-11-03
+
+Run in the founder's own browser, after 4b, as for `ua-nsdc-sanctions`: each
+front page was opened and every anchor and the page's HTML were searched for
+`t.me`, `telegram.me` and `tg://` addresses, in the header, footer, contacts and
+social-network areas. Read-only; nothing kept, no page text saved. Handles and
+statuses only. Where a block page appeared it was not worked around.
+
+| Oblast | Candidate handle | Result | Where looked, and what was seen |
+|---|---|---|---|
+| Chernihiv (`cg.gov.ua`) | `chernigivskaODA` | **loads, no Telegram link found** | Front page anchors and HTML; header social icons (Facebook and YouTube only); footer (address, phone, email); the site map, which lists no contacts or social-network page. |
+| Dnipropetrovsk (`dp.gov.ua`) | `dnipropetrovskaODA` | **blocked** | Plain "403 Forbidden" page from the web server, in the founder's browser. No challenge to complete. |
+| Cherkasy (`ck-oda.gov.ua`) | `cherkaskaODA` | **links handle `cherkaskaODA`, equal to the candidate** | The only Telegram link on the front page, in the sidebar block for the head of the administration, next to the head's personal Facebook page. Not in the footer. The contacts page was not opened. |
+| Kirovohrad (`kr-admin.gov.ua`) | `kirovohradskaODA` | **blocked** | Cloudflare "Attention Required", then "Sorry, you have been blocked" in the founder's browser. A block with no challenge to complete; no page content seen. |
+| Volyn (`voladm.gov.ua`) | `volynskaODA` | **loads, no Telegram link found** | Front page and the contacts page; only Facebook and YouTube links. |
+| Donetsk (`dn.gov.ua`) | `donetskaODA` | **loads, no Telegram link found** | Front page (small, mostly links), contacts page and its footer; only YouTube and two Facebook links (a press-service page and a security-service press page). |
+
+What this does and does not show:
+
+- **No site links a handle other than the candidate.** The one link found,
+  Cherkasy's, equals `cherkaskaODA`.
+- **That link does not settle whose channel it is.** It sits in the head of the
+  administration's block, and §3 recorded that `cherkaskaODA` is titled for the
+  head by name. The site establishes that the handle is linked from the
+  administration's own site, not that it is the administration's channel as
+  distinct from the head's. As with Kharkiv's `synegubov`, whether to treat it as
+  the administration's is the founder's call.
+- **The three "no link found" results are front pages and, for Volyn and
+  Donetsk, contacts pages**, read with a pattern for `t.me`, `telegram.me` and
+  `tg://`. They do not rule out a link on a page not opened, so they read "no link
+  found here", not "no official channel".
+- **Dnipropetrovsk and Kirovohrad refuse the founder's own browser too**, as
+  they refused sessions (§3) and the archive server (§4b). Human-assisted access
+  does not help for these two; they stay not established.
+- Nothing here registers or collects anything, or changes any candidate's
+  status.
+
 ## 5. Not verified
 
-Reachability of five of the six unconfirmed sites (blocked, see 4b); whether the channels have changed
-handle; image and video content; rights; the other ~17 oblasts. The six
-unconfirmed look-official channels above, which need the archive server.
+Provenance of five of the six unconfirmed channels: two sites block every route
+tried (Dnipropetrovsk, Kirovohrad, §4c), three load with no Telegram link on the
+pages read (Chernihiv, Volyn, Donetsk). The sixth, `cherkaskaODA`, is linked by
+its administration's site but in the head's block (§4c), so whose channel it is
+remains open. Also not verified: whether the channels have changed handle; image
+and video content; rights; the other ~17 oblasts.
