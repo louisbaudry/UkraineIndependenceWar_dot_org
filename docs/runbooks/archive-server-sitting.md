@@ -175,6 +175,10 @@ as a dated section (handles and statuses only; no hostnames of the server). It
 per source, and DR-0072's suspension still frames the scale question the record
 puts to you.
 
+**Run 2026-11-03:** five sites 403, Donetsk 200 with no link; recorded in the
+verification record §4b. Nothing more to do here until the five are reached by
+human-assisted browser access.
+
 ## 5. Discharge the pre-fix quarantine copies (card #152)
 
 Frees the roughly 1.05 GB that the 2026-10-14 measurement found duplicated
