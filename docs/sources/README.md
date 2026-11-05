@@ -31,6 +31,14 @@ Each note should state plainly what has and has not been verified — including,
 where it applies, that the source could not be reached from the drafting
 environment at all.
 
+## Sources found during research
+
+[`proposing-a-source-found-in-research.md`](proposing-a-source-found-in-research.md)
+says how a publisher met while researching the war becomes a candidate note
+and a candidate entry here, and how a holding can be cited from outside the
+archive (the ARK once minted; until then the source key, capture time and
+SHA-256). A working note; it authorises nothing.
+
 ## Verification and measurement records
 
 This directory also holds a second kind of note: records of what happened
