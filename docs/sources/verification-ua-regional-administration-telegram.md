@@ -181,6 +181,11 @@ What this does and does not show:
 - Nothing here registers or collects anything, or changes any candidate's
   status.
 
+**Founder's ruling, 2026-11-06:** `cherkaskaODA` stays unconfirmed. It is not
+treated as the administration's channel until more than the head's block on the
+front page establishes whose it is. Nothing is registered or collected, and no
+candidate's status changes.
+
 ## 5. Not verified
 
 Provenance of five of the six unconfirmed channels: two sites block every route
