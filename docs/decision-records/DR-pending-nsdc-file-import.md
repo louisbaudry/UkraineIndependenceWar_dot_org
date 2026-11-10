@@ -3,6 +3,7 @@
 **Category:** operations / preservation | **Status:** Candidate — awaiting founder decision (not approved, not enacted)
 **Origin:** issue #46 (register the three `ua-nsdc-sanctions` candidates); the founder chose on 2026-11-07 to hold the registrations until a collection path exists, and to have this design drafted first
 **Supersedes:** nothing | **Superseded by:** nothing
+**Numbering:** drafted as `DR-pending-nsdc-file-import`; the number is assigned at merge, after the candidate is approved (DR-0102).
 **Relates to:** DR-0067 (registration schema), DR-0071(a) and (b), DR-0074 (capture series), DR-0093 §3 (a person as agent of record), DR-0097 (software agent on preservation events), DR-0109 (civilian harm; not affected)
 
 > **AI provenance (§80).** Drafted by an AI assistant (Anthropic Claude Code agent
@@ -17,8 +18,9 @@ Three candidates from the State Register of Sanctions of the National Security
 and Defence Council of Ukraine are verified (`legal-entities`, `individuals`,
 `vessels`). Their export URLs were confirmed on 2026-09-22/23 through
 human-assisted browser access, after the register's Cloudflare managed challenge
-had refused every automated session. An automated session, including the
-archive server, still receives HTTP 403 on those URLs.
+had refused every automated session. The verification note records HTTP 403
+from automated sessions on the register's pages and paths (§1, §2a, §2b); the
+archive server itself has not been tested against these export URLs.
 
 The collector can only fetch a locator itself. So a registration that goes
 through the existing path would register sources the collector cannot collect
@@ -48,9 +50,12 @@ with the registered source key, the agent of record and the source's declared
 export URL recorded as text. The command:
 
 1. hashes the file while reading it, and refuses a file that is empty, larger
-   than the register's stated count allows, or not the expected CSV header
-   (the 17 fields recorded in the verification note §2e);
-2. admits it through the existing `_admit()` path, so it gets an OCFL object, a
+   than the register's stated count allows, or whose header is not the one
+   recorded for its class (vessels §2d; legal entities and individuals §2e);
+2. builds a fetch result from the file's bytes, with the declared export URL as
+   its locator and the file's own hash, and admits it through the existing
+   `_admit()` path (which takes a fetch result, not a file, so this is a new
+   entry point, not a change to `_admit()`), so it gets an OCFL object, a
    capture-series row (DR-0074), a quarantine copy discharged after admission
    (issue #51) and the same preservation events as a live capture, with the
    software agent named on those events (DR-0097);
@@ -59,8 +64,11 @@ export URL recorded as text. The command:
    record and never hidden.
 
 *Cost:* a new collector entry point and tests; a change to the acquisition
-record (its `outcome` and `reach` values need one new, named value, which is a
-schema change with a migration). *Benefit:* the archive keeps the same
+record. `acquisition_attempt` has no column that says how the bytes arrived, and
+its `outcome` check accepts only `success`, `failure`, `refused`, `not-found` and
+`unchanged`. The record needs either a new column for the acquisition method or
+a new outcome value, chosen in the migration card; either is a schema change
+with a migration. *Benefit:* the archive keeps the same
 guarantees for these three sources as for the others, and every import is a
 recorded human act.
 
@@ -82,8 +90,10 @@ not to be preserved at all.
    source (DR-0093 §3), as before.
 3. If A: confirm the `file_import` acquisition attempt as the one new value, and
    that the schema change is drafted as its own card with its own migration.
-4. Confirm the `individuals` class stays out of any first import until DR-0072's
-   successor is recorded, if the founder wants that gate kept for this class.
+4. Decide whether the `individuals` class waits for DR-0072's successor before its
+   first import. The "Personal data" rule above already keeps its contents out of
+   structuring and publication; this question is only about whether it may be
+   preserved before that successor is recorded.
 
 ## Consequences if A is approved
 
