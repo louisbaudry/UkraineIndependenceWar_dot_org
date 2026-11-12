@@ -1,6 +1,6 @@
 # DR-pending-nsdc-file-import — Collecting a register export that a person downloads by hand
 
-**Category:** operations / preservation | **Status:** Candidate — awaiting founder decision (not approved, not enacted)
+**Category:** operations / preservation | **Status:** Candidate — founder's answers recorded, approval pending (not approved, not enacted)
 **Origin:** issue #46 (register the three `ua-nsdc-sanctions` candidates); the founder chose on 2026-11-07 to hold the registrations until a collection path exists, and to have this design drafted first
 **Supersedes:** nothing | **Superseded by:** nothing
 **Numbering:** drafted as `DR-pending-nsdc-file-import`; the number is assigned at merge, after the candidate is approved (DR-0102).
@@ -94,6 +94,24 @@ not to be preserved at all.
    first import. The "Personal data" rule above already keeps its contents out of
    structuring and publication; this question is only about whether it may be
    preserved before that successor is recorded.
+
+## Founder's answers, 2026-11-10 to 2026-11-11 (not an approval)
+
+The founder answered the four decision points above in an interactive session.
+These answers are recorded here so the next revision can cite them. They do not
+approve the record, and nothing is enacted by them.
+
+1. **Route:** A, the file-import mode.
+2. **Agent of record:** yes, as written. Each download and import is a separate
+   human act with the person named as agent of record; each registration stays
+   a separate founder act per source (DR-0093 §3).
+3. **Schema change:** yes, drafted as its own card with its own migration. The
+   choice between a new column and a new outcome value is made there.
+4. **Individuals class:** waits for DR-0072's successor before its first import
+   is preserved.
+
+The record stays a candidate until the founder approves it. Approval is a
+separate act and is not implied by these answers.
 
 ## Consequences if A is approved
 
