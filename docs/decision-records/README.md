@@ -168,6 +168,7 @@ follows.
 | [DR-0115](DR-0115-kyiv-oblast-telegram-registration.md) | Register the Kyiv Oblast administration's Telegram channel (`ua-oda-kyiv-oblast-telegram`), `private-preservation`, first run plus a one-off backfill; DR-0109 step 2's first channel | operations / preservation | Approved — registration and runs to be executed on the archive server by the founder, not by this record | 2026-10-10 |
 | [DR-0116](DR-0116-locator-recheck-gate.md) | The per-run locator check on `eur-lex-sanctions` becomes a recorded gate (refines DR-0105 Decision 4) | operations / preservation | Approved — the check stays manual; `collector/run.py` now refuses a real run without `--locator-checked` | 2026-10-11 |
 | [DR-0117](DR-0117-rights-review-record.md) | A rights review is one attributed, append-only record per source: a person, on a named written basis, marking the source's existing holdings in the same act (refines CDR-P3-45, candidate) | publication / rights | Approved — the mechanism only; no review has been recorded and CDR-P3-45 is not enacted | 2026-10-29 |
+| [DR-0118](DR-0118-nsdc-register-file-import.md) | Collecting a register export a person downloads by hand: route A, a file-import mode, each import a human act with the person as agent of record; the individuals class waits for DR-0072's successor before its first import (issue #46) | operations / preservation | Approved — the design only; nothing registered, imported or migrated | 2026-11-17 |
 
 ## Provenance of decisions
 

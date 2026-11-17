@@ -1,9 +1,9 @@
-# DR-pending-nsdc-file-import — Collecting a register export that a person downloads by hand
+# DR-0118 — Collecting a register export that a person downloads by hand
 
-**Category:** operations / preservation | **Status:** Candidate — founder's answers recorded, approval pending (not approved, not enacted)
+**Category:** operations / preservation | **Status:** Approved 2026-11-17 by founder/principal editor (the design only; no source is registered, no file imported, no schema changed)
 **Origin:** issue #46 (register the three `ua-nsdc-sanctions` candidates); the founder chose on 2026-11-07 to hold the registrations until a collection path exists, and to have this design drafted first
 **Supersedes:** nothing | **Superseded by:** nothing
-**Numbering:** drafted as `DR-pending-nsdc-file-import`; the number is assigned at merge, after the candidate is approved (DR-0102).
+**Numbering:** drafted as `DR-pending-nsdc-file-import` and numbered DR-0118 at approval (DR-0102).
 **Relates to:** DR-0067 (registration schema), DR-0071(a) and (b), DR-0074 (capture series), DR-0093 §3 (a person as agent of record), DR-0097 (software agent on preservation events), DR-0109 (civilian harm; not affected)
 
 > **AI provenance (§80).** Drafted by an AI assistant (Anthropic Claude Code agent
@@ -95,7 +95,7 @@ not to be preserved at all.
    structuring and publication; this question is only about whether it may be
    preserved before that successor is recorded.
 
-## Founder's answers, 2026-11-10 to 2026-11-11 (not an approval)
+## Founder's answers, 2026-11-10 to 2026-11-11, and approval, 2026-11-17
 
 The founder answered the four decision points above in an interactive session.
 These answers are recorded here so the next revision can cite them. They do not
@@ -110,10 +110,12 @@ approve the record, and nothing is enacted by them.
 4. **Individuals class:** waits for DR-0072's successor before its first import
    is preserved.
 
-The record stays a candidate until the founder approves it. Approval is a
-separate act and is not implied by these answers.
+The founder approved the record on 2026-11-17, as recorded above. Approval
+enacts the design and nothing else: the schema change and the file-import
+command are separate cards, and each registration remains a separate founder
+act per source.
 
-## Consequences if A is approved
+## Consequences of approval
 
 - `ua-nsdc-sanctions-legal-entities` is the first candidate, because it
   carries no DR-0071(b) constraint. `vessels` and `individuals` follow, each a
