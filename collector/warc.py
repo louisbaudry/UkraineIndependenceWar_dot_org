@@ -293,6 +293,56 @@ def build_response_record(
     return warc_head.encode("utf-8") + block + b"\r\n\r\n"
 
 
+def build_resource_record(
+    target_uri: str,
+    content_type: str,
+    body: bytes,
+    captured_at: datetime,
+    record_id: str | None = None,
+) -> bytes:
+    """A single WARC 1.1 resource record holding one file as obtained.
+
+    For a `warc` source whose bytes did not arrive as an HTTP response the
+    collector saw: a register export a person downloaded in a browser and
+    imported (DR-0118). WARC 1.1 §6.5 defines `resource` for exactly this,
+    content "without full protocol response information", so the record
+    claims no status line or headers that nobody observed. WARC-Target-URI is
+    the export URL the file was downloaded from; WARC-Date is when the person
+    downloaded it, not when it was imported.
+
+    Args:
+        target_uri: the URL the file came from.
+        content_type: the file's media type, e.g. ``text/csv``.
+        body: the file's bytes, unchanged.
+        captured_at: timezone-aware time the file was obtained.
+        record_id: a WARC-Record-ID; a fresh urn:uuid when omitted.
+
+    Returns:
+        The complete record, trailer included.
+
+    Raises:
+        ValueError: ``captured_at`` is naive.
+    """
+    if captured_at.tzinfo is None:
+        raise ValueError("captured_at must be timezone-aware")
+    rid = record_id or f"<urn:uuid:{uuid.uuid4()}>"
+    date = captured_at.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    digest = digest_header(body)
+    warc_head = (
+        "WARC/1.1\r\n"
+        "WARC-Type: resource\r\n"
+        f"WARC-Record-ID: {rid}\r\n"
+        f"WARC-Date: {date}\r\n"
+        f"WARC-Target-URI: {target_uri}\r\n"
+        f"Content-Type: {content_type}\r\n"
+        f"WARC-Payload-Digest: {digest}\r\n"
+        f"WARC-Block-Digest: {digest}\r\n"
+        f"Content-Length: {len(body)}\r\n"
+        "\r\n"
+    )
+    return warc_head.encode("utf-8") + body + b"\r\n\r\n"
+
+
 # -- the archive's own digest --------------------------------------------------
 
 

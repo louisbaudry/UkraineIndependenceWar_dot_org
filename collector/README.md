@@ -548,6 +548,56 @@ loopback server only, not a live publisher, so whether a given publisher
 honours conditional requests is **unknown until a real run**; the digest rule
 does not depend on it.
 
+## Importing a file a person downloaded (DR-0118, issue #197)
+
+Some registers refuse every automated session: the NSDC State Register of
+Sanctions sits behind a Cloudflare challenge. For those, a person downloads
+the export in a browser and the collector imports the file:
+
+```bash
+python3 collector/file_import.py --source ua-nsdc-sanctions-legal-entities \
+    --file ~/Downloads/legal_subjects.csv \
+    --downloaded-at 2026-11-26T14:05:00+01:00 --stated-count 9682 \
+    --dbname uiw --agent <person pipeline_agent uuid> \
+    --archive-root /opt/uiw-archive --dry-run      # then again without --dry-run
+```
+
+`--stated-count` is the record count the register's page showed at download.
+Each import is one human act: one file, one run, the person as agent of
+record (DR-0093 §3) and as the one recorded as having downloaded it.
+
+**Refused before anything is written** (exit 2): a source with no recorded
+export header (`export_checks.EXPORT_HEADERS`, so only the DR-0118 sources);
+`ua-nsdc-sanctions-individuals`, held until DR-0072's successor (DR-0118
+Decision 4); an unregistered or inactive source; an agent that is not a
+registered person; an `--export-url` that is not one of the candidate's
+verified `run_locators`, or outside the source's registered locator; a
+download time without a time zone or in the future; an archive root that is
+not OCFL.
+
+**Recorded as a failed attempt, never a holding** (exit 1): an empty file, a
+header with no records, a file that is not UTF-8 or not readable as CSV, a
+header other than the one recorded for the class (same fields in another
+order included), and more records than `--stated-count`. A refusal names
+counts and field names, never row content.
+
+**What passes** goes through `_admit()` like a live capture: quarantine,
+Gate 1, an OCFL object, a capture-series row and the quarantine discharge.
+The attempt's `acquisition_route` is `file-import`, with the person as
+`acquisition_source` and the download time as `original_captured_at`, which
+is also the holding's capture time. The run records the file's name, size,
+SHA-256 (computed as the file is read) and record count. The registry's
+capture format is honoured: a `warc` source (all three NSDC candidates
+inherit `warc` from their class) gets a WARC **resource** record, which
+claims no HTTP status or headers since none were observed; an `http` source
+gets the bare file, and re-importing an identical file is recorded
+`unchanged` and not stored again.
+
+**Not verified:** the header check assumes a comma-separated file with
+standard CSV quoting. The verification note records the field names and
+UTF-8, not the delimiter. If a real export differs, the check refuses it
+(fails closed); the first real `--dry-run` will show which.
+
 ## Applying this to the live archive database
 
 The schema is rebuilt from DDL and the live database has no migration
@@ -618,6 +668,17 @@ Suites below, each test naming the requirement or Decision Record it verifies.
   `DR-0066 — collection creates no canonical knowledge by itself` red;
 - ignoring the registry's capture format turns seven `DR-0006` checks red —
   the `warc` source gets a bare body.
+
+**`test_file_import.py` — 38 tests** on DR-0118 / issue #197, against the real
+pipeline, PostgreSQL and OCFL, with synthetic CSV fixtures. Verified to fail
+honestly: each of 14 rules removed in turn turned at least one check red,
+restored by `cp` (the empty, header-only, UTF-8, header and stated-count
+checks; the individuals hold; the run-locator, time-zone, future-time and
+person-agent refusals; the collector's own locator-scope refusal; the `warc`
+capture format; unchanged detection; and the `file-import` route kept on an
+unchanged re-import). Removing the time-zone refusal is caught by a crash, not
+a failed check. Removing the command's future-time refusal is caught only
+because the collector also refuses, after the archive root was opened.
 
 **`test_quarantine_discharge.py` — 15 tests** on issue #51, against the real
 pipeline, a real PostgreSQL database and real OCFL storage. Verified to fail

@@ -18,6 +18,10 @@ Two acquisition paths share everything below the network seam:
   Each response record within the registered source's scope enters
   quarantine and Gate 1 exactly as a live fetch does; the archive is recorded
   as the acquisition source, distinct from the original publisher (§28).
+- `import_file()` — a register export a person downloaded by hand because
+  the collector cannot fetch it (DR-0118). It is checked, then admitted
+  through the same path, with the person and the download time recorded
+  (acquisition route `file-import`).
 
 Integrity note. A holding row and its OCFL object are written in two systems
 and cannot share a transaction. The order is: write OCFL first (idempotent by
@@ -39,10 +43,12 @@ from pathlib import Path
 import psycopg
 from psycopg.types.json import Jsonb
 
+from export_checks import check_export, read_hashed
 from fetch import FetchResult, Fetcher, record_headers, validators_from
 from warc import (
     WarcFormatError,
     WarcRecord,
+    build_resource_record,
     build_response_record,
     in_scope,
     iter_warc_records,
@@ -469,6 +475,126 @@ class Collector:
                     digest_note=(digest_detail if digest_status in ("verified", "truncated")
                                  else None))
 
+    def import_file(
+        self,
+        source_id: str,
+        file_path: Path | str,
+        export_url: str,
+        downloaded_by: str,
+        downloaded_at: datetime,
+        expected_header: tuple[str, ...],
+        stated_count: int,
+        configuration: dict,
+    ) -> str:
+        """Admit a register export a person downloaded by hand (DR-0118, route A).
+
+        One call is one human act: one file, one run, the person as agent of
+        record (``collector_agent_id``, DR-0093 §3), the software agent on the
+        preservation events (DR-0097). The file is read and hashed once
+        (``export_checks.read_hashed``), then checked
+        (``export_checks.check_export``). A file that fails a check is a
+        recorded ``failure`` attempt, never a holding. One that passes goes
+        through `_admit()` like a live capture: quarantine, Gate 1, an OCFL
+        object, a capture-series row (DR-0074) and the quarantine discharge
+        (issue #51). The attempt's route is ``file-import``, naming who
+        downloaded the file and when, so it never reads as a live fetch (§28).
+
+        The registry's capture format is honoured (DR-0006, DR-0067): a
+        ``warc`` source gets a WARC *resource* record, which claims no HTTP
+        response, since none was observed; an ``http`` source gets the bare
+        file. For an ``http`` source a file identical to the latest capture is
+        recorded as ``unchanged`` and not stored again (issue #50).
+
+        Args:
+            source_id: the registered source.
+            file_path: the downloaded file.
+            export_url: the source's export URL the file was downloaded from;
+                recorded as the attempt's locator. Must be within the source's
+                registered locator (DR-0071(a)).
+            downloaded_by: who downloaded it, recorded as acquisition source.
+            downloaded_at: timezone-aware time of the download.
+            expected_header: the field names recorded for this class.
+            stated_count: the record count the register stated at download.
+            configuration: recorded on the run; the file's name, size and
+                SHA-256 are added to it.
+
+        Returns:
+            The run id.
+
+        Raises:
+            PolicyViolation: the source is unregistered or not active, the
+                export URL is outside its locator, or the download time is
+                missing, naive or in the future. Nothing is recorded.
+        """
+        source = self._active_source(source_id)
+        if not source.locator or not in_scope(source.locator, export_url):
+            raise PolicyViolation(
+                f"{export_url} is not within the registered locator of "
+                f"{source.name!r}; DR-0071(a) permits registered scope only")
+        if not downloaded_by:
+            raise PolicyViolation("a file import names who downloaded the file (DR-0118)")
+        if downloaded_at is None or downloaded_at.tzinfo is None:
+            raise PolicyViolation("the download time must be given, with its time zone")
+        if downloaded_at > _now():
+            raise PolicyViolation("the download time is in the future")
+
+        file_path = Path(file_path)
+        data, sha256_hex = read_hashed(file_path)
+        configuration = {
+            **configuration,
+            "acquisition_route": "file-import",
+            "export_url": export_url,
+            "downloaded_by": downloaded_by,
+            "downloaded_at": downloaded_at.isoformat(),
+            "stated_count": stated_count,
+            "file_name": file_path.name,
+            "file_bytes": len(data),
+            "file_sha256": sha256_hex,
+        }
+        acquisition = Acquisition(route="file-import", acquisition_source=downloaded_by,
+                                  original_captured_at=downloaded_at)
+        run_id = self._open_run(source, configuration)
+        totals = RunTotals(discovered=1)
+        try:
+            attempted_at = _now()
+            records, refusal = check_export(data, expected_header, stated_count)
+            if refusal:
+                result = FetchResult(export_url, attempted_at, "failure",
+                                     error_detail=f"file import refused: {refusal}")
+                self._admit(source, export_url, run_id, totals, result, acquisition)
+            else:
+                prior = self._prior_capture(source, export_url)
+                if prior is not None and hashlib.sha256(data).digest() == prior["sha256"]:
+                    result = FetchResult(export_url, attempted_at, "success",
+                                         content=data, media_type="text/csv")
+                    self._record_unchanged(source, export_url, run_id, totals, result,
+                                           prior, "digest-match", acquisition)
+                else:
+                    if source.capture_format == "warc":
+                        content = build_resource_record(
+                            export_url, "text/csv", data, downloaded_at)
+                        media_type, content_name = "application/warc", "original.warc"
+                    else:
+                        content, media_type, content_name = data, "text/csv", "original.bin"
+                    result = FetchResult(export_url, attempted_at, "success",
+                                         content=content, media_type=media_type)
+                    self._admit(source, export_url, run_id, totals, result,
+                                acquisition, content_name=content_name)
+            configuration_note = {"records": records}
+            self.conn.execute(
+                "UPDATE collector_run SET configuration = configuration || %s WHERE id = %s",
+                (Jsonb(configuration_note), run_id))
+        except (KeyboardInterrupt, SystemExit) as exc:
+            self._close_interrupted(run_id, totals, exc, planned=1)
+            raise
+        except Exception as exc:  # noqa: BLE001
+            # Recorded, not raised away (§28): the run closes saying why.
+            totals.failed += 1
+            totals.failure_details.append(
+                {"locator": export_url, "error": f"{type(exc).__name__}: {exc}"})
+        self._close_run(run_id, totals)
+        return run_id
+
     # -- run bookkeeping -----------------------------------------------------
 
     def _active_source(self, source_id: str) -> Source:
@@ -619,6 +745,7 @@ class Collector:
     def _record_unchanged(
         self, source: Source, locator: str, run_id: str, totals: RunTotals,
         result: FetchResult, prior: dict, basis: str,
+        acquisition: Acquisition | None = None,
     ) -> None:
         """Record that this locator was looked at again and is the same.
 
@@ -626,7 +753,8 @@ class Collector:
         a holding that already passed Gate 1, so there is nothing new for the
         gate to decide. The attempt, with the origin's headers, is the record.
         """
-        self._record_attempt(source, locator, run_id, result, Acquisition(),
+        self._record_attempt(source, locator, run_id, result,
+                             acquisition or Acquisition(),
                              unchanged=(prior["holding_id"], basis))
         self._skip(totals, "unchanged")
 
