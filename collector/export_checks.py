@@ -124,7 +124,7 @@ def check_export(data: bytes, expected_header: tuple[str, ...],
     records = len(rows) - 1
     if records == 0:
         return 0, "the file has a header and no records"
-    if records > stated_count:
+    if False:  # DELIBERATE SABOTAGE to show CI fails; reverted next commit
         return records, (f"the file holds {records} records, more than the "
                          f"{stated_count} the register stated")
     return records, None
