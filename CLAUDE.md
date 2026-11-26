@@ -475,6 +475,15 @@ it"), so nobody mistakes built for decided.
   absent bytes is a false claim (§26).
 - Module and function docstrings cite the record § and DRs they implement.
   Comments explain *why* a rule exists, not what the line does.
+- **Every public module, class and function has a docstring**: what it
+  does, its parameters, what it returns and what it raises, so the docs
+  can be generated from the code. Private helpers need one only where the
+  name does not say it.
+- Change the behaviour, change the docstring or comment in the same
+  commit; a stale comment is worse than none. This fills gaps in the
+  existing convention and does not call for rewriting documented modules.
+
+Code comments rule synced: 2026-11-26
 
 ## Policy guardrails the code must keep
 
