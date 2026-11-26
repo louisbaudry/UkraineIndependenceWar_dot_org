@@ -94,9 +94,9 @@ archive holds material at every access tier (SEC-004).
 | GitHub Pages | Publishes `site/`, and only `site/`, on every push to `main` that touches it, to <https://louisbaudry.github.io/UkraineIndependenceWar_dot_org/> (English), with Ukrainian and Russian translations at `uk/` and `ru/` under the same address (2026-09-26). The Pages source is set to "GitHub Actions" (a one-time UI setting; see `site/README.md`). **It is the project's only public web presence** | [`site/README.md`](../site/README.md), `.github/workflows/deploy-pages.yml` |
 | [Project board](https://github.com/users/louisbaudry/projects/7) and issues | The single home for project **status**: one card per open item, labelled `kind:`/`epic:`/`size:`. Infrastructure items carry `epic:infrastructure`. This page records how things are set up, not their status | CLAUDE.md "Where state lives" |
 | Monthly reminder workflow | On the 17th of each month (07:47 UTC), posts a reminder on issue #82 mentioning the founder, with the newest UN HRMMU edition's links, status, size and SHA-256 prepared for `un-hrmmu-protection-of-civilians`'s `run_locators` (DR-0110 Decision 3), and a section for `ua-pgo-crime-statistics` (DR-0111) that reads nothing remote, because the Prosecutor General's site blocks GitHub's US runners: it gives a read-only command to run on the archive server instead. Reads the UN site and the candidate file; **edits nothing, registers nothing, collects nothing**. Runs on GitHub, not on the archive server | `.github/workflows/hrmmu-monthly-reminder.yml`, `.github/scripts/hrmmu_monthly_reminder.py` |
+| Tests workflow (CI) | On every pull request and push to `main`, runs `.github/scripts/run_suites.sh`: `registry/validate.py`, `schema/gen_enums.py --check`, the DR numbering check, `schema/tests/run.sh` and every `*/tests/test_*.py`, against a throwaway PostgreSQL 16 service container (issue #201, 2026-11-26). Reaches no publisher, no archive server and no secret; installs `psycopg`, `PyYAML`, `warcio` and `mcp` from PyPI. Runs on GitHub | `.github/workflows/tests.yml`, `.github/scripts/run_suites.sh` |
 
-There is **no CI test workflow**. The suites run only inside sessions and
-on the server during install. Nothing on GitHub runs them on a push.
+The suites also run inside sessions and on the server during install.
 
 ### 2.3 AI sessions
 
@@ -215,7 +215,7 @@ Only items 3 and 7 have been ruled on. Status for each lives on the board, not h
    The reload procedure exists and was used twice successfully
    ([`runbooks/schema-reload.md`](runbooks/schema-reload.md), 2026-10-13 and 2026-10-21); it
    is an evening's work each time `schema/` changes.
-6. No CI: tests do not run on GitHub.
+6. ~~No CI~~: closed 2026-11-26 by the Tests workflow (issue #201).
 7. One IP address for all Telegram collection (runbook risk). **Accepted
    with named triggers** (DR-0113, WP 3.11): no
    egress service until a recorded signal from Telegram, a large new
