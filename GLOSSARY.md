@@ -192,7 +192,10 @@ their outcomes are recorded as PREMIS events (DR-0005).
 **WARC**
 Web ARChive format — the container used for high-value web captures,
 preserving the full HTTP transaction (request, response, headers), not just
-the payload (DR-0006).
+the payload (DR-0006). A WARC **resource** record holds a file with no
+protocol exchange around it; the archive uses one for a file a person
+downloaded and imported (DR-0118), so it never claims an HTTP response
+nobody observed.
 
 **WACZ**
 A newer web-archive container format built on WARC, evaluated but not yet

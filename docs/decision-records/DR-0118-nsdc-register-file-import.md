@@ -157,3 +157,18 @@ is unchanged.
 - Nothing is registered or imported by this change; the import command is
   issue #197.
 
+**Option A's command — issue #197, 2026-11-26.** `collector/file_import.py`
+(operator's command), `Collector.import_file()` and
+`collector/export_checks.py` implement points 1 to 3 of option A, as
+`collector/README.md` *Importing a file a person downloaded* describes. Two
+choices the record did not spell out: these sources inherit `capture_format:
+warc` from their class, and since a downloaded file comes with no HTTP
+response, it is stored as a WARC *resource* record rather than a response
+record that would claim a status nobody observed; and Decision 4 is enforced
+in code, so the command refuses `ua-nsdc-sanctions-individuals` until DR-0072's
+successor is recorded. Tested end to end against synthetic fixture files in a
+throwaway database. Not run against a real export, and nothing is registered:
+the first import still waits on the registration of
+`ua-nsdc-sanctions-legal-entities` (issue #46), a founder act, and on the live
+schema reload.
+
