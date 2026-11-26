@@ -28,9 +28,11 @@ run "registry/validate.py" python3 registry/validate.py
 run "schema/gen_enums.py --check" python3 schema/gen_enums.py --check
 run "decision-record numbering" python3 docs/decision-records/check_numbering.py
 run "schema/tests/run.sh" ./schema/tests/run.sh
-for suite in */tests/test_*.py; do
+# Every tracked test_*.py under a tests/ directory, at any depth, so a nested
+# suite (docs/decision-records/tests/) is not silently left out.
+while IFS= read -r suite; do
     run "$suite" python3 "$suite"
-done
+done < <(git ls-files | grep -E '(^|/)tests/test_[^/]*\.py$' | sort)
 
 echo
 if [ "${#failed[@]}" -gt 0 ]; then
