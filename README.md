@@ -282,6 +282,15 @@ python3 archive_mcp/tests/test_tools.py        # read-only MCP server (needs `mc
 python3 registry/validate.py                   # registry consistency
 ```
 
+To run every check at once, as CI does:
+
+```bash
+.github/scripts/run_suites.sh                  # exits non-zero if any check fails
+```
+
+The `Tests` workflow (`.github/workflows/tests.yml`) runs that script on every pull
+request and every push to `main`, against a PostgreSQL 16 service container (issue #201).
+
 A suite that has never been seen to fail proves nothing. Each component's README
 records the sabotages under which its suite was shown to go red.
 
