@@ -131,3 +131,29 @@ act per source.
   the verification note does not record them).
 - The register's export is refreshed as the register changes; the capture
   series records each new file as its own capture, not as a replacement.
+
+## Executed
+
+**Decision 3, the schema change — issue #196, 2026-11-26.** Recorded here
+as an execution note, as DR-0105's *Executed* section is; the decision above
+is unchanged.
+
+- The choice the record left to the card: a new value, `file-import`, of the
+  **existing** `acquisition_attempt.acquisition_route` column, not a new
+  `outcome` value. The Context and option A above say the table has no
+  column for how the bytes arrived; that was mistaken, since
+  `acquisition_route` (`live-fetch`, `external-archive`, `manual-deposit`)
+  has existed since the WARC ingest path (§28). Using it keeps one column
+  for "how" and leaves `outcome` meaning "how it ended", so an import can
+  still be recorded as a `failure` or as `unchanged`.
+- The DDL (`schema/03-pipeline.sql`) also requires that a `file-import`
+  names who downloaded the file (`acquisition_source`), records the download
+  time (`original_captured_at`, no later than `attempted_at`), and belongs to
+  a collector run, whose agent of record is the person (DR-0093 §3).
+  `collector/pipeline.py`'s `Acquisition` refuses the same cases.
+- **Migration:** the project has no migration mechanism (issue #142); the
+  live database takes the change through `docs/runbooks/schema-reload.md`,
+  by a person on the archive server, before the first import. Not yet done.
+- Nothing is registered or imported by this change; the import command is
+  issue #197.
+

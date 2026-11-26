@@ -160,11 +160,20 @@ CREATE TABLE acquisition_attempt (
     -- external web archive (record §9; WP 3.4, CDR-P3-35) is the case that
     -- makes the distinction load-bearing: the project never implies it
     -- captured a page itself when Common Crawl or the Wayback Machine did.
+    --
+    -- 'file-import' (DR-0118, issue #196): a person downloaded the source's
+    -- own export in their browser (the collector cannot fetch it) and the
+    -- file was imported. It is a value of the route, not of `outcome`,
+    -- because how the bytes arrived and how the attempt ended are separate
+    -- facts: an import can still fail its checks or prove `unchanged`.
     acquisition_route text NOT NULL DEFAULT 'live-fetch'
-        CHECK (acquisition_route IN ('live-fetch', 'external-archive', 'manual-deposit')),
-    acquisition_source text,            -- the archive or depositor, when not live
-    original_captured_at timestamptz,   -- when the archive captured it (WARC-Date);
-                                        -- attempted_at is when *we* obtained it
+        CHECK (acquisition_route IN ('live-fetch', 'external-archive',
+                                     'manual-deposit', 'file-import')),
+    acquisition_source text,            -- the archive or depositor, when not live;
+                                        -- for 'file-import', the person who downloaded
+    original_captured_at timestamptz,   -- when the archive captured it (WARC-Date), or,
+                                        -- for 'file-import', when the person downloaded
+                                        -- it; attempted_at is when *we* obtained it
     external_record_id text,            -- e.g. WARC-Record-ID
     external_payload_digest text,       -- as declared by the archive, e.g. sha1:BASE32
     -- DR-0094 §3: where in the archive the record lives -- its file's path or
@@ -226,6 +235,18 @@ CREATE TABLE acquisition_attempt (
     CONSTRAINT archived_captures_carry_their_capture_time CHECK (
         acquisition_route <> 'external-archive'
         OR original_captured_at IS NOT NULL
+    ),
+    -- DR-0118: an import records when the person downloaded the file, the
+    -- download precedes the import, and the import belongs to a collector
+    -- run, whose collector_agent_id names the person as agent of record
+    -- (DR-0093 §3). Without these, an import reads like a live fetch.
+    CONSTRAINT file_imports_carry_their_download_time CHECK (
+        acquisition_route <> 'file-import'
+        OR (original_captured_at IS NOT NULL
+            AND original_captured_at <= attempted_at)
+    ),
+    CONSTRAINT file_imports_belong_to_a_run CHECK (
+        acquisition_route <> 'file-import' OR collector_run_id IS NOT NULL
     ),
     -- A header block is a name->value map. The code builds it that way; the
     -- database refuses anything else, so a bug cannot store a list or a bare
