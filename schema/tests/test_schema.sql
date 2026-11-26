@@ -360,6 +360,70 @@ SELECT t_rejects('PRES-007',
         '22222222-0000-0000-0000-000000000001', 'https://example.invalid',
         now(), 'success', 'teleported')$$);
 
+-- DR-0118, issue #196: a register export a person downloaded and imported.
+INSERT INTO collector_run (id, source_id, collector_agent_id, configuration, started_at)
+VALUES ('77777777-0000-0000-0000-0000000000f1',
+        '22222222-0000-0000-0000-000000000001',
+        '11111111-0000-0000-0000-000000000001', '{}', now());
+
+INSERT INTO acquisition_attempt (
+    id, source_id, collector_run_id, locator, attempted_at, outcome,
+    acquisition_route, acquisition_source, original_captured_at
+  ) VALUES (
+    '99999999-0000-0000-0000-0000000000f1',
+    '22222222-0000-0000-0000-000000000001',
+    '77777777-0000-0000-0000-0000000000f1', 'https://example.invalid/export.csv',
+    now(), 'success', 'file-import', 'founder', now() - interval '1 hour');
+
+SELECT t_true('DR-0118',
+    'a file import with its downloader, download time and run is accepted',
+    EXISTS (SELECT 1 FROM acquisition_attempt
+             WHERE id = '99999999-0000-0000-0000-0000000000f1'
+               AND acquisition_route = 'file-import'));
+
+SELECT t_rejects('DR-0118',
+    'a file import must name who downloaded the file (§28)',
+    $$INSERT INTO acquisition_attempt (
+        id, source_id, collector_run_id, locator, attempted_at, outcome,
+        acquisition_route, original_captured_at
+      ) VALUES (
+        '99999999-0000-0000-0000-0000000000f2',
+        '22222222-0000-0000-0000-000000000001',
+        '77777777-0000-0000-0000-0000000000f1', 'https://example.invalid/export.csv',
+        now(), 'success', 'file-import', now() - interval '1 hour')$$);
+
+SELECT t_rejects('DR-0118',
+    'a file import must carry its download time',
+    $$INSERT INTO acquisition_attempt (
+        id, source_id, collector_run_id, locator, attempted_at, outcome,
+        acquisition_route, acquisition_source
+      ) VALUES (
+        '99999999-0000-0000-0000-0000000000f3',
+        '22222222-0000-0000-0000-000000000001',
+        '77777777-0000-0000-0000-0000000000f1', 'https://example.invalid/export.csv',
+        now(), 'success', 'file-import', 'founder')$$);
+
+SELECT t_rejects('DR-0118',
+    'a file cannot be imported before it was downloaded',
+    $$INSERT INTO acquisition_attempt (
+        id, source_id, collector_run_id, locator, attempted_at, outcome,
+        acquisition_route, acquisition_source, original_captured_at
+      ) VALUES (
+        '99999999-0000-0000-0000-0000000000f4',
+        '22222222-0000-0000-0000-000000000001',
+        '77777777-0000-0000-0000-0000000000f1', 'https://example.invalid/export.csv',
+        now(), 'success', 'file-import', 'founder', now() + interval '1 hour')$$);
+
+SELECT t_rejects('DR-0093',
+    'a file import belongs to a run, which names the person as agent of record',
+    $$INSERT INTO acquisition_attempt (
+        id, source_id, locator, attempted_at, outcome,
+        acquisition_route, acquisition_source, original_captured_at
+      ) VALUES (
+        '99999999-0000-0000-0000-0000000000f5',
+        '22222222-0000-0000-0000-000000000001', 'https://example.invalid/export.csv',
+        now(), 'success', 'file-import', 'founder', now() - interval '1 hour')$$);
+
 SELECT t_rejects('DR-0061',
     'a metadata-only holding cannot claim to hold an original',
     $$INSERT INTO holding (

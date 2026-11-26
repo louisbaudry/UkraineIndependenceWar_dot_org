@@ -103,19 +103,31 @@ class RunTotals:
         self.failure_details = self.failure_details or []
 
 
+# The routes `acquisition_attempt.acquisition_route` accepts (schema/03-pipeline.sql).
+# 'file-import' is DR-0118's: a person downloaded the file, the collector imported it.
+ACQUISITION_ROUTES = ("live-fetch", "external-archive", "manual-deposit", "file-import")
+
+
 @dataclass(frozen=True)
 class Acquisition:
     """How, and from whom, the bytes were obtained (§28).
 
     The registered source is the *original publisher*. When the bytes come
-    from somewhere else — an external web archive, a depositor — that is the
-    *acquisition source*, and the project records it rather than implying it
-    captured the material itself. `original_captured_at` is the archive's
-    capture time (WARC-Date); the attempt's own timestamp is when *we*
-    obtained the record.
+    from somewhere else — an external web archive, a depositor, a person who
+    downloaded the source's export by hand — that is the *acquisition
+    source*, and the project records it rather than implying it captured the
+    material itself. `original_captured_at` is the archive's capture time
+    (WARC-Date) or, for a 'file-import', when the person downloaded the file;
+    the attempt's own timestamp is when *we* obtained the record.
+
+    Raises:
+        ValueError: the route is not one of ``ACQUISITION_ROUTES``, or a
+            'file-import' does not name who downloaded the file and when
+            (DR-0118). The database refuses the same rows; this check says
+            why before a run gets that far.
     """
 
-    route: str = "live-fetch"  # 'live-fetch' | 'external-archive' | 'manual-deposit'
+    route: str = "live-fetch"  # one of ACQUISITION_ROUTES
     acquisition_source: str | None = None
     original_captured_at: datetime | None = None
     external_record_id: str | None = None
@@ -127,6 +139,15 @@ class Acquisition:
     # (WARC-Truncated); `captured_payload_bytes` is what was actually held.
     truncation_reason: str | None = None
     captured_payload_bytes: int | None = None
+
+    def __post_init__(self) -> None:
+        if self.route not in ACQUISITION_ROUTES:
+            raise ValueError(f"unknown acquisition route {self.route!r}")
+        if self.route == "file-import" and (
+            not self.acquisition_source or self.original_captured_at is None
+        ):
+            raise ValueError(
+                "a file import names who downloaded the file and when (DR-0118)")
 
 
 def capture_series_id(source_id: str, locator: str) -> str:

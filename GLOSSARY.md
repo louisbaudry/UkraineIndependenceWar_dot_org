@@ -333,6 +333,17 @@ capture time, separately from the original publisher and its own
 publication time (record §28). It also records *where in the archive* the
 record lives, so anyone can go back to the archive's own copy (DR-0094).
 
+**Acquisition route (`acquisition_route`)**
+How the bytes of one acquisition attempt reached the archive: `live-fetch`
+(the collector fetched the locator itself), `external-archive` (recovered
+from a web archive such as the Wayback Machine), `manual-deposit`, or
+`file-import` (a person downloaded the source's own export in a browser,
+because the collector cannot fetch it, and the file was imported; DR-0118,
+issue #196). It is separate from the attempt's *outcome*: an import can
+still fail or turn out unchanged. A `file-import` records who downloaded the
+file and when, and belongs to a collector run naming that person as agent
+of record.
+
 **Truncated capture**
 A capture the archive itself cut short: Common Crawl, for instance, stops
 storing a page after about 1 MB, and says so in the record (`WARC-Truncated`).

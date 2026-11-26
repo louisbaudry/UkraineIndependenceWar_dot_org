@@ -34,6 +34,18 @@ python3 schema/gen_enums.py          # dist/ -> 01-enums-generated.sql
 `gen_enums.py --check` and `run.sh` exit non-zero on failure, so both can gate
 a release baseline (DR-0048).
 
+## The `file-import` acquisition route (DR-0118, issue #196)
+
+`acquisition_attempt.acquisition_route` accepts `file-import` for a register
+export a person downloaded by hand. The DDL refuses an import that does not
+name its downloader, has no download time, was downloaded after it was
+imported, or belongs to no collector run; `schema/tests/test_schema.sql`
+carries one accepted and four refused rows. **Shown to fail** (2026-11-26):
+each of the five rules removed in turn (the route value, the download-time
+check, the ordering alone, the run check, the downloader check) turned the
+suite red, and each was restored by `cp`. The live database takes the
+change only through `docs/runbooks/schema-reload.md`.
+
 ## Checking a live database for drift
 
 ```bash

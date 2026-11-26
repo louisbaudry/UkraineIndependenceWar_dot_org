@@ -13,11 +13,13 @@ Run:  PGHOST=... PGPORT=... PGUSER=... python3 collector/tests/test_pipeline.py
 from __future__ import annotations
 
 import os
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -29,7 +31,8 @@ import psycopg  # noqa: E402
 from fetch import FetchResult, FixtureFetcher  # noqa: E402
 from ocfl import StorageRoot  # noqa: E402
 from pipeline import (  # noqa: E402
-    Collector, PolicyViolation, ensure_software_agent, find_orphaned_objects,
+    ACQUISITION_ROUTES, Acquisition, Collector, PolicyViolation,
+    ensure_software_agent, find_orphaned_objects,
 )
 from warc import iter_warc_records, verify_payload_digest  # noqa: E402
 
@@ -409,6 +412,28 @@ def run() -> int:
               "reviewed", conn.execute(
                   "SELECT rights_review_state FROM holding "
                   "ORDER BY created_at DESC LIMIT 1").fetchone()[0] == "reviewed")
+
+        # --- DR-0118, issue #196: the 'file-import' route, checked in code --
+        # The database refuses the same rows (schema/tests/test_schema.sql);
+        # these prove the code refuses them first, with a reason.
+        downloaded = datetime(2026, 11, 26, tzinfo=timezone.utc)
+        check("DR-0118", "the code's route list matches the DDL's",
+              set(ACQUISITION_ROUTES) == set(re.findall(
+                  r"'([a-z-]+)'", re.search(
+                      r"acquisition_route IN \(([^)]*)\)",
+                      (ROOT / "schema" / "03-pipeline.sql").read_text()).group(1))))
+        check("DR-0118", "a file import naming its downloader and download "
+              "time is accepted", Acquisition(
+                  route="file-import", acquisition_source="founder",
+                  original_captured_at=downloaded).route == "file-import")
+        rejects("DR-0118", "a file import without its downloader is refused",
+                lambda: Acquisition(route="file-import",
+                                    original_captured_at=downloaded))
+        rejects("DR-0118", "a file import without its download time is refused",
+                lambda: Acquisition(route="file-import",
+                                    acquisition_source="founder"))
+        rejects("PRES-007", "an acquisition route outside the declared set is "
+                "refused in code", lambda: Acquisition(route="teleported"))
 
     finally:
         conn.close()

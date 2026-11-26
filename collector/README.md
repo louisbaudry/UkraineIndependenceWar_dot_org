@@ -252,7 +252,12 @@ What it does, and why:
   ingested for at all.
 - **Acquisition source ≠ original publisher (§28).** `acquisition_attempt`
   now carries `acquisition_route` (`live-fetch` / `external-archive` /
-  `manual-deposit`), the archive's name, **its** capture time
+  `manual-deposit` / `file-import`, the last for a register export a person
+  downloaded by hand, DR-0118 and issue #196: it must name the downloader and
+  the download time, which precedes the import, and belong to a run;
+  `Acquisition` refuses an unknown route and an import without either,
+  shown to fail 2026-11-26 by removing each check, and the test that the
+  code's route list equals the DDL's), the archive's name, **its** capture time
   (`original_captured_at`, from WARC-Date) distinct from `attempted_at`
   (when we obtained the record), the WARC-Record-ID, and the archive's
   declared payload digest. The schema refuses an external-archive attempt
